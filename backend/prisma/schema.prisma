@@ -1,0 +1,489 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================================
+// ENUMS
+// ============================================================
+
+enum FarmRole {
+  ADMIN
+  BREEDING_MANAGER
+  EMPLOYEE
+  VETERINARIAN
+}
+
+enum SectionType {
+  REPRODUCTION
+  MATERNITY
+  FATTENING
+  QUARANTINE
+  OTHER
+}
+
+enum CageStatus {
+  ACTIVE
+  INACTIVE
+  MAINTENANCE
+}
+
+enum RabbitSex {
+  MALE
+  FEMALE
+}
+
+enum RabbitStatus {
+  ACTIVE
+  SOLD
+  DEAD
+  TRANSFERRED
+  CULLED
+}
+
+enum RabbitIdentificationType {
+  TATTOO
+  RING
+  EAR_TAG
+  OTHER
+}
+
+enum BreedingStatus {
+  PLANNED
+  COMPLETED
+  CANCELLED
+}
+
+enum PregnancyResult {
+  PREGNANT
+  NOT_PREGNANT
+  INCONCLUSIVE
+}
+
+enum LitterStatus {
+  ACTIVE
+  WEANED
+  CLOSED
+}
+
+// ============================================================
+// USER
+// ============================================================
+
+model User {
+  id           String  @id @default(uuid())
+  email        String  @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  isActive     Boolean @default(true)
+
+  memberships FarmMembership[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+}
+
+// ============================================================
+// FARM
+// ============================================================
+
+model Farm {
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+  location    String?
+
+  memberships FarmMembership[]
+  sections    Section[]
+  cages       Cage[]
+
+  breeds      Breed[]
+  crossBreeds CrossBreed[]
+  rabbits     Rabbit[]
+
+  breedings   Breeding[]
+  pregnancies Pregnancy[]
+  births      Birth[]
+  litters     Litter[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+}
+
+// ============================================================
+// FARM MEMBERSHIP
+// ============================================================
+
+model FarmMembership {
+  id     String   @id @default(uuid())
+  userId String
+  farmId String
+  role   FarmRole
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, farmId])
+  @@index([userId])
+  @@index([farmId])
+}
+
+// ============================================================
+// SECTION
+// ============================================================
+
+model Section {
+  id          String      @id @default(uuid())
+  farmId      String
+  name        String
+  type        SectionType
+  description String?
+
+  farm  Farm   @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  cages Cage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([farmId, name])
+  @@index([farmId])
+  @@index([type])
+}
+
+// ============================================================
+// CAGE
+// ============================================================
+
+model Cage {
+  id        String @id @default(uuid())
+  farmId    String
+  sectionId String
+
+  code     String
+  type     String?
+  capacity Int
+  status   CageStatus @default(ACTIVE)
+
+  farm    Farm    @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  section Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+
+  rabbitMovements RabbitCageMovement[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([farmId, code])
+  @@index([farmId])
+  @@index([sectionId])
+  @@index([status])
+}
+
+// ============================================================
+// BREED
+// ============================================================
+
+model Breed {
+  id          String  @id @default(uuid())
+  farmId      String
+  name        String
+  description String?
+
+  farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)
+
+  rabbits     Rabbit[]
+  crossBreedA CrossBreed[] @relation("CrossBreedBreedA")
+  crossBreedB CrossBreed[] @relation("CrossBreedBreedB")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([farmId, name])
+  @@index([farmId])
+}
+
+// ============================================================
+// CROSSBREED
+// ============================================================
+
+model CrossBreed {
+  id          String  @id @default(uuid())
+  farmId      String
+  name        String
+  description String?
+
+  breedAId String
+  breedBId String
+
+  farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)
+
+  breedA Breed @relation("CrossBreedBreedA", fields: [breedAId], references: [id])
+  breedB Breed @relation("CrossBreedBreedB", fields: [breedBId], references: [id])
+
+  rabbits Rabbit[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([farmId, name])
+  @@index([farmId])
+  @@index([breedAId])
+  @@index([breedBId])
+}
+
+// ============================================================
+// RABBIT
+// ============================================================
+
+model Rabbit {
+  id String @id @default(uuid())
+
+  farmId String
+  code   String
+
+  sex    RabbitSex
+  status RabbitStatus @default(ACTIVE)
+
+  geneticType String?
+
+  breedId      String?
+  crossBreedId String?
+
+  fatherId String?
+  motherId String?
+
+  birthDate DateTime?
+
+  color       String?
+  size        String?
+  earFeature  String?
+  mark        String?
+  observation String?
+
+  farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)
+
+  breed      Breed?      @relation(fields: [breedId], references: [id], onDelete: SetNull)
+  crossBreed CrossBreed? @relation(fields: [crossBreedId], references: [id], onDelete: SetNull)
+
+  father           Rabbit?  @relation("RabbitFather", fields: [fatherId], references: [id], onDelete: SetNull)
+  childrenAsFather Rabbit[] @relation("RabbitFather")
+
+  mother           Rabbit?  @relation("RabbitMother", fields: [motherId], references: [id], onDelete: SetNull)
+  childrenAsMother Rabbit[] @relation("RabbitMother")
+
+  identifications RabbitIdentification[]
+  cageMovements   RabbitCageMovement[]
+
+  birthLitterId String?
+
+  birthLitter Litter? @relation(fields: [birthLitterId], references: [id], onDelete: SetNull)
+
+  breedingsAsFemale Breeding[] @relation("FemaleBreedings")
+  breedingsAsMale   Breeding[] @relation("MaleBreedings")
+
+  motherBirths Birth[] @relation("MotherBirths")
+
+  motherLitters Litter[] @relation("MotherLitters")
+  fatherLitters Litter[] @relation("FatherLitters")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([farmId, code])
+  @@index([farmId])
+  @@index([breedId])
+  @@index([crossBreedId])
+  @@index([fatherId])
+  @@index([motherId])
+  @@index([status])
+  @@index([sex])
+}
+
+// ============================================================
+// RabbitIdentification
+// ============================================================
+
+model RabbitIdentification {
+  id        String                   @id @default(uuid())
+  rabbitId  String
+  type      RabbitIdentificationType
+  value     String
+  isPrimary Boolean                  @default(false)
+
+  rabbit Rabbit @relation(fields: [rabbitId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([rabbitId, type, value])
+  @@index([rabbitId])
+  @@index([type, value])
+}
+
+// ============================================================
+// RabbitCageMovement
+// ============================================================
+
+model RabbitCageMovement {
+  id String @id @default(uuid())
+
+  rabbitId String
+  cageId   String
+
+  startedAt DateTime
+  endedAt   DateTime?
+
+  reason      String?
+  observation String?
+
+  rabbit Rabbit @relation(fields: [rabbitId], references: [id], onDelete: Cascade)
+  cage   Cage   @relation(fields: [cageId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([rabbitId])
+  @@index([cageId])
+  @@index([startedAt])
+  @@index([endedAt])
+}
+
+model Breeding {
+  id String @id @default(uuid())
+
+  farmId   String
+  femaleId String
+  maleId   String
+
+  breedingDate DateTime
+
+  palpationStartDate DateTime?
+  palpationEndDate   DateTime?
+
+  nestDate DateTime?
+
+  expectedBirthStartDate DateTime?
+  expectedBirthEndDate   DateTime?
+
+  status      BreedingStatus @default(COMPLETED)
+  observation String?
+
+  farm   Farm   @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  female Rabbit @relation("FemaleBreedings", fields: [femaleId], references: [id])
+  male   Rabbit @relation("MaleBreedings", fields: [maleId], references: [id])
+
+  pregnancy Pregnancy?
+  birth     Birth?
+  litters   Litter[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([farmId])
+  @@index([femaleId])
+  @@index([maleId])
+  @@index([breedingDate])
+  @@index([status])
+}
+
+model Pregnancy {
+  id String @id @default(uuid())
+
+  breedingId String
+  checkDate  DateTime
+
+  result      PregnancyResult
+  observation String?
+
+  breeding Breeding @relation(fields: [breedingId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  farm      Farm?    @relation(fields: [farmId], references: [id])
+  farmId    String?
+
+  @@unique([breedingId])
+  @@index([breedingId])
+  @@index([checkDate])
+  @@index([result])
+}
+
+model Birth {
+  id String @id @default(uuid())
+
+  breedingId String
+  motherId   String
+
+  birthDate DateTime
+
+  liveBorn  Int
+  stillBorn Int
+
+  observation String?
+
+  breeding Breeding @relation(fields: [breedingId], references: [id], onDelete: Cascade)
+  mother   Rabbit   @relation("MotherBirths", fields: [motherId], references: [id])
+
+  litter Litter?
+
+  createdAt DateTime @default(now())
+  farm      Farm?    @relation(fields: [farmId], references: [id])
+  farmId    String?
+
+  @@unique([breedingId])
+  @@index([motherId])
+  @@index([birthDate])
+}
+
+model Litter {
+  id String @id @default(uuid())
+
+  farmId String
+  code   String
+
+  breedingId String?
+  birthId    String?
+
+  motherId String
+  fatherId String?
+
+  birthDate DateTime
+
+  liveBorn     Int
+  stillBorn    Int
+  currentCount Int
+
+  status LitterStatus @default(ACTIVE)
+
+  mother Rabbit  @relation("MotherLitters", fields: [motherId], references: [id])
+  father Rabbit? @relation("FatherLitters", fields: [fatherId], references: [id])
+
+  farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)
+
+  breeding Breeding? @relation(fields: [breedingId], references: [id], onDelete: SetNull)
+  birth    Birth?    @relation(fields: [birthId], references: [id], onDelete: SetNull)
+
+  rabbits Rabbit[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([farmId, code])
+  @@unique([birthId])
+  @@index([farmId])
+  @@index([motherId])
+  @@index([fatherId])
+  @@index([breedingId])
+  @@index([birthId])
+  @@index([birthDate])
+  @@index([status])
+}
