@@ -1,24 +1,25 @@
-# Nestjs specific
-/dist
-/node_modules
-/build
-/tmp
+# Backend Node / NestJS
+backend/node_modules/
+backend/dist/
+backend/build/
+backend/tmp/
+backend/.cache/
+
+# Tests et couverture
+backend/coverage/
 
 # Logs
-logs
 *.log
 npm-debug.log*
-pnpm-debug.log*
 yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
+pnpm-debug.log*
 
-# dotenv environment variable files
-.env
-.env.development
-.env.test
-.env.production
+# Variables d'environnement
+backend/.env
+backend/.env.*
+!backend/.env.example
 
-# temp directory
-.temp
-.tmp
+# Fichiers temporaires
+*.tmp
+*.temp
+.DS_Store

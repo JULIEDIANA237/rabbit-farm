@@ -1,0 +1,1596 @@
+import type * as runtime from "@prisma/client/runtime/client";
+import type * as $Enums from "../enums.js";
+import type * as Prisma from "../internal/prismaNamespace.js";
+export type BreedingModel = runtime.Types.Result.DefaultSelection<Prisma.$BreedingPayload>;
+export type AggregateBreeding = {
+    _count: BreedingCountAggregateOutputType | null;
+    _min: BreedingMinAggregateOutputType | null;
+    _max: BreedingMaxAggregateOutputType | null;
+};
+export type BreedingMinAggregateOutputType = {
+    id: string | null;
+    farmId: string | null;
+    femaleId: string | null;
+    maleId: string | null;
+    breedingDate: Date | null;
+    palpationStartDate: Date | null;
+    palpationEndDate: Date | null;
+    nestDate: Date | null;
+    expectedBirthStartDate: Date | null;
+    expectedBirthEndDate: Date | null;
+    status: $Enums.BreedingStatus | null;
+    observation: string | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+};
+export type BreedingMaxAggregateOutputType = {
+    id: string | null;
+    farmId: string | null;
+    femaleId: string | null;
+    maleId: string | null;
+    breedingDate: Date | null;
+    palpationStartDate: Date | null;
+    palpationEndDate: Date | null;
+    nestDate: Date | null;
+    expectedBirthStartDate: Date | null;
+    expectedBirthEndDate: Date | null;
+    status: $Enums.BreedingStatus | null;
+    observation: string | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+};
+export type BreedingCountAggregateOutputType = {
+    id: number;
+    farmId: number;
+    femaleId: number;
+    maleId: number;
+    breedingDate: number;
+    palpationStartDate: number;
+    palpationEndDate: number;
+    nestDate: number;
+    expectedBirthStartDate: number;
+    expectedBirthEndDate: number;
+    status: number;
+    observation: number;
+    createdAt: number;
+    updatedAt: number;
+    _all: number;
+};
+export type BreedingMinAggregateInputType = {
+    id?: true;
+    farmId?: true;
+    femaleId?: true;
+    maleId?: true;
+    breedingDate?: true;
+    palpationStartDate?: true;
+    palpationEndDate?: true;
+    nestDate?: true;
+    expectedBirthStartDate?: true;
+    expectedBirthEndDate?: true;
+    status?: true;
+    observation?: true;
+    createdAt?: true;
+    updatedAt?: true;
+};
+export type BreedingMaxAggregateInputType = {
+    id?: true;
+    farmId?: true;
+    femaleId?: true;
+    maleId?: true;
+    breedingDate?: true;
+    palpationStartDate?: true;
+    palpationEndDate?: true;
+    nestDate?: true;
+    expectedBirthStartDate?: true;
+    expectedBirthEndDate?: true;
+    status?: true;
+    observation?: true;
+    createdAt?: true;
+    updatedAt?: true;
+};
+export type BreedingCountAggregateInputType = {
+    id?: true;
+    farmId?: true;
+    femaleId?: true;
+    maleId?: true;
+    breedingDate?: true;
+    palpationStartDate?: true;
+    palpationEndDate?: true;
+    nestDate?: true;
+    expectedBirthStartDate?: true;
+    expectedBirthEndDate?: true;
+    status?: true;
+    observation?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    _all?: true;
+};
+export type BreedingAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.BreedingWhereInput;
+    orderBy?: Prisma.BreedingOrderByWithRelationInput | Prisma.BreedingOrderByWithRelationInput[];
+    cursor?: Prisma.BreedingWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    _count?: true | BreedingCountAggregateInputType;
+    _min?: BreedingMinAggregateInputType;
+    _max?: BreedingMaxAggregateInputType;
+};
+export type GetBreedingAggregateType<T extends BreedingAggregateArgs> = {
+    [P in keyof T & keyof AggregateBreeding]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateBreeding[P]> : Prisma.GetScalarType<T[P], AggregateBreeding[P]>;
+};
+export type BreedingGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.BreedingWhereInput;
+    orderBy?: Prisma.BreedingOrderByWithAggregationInput | Prisma.BreedingOrderByWithAggregationInput[];
+    by: Prisma.BreedingScalarFieldEnum[] | Prisma.BreedingScalarFieldEnum;
+    having?: Prisma.BreedingScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: BreedingCountAggregateInputType | true;
+    _min?: BreedingMinAggregateInputType;
+    _max?: BreedingMaxAggregateInputType;
+};
+export type BreedingGroupByOutputType = {
+    id: string;
+    farmId: string;
+    femaleId: string;
+    maleId: string;
+    breedingDate: Date;
+    palpationStartDate: Date | null;
+    palpationEndDate: Date | null;
+    nestDate: Date | null;
+    expectedBirthStartDate: Date | null;
+    expectedBirthEndDate: Date | null;
+    status: $Enums.BreedingStatus;
+    observation: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+    _count: BreedingCountAggregateOutputType | null;
+    _min: BreedingMinAggregateOutputType | null;
+    _max: BreedingMaxAggregateOutputType | null;
+};
+export type GetBreedingGroupByPayload<T extends BreedingGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<BreedingGroupByOutputType, T['by']> & {
+    [P in ((keyof T) & (keyof BreedingGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], BreedingGroupByOutputType[P]> : Prisma.GetScalarType<T[P], BreedingGroupByOutputType[P]>;
+}>>;
+export type BreedingWhereInput = {
+    AND?: Prisma.BreedingWhereInput | Prisma.BreedingWhereInput[];
+    OR?: Prisma.BreedingWhereInput[];
+    NOT?: Prisma.BreedingWhereInput | Prisma.BreedingWhereInput[];
+    id?: Prisma.StringFilter<"Breeding"> | string;
+    farmId?: Prisma.StringFilter<"Breeding"> | string;
+    femaleId?: Prisma.StringFilter<"Breeding"> | string;
+    maleId?: Prisma.StringFilter<"Breeding"> | string;
+    breedingDate?: Prisma.DateTimeFilter<"Breeding"> | Date | string;
+    palpationStartDate?: Prisma.DateTimeNullableFilter<"Breeding"> | Date | string | null;
+    palpationEndDate?: Prisma.DateTimeNullableFilter<"Breeding"> | Date | string | null;
+    nestDate?: Prisma.DateTimeNullableFilter<"Breeding"> | Date | string | null;
+    expectedBirthStartDate?: Prisma.DateTimeNullableFilter<"Breeding"> | Date | string | null;
+    expectedBirthEndDate?: Prisma.DateTimeNullableFilter<"Breeding"> | Date | string | null;
+    status?: Prisma.EnumBreedingStatusFilter<"Breeding"> | $Enums.BreedingStatus;
+    observation?: Prisma.StringNullableFilter<"Breeding"> | string | null;
+    createdAt?: Prisma.DateTimeFilter<"Breeding"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"Breeding"> | Date | string;
+    farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>;
+    female?: Prisma.XOR<Prisma.RabbitScalarRelationFilter, Prisma.RabbitWhereInput>;
+    male?: Prisma.XOR<Prisma.RabbitScalarRelationFilter, Prisma.RabbitWhereInput>;
+    pregnancies?: Prisma.PregnancyListRelationFilter;
+    birth?: Prisma.XOR<Prisma.BirthNullableScalarRelationFilter, Prisma.BirthWhereInput> | null;
+    litters?: Prisma.LitterListRelationFilter;
+};
+export type BreedingOrderByWithRelationInput = {
+    id?: Prisma.SortOrder;
+    farmId?: Prisma.SortOrder;
+    femaleId?: Prisma.SortOrder;
+    maleId?: Prisma.SortOrder;
+    breedingDate?: Prisma.SortOrder;
+    palpationStartDate?: Prisma.SortOrderInput | Prisma.SortOrder;
+    palpationEndDate?: Prisma.SortOrderInput | Prisma.SortOrder;
+    nestDate?: Prisma.SortOrderInput | Prisma.SortOrder;
+    expectedBirthStartDate?: Prisma.SortOrderInput | Prisma.SortOrder;
+    expectedBirthEndDate?: Prisma.SortOrderInput | Prisma.SortOrder;
+    status?: Prisma.SortOrder;
+    observation?: Prisma.SortOrderInput | Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    farm?: Prisma.FarmOrderByWithRelationInput;
+    female?: Prisma.RabbitOrderByWithRelationInput;
+    male?: Prisma.RabbitOrderByWithRelationInput;
+    pregnancies?: Prisma.PregnancyOrderByRelationAggregateInput;
+    birth?: Prisma.BirthOrderByWithRelationInput;
+    litters?: Prisma.LitterOrderByRelationAggregateInput;
+};
+export type BreedingWhereUniqueInput = Prisma.AtLeast<{
+    id?: string;
+    AND?: Prisma.BreedingWhereInput | Prisma.BreedingWhereInput[];
+    OR?: Prisma.BreedingWhereInput[];
+    NOT?: Prisma.BreedingWhereInput | Prisma.BreedingWhereInput[];
+    farmId?: Prisma.StringFilter<"Breeding"> | string;
+    femaleId?: Prisma.StringFilter<"Breeding"> | string;
+    maleId?: Prisma.StringFilter<"Breeding"> | string;
+    breedingDate?: Prisma.DateTimeFilter<"Breeding"> | Date | string;
+    palpationStartDate?: Prisma.DateTimeNullableFilter<"Breeding"> | Date | string | null;
+    palpationEndDate?: Prisma.DateTimeNullableFilter<"Breeding"> | Date | string | null;
+    nestDate?: Prisma.DateTimeNullableFilter<"Breeding"> | Date | string | null;
+    expectedBirthStartDate?: Prisma.DateTimeNullableFilter<"Breeding"> | Date | string | null;
+    expectedBirthEndDate?: Prisma.DateTimeNullableFilter<"Breeding"> | Date | string | null;
+    status?: Prisma.EnumBreedingStatusFilter<"Breeding"> | $Enums.BreedingStatus;
+    observation?: Prisma.StringNullableFilter<"Breeding"> | string | null;
+    createdAt?: Prisma.DateTimeFilter<"Breeding"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"Breeding"> | Date | string;
+    farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>;
+    female?: Prisma.XOR<Prisma.RabbitScalarRelationFilter, Prisma.RabbitWhereInput>;
+    male?: Prisma.XOR<Prisma.RabbitScalarRelationFilter, Prisma.RabbitWhereInput>;
+    pregnancies?: Prisma.PregnancyListRelationFilter;
+    birth?: Prisma.XOR<Prisma.BirthNullableScalarRelationFilter, Prisma.BirthWhereInput> | null;
+    litters?: Prisma.LitterListRelationFilter;
+}, "id">;
+export type BreedingOrderByWithAggregationInput = {
+    id?: Prisma.SortOrder;
+    farmId?: Prisma.SortOrder;
+    femaleId?: Prisma.SortOrder;
+    maleId?: Prisma.SortOrder;
+    breedingDate?: Prisma.SortOrder;
+    palpationStartDate?: Prisma.SortOrderInput | Prisma.SortOrder;
+    palpationEndDate?: Prisma.SortOrderInput | Prisma.SortOrder;
+    nestDate?: Prisma.SortOrderInput | Prisma.SortOrder;
+    expectedBirthStartDate?: Prisma.SortOrderInput | Prisma.SortOrder;
+    expectedBirthEndDate?: Prisma.SortOrderInput | Prisma.SortOrder;
+    status?: Prisma.SortOrder;
+    observation?: Prisma.SortOrderInput | Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    _count?: Prisma.BreedingCountOrderByAggregateInput;
+    _max?: Prisma.BreedingMaxOrderByAggregateInput;
+    _min?: Prisma.BreedingMinOrderByAggregateInput;
+};
+export type BreedingScalarWhereWithAggregatesInput = {
+    AND?: Prisma.BreedingScalarWhereWithAggregatesInput | Prisma.BreedingScalarWhereWithAggregatesInput[];
+    OR?: Prisma.BreedingScalarWhereWithAggregatesInput[];
+    NOT?: Prisma.BreedingScalarWhereWithAggregatesInput | Prisma.BreedingScalarWhereWithAggregatesInput[];
+    id?: Prisma.StringWithAggregatesFilter<"Breeding"> | string;
+    farmId?: Prisma.StringWithAggregatesFilter<"Breeding"> | string;
+    femaleId?: Prisma.StringWithAggregatesFilter<"Breeding"> | string;
+    maleId?: Prisma.StringWithAggregatesFilter<"Breeding"> | string;
+    breedingDate?: Prisma.DateTimeWithAggregatesFilter<"Breeding"> | Date | string;
+    palpationStartDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Breeding"> | Date | string | null;
+    palpationEndDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Breeding"> | Date | string | null;
+    nestDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Breeding"> | Date | string | null;
+    expectedBirthStartDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Breeding"> | Date | string | null;
+    expectedBirthEndDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Breeding"> | Date | string | null;
+    status?: Prisma.EnumBreedingStatusWithAggregatesFilter<"Breeding"> | $Enums.BreedingStatus;
+    observation?: Prisma.StringNullableWithAggregatesFilter<"Breeding"> | string | null;
+    createdAt?: Prisma.DateTimeWithAggregatesFilter<"Breeding"> | Date | string;
+    updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Breeding"> | Date | string;
+};
+export type BreedingCreateInput = {
+    id?: string;
+    breedingDate: Date | string;
+    palpationStartDate?: Date | string | null;
+    palpationEndDate?: Date | string | null;
+    nestDate?: Date | string | null;
+    expectedBirthStartDate?: Date | string | null;
+    expectedBirthEndDate?: Date | string | null;
+    status?: $Enums.BreedingStatus;
+    observation?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    farm: Prisma.FarmCreateNestedOneWithoutBreedingsInput;
+    female: Prisma.RabbitCreateNestedOneWithoutBreedingsAsFemaleInput;
+    male: Prisma.RabbitCreateNestedOneWithoutBreedingsAsMaleInput;
+    pregnancies?: Prisma.PregnancyCreateNestedManyWithoutBreedingInput;
+    birth?: Prisma.BirthCreateNestedOneWithoutBreedingInput;
+    litters?: Prisma.LitterCreateNestedManyWithoutBreedingInput;
+};
+export type BreedingUncheckedCreateInput = {
+    id?: string;
+    farmId: string;
+    femaleId: string;
+    maleId: string;
+    breedingDate: Date | string;
+    palpationStartDate?: Date | string | null;
+    palpationEndDate?: Date | string | null;
+    nestDate?: Date | string | null;
+    expectedBirthStartDate?: Date | string | null;
+    expectedBirthEndDate?: Date | string | null;
+    status?: $Enums.BreedingStatus;
+    observation?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    pregnancies?: Prisma.PregnancyUncheckedCreateNestedManyWithoutBreedingInput;
+    birth?: Prisma.BirthUncheckedCreateNestedOneWithoutBreedingInput;
+    litters?: Prisma.LitterUncheckedCreateNestedManyWithoutBreedingInput;
+};
+export type BreedingUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    breedingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    palpationStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    palpationEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    status?: Prisma.EnumBreedingStatusFieldUpdateOperationsInput | $Enums.BreedingStatus;
+    observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    farm?: Prisma.FarmUpdateOneRequiredWithoutBreedingsNestedInput;
+    female?: Prisma.RabbitUpdateOneRequiredWithoutBreedingsAsFemaleNestedInput;
+    male?: Prisma.RabbitUpdateOneRequiredWithoutBreedingsAsMaleNestedInput;
+    pregnancies?: Prisma.PregnancyUpdateManyWithoutBreedingNestedInput;
+    birth?: Prisma.BirthUpdateOneWithoutBreedingNestedInput;
+    litters?: Prisma.LitterUpdateManyWithoutBreedingNestedInput;
+};
+export type BreedingUncheckedUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    farmId?: Prisma.StringFieldUpdateOperationsInput | string;
+    femaleId?: Prisma.StringFieldUpdateOperationsInput | string;
+    maleId?: Prisma.StringFieldUpdateOperationsInput | string;
+    breedingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    palpationStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    palpationEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    status?: Prisma.EnumBreedingStatusFieldUpdateOperationsInput | $Enums.BreedingStatus;
+    observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    pregnancies?: Prisma.PregnancyUncheckedUpdateManyWithoutBreedingNestedInput;
+    birth?: Prisma.BirthUncheckedUpdateOneWithoutBreedingNestedInput;
+    litters?: Prisma.LitterUncheckedUpdateManyWithoutBreedingNestedInput;
+};
+export type BreedingCreateManyInput = {
+    id?: string;
+    farmId: string;
+    femaleId: string;
+    maleId: string;
+    breedingDate: Date | string;
+    palpationStartDate?: Date | string | null;
+    palpationEndDate?: Date | string | null;
+    nestDate?: Date | string | null;
+    expectedBirthStartDate?: Date | string | null;
+    expectedBirthEndDate?: Date | string | null;
+    status?: $Enums.BreedingStatus;
+    observation?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type BreedingUpdateManyMutationInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    breedingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    palpationStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    palpationEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    status?: Prisma.EnumBreedingStatusFieldUpdateOperationsInput | $Enums.BreedingStatus;
+    observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type BreedingUncheckedUpdateManyInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    farmId?: Prisma.StringFieldUpdateOperationsInput | string;
+    femaleId?: Prisma.StringFieldUpdateOperationsInput | string;
+    maleId?: Prisma.StringFieldUpdateOperationsInput | string;
+    breedingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    palpationStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    palpationEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    status?: Prisma.EnumBreedingStatusFieldUpdateOperationsInput | $Enums.BreedingStatus;
+    observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type BreedingListRelationFilter = {
+    every?: Prisma.BreedingWhereInput;
+    some?: Prisma.BreedingWhereInput;
+    none?: Prisma.BreedingWhereInput;
+};
+export type BreedingOrderByRelationAggregateInput = {
+    _count?: Prisma.SortOrder;
+};
+export type BreedingCountOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    farmId?: Prisma.SortOrder;
+    femaleId?: Prisma.SortOrder;
+    maleId?: Prisma.SortOrder;
+    breedingDate?: Prisma.SortOrder;
+    palpationStartDate?: Prisma.SortOrder;
+    palpationEndDate?: Prisma.SortOrder;
+    nestDate?: Prisma.SortOrder;
+    expectedBirthStartDate?: Prisma.SortOrder;
+    expectedBirthEndDate?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
+    observation?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+};
+export type BreedingMaxOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    farmId?: Prisma.SortOrder;
+    femaleId?: Prisma.SortOrder;
+    maleId?: Prisma.SortOrder;
+    breedingDate?: Prisma.SortOrder;
+    palpationStartDate?: Prisma.SortOrder;
+    palpationEndDate?: Prisma.SortOrder;
+    nestDate?: Prisma.SortOrder;
+    expectedBirthStartDate?: Prisma.SortOrder;
+    expectedBirthEndDate?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
+    observation?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+};
+export type BreedingMinOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    farmId?: Prisma.SortOrder;
+    femaleId?: Prisma.SortOrder;
+    maleId?: Prisma.SortOrder;
+    breedingDate?: Prisma.SortOrder;
+    palpationStartDate?: Prisma.SortOrder;
+    palpationEndDate?: Prisma.SortOrder;
+    nestDate?: Prisma.SortOrder;
+    expectedBirthStartDate?: Prisma.SortOrder;
+    expectedBirthEndDate?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
+    observation?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+};
+export type BreedingScalarRelationFilter = {
+    is?: Prisma.BreedingWhereInput;
+    isNot?: Prisma.BreedingWhereInput;
+};
+export type BreedingNullableScalarRelationFilter = {
+    is?: Prisma.BreedingWhereInput | null;
+    isNot?: Prisma.BreedingWhereInput | null;
+};
+export type BreedingCreateNestedManyWithoutFarmInput = {
+    create?: Prisma.XOR<Prisma.BreedingCreateWithoutFarmInput, Prisma.BreedingUncheckedCreateWithoutFarmInput> | Prisma.BreedingCreateWithoutFarmInput[] | Prisma.BreedingUncheckedCreateWithoutFarmInput[];
+    connectOrCreate?: Prisma.BreedingCreateOrConnectWithoutFarmInput | Prisma.BreedingCreateOrConnectWithoutFarmInput[];
+    createMany?: Prisma.BreedingCreateManyFarmInputEnvelope;
+    connect?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+};
+export type BreedingUncheckedCreateNestedManyWithoutFarmInput = {
+    create?: Prisma.XOR<Prisma.BreedingCreateWithoutFarmInput, Prisma.BreedingUncheckedCreateWithoutFarmInput> | Prisma.BreedingCreateWithoutFarmInput[] | Prisma.BreedingUncheckedCreateWithoutFarmInput[];
+    connectOrCreate?: Prisma.BreedingCreateOrConnectWithoutFarmInput | Prisma.BreedingCreateOrConnectWithoutFarmInput[];
+    createMany?: Prisma.BreedingCreateManyFarmInputEnvelope;
+    connect?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+};
+export type BreedingUpdateManyWithoutFarmNestedInput = {
+    create?: Prisma.XOR<Prisma.BreedingCreateWithoutFarmInput, Prisma.BreedingUncheckedCreateWithoutFarmInput> | Prisma.BreedingCreateWithoutFarmInput[] | Prisma.BreedingUncheckedCreateWithoutFarmInput[];
+    connectOrCreate?: Prisma.BreedingCreateOrConnectWithoutFarmInput | Prisma.BreedingCreateOrConnectWithoutFarmInput[];
+    upsert?: Prisma.BreedingUpsertWithWhereUniqueWithoutFarmInput | Prisma.BreedingUpsertWithWhereUniqueWithoutFarmInput[];
+    createMany?: Prisma.BreedingCreateManyFarmInputEnvelope;
+    set?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    disconnect?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    delete?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    connect?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    update?: Prisma.BreedingUpdateWithWhereUniqueWithoutFarmInput | Prisma.BreedingUpdateWithWhereUniqueWithoutFarmInput[];
+    updateMany?: Prisma.BreedingUpdateManyWithWhereWithoutFarmInput | Prisma.BreedingUpdateManyWithWhereWithoutFarmInput[];
+    deleteMany?: Prisma.BreedingScalarWhereInput | Prisma.BreedingScalarWhereInput[];
+};
+export type BreedingUncheckedUpdateManyWithoutFarmNestedInput = {
+    create?: Prisma.XOR<Prisma.BreedingCreateWithoutFarmInput, Prisma.BreedingUncheckedCreateWithoutFarmInput> | Prisma.BreedingCreateWithoutFarmInput[] | Prisma.BreedingUncheckedCreateWithoutFarmInput[];
+    connectOrCreate?: Prisma.BreedingCreateOrConnectWithoutFarmInput | Prisma.BreedingCreateOrConnectWithoutFarmInput[];
+    upsert?: Prisma.BreedingUpsertWithWhereUniqueWithoutFarmInput | Prisma.BreedingUpsertWithWhereUniqueWithoutFarmInput[];
+    createMany?: Prisma.BreedingCreateManyFarmInputEnvelope;
+    set?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    disconnect?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    delete?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    connect?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    update?: Prisma.BreedingUpdateWithWhereUniqueWithoutFarmInput | Prisma.BreedingUpdateWithWhereUniqueWithoutFarmInput[];
+    updateMany?: Prisma.BreedingUpdateManyWithWhereWithoutFarmInput | Prisma.BreedingUpdateManyWithWhereWithoutFarmInput[];
+    deleteMany?: Prisma.BreedingScalarWhereInput | Prisma.BreedingScalarWhereInput[];
+};
+export type BreedingCreateNestedManyWithoutFemaleInput = {
+    create?: Prisma.XOR<Prisma.BreedingCreateWithoutFemaleInput, Prisma.BreedingUncheckedCreateWithoutFemaleInput> | Prisma.BreedingCreateWithoutFemaleInput[] | Prisma.BreedingUncheckedCreateWithoutFemaleInput[];
+    connectOrCreate?: Prisma.BreedingCreateOrConnectWithoutFemaleInput | Prisma.BreedingCreateOrConnectWithoutFemaleInput[];
+    createMany?: Prisma.BreedingCreateManyFemaleInputEnvelope;
+    connect?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+};
+export type BreedingCreateNestedManyWithoutMaleInput = {
+    create?: Prisma.XOR<Prisma.BreedingCreateWithoutMaleInput, Prisma.BreedingUncheckedCreateWithoutMaleInput> | Prisma.BreedingCreateWithoutMaleInput[] | Prisma.BreedingUncheckedCreateWithoutMaleInput[];
+    connectOrCreate?: Prisma.BreedingCreateOrConnectWithoutMaleInput | Prisma.BreedingCreateOrConnectWithoutMaleInput[];
+    createMany?: Prisma.BreedingCreateManyMaleInputEnvelope;
+    connect?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+};
+export type BreedingUncheckedCreateNestedManyWithoutFemaleInput = {
+    create?: Prisma.XOR<Prisma.BreedingCreateWithoutFemaleInput, Prisma.BreedingUncheckedCreateWithoutFemaleInput> | Prisma.BreedingCreateWithoutFemaleInput[] | Prisma.BreedingUncheckedCreateWithoutFemaleInput[];
+    connectOrCreate?: Prisma.BreedingCreateOrConnectWithoutFemaleInput | Prisma.BreedingCreateOrConnectWithoutFemaleInput[];
+    createMany?: Prisma.BreedingCreateManyFemaleInputEnvelope;
+    connect?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+};
+export type BreedingUncheckedCreateNestedManyWithoutMaleInput = {
+    create?: Prisma.XOR<Prisma.BreedingCreateWithoutMaleInput, Prisma.BreedingUncheckedCreateWithoutMaleInput> | Prisma.BreedingCreateWithoutMaleInput[] | Prisma.BreedingUncheckedCreateWithoutMaleInput[];
+    connectOrCreate?: Prisma.BreedingCreateOrConnectWithoutMaleInput | Prisma.BreedingCreateOrConnectWithoutMaleInput[];
+    createMany?: Prisma.BreedingCreateManyMaleInputEnvelope;
+    connect?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+};
+export type BreedingUpdateManyWithoutFemaleNestedInput = {
+    create?: Prisma.XOR<Prisma.BreedingCreateWithoutFemaleInput, Prisma.BreedingUncheckedCreateWithoutFemaleInput> | Prisma.BreedingCreateWithoutFemaleInput[] | Prisma.BreedingUncheckedCreateWithoutFemaleInput[];
+    connectOrCreate?: Prisma.BreedingCreateOrConnectWithoutFemaleInput | Prisma.BreedingCreateOrConnectWithoutFemaleInput[];
+    upsert?: Prisma.BreedingUpsertWithWhereUniqueWithoutFemaleInput | Prisma.BreedingUpsertWithWhereUniqueWithoutFemaleInput[];
+    createMany?: Prisma.BreedingCreateManyFemaleInputEnvelope;
+    set?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    disconnect?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    delete?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    connect?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    update?: Prisma.BreedingUpdateWithWhereUniqueWithoutFemaleInput | Prisma.BreedingUpdateWithWhereUniqueWithoutFemaleInput[];
+    updateMany?: Prisma.BreedingUpdateManyWithWhereWithoutFemaleInput | Prisma.BreedingUpdateManyWithWhereWithoutFemaleInput[];
+    deleteMany?: Prisma.BreedingScalarWhereInput | Prisma.BreedingScalarWhereInput[];
+};
+export type BreedingUpdateManyWithoutMaleNestedInput = {
+    create?: Prisma.XOR<Prisma.BreedingCreateWithoutMaleInput, Prisma.BreedingUncheckedCreateWithoutMaleInput> | Prisma.BreedingCreateWithoutMaleInput[] | Prisma.BreedingUncheckedCreateWithoutMaleInput[];
+    connectOrCreate?: Prisma.BreedingCreateOrConnectWithoutMaleInput | Prisma.BreedingCreateOrConnectWithoutMaleInput[];
+    upsert?: Prisma.BreedingUpsertWithWhereUniqueWithoutMaleInput | Prisma.BreedingUpsertWithWhereUniqueWithoutMaleInput[];
+    createMany?: Prisma.BreedingCreateManyMaleInputEnvelope;
+    set?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    disconnect?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    delete?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    connect?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    update?: Prisma.BreedingUpdateWithWhereUniqueWithoutMaleInput | Prisma.BreedingUpdateWithWhereUniqueWithoutMaleInput[];
+    updateMany?: Prisma.BreedingUpdateManyWithWhereWithoutMaleInput | Prisma.BreedingUpdateManyWithWhereWithoutMaleInput[];
+    deleteMany?: Prisma.BreedingScalarWhereInput | Prisma.BreedingScalarWhereInput[];
+};
+export type BreedingUncheckedUpdateManyWithoutFemaleNestedInput = {
+    create?: Prisma.XOR<Prisma.BreedingCreateWithoutFemaleInput, Prisma.BreedingUncheckedCreateWithoutFemaleInput> | Prisma.BreedingCreateWithoutFemaleInput[] | Prisma.BreedingUncheckedCreateWithoutFemaleInput[];
+    connectOrCreate?: Prisma.BreedingCreateOrConnectWithoutFemaleInput | Prisma.BreedingCreateOrConnectWithoutFemaleInput[];
+    upsert?: Prisma.BreedingUpsertWithWhereUniqueWithoutFemaleInput | Prisma.BreedingUpsertWithWhereUniqueWithoutFemaleInput[];
+    createMany?: Prisma.BreedingCreateManyFemaleInputEnvelope;
+    set?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    disconnect?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    delete?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    connect?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    update?: Prisma.BreedingUpdateWithWhereUniqueWithoutFemaleInput | Prisma.BreedingUpdateWithWhereUniqueWithoutFemaleInput[];
+    updateMany?: Prisma.BreedingUpdateManyWithWhereWithoutFemaleInput | Prisma.BreedingUpdateManyWithWhereWithoutFemaleInput[];
+    deleteMany?: Prisma.BreedingScalarWhereInput | Prisma.BreedingScalarWhereInput[];
+};
+export type BreedingUncheckedUpdateManyWithoutMaleNestedInput = {
+    create?: Prisma.XOR<Prisma.BreedingCreateWithoutMaleInput, Prisma.BreedingUncheckedCreateWithoutMaleInput> | Prisma.BreedingCreateWithoutMaleInput[] | Prisma.BreedingUncheckedCreateWithoutMaleInput[];
+    connectOrCreate?: Prisma.BreedingCreateOrConnectWithoutMaleInput | Prisma.BreedingCreateOrConnectWithoutMaleInput[];
+    upsert?: Prisma.BreedingUpsertWithWhereUniqueWithoutMaleInput | Prisma.BreedingUpsertWithWhereUniqueWithoutMaleInput[];
+    createMany?: Prisma.BreedingCreateManyMaleInputEnvelope;
+    set?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    disconnect?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    delete?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    connect?: Prisma.BreedingWhereUniqueInput | Prisma.BreedingWhereUniqueInput[];
+    update?: Prisma.BreedingUpdateWithWhereUniqueWithoutMaleInput | Prisma.BreedingUpdateWithWhereUniqueWithoutMaleInput[];
+    updateMany?: Prisma.BreedingUpdateManyWithWhereWithoutMaleInput | Prisma.BreedingUpdateManyWithWhereWithoutMaleInput[];
+    deleteMany?: Prisma.BreedingScalarWhereInput | Prisma.BreedingScalarWhereInput[];
+};
+export type EnumBreedingStatusFieldUpdateOperationsInput = {
+    set?: $Enums.BreedingStatus;
+};
+export type BreedingCreateNestedOneWithoutPregnanciesInput = {
+    create?: Prisma.XOR<Prisma.BreedingCreateWithoutPregnanciesInput, Prisma.BreedingUncheckedCreateWithoutPregnanciesInput>;
+    connectOrCreate?: Prisma.BreedingCreateOrConnectWithoutPregnanciesInput;
+    connect?: Prisma.BreedingWhereUniqueInput;
+};
+export type BreedingUpdateOneRequiredWithoutPregnanciesNestedInput = {
+    create?: Prisma.XOR<Prisma.BreedingCreateWithoutPregnanciesInput, Prisma.BreedingUncheckedCreateWithoutPregnanciesInput>;
+    connectOrCreate?: Prisma.BreedingCreateOrConnectWithoutPregnanciesInput;
+    upsert?: Prisma.BreedingUpsertWithoutPregnanciesInput;
+    connect?: Prisma.BreedingWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.BreedingUpdateToOneWithWhereWithoutPregnanciesInput, Prisma.BreedingUpdateWithoutPregnanciesInput>, Prisma.BreedingUncheckedUpdateWithoutPregnanciesInput>;
+};
+export type BreedingCreateNestedOneWithoutBirthInput = {
+    create?: Prisma.XOR<Prisma.BreedingCreateWithoutBirthInput, Prisma.BreedingUncheckedCreateWithoutBirthInput>;
+    connectOrCreate?: Prisma.BreedingCreateOrConnectWithoutBirthInput;
+    connect?: Prisma.BreedingWhereUniqueInput;
+};
+export type BreedingUpdateOneRequiredWithoutBirthNestedInput = {
+    create?: Prisma.XOR<Prisma.BreedingCreateWithoutBirthInput, Prisma.BreedingUncheckedCreateWithoutBirthInput>;
+    connectOrCreate?: Prisma.BreedingCreateOrConnectWithoutBirthInput;
+    upsert?: Prisma.BreedingUpsertWithoutBirthInput;
+    connect?: Prisma.BreedingWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.BreedingUpdateToOneWithWhereWithoutBirthInput, Prisma.BreedingUpdateWithoutBirthInput>, Prisma.BreedingUncheckedUpdateWithoutBirthInput>;
+};
+export type BreedingCreateNestedOneWithoutLittersInput = {
+    create?: Prisma.XOR<Prisma.BreedingCreateWithoutLittersInput, Prisma.BreedingUncheckedCreateWithoutLittersInput>;
+    connectOrCreate?: Prisma.BreedingCreateOrConnectWithoutLittersInput;
+    connect?: Prisma.BreedingWhereUniqueInput;
+};
+export type BreedingUpdateOneWithoutLittersNestedInput = {
+    create?: Prisma.XOR<Prisma.BreedingCreateWithoutLittersInput, Prisma.BreedingUncheckedCreateWithoutLittersInput>;
+    connectOrCreate?: Prisma.BreedingCreateOrConnectWithoutLittersInput;
+    upsert?: Prisma.BreedingUpsertWithoutLittersInput;
+    disconnect?: Prisma.BreedingWhereInput | boolean;
+    delete?: Prisma.BreedingWhereInput | boolean;
+    connect?: Prisma.BreedingWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.BreedingUpdateToOneWithWhereWithoutLittersInput, Prisma.BreedingUpdateWithoutLittersInput>, Prisma.BreedingUncheckedUpdateWithoutLittersInput>;
+};
+export type BreedingCreateWithoutFarmInput = {
+    id?: string;
+    breedingDate: Date | string;
+    palpationStartDate?: Date | string | null;
+    palpationEndDate?: Date | string | null;
+    nestDate?: Date | string | null;
+    expectedBirthStartDate?: Date | string | null;
+    expectedBirthEndDate?: Date | string | null;
+    status?: $Enums.BreedingStatus;
+    observation?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    female: Prisma.RabbitCreateNestedOneWithoutBreedingsAsFemaleInput;
+    male: Prisma.RabbitCreateNestedOneWithoutBreedingsAsMaleInput;
+    pregnancies?: Prisma.PregnancyCreateNestedManyWithoutBreedingInput;
+    birth?: Prisma.BirthCreateNestedOneWithoutBreedingInput;
+    litters?: Prisma.LitterCreateNestedManyWithoutBreedingInput;
+};
+export type BreedingUncheckedCreateWithoutFarmInput = {
+    id?: string;
+    femaleId: string;
+    maleId: string;
+    breedingDate: Date | string;
+    palpationStartDate?: Date | string | null;
+    palpationEndDate?: Date | string | null;
+    nestDate?: Date | string | null;
+    expectedBirthStartDate?: Date | string | null;
+    expectedBirthEndDate?: Date | string | null;
+    status?: $Enums.BreedingStatus;
+    observation?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    pregnancies?: Prisma.PregnancyUncheckedCreateNestedManyWithoutBreedingInput;
+    birth?: Prisma.BirthUncheckedCreateNestedOneWithoutBreedingInput;
+    litters?: Prisma.LitterUncheckedCreateNestedManyWithoutBreedingInput;
+};
+export type BreedingCreateOrConnectWithoutFarmInput = {
+    where: Prisma.BreedingWhereUniqueInput;
+    create: Prisma.XOR<Prisma.BreedingCreateWithoutFarmInput, Prisma.BreedingUncheckedCreateWithoutFarmInput>;
+};
+export type BreedingCreateManyFarmInputEnvelope = {
+    data: Prisma.BreedingCreateManyFarmInput | Prisma.BreedingCreateManyFarmInput[];
+    skipDuplicates?: boolean;
+};
+export type BreedingUpsertWithWhereUniqueWithoutFarmInput = {
+    where: Prisma.BreedingWhereUniqueInput;
+    update: Prisma.XOR<Prisma.BreedingUpdateWithoutFarmInput, Prisma.BreedingUncheckedUpdateWithoutFarmInput>;
+    create: Prisma.XOR<Prisma.BreedingCreateWithoutFarmInput, Prisma.BreedingUncheckedCreateWithoutFarmInput>;
+};
+export type BreedingUpdateWithWhereUniqueWithoutFarmInput = {
+    where: Prisma.BreedingWhereUniqueInput;
+    data: Prisma.XOR<Prisma.BreedingUpdateWithoutFarmInput, Prisma.BreedingUncheckedUpdateWithoutFarmInput>;
+};
+export type BreedingUpdateManyWithWhereWithoutFarmInput = {
+    where: Prisma.BreedingScalarWhereInput;
+    data: Prisma.XOR<Prisma.BreedingUpdateManyMutationInput, Prisma.BreedingUncheckedUpdateManyWithoutFarmInput>;
+};
+export type BreedingScalarWhereInput = {
+    AND?: Prisma.BreedingScalarWhereInput | Prisma.BreedingScalarWhereInput[];
+    OR?: Prisma.BreedingScalarWhereInput[];
+    NOT?: Prisma.BreedingScalarWhereInput | Prisma.BreedingScalarWhereInput[];
+    id?: Prisma.StringFilter<"Breeding"> | string;
+    farmId?: Prisma.StringFilter<"Breeding"> | string;
+    femaleId?: Prisma.StringFilter<"Breeding"> | string;
+    maleId?: Prisma.StringFilter<"Breeding"> | string;
+    breedingDate?: Prisma.DateTimeFilter<"Breeding"> | Date | string;
+    palpationStartDate?: Prisma.DateTimeNullableFilter<"Breeding"> | Date | string | null;
+    palpationEndDate?: Prisma.DateTimeNullableFilter<"Breeding"> | Date | string | null;
+    nestDate?: Prisma.DateTimeNullableFilter<"Breeding"> | Date | string | null;
+    expectedBirthStartDate?: Prisma.DateTimeNullableFilter<"Breeding"> | Date | string | null;
+    expectedBirthEndDate?: Prisma.DateTimeNullableFilter<"Breeding"> | Date | string | null;
+    status?: Prisma.EnumBreedingStatusFilter<"Breeding"> | $Enums.BreedingStatus;
+    observation?: Prisma.StringNullableFilter<"Breeding"> | string | null;
+    createdAt?: Prisma.DateTimeFilter<"Breeding"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"Breeding"> | Date | string;
+};
+export type BreedingCreateWithoutFemaleInput = {
+    id?: string;
+    breedingDate: Date | string;
+    palpationStartDate?: Date | string | null;
+    palpationEndDate?: Date | string | null;
+    nestDate?: Date | string | null;
+    expectedBirthStartDate?: Date | string | null;
+    expectedBirthEndDate?: Date | string | null;
+    status?: $Enums.BreedingStatus;
+    observation?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    farm: Prisma.FarmCreateNestedOneWithoutBreedingsInput;
+    male: Prisma.RabbitCreateNestedOneWithoutBreedingsAsMaleInput;
+    pregnancies?: Prisma.PregnancyCreateNestedManyWithoutBreedingInput;
+    birth?: Prisma.BirthCreateNestedOneWithoutBreedingInput;
+    litters?: Prisma.LitterCreateNestedManyWithoutBreedingInput;
+};
+export type BreedingUncheckedCreateWithoutFemaleInput = {
+    id?: string;
+    farmId: string;
+    maleId: string;
+    breedingDate: Date | string;
+    palpationStartDate?: Date | string | null;
+    palpationEndDate?: Date | string | null;
+    nestDate?: Date | string | null;
+    expectedBirthStartDate?: Date | string | null;
+    expectedBirthEndDate?: Date | string | null;
+    status?: $Enums.BreedingStatus;
+    observation?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    pregnancies?: Prisma.PregnancyUncheckedCreateNestedManyWithoutBreedingInput;
+    birth?: Prisma.BirthUncheckedCreateNestedOneWithoutBreedingInput;
+    litters?: Prisma.LitterUncheckedCreateNestedManyWithoutBreedingInput;
+};
+export type BreedingCreateOrConnectWithoutFemaleInput = {
+    where: Prisma.BreedingWhereUniqueInput;
+    create: Prisma.XOR<Prisma.BreedingCreateWithoutFemaleInput, Prisma.BreedingUncheckedCreateWithoutFemaleInput>;
+};
+export type BreedingCreateManyFemaleInputEnvelope = {
+    data: Prisma.BreedingCreateManyFemaleInput | Prisma.BreedingCreateManyFemaleInput[];
+    skipDuplicates?: boolean;
+};
+export type BreedingCreateWithoutMaleInput = {
+    id?: string;
+    breedingDate: Date | string;
+    palpationStartDate?: Date | string | null;
+    palpationEndDate?: Date | string | null;
+    nestDate?: Date | string | null;
+    expectedBirthStartDate?: Date | string | null;
+    expectedBirthEndDate?: Date | string | null;
+    status?: $Enums.BreedingStatus;
+    observation?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    farm: Prisma.FarmCreateNestedOneWithoutBreedingsInput;
+    female: Prisma.RabbitCreateNestedOneWithoutBreedingsAsFemaleInput;
+    pregnancies?: Prisma.PregnancyCreateNestedManyWithoutBreedingInput;
+    birth?: Prisma.BirthCreateNestedOneWithoutBreedingInput;
+    litters?: Prisma.LitterCreateNestedManyWithoutBreedingInput;
+};
+export type BreedingUncheckedCreateWithoutMaleInput = {
+    id?: string;
+    farmId: string;
+    femaleId: string;
+    breedingDate: Date | string;
+    palpationStartDate?: Date | string | null;
+    palpationEndDate?: Date | string | null;
+    nestDate?: Date | string | null;
+    expectedBirthStartDate?: Date | string | null;
+    expectedBirthEndDate?: Date | string | null;
+    status?: $Enums.BreedingStatus;
+    observation?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    pregnancies?: Prisma.PregnancyUncheckedCreateNestedManyWithoutBreedingInput;
+    birth?: Prisma.BirthUncheckedCreateNestedOneWithoutBreedingInput;
+    litters?: Prisma.LitterUncheckedCreateNestedManyWithoutBreedingInput;
+};
+export type BreedingCreateOrConnectWithoutMaleInput = {
+    where: Prisma.BreedingWhereUniqueInput;
+    create: Prisma.XOR<Prisma.BreedingCreateWithoutMaleInput, Prisma.BreedingUncheckedCreateWithoutMaleInput>;
+};
+export type BreedingCreateManyMaleInputEnvelope = {
+    data: Prisma.BreedingCreateManyMaleInput | Prisma.BreedingCreateManyMaleInput[];
+    skipDuplicates?: boolean;
+};
+export type BreedingUpsertWithWhereUniqueWithoutFemaleInput = {
+    where: Prisma.BreedingWhereUniqueInput;
+    update: Prisma.XOR<Prisma.BreedingUpdateWithoutFemaleInput, Prisma.BreedingUncheckedUpdateWithoutFemaleInput>;
+    create: Prisma.XOR<Prisma.BreedingCreateWithoutFemaleInput, Prisma.BreedingUncheckedCreateWithoutFemaleInput>;
+};
+export type BreedingUpdateWithWhereUniqueWithoutFemaleInput = {
+    where: Prisma.BreedingWhereUniqueInput;
+    data: Prisma.XOR<Prisma.BreedingUpdateWithoutFemaleInput, Prisma.BreedingUncheckedUpdateWithoutFemaleInput>;
+};
+export type BreedingUpdateManyWithWhereWithoutFemaleInput = {
+    where: Prisma.BreedingScalarWhereInput;
+    data: Prisma.XOR<Prisma.BreedingUpdateManyMutationInput, Prisma.BreedingUncheckedUpdateManyWithoutFemaleInput>;
+};
+export type BreedingUpsertWithWhereUniqueWithoutMaleInput = {
+    where: Prisma.BreedingWhereUniqueInput;
+    update: Prisma.XOR<Prisma.BreedingUpdateWithoutMaleInput, Prisma.BreedingUncheckedUpdateWithoutMaleInput>;
+    create: Prisma.XOR<Prisma.BreedingCreateWithoutMaleInput, Prisma.BreedingUncheckedCreateWithoutMaleInput>;
+};
+export type BreedingUpdateWithWhereUniqueWithoutMaleInput = {
+    where: Prisma.BreedingWhereUniqueInput;
+    data: Prisma.XOR<Prisma.BreedingUpdateWithoutMaleInput, Prisma.BreedingUncheckedUpdateWithoutMaleInput>;
+};
+export type BreedingUpdateManyWithWhereWithoutMaleInput = {
+    where: Prisma.BreedingScalarWhereInput;
+    data: Prisma.XOR<Prisma.BreedingUpdateManyMutationInput, Prisma.BreedingUncheckedUpdateManyWithoutMaleInput>;
+};
+export type BreedingCreateWithoutPregnanciesInput = {
+    id?: string;
+    breedingDate: Date | string;
+    palpationStartDate?: Date | string | null;
+    palpationEndDate?: Date | string | null;
+    nestDate?: Date | string | null;
+    expectedBirthStartDate?: Date | string | null;
+    expectedBirthEndDate?: Date | string | null;
+    status?: $Enums.BreedingStatus;
+    observation?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    farm: Prisma.FarmCreateNestedOneWithoutBreedingsInput;
+    female: Prisma.RabbitCreateNestedOneWithoutBreedingsAsFemaleInput;
+    male: Prisma.RabbitCreateNestedOneWithoutBreedingsAsMaleInput;
+    birth?: Prisma.BirthCreateNestedOneWithoutBreedingInput;
+    litters?: Prisma.LitterCreateNestedManyWithoutBreedingInput;
+};
+export type BreedingUncheckedCreateWithoutPregnanciesInput = {
+    id?: string;
+    farmId: string;
+    femaleId: string;
+    maleId: string;
+    breedingDate: Date | string;
+    palpationStartDate?: Date | string | null;
+    palpationEndDate?: Date | string | null;
+    nestDate?: Date | string | null;
+    expectedBirthStartDate?: Date | string | null;
+    expectedBirthEndDate?: Date | string | null;
+    status?: $Enums.BreedingStatus;
+    observation?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    birth?: Prisma.BirthUncheckedCreateNestedOneWithoutBreedingInput;
+    litters?: Prisma.LitterUncheckedCreateNestedManyWithoutBreedingInput;
+};
+export type BreedingCreateOrConnectWithoutPregnanciesInput = {
+    where: Prisma.BreedingWhereUniqueInput;
+    create: Prisma.XOR<Prisma.BreedingCreateWithoutPregnanciesInput, Prisma.BreedingUncheckedCreateWithoutPregnanciesInput>;
+};
+export type BreedingUpsertWithoutPregnanciesInput = {
+    update: Prisma.XOR<Prisma.BreedingUpdateWithoutPregnanciesInput, Prisma.BreedingUncheckedUpdateWithoutPregnanciesInput>;
+    create: Prisma.XOR<Prisma.BreedingCreateWithoutPregnanciesInput, Prisma.BreedingUncheckedCreateWithoutPregnanciesInput>;
+    where?: Prisma.BreedingWhereInput;
+};
+export type BreedingUpdateToOneWithWhereWithoutPregnanciesInput = {
+    where?: Prisma.BreedingWhereInput;
+    data: Prisma.XOR<Prisma.BreedingUpdateWithoutPregnanciesInput, Prisma.BreedingUncheckedUpdateWithoutPregnanciesInput>;
+};
+export type BreedingUpdateWithoutPregnanciesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    breedingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    palpationStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    palpationEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    status?: Prisma.EnumBreedingStatusFieldUpdateOperationsInput | $Enums.BreedingStatus;
+    observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    farm?: Prisma.FarmUpdateOneRequiredWithoutBreedingsNestedInput;
+    female?: Prisma.RabbitUpdateOneRequiredWithoutBreedingsAsFemaleNestedInput;
+    male?: Prisma.RabbitUpdateOneRequiredWithoutBreedingsAsMaleNestedInput;
+    birth?: Prisma.BirthUpdateOneWithoutBreedingNestedInput;
+    litters?: Prisma.LitterUpdateManyWithoutBreedingNestedInput;
+};
+export type BreedingUncheckedUpdateWithoutPregnanciesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    farmId?: Prisma.StringFieldUpdateOperationsInput | string;
+    femaleId?: Prisma.StringFieldUpdateOperationsInput | string;
+    maleId?: Prisma.StringFieldUpdateOperationsInput | string;
+    breedingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    palpationStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    palpationEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    status?: Prisma.EnumBreedingStatusFieldUpdateOperationsInput | $Enums.BreedingStatus;
+    observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    birth?: Prisma.BirthUncheckedUpdateOneWithoutBreedingNestedInput;
+    litters?: Prisma.LitterUncheckedUpdateManyWithoutBreedingNestedInput;
+};
+export type BreedingCreateWithoutBirthInput = {
+    id?: string;
+    breedingDate: Date | string;
+    palpationStartDate?: Date | string | null;
+    palpationEndDate?: Date | string | null;
+    nestDate?: Date | string | null;
+    expectedBirthStartDate?: Date | string | null;
+    expectedBirthEndDate?: Date | string | null;
+    status?: $Enums.BreedingStatus;
+    observation?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    farm: Prisma.FarmCreateNestedOneWithoutBreedingsInput;
+    female: Prisma.RabbitCreateNestedOneWithoutBreedingsAsFemaleInput;
+    male: Prisma.RabbitCreateNestedOneWithoutBreedingsAsMaleInput;
+    pregnancies?: Prisma.PregnancyCreateNestedManyWithoutBreedingInput;
+    litters?: Prisma.LitterCreateNestedManyWithoutBreedingInput;
+};
+export type BreedingUncheckedCreateWithoutBirthInput = {
+    id?: string;
+    farmId: string;
+    femaleId: string;
+    maleId: string;
+    breedingDate: Date | string;
+    palpationStartDate?: Date | string | null;
+    palpationEndDate?: Date | string | null;
+    nestDate?: Date | string | null;
+    expectedBirthStartDate?: Date | string | null;
+    expectedBirthEndDate?: Date | string | null;
+    status?: $Enums.BreedingStatus;
+    observation?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    pregnancies?: Prisma.PregnancyUncheckedCreateNestedManyWithoutBreedingInput;
+    litters?: Prisma.LitterUncheckedCreateNestedManyWithoutBreedingInput;
+};
+export type BreedingCreateOrConnectWithoutBirthInput = {
+    where: Prisma.BreedingWhereUniqueInput;
+    create: Prisma.XOR<Prisma.BreedingCreateWithoutBirthInput, Prisma.BreedingUncheckedCreateWithoutBirthInput>;
+};
+export type BreedingUpsertWithoutBirthInput = {
+    update: Prisma.XOR<Prisma.BreedingUpdateWithoutBirthInput, Prisma.BreedingUncheckedUpdateWithoutBirthInput>;
+    create: Prisma.XOR<Prisma.BreedingCreateWithoutBirthInput, Prisma.BreedingUncheckedCreateWithoutBirthInput>;
+    where?: Prisma.BreedingWhereInput;
+};
+export type BreedingUpdateToOneWithWhereWithoutBirthInput = {
+    where?: Prisma.BreedingWhereInput;
+    data: Prisma.XOR<Prisma.BreedingUpdateWithoutBirthInput, Prisma.BreedingUncheckedUpdateWithoutBirthInput>;
+};
+export type BreedingUpdateWithoutBirthInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    breedingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    palpationStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    palpationEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    status?: Prisma.EnumBreedingStatusFieldUpdateOperationsInput | $Enums.BreedingStatus;
+    observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    farm?: Prisma.FarmUpdateOneRequiredWithoutBreedingsNestedInput;
+    female?: Prisma.RabbitUpdateOneRequiredWithoutBreedingsAsFemaleNestedInput;
+    male?: Prisma.RabbitUpdateOneRequiredWithoutBreedingsAsMaleNestedInput;
+    pregnancies?: Prisma.PregnancyUpdateManyWithoutBreedingNestedInput;
+    litters?: Prisma.LitterUpdateManyWithoutBreedingNestedInput;
+};
+export type BreedingUncheckedUpdateWithoutBirthInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    farmId?: Prisma.StringFieldUpdateOperationsInput | string;
+    femaleId?: Prisma.StringFieldUpdateOperationsInput | string;
+    maleId?: Prisma.StringFieldUpdateOperationsInput | string;
+    breedingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    palpationStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    palpationEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    status?: Prisma.EnumBreedingStatusFieldUpdateOperationsInput | $Enums.BreedingStatus;
+    observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    pregnancies?: Prisma.PregnancyUncheckedUpdateManyWithoutBreedingNestedInput;
+    litters?: Prisma.LitterUncheckedUpdateManyWithoutBreedingNestedInput;
+};
+export type BreedingCreateWithoutLittersInput = {
+    id?: string;
+    breedingDate: Date | string;
+    palpationStartDate?: Date | string | null;
+    palpationEndDate?: Date | string | null;
+    nestDate?: Date | string | null;
+    expectedBirthStartDate?: Date | string | null;
+    expectedBirthEndDate?: Date | string | null;
+    status?: $Enums.BreedingStatus;
+    observation?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    farm: Prisma.FarmCreateNestedOneWithoutBreedingsInput;
+    female: Prisma.RabbitCreateNestedOneWithoutBreedingsAsFemaleInput;
+    male: Prisma.RabbitCreateNestedOneWithoutBreedingsAsMaleInput;
+    pregnancies?: Prisma.PregnancyCreateNestedManyWithoutBreedingInput;
+    birth?: Prisma.BirthCreateNestedOneWithoutBreedingInput;
+};
+export type BreedingUncheckedCreateWithoutLittersInput = {
+    id?: string;
+    farmId: string;
+    femaleId: string;
+    maleId: string;
+    breedingDate: Date | string;
+    palpationStartDate?: Date | string | null;
+    palpationEndDate?: Date | string | null;
+    nestDate?: Date | string | null;
+    expectedBirthStartDate?: Date | string | null;
+    expectedBirthEndDate?: Date | string | null;
+    status?: $Enums.BreedingStatus;
+    observation?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    pregnancies?: Prisma.PregnancyUncheckedCreateNestedManyWithoutBreedingInput;
+    birth?: Prisma.BirthUncheckedCreateNestedOneWithoutBreedingInput;
+};
+export type BreedingCreateOrConnectWithoutLittersInput = {
+    where: Prisma.BreedingWhereUniqueInput;
+    create: Prisma.XOR<Prisma.BreedingCreateWithoutLittersInput, Prisma.BreedingUncheckedCreateWithoutLittersInput>;
+};
+export type BreedingUpsertWithoutLittersInput = {
+    update: Prisma.XOR<Prisma.BreedingUpdateWithoutLittersInput, Prisma.BreedingUncheckedUpdateWithoutLittersInput>;
+    create: Prisma.XOR<Prisma.BreedingCreateWithoutLittersInput, Prisma.BreedingUncheckedCreateWithoutLittersInput>;
+    where?: Prisma.BreedingWhereInput;
+};
+export type BreedingUpdateToOneWithWhereWithoutLittersInput = {
+    where?: Prisma.BreedingWhereInput;
+    data: Prisma.XOR<Prisma.BreedingUpdateWithoutLittersInput, Prisma.BreedingUncheckedUpdateWithoutLittersInput>;
+};
+export type BreedingUpdateWithoutLittersInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    breedingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    palpationStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    palpationEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    status?: Prisma.EnumBreedingStatusFieldUpdateOperationsInput | $Enums.BreedingStatus;
+    observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    farm?: Prisma.FarmUpdateOneRequiredWithoutBreedingsNestedInput;
+    female?: Prisma.RabbitUpdateOneRequiredWithoutBreedingsAsFemaleNestedInput;
+    male?: Prisma.RabbitUpdateOneRequiredWithoutBreedingsAsMaleNestedInput;
+    pregnancies?: Prisma.PregnancyUpdateManyWithoutBreedingNestedInput;
+    birth?: Prisma.BirthUpdateOneWithoutBreedingNestedInput;
+};
+export type BreedingUncheckedUpdateWithoutLittersInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    farmId?: Prisma.StringFieldUpdateOperationsInput | string;
+    femaleId?: Prisma.StringFieldUpdateOperationsInput | string;
+    maleId?: Prisma.StringFieldUpdateOperationsInput | string;
+    breedingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    palpationStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    palpationEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    status?: Prisma.EnumBreedingStatusFieldUpdateOperationsInput | $Enums.BreedingStatus;
+    observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    pregnancies?: Prisma.PregnancyUncheckedUpdateManyWithoutBreedingNestedInput;
+    birth?: Prisma.BirthUncheckedUpdateOneWithoutBreedingNestedInput;
+};
+export type BreedingCreateManyFarmInput = {
+    id?: string;
+    femaleId: string;
+    maleId: string;
+    breedingDate: Date | string;
+    palpationStartDate?: Date | string | null;
+    palpationEndDate?: Date | string | null;
+    nestDate?: Date | string | null;
+    expectedBirthStartDate?: Date | string | null;
+    expectedBirthEndDate?: Date | string | null;
+    status?: $Enums.BreedingStatus;
+    observation?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type BreedingUpdateWithoutFarmInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    breedingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    palpationStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    palpationEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    status?: Prisma.EnumBreedingStatusFieldUpdateOperationsInput | $Enums.BreedingStatus;
+    observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    female?: Prisma.RabbitUpdateOneRequiredWithoutBreedingsAsFemaleNestedInput;
+    male?: Prisma.RabbitUpdateOneRequiredWithoutBreedingsAsMaleNestedInput;
+    pregnancies?: Prisma.PregnancyUpdateManyWithoutBreedingNestedInput;
+    birth?: Prisma.BirthUpdateOneWithoutBreedingNestedInput;
+    litters?: Prisma.LitterUpdateManyWithoutBreedingNestedInput;
+};
+export type BreedingUncheckedUpdateWithoutFarmInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    femaleId?: Prisma.StringFieldUpdateOperationsInput | string;
+    maleId?: Prisma.StringFieldUpdateOperationsInput | string;
+    breedingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    palpationStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    palpationEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    status?: Prisma.EnumBreedingStatusFieldUpdateOperationsInput | $Enums.BreedingStatus;
+    observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    pregnancies?: Prisma.PregnancyUncheckedUpdateManyWithoutBreedingNestedInput;
+    birth?: Prisma.BirthUncheckedUpdateOneWithoutBreedingNestedInput;
+    litters?: Prisma.LitterUncheckedUpdateManyWithoutBreedingNestedInput;
+};
+export type BreedingUncheckedUpdateManyWithoutFarmInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    femaleId?: Prisma.StringFieldUpdateOperationsInput | string;
+    maleId?: Prisma.StringFieldUpdateOperationsInput | string;
+    breedingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    palpationStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    palpationEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    status?: Prisma.EnumBreedingStatusFieldUpdateOperationsInput | $Enums.BreedingStatus;
+    observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type BreedingCreateManyFemaleInput = {
+    id?: string;
+    farmId: string;
+    maleId: string;
+    breedingDate: Date | string;
+    palpationStartDate?: Date | string | null;
+    palpationEndDate?: Date | string | null;
+    nestDate?: Date | string | null;
+    expectedBirthStartDate?: Date | string | null;
+    expectedBirthEndDate?: Date | string | null;
+    status?: $Enums.BreedingStatus;
+    observation?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type BreedingCreateManyMaleInput = {
+    id?: string;
+    farmId: string;
+    femaleId: string;
+    breedingDate: Date | string;
+    palpationStartDate?: Date | string | null;
+    palpationEndDate?: Date | string | null;
+    nestDate?: Date | string | null;
+    expectedBirthStartDate?: Date | string | null;
+    expectedBirthEndDate?: Date | string | null;
+    status?: $Enums.BreedingStatus;
+    observation?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type BreedingUpdateWithoutFemaleInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    breedingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    palpationStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    palpationEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    status?: Prisma.EnumBreedingStatusFieldUpdateOperationsInput | $Enums.BreedingStatus;
+    observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    farm?: Prisma.FarmUpdateOneRequiredWithoutBreedingsNestedInput;
+    male?: Prisma.RabbitUpdateOneRequiredWithoutBreedingsAsMaleNestedInput;
+    pregnancies?: Prisma.PregnancyUpdateManyWithoutBreedingNestedInput;
+    birth?: Prisma.BirthUpdateOneWithoutBreedingNestedInput;
+    litters?: Prisma.LitterUpdateManyWithoutBreedingNestedInput;
+};
+export type BreedingUncheckedUpdateWithoutFemaleInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    farmId?: Prisma.StringFieldUpdateOperationsInput | string;
+    maleId?: Prisma.StringFieldUpdateOperationsInput | string;
+    breedingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    palpationStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    palpationEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    status?: Prisma.EnumBreedingStatusFieldUpdateOperationsInput | $Enums.BreedingStatus;
+    observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    pregnancies?: Prisma.PregnancyUncheckedUpdateManyWithoutBreedingNestedInput;
+    birth?: Prisma.BirthUncheckedUpdateOneWithoutBreedingNestedInput;
+    litters?: Prisma.LitterUncheckedUpdateManyWithoutBreedingNestedInput;
+};
+export type BreedingUncheckedUpdateManyWithoutFemaleInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    farmId?: Prisma.StringFieldUpdateOperationsInput | string;
+    maleId?: Prisma.StringFieldUpdateOperationsInput | string;
+    breedingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    palpationStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    palpationEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    status?: Prisma.EnumBreedingStatusFieldUpdateOperationsInput | $Enums.BreedingStatus;
+    observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type BreedingUpdateWithoutMaleInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    breedingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    palpationStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    palpationEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    status?: Prisma.EnumBreedingStatusFieldUpdateOperationsInput | $Enums.BreedingStatus;
+    observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    farm?: Prisma.FarmUpdateOneRequiredWithoutBreedingsNestedInput;
+    female?: Prisma.RabbitUpdateOneRequiredWithoutBreedingsAsFemaleNestedInput;
+    pregnancies?: Prisma.PregnancyUpdateManyWithoutBreedingNestedInput;
+    birth?: Prisma.BirthUpdateOneWithoutBreedingNestedInput;
+    litters?: Prisma.LitterUpdateManyWithoutBreedingNestedInput;
+};
+export type BreedingUncheckedUpdateWithoutMaleInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    farmId?: Prisma.StringFieldUpdateOperationsInput | string;
+    femaleId?: Prisma.StringFieldUpdateOperationsInput | string;
+    breedingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    palpationStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    palpationEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    status?: Prisma.EnumBreedingStatusFieldUpdateOperationsInput | $Enums.BreedingStatus;
+    observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    pregnancies?: Prisma.PregnancyUncheckedUpdateManyWithoutBreedingNestedInput;
+    birth?: Prisma.BirthUncheckedUpdateOneWithoutBreedingNestedInput;
+    litters?: Prisma.LitterUncheckedUpdateManyWithoutBreedingNestedInput;
+};
+export type BreedingUncheckedUpdateManyWithoutMaleInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    farmId?: Prisma.StringFieldUpdateOperationsInput | string;
+    femaleId?: Prisma.StringFieldUpdateOperationsInput | string;
+    breedingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    palpationStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    palpationEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    expectedBirthEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    status?: Prisma.EnumBreedingStatusFieldUpdateOperationsInput | $Enums.BreedingStatus;
+    observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type BreedingCountOutputType = {
+    pregnancies: number;
+    litters: number;
+};
+export type BreedingCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    pregnancies?: boolean | BreedingCountOutputTypeCountPregnanciesArgs;
+    litters?: boolean | BreedingCountOutputTypeCountLittersArgs;
+};
+export type BreedingCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.BreedingCountOutputTypeSelect<ExtArgs> | null;
+};
+export type BreedingCountOutputTypeCountPregnanciesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.PregnancyWhereInput;
+};
+export type BreedingCountOutputTypeCountLittersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.LitterWhereInput;
+};
+export type BreedingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    farmId?: boolean;
+    femaleId?: boolean;
+    maleId?: boolean;
+    breedingDate?: boolean;
+    palpationStartDate?: boolean;
+    palpationEndDate?: boolean;
+    nestDate?: boolean;
+    expectedBirthStartDate?: boolean;
+    expectedBirthEndDate?: boolean;
+    status?: boolean;
+    observation?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>;
+    female?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>;
+    male?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>;
+    pregnancies?: boolean | Prisma.Breeding$pregnanciesArgs<ExtArgs>;
+    birth?: boolean | Prisma.Breeding$birthArgs<ExtArgs>;
+    litters?: boolean | Prisma.Breeding$littersArgs<ExtArgs>;
+    _count?: boolean | Prisma.BreedingCountOutputTypeDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["breeding"]>;
+export type BreedingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    farmId?: boolean;
+    femaleId?: boolean;
+    maleId?: boolean;
+    breedingDate?: boolean;
+    palpationStartDate?: boolean;
+    palpationEndDate?: boolean;
+    nestDate?: boolean;
+    expectedBirthStartDate?: boolean;
+    expectedBirthEndDate?: boolean;
+    status?: boolean;
+    observation?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>;
+    female?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>;
+    male?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["breeding"]>;
+export type BreedingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    farmId?: boolean;
+    femaleId?: boolean;
+    maleId?: boolean;
+    breedingDate?: boolean;
+    palpationStartDate?: boolean;
+    palpationEndDate?: boolean;
+    nestDate?: boolean;
+    expectedBirthStartDate?: boolean;
+    expectedBirthEndDate?: boolean;
+    status?: boolean;
+    observation?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>;
+    female?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>;
+    male?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["breeding"]>;
+export type BreedingSelectScalar = {
+    id?: boolean;
+    farmId?: boolean;
+    femaleId?: boolean;
+    maleId?: boolean;
+    breedingDate?: boolean;
+    palpationStartDate?: boolean;
+    palpationEndDate?: boolean;
+    nestDate?: boolean;
+    expectedBirthStartDate?: boolean;
+    expectedBirthEndDate?: boolean;
+    status?: boolean;
+    observation?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+};
+export type BreedingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "femaleId" | "maleId" | "breedingDate" | "palpationStartDate" | "palpationEndDate" | "nestDate" | "expectedBirthStartDate" | "expectedBirthEndDate" | "status" | "observation" | "createdAt" | "updatedAt", ExtArgs["result"]["breeding"]>;
+export type BreedingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>;
+    female?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>;
+    male?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>;
+    pregnancies?: boolean | Prisma.Breeding$pregnanciesArgs<ExtArgs>;
+    birth?: boolean | Prisma.Breeding$birthArgs<ExtArgs>;
+    litters?: boolean | Prisma.Breeding$littersArgs<ExtArgs>;
+    _count?: boolean | Prisma.BreedingCountOutputTypeDefaultArgs<ExtArgs>;
+};
+export type BreedingIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>;
+    female?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>;
+    male?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>;
+};
+export type BreedingIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>;
+    female?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>;
+    male?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>;
+};
+export type $BreedingPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    name: "Breeding";
+    objects: {
+        farm: Prisma.$FarmPayload<ExtArgs>;
+        female: Prisma.$RabbitPayload<ExtArgs>;
+        male: Prisma.$RabbitPayload<ExtArgs>;
+        pregnancies: Prisma.$PregnancyPayload<ExtArgs>[];
+        birth: Prisma.$BirthPayload<ExtArgs> | null;
+        litters: Prisma.$LitterPayload<ExtArgs>[];
+    };
+    scalars: runtime.Types.Extensions.GetPayloadResult<{
+        id: string;
+        farmId: string;
+        femaleId: string;
+        maleId: string;
+        breedingDate: Date;
+        palpationStartDate: Date | null;
+        palpationEndDate: Date | null;
+        nestDate: Date | null;
+        expectedBirthStartDate: Date | null;
+        expectedBirthEndDate: Date | null;
+        status: $Enums.BreedingStatus;
+        observation: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+    }, ExtArgs["result"]["breeding"]>;
+    composites: {};
+};
+export type BreedingGetPayload<S extends boolean | null | undefined | BreedingDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$BreedingPayload, S>;
+export type BreedingCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<BreedingFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    select?: BreedingCountAggregateInputType | true;
+};
+export interface BreedingDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: {
+        types: Prisma.TypeMap<ExtArgs>['model']['Breeding'];
+        meta: {
+            name: 'Breeding';
+        };
+    };
+    findUnique<T extends BreedingFindUniqueArgs>(args: Prisma.SelectSubset<T, BreedingFindUniqueArgs<ExtArgs>>): Prisma.Prisma__BreedingClient<runtime.Types.Result.GetResult<Prisma.$BreedingPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    findUniqueOrThrow<T extends BreedingFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, BreedingFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__BreedingClient<runtime.Types.Result.GetResult<Prisma.$BreedingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    findFirst<T extends BreedingFindFirstArgs>(args?: Prisma.SelectSubset<T, BreedingFindFirstArgs<ExtArgs>>): Prisma.Prisma__BreedingClient<runtime.Types.Result.GetResult<Prisma.$BreedingPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    findFirstOrThrow<T extends BreedingFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, BreedingFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__BreedingClient<runtime.Types.Result.GetResult<Prisma.$BreedingPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    findMany<T extends BreedingFindManyArgs>(args?: Prisma.SelectSubset<T, BreedingFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BreedingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>;
+    create<T extends BreedingCreateArgs>(args: Prisma.SelectSubset<T, BreedingCreateArgs<ExtArgs>>): Prisma.Prisma__BreedingClient<runtime.Types.Result.GetResult<Prisma.$BreedingPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    createMany<T extends BreedingCreateManyArgs>(args?: Prisma.SelectSubset<T, BreedingCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    createManyAndReturn<T extends BreedingCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, BreedingCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BreedingPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>;
+    delete<T extends BreedingDeleteArgs>(args: Prisma.SelectSubset<T, BreedingDeleteArgs<ExtArgs>>): Prisma.Prisma__BreedingClient<runtime.Types.Result.GetResult<Prisma.$BreedingPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    update<T extends BreedingUpdateArgs>(args: Prisma.SelectSubset<T, BreedingUpdateArgs<ExtArgs>>): Prisma.Prisma__BreedingClient<runtime.Types.Result.GetResult<Prisma.$BreedingPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    deleteMany<T extends BreedingDeleteManyArgs>(args?: Prisma.SelectSubset<T, BreedingDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    updateMany<T extends BreedingUpdateManyArgs>(args: Prisma.SelectSubset<T, BreedingUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    updateManyAndReturn<T extends BreedingUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, BreedingUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BreedingPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>;
+    upsert<T extends BreedingUpsertArgs>(args: Prisma.SelectSubset<T, BreedingUpsertArgs<ExtArgs>>): Prisma.Prisma__BreedingClient<runtime.Types.Result.GetResult<Prisma.$BreedingPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    count<T extends BreedingCountArgs>(args?: Prisma.Subset<T, BreedingCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], BreedingCountAggregateOutputType> : number>;
+    aggregate<T extends BreedingAggregateArgs>(args: Prisma.Subset<T, BreedingAggregateArgs>): Prisma.PrismaPromise<GetBreedingAggregateType<T>>;
+    groupBy<T extends BreedingGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: BreedingGroupByArgs['orderBy'];
+    } : {
+        orderBy?: BreedingGroupByArgs['orderBy'];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
+            Error,
+            'Field ',
+            P,
+            ` in "having" needs to be provided in "by"`
+        ];
+    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields]>(args: Prisma.SubsetIntersection<T, BreedingGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBreedingGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
+    readonly fields: BreedingFieldRefs;
+}
+export interface Prisma__BreedingClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise";
+    farm<T extends Prisma.FarmDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FarmDefaultArgs<ExtArgs>>): Prisma.Prisma__FarmClient<runtime.Types.Result.GetResult<Prisma.$FarmPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    female<T extends Prisma.RabbitDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RabbitDefaultArgs<ExtArgs>>): Prisma.Prisma__RabbitClient<runtime.Types.Result.GetResult<Prisma.$RabbitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    male<T extends Prisma.RabbitDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RabbitDefaultArgs<ExtArgs>>): Prisma.Prisma__RabbitClient<runtime.Types.Result.GetResult<Prisma.$RabbitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    pregnancies<T extends Prisma.Breeding$pregnanciesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Breeding$pregnanciesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PregnancyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    birth<T extends Prisma.Breeding$birthArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Breeding$birthArgs<ExtArgs>>): Prisma.Prisma__BirthClient<runtime.Types.Result.GetResult<Prisma.$BirthPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    litters<T extends Prisma.Breeding$littersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Breeding$littersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LitterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
+}
+export interface BreedingFieldRefs {
+    readonly id: Prisma.FieldRef<"Breeding", 'String'>;
+    readonly farmId: Prisma.FieldRef<"Breeding", 'String'>;
+    readonly femaleId: Prisma.FieldRef<"Breeding", 'String'>;
+    readonly maleId: Prisma.FieldRef<"Breeding", 'String'>;
+    readonly breedingDate: Prisma.FieldRef<"Breeding", 'DateTime'>;
+    readonly palpationStartDate: Prisma.FieldRef<"Breeding", 'DateTime'>;
+    readonly palpationEndDate: Prisma.FieldRef<"Breeding", 'DateTime'>;
+    readonly nestDate: Prisma.FieldRef<"Breeding", 'DateTime'>;
+    readonly expectedBirthStartDate: Prisma.FieldRef<"Breeding", 'DateTime'>;
+    readonly expectedBirthEndDate: Prisma.FieldRef<"Breeding", 'DateTime'>;
+    readonly status: Prisma.FieldRef<"Breeding", 'BreedingStatus'>;
+    readonly observation: Prisma.FieldRef<"Breeding", 'String'>;
+    readonly createdAt: Prisma.FieldRef<"Breeding", 'DateTime'>;
+    readonly updatedAt: Prisma.FieldRef<"Breeding", 'DateTime'>;
+}
+export type BreedingFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.BreedingSelect<ExtArgs> | null;
+    omit?: Prisma.BreedingOmit<ExtArgs> | null;
+    include?: Prisma.BreedingInclude<ExtArgs> | null;
+    where: Prisma.BreedingWhereUniqueInput;
+};
+export type BreedingFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.BreedingSelect<ExtArgs> | null;
+    omit?: Prisma.BreedingOmit<ExtArgs> | null;
+    include?: Prisma.BreedingInclude<ExtArgs> | null;
+    where: Prisma.BreedingWhereUniqueInput;
+};
+export type BreedingFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.BreedingSelect<ExtArgs> | null;
+    omit?: Prisma.BreedingOmit<ExtArgs> | null;
+    include?: Prisma.BreedingInclude<ExtArgs> | null;
+    where?: Prisma.BreedingWhereInput;
+    orderBy?: Prisma.BreedingOrderByWithRelationInput | Prisma.BreedingOrderByWithRelationInput[];
+    cursor?: Prisma.BreedingWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.BreedingScalarFieldEnum | Prisma.BreedingScalarFieldEnum[];
+};
+export type BreedingFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.BreedingSelect<ExtArgs> | null;
+    omit?: Prisma.BreedingOmit<ExtArgs> | null;
+    include?: Prisma.BreedingInclude<ExtArgs> | null;
+    where?: Prisma.BreedingWhereInput;
+    orderBy?: Prisma.BreedingOrderByWithRelationInput | Prisma.BreedingOrderByWithRelationInput[];
+    cursor?: Prisma.BreedingWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.BreedingScalarFieldEnum | Prisma.BreedingScalarFieldEnum[];
+};
+export type BreedingFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.BreedingSelect<ExtArgs> | null;
+    omit?: Prisma.BreedingOmit<ExtArgs> | null;
+    include?: Prisma.BreedingInclude<ExtArgs> | null;
+    where?: Prisma.BreedingWhereInput;
+    orderBy?: Prisma.BreedingOrderByWithRelationInput | Prisma.BreedingOrderByWithRelationInput[];
+    cursor?: Prisma.BreedingWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.BreedingScalarFieldEnum | Prisma.BreedingScalarFieldEnum[];
+};
+export type BreedingCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.BreedingSelect<ExtArgs> | null;
+    omit?: Prisma.BreedingOmit<ExtArgs> | null;
+    include?: Prisma.BreedingInclude<ExtArgs> | null;
+    data: Prisma.XOR<Prisma.BreedingCreateInput, Prisma.BreedingUncheckedCreateInput>;
+};
+export type BreedingCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    data: Prisma.BreedingCreateManyInput | Prisma.BreedingCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+export type BreedingCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.BreedingSelectCreateManyAndReturn<ExtArgs> | null;
+    omit?: Prisma.BreedingOmit<ExtArgs> | null;
+    data: Prisma.BreedingCreateManyInput | Prisma.BreedingCreateManyInput[];
+    skipDuplicates?: boolean;
+    include?: Prisma.BreedingIncludeCreateManyAndReturn<ExtArgs> | null;
+};
+export type BreedingUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.BreedingSelect<ExtArgs> | null;
+    omit?: Prisma.BreedingOmit<ExtArgs> | null;
+    include?: Prisma.BreedingInclude<ExtArgs> | null;
+    data: Prisma.XOR<Prisma.BreedingUpdateInput, Prisma.BreedingUncheckedUpdateInput>;
+    where: Prisma.BreedingWhereUniqueInput;
+};
+export type BreedingUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    data: Prisma.XOR<Prisma.BreedingUpdateManyMutationInput, Prisma.BreedingUncheckedUpdateManyInput>;
+    where?: Prisma.BreedingWhereInput;
+    limit?: number;
+};
+export type BreedingUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.BreedingSelectUpdateManyAndReturn<ExtArgs> | null;
+    omit?: Prisma.BreedingOmit<ExtArgs> | null;
+    data: Prisma.XOR<Prisma.BreedingUpdateManyMutationInput, Prisma.BreedingUncheckedUpdateManyInput>;
+    where?: Prisma.BreedingWhereInput;
+    limit?: number;
+    include?: Prisma.BreedingIncludeUpdateManyAndReturn<ExtArgs> | null;
+};
+export type BreedingUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.BreedingSelect<ExtArgs> | null;
+    omit?: Prisma.BreedingOmit<ExtArgs> | null;
+    include?: Prisma.BreedingInclude<ExtArgs> | null;
+    where: Prisma.BreedingWhereUniqueInput;
+    create: Prisma.XOR<Prisma.BreedingCreateInput, Prisma.BreedingUncheckedCreateInput>;
+    update: Prisma.XOR<Prisma.BreedingUpdateInput, Prisma.BreedingUncheckedUpdateInput>;
+};
+export type BreedingDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.BreedingSelect<ExtArgs> | null;
+    omit?: Prisma.BreedingOmit<ExtArgs> | null;
+    include?: Prisma.BreedingInclude<ExtArgs> | null;
+    where: Prisma.BreedingWhereUniqueInput;
+};
+export type BreedingDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.BreedingWhereInput;
+    limit?: number;
+};
+export type Breeding$pregnanciesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.PregnancySelect<ExtArgs> | null;
+    omit?: Prisma.PregnancyOmit<ExtArgs> | null;
+    include?: Prisma.PregnancyInclude<ExtArgs> | null;
+    where?: Prisma.PregnancyWhereInput;
+    orderBy?: Prisma.PregnancyOrderByWithRelationInput | Prisma.PregnancyOrderByWithRelationInput[];
+    cursor?: Prisma.PregnancyWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.PregnancyScalarFieldEnum | Prisma.PregnancyScalarFieldEnum[];
+};
+export type Breeding$birthArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.BirthSelect<ExtArgs> | null;
+    omit?: Prisma.BirthOmit<ExtArgs> | null;
+    include?: Prisma.BirthInclude<ExtArgs> | null;
+    where?: Prisma.BirthWhereInput;
+};
+export type Breeding$littersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.LitterSelect<ExtArgs> | null;
+    omit?: Prisma.LitterOmit<ExtArgs> | null;
+    include?: Prisma.LitterInclude<ExtArgs> | null;
+    where?: Prisma.LitterWhereInput;
+    orderBy?: Prisma.LitterOrderByWithRelationInput | Prisma.LitterOrderByWithRelationInput[];
+    cursor?: Prisma.LitterWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.LitterScalarFieldEnum | Prisma.LitterScalarFieldEnum[];
+};
+export type BreedingDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.BreedingSelect<ExtArgs> | null;
+    omit?: Prisma.BreedingOmit<ExtArgs> | null;
+    include?: Prisma.BreedingInclude<ExtArgs> | null;
+};

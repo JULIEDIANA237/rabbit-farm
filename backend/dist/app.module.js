@@ -13,6 +13,7 @@ const apollo_1 = require("@nestjs/apollo");
 const path_1 = require("path");
 const prisma_module_1 = require("./prisma/prisma.module");
 const farms_module_1 = require("./farms/farms.module");
+const auth_module_1 = require("./auth/auth.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -26,6 +27,7 @@ exports.AppModule = AppModule = __decorate([
             }),
             prisma_module_1.PrismaModule,
             farms_module_1.FarmsModule,
+            auth_module_1.AuthModule,
         ],
     })
 ], AppModule);
