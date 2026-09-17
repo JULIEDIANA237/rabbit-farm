@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -70,6 +70,74 @@ enum LitterStatus {
   CLOSED
 }
 
+enum AdoptionReason {
+  EQUALIZATION
+  SURPLUS
+  ORPHAN
+  MOTHER_REJECTED
+  OTHER
+}
+
+enum FatteningLotStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum SaleStatus {
+  UNPAID
+  PARTIALLY_PAID
+  PAID
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CASH
+  MOBILE_MONEY
+  BANK_TRANSFER
+  OTHER
+}
+
+enum ExpenseCategory {
+  FEED
+  MEDICATION
+  EQUIPMENT
+  MAINTENANCE
+  TRANSPORT
+  SALARY
+  OTHER
+}
+
+enum InventoryItemType {
+  FEED
+  MEDICATION
+  EQUIPMENT
+  OTHER
+}
+
+enum StockMovementType {
+  INITIAL
+  PURCHASE
+  CONSUMPTION
+  LOSS
+  ADJUSTMENT
+  RETURN
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
 // ============================================================
 // USER
 // ============================================================
@@ -83,6 +151,10 @@ model User {
   isActive     Boolean @default(true)
 
   memberships FarmMembership[]
+
+  healthRecordsCreated HealthRecord[] @relation("HealthRecordsCreated")
+
+  assignedTasks Task[] @relation("AssignedTasks")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -112,6 +184,17 @@ model Farm {
   pregnancies Pregnancy[]
   births      Birth[]
   litters     Litter[]
+
+  fatteningLots FatteningLot[]
+
+  healthRecords HealthRecord[]
+
+  customers Customer[]
+  sales     Sale[]
+
+  expenses       Expense[]
+  inventoryItems InventoryItem[]
+  tasks          Task[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -271,6 +354,9 @@ model Rabbit {
   mark        String?
   observation String?
 
+  healthRecords HealthRecord[]
+  saleItems     SaleItem[]
+
   farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)
 
   breed      Breed?      @relation(fields: [breedId], references: [id], onDelete: SetNull)
@@ -286,6 +372,9 @@ model Rabbit {
   cageMovements   RabbitCageMovement[]
 
   birthLitterId String?
+
+  lotMemberships LotMembership[]
+  weighings      Weighing[]
 
   birthLitter Litter? @relation(fields: [birthLitterId], references: [id], onDelete: SetNull)
 
@@ -382,9 +471,9 @@ model Breeding {
   female Rabbit @relation("FemaleBreedings", fields: [femaleId], references: [id])
   male   Rabbit @relation("MaleBreedings", fields: [maleId], references: [id])
 
-  pregnancy Pregnancy?
-  birth     Birth?
-  litters   Litter[]
+  pregnancies Pregnancy[]
+  birth       Birth?
+  litters     Litter[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -451,7 +540,7 @@ model Litter {
   code   String
 
   breedingId String?
-  birthId    String?
+  birthId    String? @unique
 
   motherId String
   fatherId String?
@@ -474,11 +563,14 @@ model Litter {
 
   rabbits Rabbit[]
 
+  sourceAdoptions      LitterAdoption[] @relation("SourceLitterAdoptions")
+  destinationAdoptions LitterAdoption[] @relation("DestinationLitterAdoptions")
+  weaning              Weaning?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([farmId, code])
-  @@unique([birthId])
   @@index([farmId])
   @@index([motherId])
   @@index([fatherId])
@@ -486,4 +578,360 @@ model Litter {
   @@index([birthId])
   @@index([birthDate])
   @@index([status])
+}
+
+model LitterAdoption {
+  id String @id @default(uuid())
+
+  sourceLitterId      String
+  destinationLitterId String
+
+  quantity Int
+  date     DateTime
+
+  reason      AdoptionReason
+  observation String?
+
+  sourceLitter      Litter @relation("SourceLitterAdoptions", fields: [sourceLitterId], references: [id])
+  destinationLitter Litter @relation("DestinationLitterAdoptions", fields: [destinationLitterId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@index([sourceLitterId])
+  @@index([destinationLitterId])
+  @@index([date])
+}
+
+model Weaning {
+  id String @id @default(uuid())
+
+  litterId String
+
+  plannedDate DateTime?
+  actualDate  DateTime?
+
+  quantity Int?
+
+  totalWeight   Float?
+  averageWeight Float?
+
+  observation String?
+
+  litter Litter @relation(fields: [litterId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([litterId])
+  @@index([litterId])
+  @@index([actualDate])
+}
+
+model FatteningLot {
+  id String @id @default(uuid())
+
+  farmId String
+  code   String
+
+  entryDate DateTime
+  exitDate  DateTime?
+
+  status FatteningLotStatus @default(ACTIVE)
+
+  observation String?
+
+  farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)
+
+  memberships LotMembership[]
+
+  weighings Weighing[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([farmId, code])
+  @@index([farmId])
+  @@index([status])
+  @@index([entryDate])
+}
+
+model LotMembership {
+  id String @id @default(uuid())
+
+  lotId    String
+  rabbitId String
+
+  joinedAt DateTime
+  leftAt   DateTime?
+
+  reason String?
+
+  lot    FatteningLot @relation(fields: [lotId], references: [id], onDelete: Cascade)
+  rabbit Rabbit       @relation(fields: [rabbitId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([lotId])
+  @@index([rabbitId])
+  @@index([joinedAt])
+  @@index([leftAt])
+}
+
+model Weighing {
+  id String @id @default(uuid())
+
+  rabbitId String?
+  lotId    String?
+
+  date DateTime
+
+  totalWeight Float
+
+  animalCount   Int
+  averageWeight Float?
+
+  ageInDays Int?
+
+  observation String?
+
+  rabbit Rabbit?       @relation(fields: [rabbitId], references: [id], onDelete: Cascade)
+  lot    FatteningLot? @relation(fields: [lotId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([rabbitId])
+  @@index([lotId])
+  @@index([date])
+}
+
+model HealthRecord {
+  id String @id @default(uuid())
+
+  farmId   String
+  rabbitId String
+
+  date DateTime
+
+  symptoms    String?
+  observation String?
+  suspicion   String?
+  diagnosis   String?
+
+  treatment  String?
+  medication String?
+  dosage     String?
+
+  nextDueDate DateTime?
+
+  createdById String?
+
+  farm      Farm   @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  rabbit    Rabbit @relation(fields: [rabbitId], references: [id], onDelete: Cascade)
+  createdBy User?  @relation("HealthRecordsCreated", fields: [createdById], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+
+  @@index([farmId])
+  @@index([rabbitId])
+  @@index([date])
+  @@index([nextDueDate])
+}
+
+model Customer {
+  id String @id @default(uuid())
+
+  farmId String
+
+  name    String
+  phone   String?
+  email   String?
+  address String?
+  notes   String?
+
+  farm  Farm   @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  sales Sale[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([farmId])
+  @@index([phone])
+}
+
+model Sale {
+  id String @id @default(uuid())
+
+  farmId     String
+  customerId String?
+
+  saleDate DateTime
+
+  totalAmount Decimal
+
+  status SaleStatus @default(UNPAID)
+
+  observation String?
+
+  farm     Farm      @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  customer Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+
+  items    SaleItem[]
+  payments Payment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([farmId])
+  @@index([customerId])
+  @@index([saleDate])
+  @@index([status])
+}
+
+model SaleItem {
+  id String @id @default(uuid())
+
+  saleId   String
+  rabbitId String?
+
+  description String
+
+  quantity   Int
+  unitPrice  Decimal
+  totalPrice Decimal
+
+  sale   Sale    @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  rabbit Rabbit? @relation(fields: [rabbitId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+
+  @@index([saleId])
+  @@index([rabbitId])
+}
+
+model Payment {
+  id String @id @default(uuid())
+
+  saleId String
+
+  amount      Decimal
+  paymentDate DateTime
+
+  method PaymentMethod
+
+  reference   String?
+  observation String?
+
+  sale Sale @relation(fields: [saleId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([saleId])
+  @@index([paymentDate])
+  @@index([method])
+}
+
+model Expense {
+  id String @id @default(uuid())
+
+  farmId String
+
+  category ExpenseCategory
+  amount   Decimal
+  date     DateTime
+
+  description String?
+  reference   String?
+
+  farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([farmId])
+  @@index([category])
+  @@index([date])
+}
+
+model InventoryItem {
+  id String @id @default(uuid())
+
+  farmId String
+
+  name String
+  type InventoryItemType
+
+  unit String
+
+  minimumStock Float?
+
+  description String?
+
+  farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)
+
+  movements StockMovement[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([farmId, name])
+  @@index([farmId])
+  @@index([type])
+}
+
+model StockMovement {
+  id String @id @default(uuid())
+
+  inventoryItemId String
+
+  type StockMovementType
+
+  quantity Float
+  date     DateTime
+
+  unitCost Decimal?
+
+  reference   String?
+  description String?
+
+  inventoryItem InventoryItem @relation(fields: [inventoryItemId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([inventoryItemId])
+  @@index([type])
+  @@index([date])
+}
+
+model Task {
+  id String @id @default(uuid())
+
+  farmId String
+
+  title       String
+  description String?
+
+  dueDate DateTime
+
+  priority TaskPriority @default(MEDIUM)
+  status   TaskStatus   @default(TODO)
+
+  assignedToId String?
+
+  sourceType String?
+  sourceId   String?
+
+  completedAt DateTime?
+
+  farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)
+
+  assignedTo User? @relation("AssignedTasks", fields: [assignedToId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([farmId])
+  @@index([dueDate])
+  @@index([status])
+  @@index([priority])
+  @@index([assignedToId])
+  @@index([sourceType, sourceId])
 }
