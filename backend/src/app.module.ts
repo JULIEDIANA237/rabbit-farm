@@ -1,23 +1,29 @@
 import { Module } from '@nestjs/common';
+import type { Request } from 'express';
+import {
+  ApolloDriver,
+  ApolloDriverConfig,
+} from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { join } from 'path';
 
 import { PrismaModule } from './prisma/prisma.module';
-import { FarmsModule } from './farms/farms.module';
 import { AuthModule } from './auth/auth.module';
+import { FarmsModule } from './farms/farms.module';
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      sortSchema: true,
+      autoSchemaFile: true,
+
+      context: ({ req }: { req: Request }) => ({
+        req,
+      }),
     }),
 
     PrismaModule,
-    FarmsModule,
     AuthModule,
+    FarmsModule,
   ],
 })
 export class AppModule {}

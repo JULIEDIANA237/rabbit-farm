@@ -8,12 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
-const graphql_1 = require("@nestjs/graphql");
 const apollo_1 = require("@nestjs/apollo");
-const path_1 = require("path");
+const graphql_1 = require("@nestjs/graphql");
 const prisma_module_1 = require("./prisma/prisma.module");
-const farms_module_1 = require("./farms/farms.module");
 const auth_module_1 = require("./auth/auth.module");
+const farms_module_1 = require("./farms/farms.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -22,12 +21,14 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             graphql_1.GraphQLModule.forRoot({
                 driver: apollo_1.ApolloDriver,
-                autoSchemaFile: (0, path_1.join)(process.cwd(), 'src/schema.gql'),
-                sortSchema: true,
+                autoSchemaFile: true,
+                context: ({ req }) => ({
+                    req,
+                }),
             }),
             prisma_module_1.PrismaModule,
-            farms_module_1.FarmsModule,
             auth_module_1.AuthModule,
+            farms_module_1.FarmsModule,
         ],
     })
 ], AppModule);

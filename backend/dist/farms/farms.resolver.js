@@ -14,9 +14,12 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FarmsResolver = void 0;
 const graphql_1 = require("@nestjs/graphql");
+const common_1 = require("@nestjs/common");
 const farms_service_1 = require("./farms.service");
 const farm_model_1 = require("./models/farm.model");
 const create_farm_input_1 = require("./dto/create-farm.input");
+const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
+const current_user_decorator_1 = require("../auth/decorators/current-user.decorator");
 let FarmsResolver = class FarmsResolver {
     farmsService;
     constructor(farmsService) {
@@ -25,11 +28,11 @@ let FarmsResolver = class FarmsResolver {
     async createFarm(input) {
         return this.farmsService.create(input);
     }
-    async farms() {
-        return this.farmsService.findAll();
+    async farms(user) {
+        return this.farmsService.findAll(user);
     }
-    async farm(id) {
-        return this.farmsService.findOne(id);
+    async farm(id, user) {
+        return this.farmsService.findOne(id, user);
     }
 };
 exports.FarmsResolver = FarmsResolver;
@@ -41,16 +44,20 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], FarmsResolver.prototype, "createFarm", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, graphql_1.Query)(() => [farm_model_1.FarmModel]),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], FarmsResolver.prototype, "farms", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, graphql_1.Query)(() => farm_model_1.FarmModel, { nullable: true }),
     __param(0, (0, graphql_1.Args)('id', { type: () => graphql_1.ID })),
+    __param(1, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], FarmsResolver.prototype, "farm", null);
 exports.FarmsResolver = FarmsResolver = __decorate([

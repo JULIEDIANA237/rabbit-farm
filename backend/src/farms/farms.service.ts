@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateFarmInput } from './dto/create-farm.input';
+import { CurrentUserType } from '../auth/types/current-user.type';
 
 @Injectable()
 export class FarmsService {
@@ -16,17 +17,27 @@ export class FarmsService {
     });
   }
 
-  async findAll() {
+  async findAll(user: CurrentUserType) {
     return this.prisma.farm.findMany({
+      where: {
+        id: user.farmId,
+      },
       orderBy: {
         createdAt: 'desc',
       },
-    });
+    }); 
   }
 
-  async findOne(id: string) {
-    return this.prisma.farm.findUnique({
-      where: { id },
+  async findOne(id: string, user: CurrentUserType) {
+    return this.prisma.farm.findFirst({
+      where: {
+        id,
+        memberships: {
+          some: {
+            userId: user.userId,
+          },
+        },
+      },
     });
   }
 }

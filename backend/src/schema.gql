@@ -2,6 +2,15 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type AuthModel {
+  accessToken: String!
+  email: String!
+  farm: FarmModel!
+  firstName: String!
+  lastName: String!
+  userId: String!
+}
+
 input CreateFarmInput {
   description: String
   location: String
@@ -22,11 +31,28 @@ type FarmModel {
   updatedAt: DateTime!
 }
 
+input LoginInput {
+  email: String!
+  password: String!
+}
+
 type Mutation {
   createFarm(input: CreateFarmInput!): FarmModel!
+  login(input: LoginInput!): AuthModel!
+  register(input: RegisterInput!): AuthModel!
 }
 
 type Query {
   farm(id: ID!): FarmModel
   farms: [FarmModel!]!
+}
+
+input RegisterInput {
+  email: String!
+  farmDescription: String
+  farmLocation: String
+  farmName: String!
+  firstName: String!
+  lastName: String!
+  password: String!
 }

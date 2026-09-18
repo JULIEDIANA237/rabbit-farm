@@ -26,16 +26,26 @@ let FarmsService = class FarmsService {
             },
         });
     }
-    async findAll() {
+    async findAll(user) {
         return this.prisma.farm.findMany({
+            where: {
+                id: user.farmId,
+            },
             orderBy: {
                 createdAt: 'desc',
             },
         });
     }
-    async findOne(id) {
-        return this.prisma.farm.findUnique({
-            where: { id },
+    async findOne(id, user) {
+        return this.prisma.farm.findFirst({
+            where: {
+                id,
+                memberships: {
+                    some: {
+                        userId: user.userId,
+                    },
+                },
+            },
         });
     }
 };

@@ -10,11 +10,13 @@ exports.FarmsModule = void 0;
 const common_1 = require("@nestjs/common");
 const farms_service_1 = require("./farms.service");
 const farms_resolver_1 = require("./farms.resolver");
+const auth_module_1 = require("../auth/auth.module");
 let FarmsModule = class FarmsModule {
 };
 exports.FarmsModule = FarmsModule;
 exports.FarmsModule = FarmsModule = __decorate([
     (0, common_1.Module)({
+        imports: [auth_module_1.AuthModule],
         providers: [farms_service_1.FarmsService, farms_resolver_1.FarmsResolver],
         exports: [farms_service_1.FarmsService],
     })
