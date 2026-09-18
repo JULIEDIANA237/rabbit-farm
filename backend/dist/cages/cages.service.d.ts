@@ -12,12 +12,12 @@ export declare class CagesService {
         rabbitMovements: {
             id: string;
             createdAt: Date;
-            observation: string | null;
+            endedAt: Date | null;
             rabbitId: string;
             cageId: string;
             startedAt: Date;
-            endedAt: Date | null;
             reason: string | null;
+            observation: string | null;
         }[];
     } & {
         id: string;
@@ -25,8 +25,8 @@ export declare class CagesService {
         updatedAt: Date;
         farmId: string;
         type: string | null;
-        sectionId: string;
         code: string;
+        sectionId: string;
         capacity: number;
         status: CageStatus;
     }, "rabbitMovements"> & {
@@ -42,8 +42,8 @@ export declare class CagesService {
         updatedAt: Date;
         farmId: string;
         type: string | null;
-        sectionId: string;
         code: string;
+        sectionId: string;
         capacity: number;
         status: CageStatus;
     }[]>;
@@ -57,8 +57,8 @@ export declare class CagesService {
         updatedAt: Date;
         farmId: string;
         type: string | null;
-        sectionId: string;
         code: string;
+        sectionId: string;
         capacity: number;
         status: CageStatus;
     }>;
@@ -66,12 +66,12 @@ export declare class CagesService {
         rabbitMovements: {
             id: string;
             createdAt: Date;
-            observation: string | null;
+            endedAt: Date | null;
             rabbitId: string;
             cageId: string;
             startedAt: Date;
-            endedAt: Date | null;
             reason: string | null;
+            observation: string | null;
         }[];
     } & {
         id: string;
@@ -79,8 +79,8 @@ export declare class CagesService {
         updatedAt: Date;
         farmId: string;
         type: string | null;
-        sectionId: string;
         code: string;
+        sectionId: string;
         capacity: number;
         status: CageStatus;
     }, "rabbitMovements"> & {
@@ -93,8 +93,8 @@ export declare class CagesService {
         updatedAt: Date;
         farmId: string;
         type: string | null;
-        sectionId: string;
         code: string;
+        sectionId: string;
         capacity: number;
         status: CageStatus;
     }>;
