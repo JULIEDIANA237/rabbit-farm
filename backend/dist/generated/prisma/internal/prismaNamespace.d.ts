@@ -2372,8 +2372,8 @@ export declare const CrossBreedScalarFieldEnum: {
     readonly farmId: "farmId";
     readonly name: "name";
     readonly description: "description";
-    readonly breedAId: "breedAId";
-    readonly breedBId: "breedBId";
+    readonly parentBreedAId: "parentBreedAId";
+    readonly parentBreedBId: "parentBreedBId";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };
@@ -2384,17 +2384,14 @@ export declare const RabbitScalarFieldEnum: {
     readonly code: "code";
     readonly sex: "sex";
     readonly status: "status";
-    readonly geneticType: "geneticType";
     readonly breedId: "breedId";
     readonly crossBreedId: "crossBreedId";
     readonly fatherId: "fatherId";
     readonly motherId: "motherId";
     readonly birthDate: "birthDate";
     readonly color: "color";
-    readonly size: "size";
-    readonly earFeature: "earFeature";
-    readonly mark: "mark";
-    readonly observation: "observation";
+    readonly weight: "weight";
+    readonly observations: "observations";
     readonly birthLitterId: "birthLitterId";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
@@ -2682,6 +2679,8 @@ export type EnumRabbitSexFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 export type ListEnumRabbitSexFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RabbitSex[]'>;
 export type EnumRabbitStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RabbitStatus'>;
 export type ListEnumRabbitStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RabbitStatus[]'>;
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>;
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>;
 export type EnumRabbitIdentificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RabbitIdentificationType'>;
 export type ListEnumRabbitIdentificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RabbitIdentificationType[]'>;
 export type EnumBreedingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BreedingStatus'>;
@@ -2696,8 +2695,6 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>;
 export type EnumFatteningLotStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FatteningLotStatus'>;
 export type ListEnumFatteningLotStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FatteningLotStatus[]'>;
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>;
-export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>;
 export type EnumSaleStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SaleStatus'>;
 export type ListEnumSaleStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SaleStatus[]'>;
 export type EnumPaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentMethod'>;

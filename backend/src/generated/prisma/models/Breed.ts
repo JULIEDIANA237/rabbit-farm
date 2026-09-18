@@ -192,8 +192,8 @@ export type BreedWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Breed"> | Date | string
   farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
   rabbits?: Prisma.RabbitListRelationFilter
-  crossBreedA?: Prisma.CrossBreedListRelationFilter
-  crossBreedB?: Prisma.CrossBreedListRelationFilter
+  crossBreedsAsParentA?: Prisma.CrossBreedListRelationFilter
+  crossBreedsAsParentB?: Prisma.CrossBreedListRelationFilter
 }
 
 export type BreedOrderByWithRelationInput = {
@@ -205,8 +205,8 @@ export type BreedOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   farm?: Prisma.FarmOrderByWithRelationInput
   rabbits?: Prisma.RabbitOrderByRelationAggregateInput
-  crossBreedA?: Prisma.CrossBreedOrderByRelationAggregateInput
-  crossBreedB?: Prisma.CrossBreedOrderByRelationAggregateInput
+  crossBreedsAsParentA?: Prisma.CrossBreedOrderByRelationAggregateInput
+  crossBreedsAsParentB?: Prisma.CrossBreedOrderByRelationAggregateInput
 }
 
 export type BreedWhereUniqueInput = Prisma.AtLeast<{
@@ -222,8 +222,8 @@ export type BreedWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Breed"> | Date | string
   farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
   rabbits?: Prisma.RabbitListRelationFilter
-  crossBreedA?: Prisma.CrossBreedListRelationFilter
-  crossBreedB?: Prisma.CrossBreedListRelationFilter
+  crossBreedsAsParentA?: Prisma.CrossBreedListRelationFilter
+  crossBreedsAsParentB?: Prisma.CrossBreedListRelationFilter
 }, "id" | "farmId_name">
 
 export type BreedOrderByWithAggregationInput = {
@@ -258,8 +258,8 @@ export type BreedCreateInput = {
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutBreedsInput
   rabbits?: Prisma.RabbitCreateNestedManyWithoutBreedInput
-  crossBreedA?: Prisma.CrossBreedCreateNestedManyWithoutBreedAInput
-  crossBreedB?: Prisma.CrossBreedCreateNestedManyWithoutBreedBInput
+  crossBreedsAsParentA?: Prisma.CrossBreedCreateNestedManyWithoutParentBreedAInput
+  crossBreedsAsParentB?: Prisma.CrossBreedCreateNestedManyWithoutParentBreedBInput
 }
 
 export type BreedUncheckedCreateInput = {
@@ -270,8 +270,8 @@ export type BreedUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   rabbits?: Prisma.RabbitUncheckedCreateNestedManyWithoutBreedInput
-  crossBreedA?: Prisma.CrossBreedUncheckedCreateNestedManyWithoutBreedAInput
-  crossBreedB?: Prisma.CrossBreedUncheckedCreateNestedManyWithoutBreedBInput
+  crossBreedsAsParentA?: Prisma.CrossBreedUncheckedCreateNestedManyWithoutParentBreedAInput
+  crossBreedsAsParentB?: Prisma.CrossBreedUncheckedCreateNestedManyWithoutParentBreedBInput
 }
 
 export type BreedUpdateInput = {
@@ -282,8 +282,8 @@ export type BreedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutBreedsNestedInput
   rabbits?: Prisma.RabbitUpdateManyWithoutBreedNestedInput
-  crossBreedA?: Prisma.CrossBreedUpdateManyWithoutBreedANestedInput
-  crossBreedB?: Prisma.CrossBreedUpdateManyWithoutBreedBNestedInput
+  crossBreedsAsParentA?: Prisma.CrossBreedUpdateManyWithoutParentBreedANestedInput
+  crossBreedsAsParentB?: Prisma.CrossBreedUpdateManyWithoutParentBreedBNestedInput
 }
 
 export type BreedUncheckedUpdateInput = {
@@ -294,8 +294,8 @@ export type BreedUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rabbits?: Prisma.RabbitUncheckedUpdateManyWithoutBreedNestedInput
-  crossBreedA?: Prisma.CrossBreedUncheckedUpdateManyWithoutBreedANestedInput
-  crossBreedB?: Prisma.CrossBreedUncheckedUpdateManyWithoutBreedBNestedInput
+  crossBreedsAsParentA?: Prisma.CrossBreedUncheckedUpdateManyWithoutParentBreedANestedInput
+  crossBreedsAsParentB?: Prisma.CrossBreedUncheckedUpdateManyWithoutParentBreedBNestedInput
 }
 
 export type BreedCreateManyInput = {
@@ -418,32 +418,32 @@ export type BreedUncheckedUpdateManyWithoutFarmNestedInput = {
   deleteMany?: Prisma.BreedScalarWhereInput | Prisma.BreedScalarWhereInput[]
 }
 
-export type BreedCreateNestedOneWithoutCrossBreedAInput = {
-  create?: Prisma.XOR<Prisma.BreedCreateWithoutCrossBreedAInput, Prisma.BreedUncheckedCreateWithoutCrossBreedAInput>
-  connectOrCreate?: Prisma.BreedCreateOrConnectWithoutCrossBreedAInput
+export type BreedCreateNestedOneWithoutCrossBreedsAsParentAInput = {
+  create?: Prisma.XOR<Prisma.BreedCreateWithoutCrossBreedsAsParentAInput, Prisma.BreedUncheckedCreateWithoutCrossBreedsAsParentAInput>
+  connectOrCreate?: Prisma.BreedCreateOrConnectWithoutCrossBreedsAsParentAInput
   connect?: Prisma.BreedWhereUniqueInput
 }
 
-export type BreedCreateNestedOneWithoutCrossBreedBInput = {
-  create?: Prisma.XOR<Prisma.BreedCreateWithoutCrossBreedBInput, Prisma.BreedUncheckedCreateWithoutCrossBreedBInput>
-  connectOrCreate?: Prisma.BreedCreateOrConnectWithoutCrossBreedBInput
+export type BreedCreateNestedOneWithoutCrossBreedsAsParentBInput = {
+  create?: Prisma.XOR<Prisma.BreedCreateWithoutCrossBreedsAsParentBInput, Prisma.BreedUncheckedCreateWithoutCrossBreedsAsParentBInput>
+  connectOrCreate?: Prisma.BreedCreateOrConnectWithoutCrossBreedsAsParentBInput
   connect?: Prisma.BreedWhereUniqueInput
 }
 
-export type BreedUpdateOneRequiredWithoutCrossBreedANestedInput = {
-  create?: Prisma.XOR<Prisma.BreedCreateWithoutCrossBreedAInput, Prisma.BreedUncheckedCreateWithoutCrossBreedAInput>
-  connectOrCreate?: Prisma.BreedCreateOrConnectWithoutCrossBreedAInput
-  upsert?: Prisma.BreedUpsertWithoutCrossBreedAInput
+export type BreedUpdateOneRequiredWithoutCrossBreedsAsParentANestedInput = {
+  create?: Prisma.XOR<Prisma.BreedCreateWithoutCrossBreedsAsParentAInput, Prisma.BreedUncheckedCreateWithoutCrossBreedsAsParentAInput>
+  connectOrCreate?: Prisma.BreedCreateOrConnectWithoutCrossBreedsAsParentAInput
+  upsert?: Prisma.BreedUpsertWithoutCrossBreedsAsParentAInput
   connect?: Prisma.BreedWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.BreedUpdateToOneWithWhereWithoutCrossBreedAInput, Prisma.BreedUpdateWithoutCrossBreedAInput>, Prisma.BreedUncheckedUpdateWithoutCrossBreedAInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BreedUpdateToOneWithWhereWithoutCrossBreedsAsParentAInput, Prisma.BreedUpdateWithoutCrossBreedsAsParentAInput>, Prisma.BreedUncheckedUpdateWithoutCrossBreedsAsParentAInput>
 }
 
-export type BreedUpdateOneRequiredWithoutCrossBreedBNestedInput = {
-  create?: Prisma.XOR<Prisma.BreedCreateWithoutCrossBreedBInput, Prisma.BreedUncheckedCreateWithoutCrossBreedBInput>
-  connectOrCreate?: Prisma.BreedCreateOrConnectWithoutCrossBreedBInput
-  upsert?: Prisma.BreedUpsertWithoutCrossBreedBInput
+export type BreedUpdateOneRequiredWithoutCrossBreedsAsParentBNestedInput = {
+  create?: Prisma.XOR<Prisma.BreedCreateWithoutCrossBreedsAsParentBInput, Prisma.BreedUncheckedCreateWithoutCrossBreedsAsParentBInput>
+  connectOrCreate?: Prisma.BreedCreateOrConnectWithoutCrossBreedsAsParentBInput
+  upsert?: Prisma.BreedUpsertWithoutCrossBreedsAsParentBInput
   connect?: Prisma.BreedWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.BreedUpdateToOneWithWhereWithoutCrossBreedBInput, Prisma.BreedUpdateWithoutCrossBreedBInput>, Prisma.BreedUncheckedUpdateWithoutCrossBreedBInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BreedUpdateToOneWithWhereWithoutCrossBreedsAsParentBInput, Prisma.BreedUpdateWithoutCrossBreedsAsParentBInput>, Prisma.BreedUncheckedUpdateWithoutCrossBreedsAsParentBInput>
 }
 
 export type BreedCreateNestedOneWithoutRabbitsInput = {
@@ -469,8 +469,8 @@ export type BreedCreateWithoutFarmInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   rabbits?: Prisma.RabbitCreateNestedManyWithoutBreedInput
-  crossBreedA?: Prisma.CrossBreedCreateNestedManyWithoutBreedAInput
-  crossBreedB?: Prisma.CrossBreedCreateNestedManyWithoutBreedBInput
+  crossBreedsAsParentA?: Prisma.CrossBreedCreateNestedManyWithoutParentBreedAInput
+  crossBreedsAsParentB?: Prisma.CrossBreedCreateNestedManyWithoutParentBreedBInput
 }
 
 export type BreedUncheckedCreateWithoutFarmInput = {
@@ -480,8 +480,8 @@ export type BreedUncheckedCreateWithoutFarmInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   rabbits?: Prisma.RabbitUncheckedCreateNestedManyWithoutBreedInput
-  crossBreedA?: Prisma.CrossBreedUncheckedCreateNestedManyWithoutBreedAInput
-  crossBreedB?: Prisma.CrossBreedUncheckedCreateNestedManyWithoutBreedBInput
+  crossBreedsAsParentA?: Prisma.CrossBreedUncheckedCreateNestedManyWithoutParentBreedAInput
+  crossBreedsAsParentB?: Prisma.CrossBreedUncheckedCreateNestedManyWithoutParentBreedBInput
 }
 
 export type BreedCreateOrConnectWithoutFarmInput = {
@@ -522,7 +522,7 @@ export type BreedScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Breed"> | Date | string
 }
 
-export type BreedCreateWithoutCrossBreedAInput = {
+export type BreedCreateWithoutCrossBreedsAsParentAInput = {
   id?: string
   name: string
   description?: string | null
@@ -530,10 +530,10 @@ export type BreedCreateWithoutCrossBreedAInput = {
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutBreedsInput
   rabbits?: Prisma.RabbitCreateNestedManyWithoutBreedInput
-  crossBreedB?: Prisma.CrossBreedCreateNestedManyWithoutBreedBInput
+  crossBreedsAsParentB?: Prisma.CrossBreedCreateNestedManyWithoutParentBreedBInput
 }
 
-export type BreedUncheckedCreateWithoutCrossBreedAInput = {
+export type BreedUncheckedCreateWithoutCrossBreedsAsParentAInput = {
   id?: string
   farmId: string
   name: string
@@ -541,15 +541,15 @@ export type BreedUncheckedCreateWithoutCrossBreedAInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   rabbits?: Prisma.RabbitUncheckedCreateNestedManyWithoutBreedInput
-  crossBreedB?: Prisma.CrossBreedUncheckedCreateNestedManyWithoutBreedBInput
+  crossBreedsAsParentB?: Prisma.CrossBreedUncheckedCreateNestedManyWithoutParentBreedBInput
 }
 
-export type BreedCreateOrConnectWithoutCrossBreedAInput = {
+export type BreedCreateOrConnectWithoutCrossBreedsAsParentAInput = {
   where: Prisma.BreedWhereUniqueInput
-  create: Prisma.XOR<Prisma.BreedCreateWithoutCrossBreedAInput, Prisma.BreedUncheckedCreateWithoutCrossBreedAInput>
+  create: Prisma.XOR<Prisma.BreedCreateWithoutCrossBreedsAsParentAInput, Prisma.BreedUncheckedCreateWithoutCrossBreedsAsParentAInput>
 }
 
-export type BreedCreateWithoutCrossBreedBInput = {
+export type BreedCreateWithoutCrossBreedsAsParentBInput = {
   id?: string
   name: string
   description?: string | null
@@ -557,10 +557,10 @@ export type BreedCreateWithoutCrossBreedBInput = {
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutBreedsInput
   rabbits?: Prisma.RabbitCreateNestedManyWithoutBreedInput
-  crossBreedA?: Prisma.CrossBreedCreateNestedManyWithoutBreedAInput
+  crossBreedsAsParentA?: Prisma.CrossBreedCreateNestedManyWithoutParentBreedAInput
 }
 
-export type BreedUncheckedCreateWithoutCrossBreedBInput = {
+export type BreedUncheckedCreateWithoutCrossBreedsAsParentBInput = {
   id?: string
   farmId: string
   name: string
@@ -568,26 +568,26 @@ export type BreedUncheckedCreateWithoutCrossBreedBInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   rabbits?: Prisma.RabbitUncheckedCreateNestedManyWithoutBreedInput
-  crossBreedA?: Prisma.CrossBreedUncheckedCreateNestedManyWithoutBreedAInput
+  crossBreedsAsParentA?: Prisma.CrossBreedUncheckedCreateNestedManyWithoutParentBreedAInput
 }
 
-export type BreedCreateOrConnectWithoutCrossBreedBInput = {
+export type BreedCreateOrConnectWithoutCrossBreedsAsParentBInput = {
   where: Prisma.BreedWhereUniqueInput
-  create: Prisma.XOR<Prisma.BreedCreateWithoutCrossBreedBInput, Prisma.BreedUncheckedCreateWithoutCrossBreedBInput>
+  create: Prisma.XOR<Prisma.BreedCreateWithoutCrossBreedsAsParentBInput, Prisma.BreedUncheckedCreateWithoutCrossBreedsAsParentBInput>
 }
 
-export type BreedUpsertWithoutCrossBreedAInput = {
-  update: Prisma.XOR<Prisma.BreedUpdateWithoutCrossBreedAInput, Prisma.BreedUncheckedUpdateWithoutCrossBreedAInput>
-  create: Prisma.XOR<Prisma.BreedCreateWithoutCrossBreedAInput, Prisma.BreedUncheckedCreateWithoutCrossBreedAInput>
+export type BreedUpsertWithoutCrossBreedsAsParentAInput = {
+  update: Prisma.XOR<Prisma.BreedUpdateWithoutCrossBreedsAsParentAInput, Prisma.BreedUncheckedUpdateWithoutCrossBreedsAsParentAInput>
+  create: Prisma.XOR<Prisma.BreedCreateWithoutCrossBreedsAsParentAInput, Prisma.BreedUncheckedCreateWithoutCrossBreedsAsParentAInput>
   where?: Prisma.BreedWhereInput
 }
 
-export type BreedUpdateToOneWithWhereWithoutCrossBreedAInput = {
+export type BreedUpdateToOneWithWhereWithoutCrossBreedsAsParentAInput = {
   where?: Prisma.BreedWhereInput
-  data: Prisma.XOR<Prisma.BreedUpdateWithoutCrossBreedAInput, Prisma.BreedUncheckedUpdateWithoutCrossBreedAInput>
+  data: Prisma.XOR<Prisma.BreedUpdateWithoutCrossBreedsAsParentAInput, Prisma.BreedUncheckedUpdateWithoutCrossBreedsAsParentAInput>
 }
 
-export type BreedUpdateWithoutCrossBreedAInput = {
+export type BreedUpdateWithoutCrossBreedsAsParentAInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -595,10 +595,10 @@ export type BreedUpdateWithoutCrossBreedAInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutBreedsNestedInput
   rabbits?: Prisma.RabbitUpdateManyWithoutBreedNestedInput
-  crossBreedB?: Prisma.CrossBreedUpdateManyWithoutBreedBNestedInput
+  crossBreedsAsParentB?: Prisma.CrossBreedUpdateManyWithoutParentBreedBNestedInput
 }
 
-export type BreedUncheckedUpdateWithoutCrossBreedAInput = {
+export type BreedUncheckedUpdateWithoutCrossBreedsAsParentAInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   farmId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -606,21 +606,21 @@ export type BreedUncheckedUpdateWithoutCrossBreedAInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rabbits?: Prisma.RabbitUncheckedUpdateManyWithoutBreedNestedInput
-  crossBreedB?: Prisma.CrossBreedUncheckedUpdateManyWithoutBreedBNestedInput
+  crossBreedsAsParentB?: Prisma.CrossBreedUncheckedUpdateManyWithoutParentBreedBNestedInput
 }
 
-export type BreedUpsertWithoutCrossBreedBInput = {
-  update: Prisma.XOR<Prisma.BreedUpdateWithoutCrossBreedBInput, Prisma.BreedUncheckedUpdateWithoutCrossBreedBInput>
-  create: Prisma.XOR<Prisma.BreedCreateWithoutCrossBreedBInput, Prisma.BreedUncheckedCreateWithoutCrossBreedBInput>
+export type BreedUpsertWithoutCrossBreedsAsParentBInput = {
+  update: Prisma.XOR<Prisma.BreedUpdateWithoutCrossBreedsAsParentBInput, Prisma.BreedUncheckedUpdateWithoutCrossBreedsAsParentBInput>
+  create: Prisma.XOR<Prisma.BreedCreateWithoutCrossBreedsAsParentBInput, Prisma.BreedUncheckedCreateWithoutCrossBreedsAsParentBInput>
   where?: Prisma.BreedWhereInput
 }
 
-export type BreedUpdateToOneWithWhereWithoutCrossBreedBInput = {
+export type BreedUpdateToOneWithWhereWithoutCrossBreedsAsParentBInput = {
   where?: Prisma.BreedWhereInput
-  data: Prisma.XOR<Prisma.BreedUpdateWithoutCrossBreedBInput, Prisma.BreedUncheckedUpdateWithoutCrossBreedBInput>
+  data: Prisma.XOR<Prisma.BreedUpdateWithoutCrossBreedsAsParentBInput, Prisma.BreedUncheckedUpdateWithoutCrossBreedsAsParentBInput>
 }
 
-export type BreedUpdateWithoutCrossBreedBInput = {
+export type BreedUpdateWithoutCrossBreedsAsParentBInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -628,10 +628,10 @@ export type BreedUpdateWithoutCrossBreedBInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutBreedsNestedInput
   rabbits?: Prisma.RabbitUpdateManyWithoutBreedNestedInput
-  crossBreedA?: Prisma.CrossBreedUpdateManyWithoutBreedANestedInput
+  crossBreedsAsParentA?: Prisma.CrossBreedUpdateManyWithoutParentBreedANestedInput
 }
 
-export type BreedUncheckedUpdateWithoutCrossBreedBInput = {
+export type BreedUncheckedUpdateWithoutCrossBreedsAsParentBInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   farmId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -639,7 +639,7 @@ export type BreedUncheckedUpdateWithoutCrossBreedBInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rabbits?: Prisma.RabbitUncheckedUpdateManyWithoutBreedNestedInput
-  crossBreedA?: Prisma.CrossBreedUncheckedUpdateManyWithoutBreedANestedInput
+  crossBreedsAsParentA?: Prisma.CrossBreedUncheckedUpdateManyWithoutParentBreedANestedInput
 }
 
 export type BreedCreateWithoutRabbitsInput = {
@@ -649,8 +649,8 @@ export type BreedCreateWithoutRabbitsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutBreedsInput
-  crossBreedA?: Prisma.CrossBreedCreateNestedManyWithoutBreedAInput
-  crossBreedB?: Prisma.CrossBreedCreateNestedManyWithoutBreedBInput
+  crossBreedsAsParentA?: Prisma.CrossBreedCreateNestedManyWithoutParentBreedAInput
+  crossBreedsAsParentB?: Prisma.CrossBreedCreateNestedManyWithoutParentBreedBInput
 }
 
 export type BreedUncheckedCreateWithoutRabbitsInput = {
@@ -660,8 +660,8 @@ export type BreedUncheckedCreateWithoutRabbitsInput = {
   description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  crossBreedA?: Prisma.CrossBreedUncheckedCreateNestedManyWithoutBreedAInput
-  crossBreedB?: Prisma.CrossBreedUncheckedCreateNestedManyWithoutBreedBInput
+  crossBreedsAsParentA?: Prisma.CrossBreedUncheckedCreateNestedManyWithoutParentBreedAInput
+  crossBreedsAsParentB?: Prisma.CrossBreedUncheckedCreateNestedManyWithoutParentBreedBInput
 }
 
 export type BreedCreateOrConnectWithoutRabbitsInput = {
@@ -687,8 +687,8 @@ export type BreedUpdateWithoutRabbitsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutBreedsNestedInput
-  crossBreedA?: Prisma.CrossBreedUpdateManyWithoutBreedANestedInput
-  crossBreedB?: Prisma.CrossBreedUpdateManyWithoutBreedBNestedInput
+  crossBreedsAsParentA?: Prisma.CrossBreedUpdateManyWithoutParentBreedANestedInput
+  crossBreedsAsParentB?: Prisma.CrossBreedUpdateManyWithoutParentBreedBNestedInput
 }
 
 export type BreedUncheckedUpdateWithoutRabbitsInput = {
@@ -698,8 +698,8 @@ export type BreedUncheckedUpdateWithoutRabbitsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  crossBreedA?: Prisma.CrossBreedUncheckedUpdateManyWithoutBreedANestedInput
-  crossBreedB?: Prisma.CrossBreedUncheckedUpdateManyWithoutBreedBNestedInput
+  crossBreedsAsParentA?: Prisma.CrossBreedUncheckedUpdateManyWithoutParentBreedANestedInput
+  crossBreedsAsParentB?: Prisma.CrossBreedUncheckedUpdateManyWithoutParentBreedBNestedInput
 }
 
 export type BreedCreateManyFarmInput = {
@@ -717,8 +717,8 @@ export type BreedUpdateWithoutFarmInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rabbits?: Prisma.RabbitUpdateManyWithoutBreedNestedInput
-  crossBreedA?: Prisma.CrossBreedUpdateManyWithoutBreedANestedInput
-  crossBreedB?: Prisma.CrossBreedUpdateManyWithoutBreedBNestedInput
+  crossBreedsAsParentA?: Prisma.CrossBreedUpdateManyWithoutParentBreedANestedInput
+  crossBreedsAsParentB?: Prisma.CrossBreedUpdateManyWithoutParentBreedBNestedInput
 }
 
 export type BreedUncheckedUpdateWithoutFarmInput = {
@@ -728,8 +728,8 @@ export type BreedUncheckedUpdateWithoutFarmInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rabbits?: Prisma.RabbitUncheckedUpdateManyWithoutBreedNestedInput
-  crossBreedA?: Prisma.CrossBreedUncheckedUpdateManyWithoutBreedANestedInput
-  crossBreedB?: Prisma.CrossBreedUncheckedUpdateManyWithoutBreedBNestedInput
+  crossBreedsAsParentA?: Prisma.CrossBreedUncheckedUpdateManyWithoutParentBreedANestedInput
+  crossBreedsAsParentB?: Prisma.CrossBreedUncheckedUpdateManyWithoutParentBreedBNestedInput
 }
 
 export type BreedUncheckedUpdateManyWithoutFarmInput = {
@@ -747,14 +747,14 @@ export type BreedUncheckedUpdateManyWithoutFarmInput = {
 
 export type BreedCountOutputType = {
   rabbits: number
-  crossBreedA: number
-  crossBreedB: number
+  crossBreedsAsParentA: number
+  crossBreedsAsParentB: number
 }
 
 export type BreedCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   rabbits?: boolean | BreedCountOutputTypeCountRabbitsArgs
-  crossBreedA?: boolean | BreedCountOutputTypeCountCrossBreedAArgs
-  crossBreedB?: boolean | BreedCountOutputTypeCountCrossBreedBArgs
+  crossBreedsAsParentA?: boolean | BreedCountOutputTypeCountCrossBreedsAsParentAArgs
+  crossBreedsAsParentB?: boolean | BreedCountOutputTypeCountCrossBreedsAsParentBArgs
 }
 
 /**
@@ -777,14 +777,14 @@ export type BreedCountOutputTypeCountRabbitsArgs<ExtArgs extends runtime.Types.E
 /**
  * BreedCountOutputType without action
  */
-export type BreedCountOutputTypeCountCrossBreedAArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type BreedCountOutputTypeCountCrossBreedsAsParentAArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.CrossBreedWhereInput
 }
 
 /**
  * BreedCountOutputType without action
  */
-export type BreedCountOutputTypeCountCrossBreedBArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type BreedCountOutputTypeCountCrossBreedsAsParentBArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.CrossBreedWhereInput
 }
 
@@ -798,8 +798,8 @@ export type BreedSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   updatedAt?: boolean
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   rabbits?: boolean | Prisma.Breed$rabbitsArgs<ExtArgs>
-  crossBreedA?: boolean | Prisma.Breed$crossBreedAArgs<ExtArgs>
-  crossBreedB?: boolean | Prisma.Breed$crossBreedBArgs<ExtArgs>
+  crossBreedsAsParentA?: boolean | Prisma.Breed$crossBreedsAsParentAArgs<ExtArgs>
+  crossBreedsAsParentB?: boolean | Prisma.Breed$crossBreedsAsParentBArgs<ExtArgs>
   _count?: boolean | Prisma.BreedCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["breed"]>
 
@@ -836,8 +836,8 @@ export type BreedOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
 export type BreedInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   rabbits?: boolean | Prisma.Breed$rabbitsArgs<ExtArgs>
-  crossBreedA?: boolean | Prisma.Breed$crossBreedAArgs<ExtArgs>
-  crossBreedB?: boolean | Prisma.Breed$crossBreedBArgs<ExtArgs>
+  crossBreedsAsParentA?: boolean | Prisma.Breed$crossBreedsAsParentAArgs<ExtArgs>
+  crossBreedsAsParentB?: boolean | Prisma.Breed$crossBreedsAsParentBArgs<ExtArgs>
   _count?: boolean | Prisma.BreedCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type BreedIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -852,8 +852,8 @@ export type $BreedPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   objects: {
     farm: Prisma.$FarmPayload<ExtArgs>
     rabbits: Prisma.$RabbitPayload<ExtArgs>[]
-    crossBreedA: Prisma.$CrossBreedPayload<ExtArgs>[]
-    crossBreedB: Prisma.$CrossBreedPayload<ExtArgs>[]
+    crossBreedsAsParentA: Prisma.$CrossBreedPayload<ExtArgs>[]
+    crossBreedsAsParentB: Prisma.$CrossBreedPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1258,8 +1258,8 @@ export interface Prisma__BreedClient<T, Null = never, ExtArgs extends runtime.Ty
   readonly [Symbol.toStringTag]: "PrismaPromise"
   farm<T extends Prisma.FarmDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FarmDefaultArgs<ExtArgs>>): Prisma.Prisma__FarmClient<runtime.Types.Result.GetResult<Prisma.$FarmPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   rabbits<T extends Prisma.Breed$rabbitsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Breed$rabbitsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RabbitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  crossBreedA<T extends Prisma.Breed$crossBreedAArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Breed$crossBreedAArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CrossBreedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  crossBreedB<T extends Prisma.Breed$crossBreedBArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Breed$crossBreedBArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CrossBreedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  crossBreedsAsParentA<T extends Prisma.Breed$crossBreedsAsParentAArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Breed$crossBreedsAsParentAArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CrossBreedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  crossBreedsAsParentB<T extends Prisma.Breed$crossBreedsAsParentBArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Breed$crossBreedsAsParentBArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CrossBreedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1720,9 +1720,9 @@ export type Breed$rabbitsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 }
 
 /**
- * Breed.crossBreedA
+ * Breed.crossBreedsAsParentA
  */
-export type Breed$crossBreedAArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Breed$crossBreedsAsParentAArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the CrossBreed
    */
@@ -1744,9 +1744,9 @@ export type Breed$crossBreedAArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
- * Breed.crossBreedB
+ * Breed.crossBreedsAsParentB
  */
-export type Breed$crossBreedBArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Breed$crossBreedsAsParentBArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the CrossBreed
    */

@@ -17,6 +17,7 @@ const users_module_1 = require("./users/users.module");
 const sections_module_1 = require("./sections/sections.module");
 const cages_module_1 = require("./cages/cages.module");
 const rabbits_module_1 = require("./rabbits/rabbits.module");
+const genetics_module_1 = require("./genetics/genetics.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -37,6 +38,7 @@ exports.AppModule = AppModule = __decorate([
             sections_module_1.SectionsModule,
             cages_module_1.CagesModule,
             rabbits_module_1.RabbitsModule,
+            genetics_module_1.GeneticsModule,
         ],
     })
 ], AppModule);

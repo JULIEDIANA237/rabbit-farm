@@ -13,6 +13,7 @@ import { UsersModule } from './users/users.module';
 import { SectionsModule } from './sections/sections.module';
 import { CagesModule } from './cages/cages.module';
 import { RabbitsModule } from './rabbits/rabbits.module';
+import { GeneticsModule } from './genetics/genetics.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { RabbitsModule } from './rabbits/rabbits.module';
     SectionsModule,
     CagesModule,
     RabbitsModule,
+    GeneticsModule,
   ],
 })
 export class AppModule {}

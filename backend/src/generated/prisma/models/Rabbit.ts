@@ -20,8 +20,18 @@ export type RabbitModel = runtime.Types.Result.DefaultSelection<Prisma.$RabbitPa
 
 export type AggregateRabbit = {
   _count: RabbitCountAggregateOutputType | null
+  _avg: RabbitAvgAggregateOutputType | null
+  _sum: RabbitSumAggregateOutputType | null
   _min: RabbitMinAggregateOutputType | null
   _max: RabbitMaxAggregateOutputType | null
+}
+
+export type RabbitAvgAggregateOutputType = {
+  weight: runtime.Decimal | null
+}
+
+export type RabbitSumAggregateOutputType = {
+  weight: runtime.Decimal | null
 }
 
 export type RabbitMinAggregateOutputType = {
@@ -30,17 +40,14 @@ export type RabbitMinAggregateOutputType = {
   code: string | null
   sex: $Enums.RabbitSex | null
   status: $Enums.RabbitStatus | null
-  geneticType: string | null
   breedId: string | null
   crossBreedId: string | null
   fatherId: string | null
   motherId: string | null
   birthDate: Date | null
   color: string | null
-  size: string | null
-  earFeature: string | null
-  mark: string | null
-  observation: string | null
+  weight: runtime.Decimal | null
+  observations: string | null
   birthLitterId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -52,17 +59,14 @@ export type RabbitMaxAggregateOutputType = {
   code: string | null
   sex: $Enums.RabbitSex | null
   status: $Enums.RabbitStatus | null
-  geneticType: string | null
   breedId: string | null
   crossBreedId: string | null
   fatherId: string | null
   motherId: string | null
   birthDate: Date | null
   color: string | null
-  size: string | null
-  earFeature: string | null
-  mark: string | null
-  observation: string | null
+  weight: runtime.Decimal | null
+  observations: string | null
   birthLitterId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -74,17 +78,14 @@ export type RabbitCountAggregateOutputType = {
   code: number
   sex: number
   status: number
-  geneticType: number
   breedId: number
   crossBreedId: number
   fatherId: number
   motherId: number
   birthDate: number
   color: number
-  size: number
-  earFeature: number
-  mark: number
-  observation: number
+  weight: number
+  observations: number
   birthLitterId: number
   createdAt: number
   updatedAt: number
@@ -92,23 +93,28 @@ export type RabbitCountAggregateOutputType = {
 }
 
 
+export type RabbitAvgAggregateInputType = {
+  weight?: true
+}
+
+export type RabbitSumAggregateInputType = {
+  weight?: true
+}
+
 export type RabbitMinAggregateInputType = {
   id?: true
   farmId?: true
   code?: true
   sex?: true
   status?: true
-  geneticType?: true
   breedId?: true
   crossBreedId?: true
   fatherId?: true
   motherId?: true
   birthDate?: true
   color?: true
-  size?: true
-  earFeature?: true
-  mark?: true
-  observation?: true
+  weight?: true
+  observations?: true
   birthLitterId?: true
   createdAt?: true
   updatedAt?: true
@@ -120,17 +126,14 @@ export type RabbitMaxAggregateInputType = {
   code?: true
   sex?: true
   status?: true
-  geneticType?: true
   breedId?: true
   crossBreedId?: true
   fatherId?: true
   motherId?: true
   birthDate?: true
   color?: true
-  size?: true
-  earFeature?: true
-  mark?: true
-  observation?: true
+  weight?: true
+  observations?: true
   birthLitterId?: true
   createdAt?: true
   updatedAt?: true
@@ -142,17 +145,14 @@ export type RabbitCountAggregateInputType = {
   code?: true
   sex?: true
   status?: true
-  geneticType?: true
   breedId?: true
   crossBreedId?: true
   fatherId?: true
   motherId?: true
   birthDate?: true
   color?: true
-  size?: true
-  earFeature?: true
-  mark?: true
-  observation?: true
+  weight?: true
+  observations?: true
   birthLitterId?: true
   createdAt?: true
   updatedAt?: true
@@ -197,6 +197,18 @@ export type RabbitAggregateArgs<ExtArgs extends runtime.Types.Extensions.Interna
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: RabbitAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: RabbitSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: RabbitMinAggregateInputType
@@ -227,6 +239,8 @@ export type RabbitGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   _count?: RabbitCountAggregateInputType | true
+  _avg?: RabbitAvgAggregateInputType
+  _sum?: RabbitSumAggregateInputType
   _min?: RabbitMinAggregateInputType
   _max?: RabbitMaxAggregateInputType
 }
@@ -237,21 +251,20 @@ export type RabbitGroupByOutputType = {
   code: string
   sex: $Enums.RabbitSex
   status: $Enums.RabbitStatus
-  geneticType: string | null
   breedId: string | null
   crossBreedId: string | null
   fatherId: string | null
   motherId: string | null
   birthDate: Date | null
   color: string | null
-  size: string | null
-  earFeature: string | null
-  mark: string | null
-  observation: string | null
+  weight: runtime.Decimal | null
+  observations: string | null
   birthLitterId: string | null
   createdAt: Date
   updatedAt: Date
   _count: RabbitCountAggregateOutputType | null
+  _avg: RabbitAvgAggregateOutputType | null
+  _sum: RabbitSumAggregateOutputType | null
   _min: RabbitMinAggregateOutputType | null
   _max: RabbitMaxAggregateOutputType | null
 }
@@ -280,39 +293,36 @@ export type RabbitWhereInput = {
   code?: Prisma.StringFilter<"Rabbit"> | string
   sex?: Prisma.EnumRabbitSexFilter<"Rabbit"> | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFilter<"Rabbit"> | $Enums.RabbitStatus
-  geneticType?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   breedId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   crossBreedId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   fatherId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   motherId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   birthDate?: Prisma.DateTimeNullableFilter<"Rabbit"> | Date | string | null
   color?: Prisma.StringNullableFilter<"Rabbit"> | string | null
-  size?: Prisma.StringNullableFilter<"Rabbit"> | string | null
-  earFeature?: Prisma.StringNullableFilter<"Rabbit"> | string | null
-  mark?: Prisma.StringNullableFilter<"Rabbit"> | string | null
-  observation?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  weight?: Prisma.DecimalNullableFilter<"Rabbit"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   birthLitterId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Rabbit"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Rabbit"> | Date | string
-  healthRecords?: Prisma.HealthRecordListRelationFilter
-  saleItems?: Prisma.SaleItemListRelationFilter
   farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
   breed?: Prisma.XOR<Prisma.BreedNullableScalarRelationFilter, Prisma.BreedWhereInput> | null
   crossBreed?: Prisma.XOR<Prisma.CrossBreedNullableScalarRelationFilter, Prisma.CrossBreedWhereInput> | null
   father?: Prisma.XOR<Prisma.RabbitNullableScalarRelationFilter, Prisma.RabbitWhereInput> | null
-  childrenAsFather?: Prisma.RabbitListRelationFilter
   mother?: Prisma.XOR<Prisma.RabbitNullableScalarRelationFilter, Prisma.RabbitWhereInput> | null
+  childrenAsFather?: Prisma.RabbitListRelationFilter
   childrenAsMother?: Prisma.RabbitListRelationFilter
   identifications?: Prisma.RabbitIdentificationListRelationFilter
   cageMovements?: Prisma.RabbitCageMovementListRelationFilter
-  lotMemberships?: Prisma.LotMembershipListRelationFilter
-  weighings?: Prisma.WeighingListRelationFilter
-  birthLitter?: Prisma.XOR<Prisma.LitterNullableScalarRelationFilter, Prisma.LitterWhereInput> | null
   breedingsAsFemale?: Prisma.BreedingListRelationFilter
   breedingsAsMale?: Prisma.BreedingListRelationFilter
   motherBirths?: Prisma.BirthListRelationFilter
   motherLitters?: Prisma.LitterListRelationFilter
   fatherLitters?: Prisma.LitterListRelationFilter
+  birthLitter?: Prisma.XOR<Prisma.LitterNullableScalarRelationFilter, Prisma.LitterWhereInput> | null
+  lotMemberships?: Prisma.LotMembershipListRelationFilter
+  weighings?: Prisma.WeighingListRelationFilter
+  healthRecords?: Prisma.HealthRecordListRelationFilter
+  saleItems?: Prisma.SaleItemListRelationFilter
 }
 
 export type RabbitOrderByWithRelationInput = {
@@ -321,39 +331,36 @@ export type RabbitOrderByWithRelationInput = {
   code?: Prisma.SortOrder
   sex?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  geneticType?: Prisma.SortOrderInput | Prisma.SortOrder
   breedId?: Prisma.SortOrderInput | Prisma.SortOrder
   crossBreedId?: Prisma.SortOrderInput | Prisma.SortOrder
   fatherId?: Prisma.SortOrderInput | Prisma.SortOrder
   motherId?: Prisma.SortOrderInput | Prisma.SortOrder
   birthDate?: Prisma.SortOrderInput | Prisma.SortOrder
   color?: Prisma.SortOrderInput | Prisma.SortOrder
-  size?: Prisma.SortOrderInput | Prisma.SortOrder
-  earFeature?: Prisma.SortOrderInput | Prisma.SortOrder
-  mark?: Prisma.SortOrderInput | Prisma.SortOrder
-  observation?: Prisma.SortOrderInput | Prisma.SortOrder
+  weight?: Prisma.SortOrderInput | Prisma.SortOrder
+  observations?: Prisma.SortOrderInput | Prisma.SortOrder
   birthLitterId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  healthRecords?: Prisma.HealthRecordOrderByRelationAggregateInput
-  saleItems?: Prisma.SaleItemOrderByRelationAggregateInput
   farm?: Prisma.FarmOrderByWithRelationInput
   breed?: Prisma.BreedOrderByWithRelationInput
   crossBreed?: Prisma.CrossBreedOrderByWithRelationInput
   father?: Prisma.RabbitOrderByWithRelationInput
-  childrenAsFather?: Prisma.RabbitOrderByRelationAggregateInput
   mother?: Prisma.RabbitOrderByWithRelationInput
+  childrenAsFather?: Prisma.RabbitOrderByRelationAggregateInput
   childrenAsMother?: Prisma.RabbitOrderByRelationAggregateInput
   identifications?: Prisma.RabbitIdentificationOrderByRelationAggregateInput
   cageMovements?: Prisma.RabbitCageMovementOrderByRelationAggregateInput
-  lotMemberships?: Prisma.LotMembershipOrderByRelationAggregateInput
-  weighings?: Prisma.WeighingOrderByRelationAggregateInput
-  birthLitter?: Prisma.LitterOrderByWithRelationInput
   breedingsAsFemale?: Prisma.BreedingOrderByRelationAggregateInput
   breedingsAsMale?: Prisma.BreedingOrderByRelationAggregateInput
   motherBirths?: Prisma.BirthOrderByRelationAggregateInput
   motherLitters?: Prisma.LitterOrderByRelationAggregateInput
   fatherLitters?: Prisma.LitterOrderByRelationAggregateInput
+  birthLitter?: Prisma.LitterOrderByWithRelationInput
+  lotMemberships?: Prisma.LotMembershipOrderByRelationAggregateInput
+  weighings?: Prisma.WeighingOrderByRelationAggregateInput
+  healthRecords?: Prisma.HealthRecordOrderByRelationAggregateInput
+  saleItems?: Prisma.SaleItemOrderByRelationAggregateInput
 }
 
 export type RabbitWhereUniqueInput = Prisma.AtLeast<{
@@ -366,39 +373,36 @@ export type RabbitWhereUniqueInput = Prisma.AtLeast<{
   code?: Prisma.StringFilter<"Rabbit"> | string
   sex?: Prisma.EnumRabbitSexFilter<"Rabbit"> | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFilter<"Rabbit"> | $Enums.RabbitStatus
-  geneticType?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   breedId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   crossBreedId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   fatherId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   motherId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   birthDate?: Prisma.DateTimeNullableFilter<"Rabbit"> | Date | string | null
   color?: Prisma.StringNullableFilter<"Rabbit"> | string | null
-  size?: Prisma.StringNullableFilter<"Rabbit"> | string | null
-  earFeature?: Prisma.StringNullableFilter<"Rabbit"> | string | null
-  mark?: Prisma.StringNullableFilter<"Rabbit"> | string | null
-  observation?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  weight?: Prisma.DecimalNullableFilter<"Rabbit"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   birthLitterId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Rabbit"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Rabbit"> | Date | string
-  healthRecords?: Prisma.HealthRecordListRelationFilter
-  saleItems?: Prisma.SaleItemListRelationFilter
   farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
   breed?: Prisma.XOR<Prisma.BreedNullableScalarRelationFilter, Prisma.BreedWhereInput> | null
   crossBreed?: Prisma.XOR<Prisma.CrossBreedNullableScalarRelationFilter, Prisma.CrossBreedWhereInput> | null
   father?: Prisma.XOR<Prisma.RabbitNullableScalarRelationFilter, Prisma.RabbitWhereInput> | null
-  childrenAsFather?: Prisma.RabbitListRelationFilter
   mother?: Prisma.XOR<Prisma.RabbitNullableScalarRelationFilter, Prisma.RabbitWhereInput> | null
+  childrenAsFather?: Prisma.RabbitListRelationFilter
   childrenAsMother?: Prisma.RabbitListRelationFilter
   identifications?: Prisma.RabbitIdentificationListRelationFilter
   cageMovements?: Prisma.RabbitCageMovementListRelationFilter
-  lotMemberships?: Prisma.LotMembershipListRelationFilter
-  weighings?: Prisma.WeighingListRelationFilter
-  birthLitter?: Prisma.XOR<Prisma.LitterNullableScalarRelationFilter, Prisma.LitterWhereInput> | null
   breedingsAsFemale?: Prisma.BreedingListRelationFilter
   breedingsAsMale?: Prisma.BreedingListRelationFilter
   motherBirths?: Prisma.BirthListRelationFilter
   motherLitters?: Prisma.LitterListRelationFilter
   fatherLitters?: Prisma.LitterListRelationFilter
+  birthLitter?: Prisma.XOR<Prisma.LitterNullableScalarRelationFilter, Prisma.LitterWhereInput> | null
+  lotMemberships?: Prisma.LotMembershipListRelationFilter
+  weighings?: Prisma.WeighingListRelationFilter
+  healthRecords?: Prisma.HealthRecordListRelationFilter
+  saleItems?: Prisma.SaleItemListRelationFilter
 }, "id" | "farmId_code">
 
 export type RabbitOrderByWithAggregationInput = {
@@ -407,23 +411,22 @@ export type RabbitOrderByWithAggregationInput = {
   code?: Prisma.SortOrder
   sex?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  geneticType?: Prisma.SortOrderInput | Prisma.SortOrder
   breedId?: Prisma.SortOrderInput | Prisma.SortOrder
   crossBreedId?: Prisma.SortOrderInput | Prisma.SortOrder
   fatherId?: Prisma.SortOrderInput | Prisma.SortOrder
   motherId?: Prisma.SortOrderInput | Prisma.SortOrder
   birthDate?: Prisma.SortOrderInput | Prisma.SortOrder
   color?: Prisma.SortOrderInput | Prisma.SortOrder
-  size?: Prisma.SortOrderInput | Prisma.SortOrder
-  earFeature?: Prisma.SortOrderInput | Prisma.SortOrder
-  mark?: Prisma.SortOrderInput | Prisma.SortOrder
-  observation?: Prisma.SortOrderInput | Prisma.SortOrder
+  weight?: Prisma.SortOrderInput | Prisma.SortOrder
+  observations?: Prisma.SortOrderInput | Prisma.SortOrder
   birthLitterId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.RabbitCountOrderByAggregateInput
+  _avg?: Prisma.RabbitAvgOrderByAggregateInput
   _max?: Prisma.RabbitMaxOrderByAggregateInput
   _min?: Prisma.RabbitMinOrderByAggregateInput
+  _sum?: Prisma.RabbitSumOrderByAggregateInput
 }
 
 export type RabbitScalarWhereWithAggregatesInput = {
@@ -435,17 +438,14 @@ export type RabbitScalarWhereWithAggregatesInput = {
   code?: Prisma.StringWithAggregatesFilter<"Rabbit"> | string
   sex?: Prisma.EnumRabbitSexWithAggregatesFilter<"Rabbit"> | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusWithAggregatesFilter<"Rabbit"> | $Enums.RabbitStatus
-  geneticType?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
   breedId?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
   crossBreedId?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
   fatherId?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
   motherId?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
   birthDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Rabbit"> | Date | string | null
   color?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
-  size?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
-  earFeature?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
-  mark?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
-  observation?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
+  weight?: Prisma.DecimalNullableWithAggregatesFilter<"Rabbit"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
   birthLitterId?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Rabbit"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Rabbit"> | Date | string
@@ -456,34 +456,31 @@ export type RabbitCreateInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
   father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
-  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   mother?: Prisma.RabbitCreateNestedOneWithoutChildrenAsMotherInput
+  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
-  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
+  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
+  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateInput = {
@@ -492,33 +489,30 @@ export type RabbitUncheckedCreateInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   crossBreedId?: string | null
   fatherId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
+  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUpdateInput = {
@@ -526,34 +520,31 @@ export type RabbitUpdateInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
   father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
-  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   mother?: Prisma.RabbitUpdateOneWithoutChildrenAsMotherNestedInput
+  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
-  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUpdateManyWithoutFatherNestedInput
+  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
+  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateInput = {
@@ -562,33 +553,30 @@ export type RabbitUncheckedUpdateInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUncheckedUpdateManyWithoutFatherNestedInput
+  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateManyInput = {
@@ -597,17 +585,14 @@ export type RabbitCreateManyInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   crossBreedId?: string | null
   fatherId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -618,13 +603,10 @@ export type RabbitUpdateManyMutationInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -635,17 +617,14 @@ export type RabbitUncheckedUpdateManyInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -677,20 +656,21 @@ export type RabbitCountOrderByAggregateInput = {
   code?: Prisma.SortOrder
   sex?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  geneticType?: Prisma.SortOrder
   breedId?: Prisma.SortOrder
   crossBreedId?: Prisma.SortOrder
   fatherId?: Prisma.SortOrder
   motherId?: Prisma.SortOrder
   birthDate?: Prisma.SortOrder
   color?: Prisma.SortOrder
-  size?: Prisma.SortOrder
-  earFeature?: Prisma.SortOrder
-  mark?: Prisma.SortOrder
-  observation?: Prisma.SortOrder
+  weight?: Prisma.SortOrder
+  observations?: Prisma.SortOrder
   birthLitterId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type RabbitAvgOrderByAggregateInput = {
+  weight?: Prisma.SortOrder
 }
 
 export type RabbitMaxOrderByAggregateInput = {
@@ -699,17 +679,14 @@ export type RabbitMaxOrderByAggregateInput = {
   code?: Prisma.SortOrder
   sex?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  geneticType?: Prisma.SortOrder
   breedId?: Prisma.SortOrder
   crossBreedId?: Prisma.SortOrder
   fatherId?: Prisma.SortOrder
   motherId?: Prisma.SortOrder
   birthDate?: Prisma.SortOrder
   color?: Prisma.SortOrder
-  size?: Prisma.SortOrder
-  earFeature?: Prisma.SortOrder
-  mark?: Prisma.SortOrder
-  observation?: Prisma.SortOrder
+  weight?: Prisma.SortOrder
+  observations?: Prisma.SortOrder
   birthLitterId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -721,20 +698,21 @@ export type RabbitMinOrderByAggregateInput = {
   code?: Prisma.SortOrder
   sex?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  geneticType?: Prisma.SortOrder
   breedId?: Prisma.SortOrder
   crossBreedId?: Prisma.SortOrder
   fatherId?: Prisma.SortOrder
   motherId?: Prisma.SortOrder
   birthDate?: Prisma.SortOrder
   color?: Prisma.SortOrder
-  size?: Prisma.SortOrder
-  earFeature?: Prisma.SortOrder
-  mark?: Prisma.SortOrder
-  observation?: Prisma.SortOrder
+  weight?: Prisma.SortOrder
+  observations?: Prisma.SortOrder
   birthLitterId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type RabbitSumOrderByAggregateInput = {
+  weight?: Prisma.SortOrder
 }
 
 export type RabbitScalarRelationFilter = {
@@ -874,17 +852,17 @@ export type RabbitCreateNestedOneWithoutChildrenAsFatherInput = {
   connect?: Prisma.RabbitWhereUniqueInput
 }
 
+export type RabbitCreateNestedOneWithoutChildrenAsMotherInput = {
+  create?: Prisma.XOR<Prisma.RabbitCreateWithoutChildrenAsMotherInput, Prisma.RabbitUncheckedCreateWithoutChildrenAsMotherInput>
+  connectOrCreate?: Prisma.RabbitCreateOrConnectWithoutChildrenAsMotherInput
+  connect?: Prisma.RabbitWhereUniqueInput
+}
+
 export type RabbitCreateNestedManyWithoutFatherInput = {
   create?: Prisma.XOR<Prisma.RabbitCreateWithoutFatherInput, Prisma.RabbitUncheckedCreateWithoutFatherInput> | Prisma.RabbitCreateWithoutFatherInput[] | Prisma.RabbitUncheckedCreateWithoutFatherInput[]
   connectOrCreate?: Prisma.RabbitCreateOrConnectWithoutFatherInput | Prisma.RabbitCreateOrConnectWithoutFatherInput[]
   createMany?: Prisma.RabbitCreateManyFatherInputEnvelope
   connect?: Prisma.RabbitWhereUniqueInput | Prisma.RabbitWhereUniqueInput[]
-}
-
-export type RabbitCreateNestedOneWithoutChildrenAsMotherInput = {
-  create?: Prisma.XOR<Prisma.RabbitCreateWithoutChildrenAsMotherInput, Prisma.RabbitUncheckedCreateWithoutChildrenAsMotherInput>
-  connectOrCreate?: Prisma.RabbitCreateOrConnectWithoutChildrenAsMotherInput
-  connect?: Prisma.RabbitWhereUniqueInput
 }
 
 export type RabbitCreateNestedManyWithoutMotherInput = {
@@ -920,6 +898,14 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
+export type NullableDecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
+}
+
 export type RabbitUpdateOneWithoutChildrenAsFatherNestedInput = {
   create?: Prisma.XOR<Prisma.RabbitCreateWithoutChildrenAsFatherInput, Prisma.RabbitUncheckedCreateWithoutChildrenAsFatherInput>
   connectOrCreate?: Prisma.RabbitCreateOrConnectWithoutChildrenAsFatherInput
@@ -928,6 +914,16 @@ export type RabbitUpdateOneWithoutChildrenAsFatherNestedInput = {
   delete?: Prisma.RabbitWhereInput | boolean
   connect?: Prisma.RabbitWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.RabbitUpdateToOneWithWhereWithoutChildrenAsFatherInput, Prisma.RabbitUpdateWithoutChildrenAsFatherInput>, Prisma.RabbitUncheckedUpdateWithoutChildrenAsFatherInput>
+}
+
+export type RabbitUpdateOneWithoutChildrenAsMotherNestedInput = {
+  create?: Prisma.XOR<Prisma.RabbitCreateWithoutChildrenAsMotherInput, Prisma.RabbitUncheckedCreateWithoutChildrenAsMotherInput>
+  connectOrCreate?: Prisma.RabbitCreateOrConnectWithoutChildrenAsMotherInput
+  upsert?: Prisma.RabbitUpsertWithoutChildrenAsMotherInput
+  disconnect?: Prisma.RabbitWhereInput | boolean
+  delete?: Prisma.RabbitWhereInput | boolean
+  connect?: Prisma.RabbitWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.RabbitUpdateToOneWithWhereWithoutChildrenAsMotherInput, Prisma.RabbitUpdateWithoutChildrenAsMotherInput>, Prisma.RabbitUncheckedUpdateWithoutChildrenAsMotherInput>
 }
 
 export type RabbitUpdateManyWithoutFatherNestedInput = {
@@ -942,16 +938,6 @@ export type RabbitUpdateManyWithoutFatherNestedInput = {
   update?: Prisma.RabbitUpdateWithWhereUniqueWithoutFatherInput | Prisma.RabbitUpdateWithWhereUniqueWithoutFatherInput[]
   updateMany?: Prisma.RabbitUpdateManyWithWhereWithoutFatherInput | Prisma.RabbitUpdateManyWithWhereWithoutFatherInput[]
   deleteMany?: Prisma.RabbitScalarWhereInput | Prisma.RabbitScalarWhereInput[]
-}
-
-export type RabbitUpdateOneWithoutChildrenAsMotherNestedInput = {
-  create?: Prisma.XOR<Prisma.RabbitCreateWithoutChildrenAsMotherInput, Prisma.RabbitUncheckedCreateWithoutChildrenAsMotherInput>
-  connectOrCreate?: Prisma.RabbitCreateOrConnectWithoutChildrenAsMotherInput
-  upsert?: Prisma.RabbitUpsertWithoutChildrenAsMotherInput
-  disconnect?: Prisma.RabbitWhereInput | boolean
-  delete?: Prisma.RabbitWhereInput | boolean
-  connect?: Prisma.RabbitWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.RabbitUpdateToOneWithWhereWithoutChildrenAsMotherInput, Prisma.RabbitUpdateWithoutChildrenAsMotherInput>, Prisma.RabbitUncheckedUpdateWithoutChildrenAsMotherInput>
 }
 
 export type RabbitUpdateManyWithoutMotherNestedInput = {
@@ -1203,33 +1189,30 @@ export type RabbitCreateWithoutFarmInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
   father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
-  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   mother?: Prisma.RabbitCreateNestedOneWithoutChildrenAsMotherInput
+  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
-  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
+  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
+  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutFarmInput = {
@@ -1237,33 +1220,30 @@ export type RabbitUncheckedCreateWithoutFarmInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   crossBreedId?: string | null
   fatherId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
+  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutFarmInput = {
@@ -1301,17 +1281,14 @@ export type RabbitScalarWhereInput = {
   code?: Prisma.StringFilter<"Rabbit"> | string
   sex?: Prisma.EnumRabbitSexFilter<"Rabbit"> | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFilter<"Rabbit"> | $Enums.RabbitStatus
-  geneticType?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   breedId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   crossBreedId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   fatherId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   motherId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   birthDate?: Prisma.DateTimeNullableFilter<"Rabbit"> | Date | string | null
   color?: Prisma.StringNullableFilter<"Rabbit"> | string | null
-  size?: Prisma.StringNullableFilter<"Rabbit"> | string | null
-  earFeature?: Prisma.StringNullableFilter<"Rabbit"> | string | null
-  mark?: Prisma.StringNullableFilter<"Rabbit"> | string | null
-  observation?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  weight?: Prisma.DecimalNullableFilter<"Rabbit"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   birthLitterId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Rabbit"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Rabbit"> | Date | string
@@ -1322,33 +1299,30 @@ export type RabbitCreateWithoutBreedInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
   father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
-  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   mother?: Prisma.RabbitCreateNestedOneWithoutChildrenAsMotherInput
+  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
-  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
+  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
+  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutBreedInput = {
@@ -1357,32 +1331,29 @@ export type RabbitUncheckedCreateWithoutBreedInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   crossBreedId?: string | null
   fatherId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
+  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutBreedInput = {
@@ -1416,33 +1387,30 @@ export type RabbitCreateWithoutCrossBreedInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
-  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   mother?: Prisma.RabbitCreateNestedOneWithoutChildrenAsMotherInput
+  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
-  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
+  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
+  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutCrossBreedInput = {
@@ -1451,32 +1419,29 @@ export type RabbitUncheckedCreateWithoutCrossBreedInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   fatherId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
+  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutCrossBreedInput = {
@@ -1510,17 +1475,12 @@ export type RabbitCreateWithoutChildrenAsFatherInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -1529,14 +1489,16 @@ export type RabbitCreateWithoutChildrenAsFatherInput = {
   childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
-  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
+  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
+  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutChildrenAsFatherInput = {
@@ -1545,32 +1507,29 @@ export type RabbitUncheckedCreateWithoutChildrenAsFatherInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   crossBreedId?: string | null
   fatherId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
+  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutChildrenAsFatherInput = {
@@ -1578,38 +1537,102 @@ export type RabbitCreateOrConnectWithoutChildrenAsFatherInput = {
   create: Prisma.XOR<Prisma.RabbitCreateWithoutChildrenAsFatherInput, Prisma.RabbitUncheckedCreateWithoutChildrenAsFatherInput>
 }
 
-export type RabbitCreateWithoutFatherInput = {
+export type RabbitCreateWithoutChildrenAsMotherInput = {
   id?: string
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
-  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
+  father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
   mother?: Prisma.RabbitCreateNestedOneWithoutChildrenAsMotherInput
-  childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
+  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
-  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
+  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
+  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+}
+
+export type RabbitUncheckedCreateWithoutChildrenAsMotherInput = {
+  id?: string
+  farmId: string
+  code: string
+  sex: $Enums.RabbitSex
+  status?: $Enums.RabbitStatus
+  breedId?: string | null
+  crossBreedId?: string | null
+  fatherId?: string | null
+  motherId?: string | null
+  birthDate?: Date | string | null
+  color?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
+  birthLitterId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
+  identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
+  cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
+  breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
+  breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
+  motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
+  motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
+  fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
+  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+}
+
+export type RabbitCreateOrConnectWithoutChildrenAsMotherInput = {
+  where: Prisma.RabbitWhereUniqueInput
+  create: Prisma.XOR<Prisma.RabbitCreateWithoutChildrenAsMotherInput, Prisma.RabbitUncheckedCreateWithoutChildrenAsMotherInput>
+}
+
+export type RabbitCreateWithoutFatherInput = {
+  id?: string
+  code: string
+  sex: $Enums.RabbitSex
+  status?: $Enums.RabbitStatus
+  birthDate?: Date | string | null
+  color?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
+  breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
+  crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
+  mother?: Prisma.RabbitCreateNestedOneWithoutChildrenAsMotherInput
+  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
+  childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
+  identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
+  cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
+  breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
+  breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
+  motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
+  motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
+  fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
+  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
+  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutFatherInput = {
@@ -1618,32 +1641,29 @@ export type RabbitUncheckedCreateWithoutFatherInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   crossBreedId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
+  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutFatherInput = {
@@ -1656,95 +1676,17 @@ export type RabbitCreateManyFatherInputEnvelope = {
   skipDuplicates?: boolean
 }
 
-export type RabbitCreateWithoutChildrenAsMotherInput = {
-  id?: string
-  code: string
-  sex: $Enums.RabbitSex
-  status?: $Enums.RabbitStatus
-  geneticType?: string | null
-  birthDate?: Date | string | null
-  color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
-  farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
-  breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
-  crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
-  father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
-  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
-  mother?: Prisma.RabbitCreateNestedOneWithoutChildrenAsMotherInput
-  identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
-  cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
-  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
-  breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
-  breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
-  motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
-  motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
-  fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
-}
-
-export type RabbitUncheckedCreateWithoutChildrenAsMotherInput = {
-  id?: string
-  farmId: string
-  code: string
-  sex: $Enums.RabbitSex
-  status?: $Enums.RabbitStatus
-  geneticType?: string | null
-  breedId?: string | null
-  crossBreedId?: string | null
-  fatherId?: string | null
-  motherId?: string | null
-  birthDate?: Date | string | null
-  color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
-  birthLitterId?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
-  childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
-  identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
-  cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
-  breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
-  breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
-  motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
-  motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
-  fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
-}
-
-export type RabbitCreateOrConnectWithoutChildrenAsMotherInput = {
-  where: Prisma.RabbitWhereUniqueInput
-  create: Prisma.XOR<Prisma.RabbitCreateWithoutChildrenAsMotherInput, Prisma.RabbitUncheckedCreateWithoutChildrenAsMotherInput>
-}
-
 export type RabbitCreateWithoutMotherInput = {
   id?: string
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -1753,14 +1695,16 @@ export type RabbitCreateWithoutMotherInput = {
   childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
-  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
+  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
+  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutMotherInput = {
@@ -1769,32 +1713,29 @@ export type RabbitUncheckedCreateWithoutMotherInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   crossBreedId?: string | null
   fatherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
+  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutMotherInput = {
@@ -1823,17 +1764,12 @@ export type RabbitUpdateWithoutChildrenAsFatherInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -1842,14 +1778,16 @@ export type RabbitUpdateWithoutChildrenAsFatherInput = {
   childrenAsMother?: Prisma.RabbitUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
-  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUpdateManyWithoutFatherNestedInput
+  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
+  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutChildrenAsFatherInput = {
@@ -1858,48 +1796,29 @@ export type RabbitUncheckedUpdateWithoutChildrenAsFatherInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUncheckedUpdateManyWithoutFatherNestedInput
-}
-
-export type RabbitUpsertWithWhereUniqueWithoutFatherInput = {
-  where: Prisma.RabbitWhereUniqueInput
-  update: Prisma.XOR<Prisma.RabbitUpdateWithoutFatherInput, Prisma.RabbitUncheckedUpdateWithoutFatherInput>
-  create: Prisma.XOR<Prisma.RabbitCreateWithoutFatherInput, Prisma.RabbitUncheckedCreateWithoutFatherInput>
-}
-
-export type RabbitUpdateWithWhereUniqueWithoutFatherInput = {
-  where: Prisma.RabbitWhereUniqueInput
-  data: Prisma.XOR<Prisma.RabbitUpdateWithoutFatherInput, Prisma.RabbitUncheckedUpdateWithoutFatherInput>
-}
-
-export type RabbitUpdateManyWithWhereWithoutFatherInput = {
-  where: Prisma.RabbitScalarWhereInput
-  data: Prisma.XOR<Prisma.RabbitUpdateManyMutationInput, Prisma.RabbitUncheckedUpdateManyWithoutFatherInput>
+  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUpsertWithoutChildrenAsMotherInput = {
@@ -1918,33 +1837,30 @@ export type RabbitUpdateWithoutChildrenAsMotherInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
   father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
-  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   mother?: Prisma.RabbitUpdateOneWithoutChildrenAsMotherNestedInput
+  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
-  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUpdateManyWithoutFatherNestedInput
+  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
+  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutChildrenAsMotherInput = {
@@ -1953,32 +1869,45 @@ export type RabbitUncheckedUpdateWithoutChildrenAsMotherInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUncheckedUpdateManyWithoutFatherNestedInput
+  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+}
+
+export type RabbitUpsertWithWhereUniqueWithoutFatherInput = {
+  where: Prisma.RabbitWhereUniqueInput
+  update: Prisma.XOR<Prisma.RabbitUpdateWithoutFatherInput, Prisma.RabbitUncheckedUpdateWithoutFatherInput>
+  create: Prisma.XOR<Prisma.RabbitCreateWithoutFatherInput, Prisma.RabbitUncheckedCreateWithoutFatherInput>
+}
+
+export type RabbitUpdateWithWhereUniqueWithoutFatherInput = {
+  where: Prisma.RabbitWhereUniqueInput
+  data: Prisma.XOR<Prisma.RabbitUpdateWithoutFatherInput, Prisma.RabbitUncheckedUpdateWithoutFatherInput>
+}
+
+export type RabbitUpdateManyWithWhereWithoutFatherInput = {
+  where: Prisma.RabbitScalarWhereInput
+  data: Prisma.XOR<Prisma.RabbitUpdateManyMutationInput, Prisma.RabbitUncheckedUpdateManyWithoutFatherInput>
 }
 
 export type RabbitUpsertWithWhereUniqueWithoutMotherInput = {
@@ -2002,33 +1931,30 @@ export type RabbitCreateWithoutIdentificationsInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
   father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
-  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   mother?: Prisma.RabbitCreateNestedOneWithoutChildrenAsMotherInput
+  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
-  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
+  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
+  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutIdentificationsInput = {
@@ -2037,32 +1963,29 @@ export type RabbitUncheckedCreateWithoutIdentificationsInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   crossBreedId?: string | null
   fatherId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
+  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutIdentificationsInput = {
@@ -2086,33 +2009,30 @@ export type RabbitUpdateWithoutIdentificationsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
   father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
-  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   mother?: Prisma.RabbitUpdateOneWithoutChildrenAsMotherNestedInput
+  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUpdateManyWithoutMotherNestedInput
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
-  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUpdateManyWithoutFatherNestedInput
+  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
+  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutIdentificationsInput = {
@@ -2121,32 +2041,29 @@ export type RabbitUncheckedUpdateWithoutIdentificationsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUncheckedUpdateManyWithoutFatherNestedInput
+  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateWithoutCageMovementsInput = {
@@ -2154,33 +2071,30 @@ export type RabbitCreateWithoutCageMovementsInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
   father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
-  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   mother?: Prisma.RabbitCreateNestedOneWithoutChildrenAsMotherInput
+  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
-  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
+  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
+  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutCageMovementsInput = {
@@ -2189,32 +2103,29 @@ export type RabbitUncheckedCreateWithoutCageMovementsInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   crossBreedId?: string | null
   fatherId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
+  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutCageMovementsInput = {
@@ -2238,33 +2149,30 @@ export type RabbitUpdateWithoutCageMovementsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
   father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
-  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   mother?: Prisma.RabbitUpdateOneWithoutChildrenAsMotherNestedInput
+  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
-  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUpdateManyWithoutFatherNestedInput
+  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
+  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutCageMovementsInput = {
@@ -2273,32 +2181,29 @@ export type RabbitUncheckedUpdateWithoutCageMovementsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUncheckedUpdateManyWithoutFatherNestedInput
+  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateWithoutBreedingsAsFemaleInput = {
@@ -2306,33 +2211,30 @@ export type RabbitCreateWithoutBreedingsAsFemaleInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
   father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
-  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   mother?: Prisma.RabbitCreateNestedOneWithoutChildrenAsMotherInput
+  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
-  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
+  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
+  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutBreedingsAsFemaleInput = {
@@ -2341,32 +2243,29 @@ export type RabbitUncheckedCreateWithoutBreedingsAsFemaleInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   crossBreedId?: string | null
   fatherId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
+  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutBreedingsAsFemaleInput = {
@@ -2379,33 +2278,30 @@ export type RabbitCreateWithoutBreedingsAsMaleInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
   father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
-  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   mother?: Prisma.RabbitCreateNestedOneWithoutChildrenAsMotherInput
+  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
-  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
+  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
+  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutBreedingsAsMaleInput = {
@@ -2414,32 +2310,29 @@ export type RabbitUncheckedCreateWithoutBreedingsAsMaleInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   crossBreedId?: string | null
   fatherId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
+  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutBreedingsAsMaleInput = {
@@ -2463,33 +2356,30 @@ export type RabbitUpdateWithoutBreedingsAsFemaleInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
   father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
-  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   mother?: Prisma.RabbitUpdateOneWithoutChildrenAsMotherNestedInput
+  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
-  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUpdateManyWithoutFatherNestedInput
+  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
+  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutBreedingsAsFemaleInput = {
@@ -2498,32 +2388,29 @@ export type RabbitUncheckedUpdateWithoutBreedingsAsFemaleInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUncheckedUpdateManyWithoutFatherNestedInput
+  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUpsertWithoutBreedingsAsMaleInput = {
@@ -2542,33 +2429,30 @@ export type RabbitUpdateWithoutBreedingsAsMaleInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
   father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
-  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   mother?: Prisma.RabbitUpdateOneWithoutChildrenAsMotherNestedInput
+  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
-  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUpdateManyWithoutFatherNestedInput
+  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
+  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutBreedingsAsMaleInput = {
@@ -2577,32 +2461,29 @@ export type RabbitUncheckedUpdateWithoutBreedingsAsMaleInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUncheckedUpdateManyWithoutFatherNestedInput
+  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateWithoutMotherBirthsInput = {
@@ -2610,33 +2491,30 @@ export type RabbitCreateWithoutMotherBirthsInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
   father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
-  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   mother?: Prisma.RabbitCreateNestedOneWithoutChildrenAsMotherInput
+  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
-  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
+  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
+  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutMotherBirthsInput = {
@@ -2645,32 +2523,29 @@ export type RabbitUncheckedCreateWithoutMotherBirthsInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   crossBreedId?: string | null
   fatherId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
+  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutMotherBirthsInput = {
@@ -2694,33 +2569,30 @@ export type RabbitUpdateWithoutMotherBirthsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
   father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
-  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   mother?: Prisma.RabbitUpdateOneWithoutChildrenAsMotherNestedInput
+  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
-  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUpdateManyWithoutFatherNestedInput
+  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
+  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutMotherBirthsInput = {
@@ -2729,32 +2601,29 @@ export type RabbitUncheckedUpdateWithoutMotherBirthsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUncheckedUpdateManyWithoutFatherNestedInput
+  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateWithoutMotherLittersInput = {
@@ -2762,33 +2631,30 @@ export type RabbitCreateWithoutMotherLittersInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
   father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
-  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   mother?: Prisma.RabbitCreateNestedOneWithoutChildrenAsMotherInput
+  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
-  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
+  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
+  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutMotherLittersInput = {
@@ -2797,32 +2663,29 @@ export type RabbitUncheckedCreateWithoutMotherLittersInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   crossBreedId?: string | null
   fatherId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
+  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutMotherLittersInput = {
@@ -2835,33 +2698,30 @@ export type RabbitCreateWithoutFatherLittersInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
   father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
-  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   mother?: Prisma.RabbitCreateNestedOneWithoutChildrenAsMotherInput
+  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
-  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
+  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
+  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutFatherLittersInput = {
@@ -2870,32 +2730,29 @@ export type RabbitUncheckedCreateWithoutFatherLittersInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   crossBreedId?: string | null
   fatherId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
+  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutFatherLittersInput = {
@@ -2908,33 +2765,30 @@ export type RabbitCreateWithoutBirthLitterInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
   father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
-  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   mother?: Prisma.RabbitCreateNestedOneWithoutChildrenAsMotherInput
+  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
+  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutBirthLitterInput = {
@@ -2943,32 +2797,29 @@ export type RabbitUncheckedCreateWithoutBirthLitterInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   crossBreedId?: string | null
   fatherId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
+  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutBirthLitterInput = {
@@ -2997,33 +2848,30 @@ export type RabbitUpdateWithoutMotherLittersInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
   father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
-  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   mother?: Prisma.RabbitUpdateOneWithoutChildrenAsMotherNestedInput
+  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
-  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUpdateManyWithoutFatherNestedInput
+  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
+  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutMotherLittersInput = {
@@ -3032,32 +2880,29 @@ export type RabbitUncheckedUpdateWithoutMotherLittersInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUncheckedUpdateManyWithoutFatherNestedInput
+  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUpsertWithoutFatherLittersInput = {
@@ -3076,33 +2921,30 @@ export type RabbitUpdateWithoutFatherLittersInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
   father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
-  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   mother?: Prisma.RabbitUpdateOneWithoutChildrenAsMotherNestedInput
+  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
-  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
+  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
+  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutFatherLittersInput = {
@@ -3111,32 +2953,29 @@ export type RabbitUncheckedUpdateWithoutFatherLittersInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
+  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUpsertWithWhereUniqueWithoutBirthLitterInput = {
@@ -3160,33 +2999,30 @@ export type RabbitCreateWithoutLotMembershipsInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
   father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
-  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   mother?: Prisma.RabbitCreateNestedOneWithoutChildrenAsMotherInput
+  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
-  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
+  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutLotMembershipsInput = {
@@ -3195,32 +3031,29 @@ export type RabbitUncheckedCreateWithoutLotMembershipsInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   crossBreedId?: string | null
   fatherId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutLotMembershipsInput = {
@@ -3244,33 +3077,30 @@ export type RabbitUpdateWithoutLotMembershipsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
   father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
-  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   mother?: Prisma.RabbitUpdateOneWithoutChildrenAsMotherNestedInput
+  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
-  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUpdateManyWithoutFatherNestedInput
+  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutLotMembershipsInput = {
@@ -3279,32 +3109,29 @@ export type RabbitUncheckedUpdateWithoutLotMembershipsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUncheckedUpdateManyWithoutFatherNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateWithoutWeighingsInput = {
@@ -3312,33 +3139,30 @@ export type RabbitCreateWithoutWeighingsInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
   father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
-  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   mother?: Prisma.RabbitCreateNestedOneWithoutChildrenAsMotherInput
+  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
-  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
+  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
+  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutWeighingsInput = {
@@ -3347,32 +3171,29 @@ export type RabbitUncheckedCreateWithoutWeighingsInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   crossBreedId?: string | null
   fatherId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
-  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
+  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutWeighingsInput = {
@@ -3396,33 +3217,30 @@ export type RabbitUpdateWithoutWeighingsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
   father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
-  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   mother?: Prisma.RabbitUpdateOneWithoutChildrenAsMotherNestedInput
+  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
-  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUpdateManyWithoutFatherNestedInput
+  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
+  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutWeighingsInput = {
@@ -3431,32 +3249,29 @@ export type RabbitUncheckedUpdateWithoutWeighingsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUncheckedUpdateManyWithoutFatherNestedInput
+  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateWithoutHealthRecordsInput = {
@@ -3464,33 +3279,30 @@ export type RabbitCreateWithoutHealthRecordsInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
   father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
-  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   mother?: Prisma.RabbitCreateNestedOneWithoutChildrenAsMotherInput
+  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
-  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
+  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
+  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutHealthRecordsInput = {
@@ -3499,32 +3311,29 @@ export type RabbitUncheckedCreateWithoutHealthRecordsInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   crossBreedId?: string | null
   fatherId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
+  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutHealthRecordsInput = {
@@ -3548,33 +3357,30 @@ export type RabbitUpdateWithoutHealthRecordsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
   father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
-  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   mother?: Prisma.RabbitUpdateOneWithoutChildrenAsMotherNestedInput
+  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
-  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUpdateManyWithoutFatherNestedInput
+  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
+  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutHealthRecordsInput = {
@@ -3583,32 +3389,29 @@ export type RabbitUncheckedUpdateWithoutHealthRecordsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUncheckedUpdateManyWithoutFatherNestedInput
+  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateWithoutSaleItemsInput = {
@@ -3616,33 +3419,30 @@ export type RabbitCreateWithoutSaleItemsInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
   father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
-  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   mother?: Prisma.RabbitCreateNestedOneWithoutChildrenAsMotherInput
+  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
-  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
+  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
+  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutSaleItemsInput = {
@@ -3651,32 +3451,29 @@ export type RabbitUncheckedCreateWithoutSaleItemsInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   crossBreedId?: string | null
   fatherId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
-  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
-  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
   fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
+  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutSaleItemsInput = {
@@ -3700,33 +3497,30 @@ export type RabbitUpdateWithoutSaleItemsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
   father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
-  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   mother?: Prisma.RabbitUpdateOneWithoutChildrenAsMotherNestedInput
+  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
-  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUpdateManyWithoutFatherNestedInput
+  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
+  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutSaleItemsInput = {
@@ -3735,32 +3529,29 @@ export type RabbitUncheckedUpdateWithoutSaleItemsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUncheckedUpdateManyWithoutFatherNestedInput
+  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateManyFarmInput = {
@@ -3768,17 +3559,14 @@ export type RabbitCreateManyFarmInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   crossBreedId?: string | null
   fatherId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3789,33 +3577,30 @@ export type RabbitUpdateWithoutFarmInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
   father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
-  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   mother?: Prisma.RabbitUpdateOneWithoutChildrenAsMotherNestedInput
+  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
-  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUpdateManyWithoutFatherNestedInput
+  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
+  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutFarmInput = {
@@ -3823,33 +3608,30 @@ export type RabbitUncheckedUpdateWithoutFarmInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUncheckedUpdateManyWithoutFatherNestedInput
+  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateManyWithoutFarmInput = {
@@ -3857,17 +3639,14 @@ export type RabbitUncheckedUpdateManyWithoutFarmInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3879,16 +3658,13 @@ export type RabbitCreateManyBreedInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   crossBreedId?: string | null
   fatherId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3899,33 +3675,30 @@ export type RabbitUpdateWithoutBreedInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
   father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
-  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   mother?: Prisma.RabbitUpdateOneWithoutChildrenAsMotherNestedInput
+  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
-  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUpdateManyWithoutFatherNestedInput
+  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
+  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutBreedInput = {
@@ -3934,32 +3707,29 @@ export type RabbitUncheckedUpdateWithoutBreedInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUncheckedUpdateManyWithoutFatherNestedInput
+  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateManyWithoutBreedInput = {
@@ -3968,16 +3738,13 @@ export type RabbitUncheckedUpdateManyWithoutBreedInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3989,16 +3756,13 @@ export type RabbitCreateManyCrossBreedInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   fatherId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -4009,33 +3773,30 @@ export type RabbitUpdateWithoutCrossBreedInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
-  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   mother?: Prisma.RabbitUpdateOneWithoutChildrenAsMotherNestedInput
+  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
-  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUpdateManyWithoutFatherNestedInput
+  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
+  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutCrossBreedInput = {
@@ -4044,32 +3805,29 @@ export type RabbitUncheckedUpdateWithoutCrossBreedInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUncheckedUpdateManyWithoutFatherNestedInput
+  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateManyWithoutCrossBreedInput = {
@@ -4078,16 +3836,13 @@ export type RabbitUncheckedUpdateManyWithoutCrossBreedInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4099,16 +3854,13 @@ export type RabbitCreateManyFatherInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   crossBreedId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -4120,16 +3872,13 @@ export type RabbitCreateManyMotherInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   crossBreedId?: string | null
   fatherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -4140,33 +3889,30 @@ export type RabbitUpdateWithoutFatherInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
-  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   mother?: Prisma.RabbitUpdateOneWithoutChildrenAsMotherNestedInput
+  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
-  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUpdateManyWithoutFatherNestedInput
+  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
+  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutFatherInput = {
@@ -4175,32 +3921,29 @@ export type RabbitUncheckedUpdateWithoutFatherInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUncheckedUpdateManyWithoutFatherNestedInput
+  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateManyWithoutFatherInput = {
@@ -4209,16 +3952,13 @@ export type RabbitUncheckedUpdateManyWithoutFatherInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4229,17 +3969,12 @@ export type RabbitUpdateWithoutMotherInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -4248,14 +3983,16 @@ export type RabbitUpdateWithoutMotherInput = {
   childrenAsMother?: Prisma.RabbitUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
-  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUpdateManyWithoutFatherNestedInput
+  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
+  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutMotherInput = {
@@ -4264,32 +4001,29 @@ export type RabbitUncheckedUpdateWithoutMotherInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUncheckedUpdateManyWithoutFatherNestedInput
+  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateManyWithoutMotherInput = {
@@ -4298,16 +4032,13 @@ export type RabbitUncheckedUpdateManyWithoutMotherInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4319,17 +4050,14 @@ export type RabbitCreateManyBirthLitterInput = {
   code: string
   sex: $Enums.RabbitSex
   status?: $Enums.RabbitStatus
-  geneticType?: string | null
   breedId?: string | null
   crossBreedId?: string | null
   fatherId?: string | null
   motherId?: string | null
   birthDate?: Date | string | null
   color?: string | null
-  size?: string | null
-  earFeature?: string | null
-  mark?: string | null
-  observation?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -4339,33 +4067,30 @@ export type RabbitUpdateWithoutBirthLitterInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
   father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
-  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   mother?: Prisma.RabbitUpdateOneWithoutChildrenAsMotherNestedInput
+  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUpdateManyWithoutFatherNestedInput
+  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutBirthLitterInput = {
@@ -4374,32 +4099,29 @@ export type RabbitUncheckedUpdateWithoutBirthLitterInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
-  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
-  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
-  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
   fatherLitters?: Prisma.LitterUncheckedUpdateManyWithoutFatherNestedInput
+  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateManyWithoutBirthLitterInput = {
@@ -4408,17 +4130,14 @@ export type RabbitUncheckedUpdateManyWithoutBirthLitterInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
   status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
-  geneticType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  earFeature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -4429,35 +4148,35 @@ export type RabbitUncheckedUpdateManyWithoutBirthLitterInput = {
  */
 
 export type RabbitCountOutputType = {
-  healthRecords: number
-  saleItems: number
   childrenAsFather: number
   childrenAsMother: number
   identifications: number
   cageMovements: number
-  lotMemberships: number
-  weighings: number
   breedingsAsFemale: number
   breedingsAsMale: number
   motherBirths: number
   motherLitters: number
   fatherLitters: number
+  lotMemberships: number
+  weighings: number
+  healthRecords: number
+  saleItems: number
 }
 
 export type RabbitCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  healthRecords?: boolean | RabbitCountOutputTypeCountHealthRecordsArgs
-  saleItems?: boolean | RabbitCountOutputTypeCountSaleItemsArgs
   childrenAsFather?: boolean | RabbitCountOutputTypeCountChildrenAsFatherArgs
   childrenAsMother?: boolean | RabbitCountOutputTypeCountChildrenAsMotherArgs
   identifications?: boolean | RabbitCountOutputTypeCountIdentificationsArgs
   cageMovements?: boolean | RabbitCountOutputTypeCountCageMovementsArgs
-  lotMemberships?: boolean | RabbitCountOutputTypeCountLotMembershipsArgs
-  weighings?: boolean | RabbitCountOutputTypeCountWeighingsArgs
   breedingsAsFemale?: boolean | RabbitCountOutputTypeCountBreedingsAsFemaleArgs
   breedingsAsMale?: boolean | RabbitCountOutputTypeCountBreedingsAsMaleArgs
   motherBirths?: boolean | RabbitCountOutputTypeCountMotherBirthsArgs
   motherLitters?: boolean | RabbitCountOutputTypeCountMotherLittersArgs
   fatherLitters?: boolean | RabbitCountOutputTypeCountFatherLittersArgs
+  lotMemberships?: boolean | RabbitCountOutputTypeCountLotMembershipsArgs
+  weighings?: boolean | RabbitCountOutputTypeCountWeighingsArgs
+  healthRecords?: boolean | RabbitCountOutputTypeCountHealthRecordsArgs
+  saleItems?: boolean | RabbitCountOutputTypeCountSaleItemsArgs
 }
 
 /**
@@ -4468,20 +4187,6 @@ export type RabbitCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exten
    * Select specific fields to fetch from the RabbitCountOutputType
    */
   select?: Prisma.RabbitCountOutputTypeSelect<ExtArgs> | null
-}
-
-/**
- * RabbitCountOutputType without action
- */
-export type RabbitCountOutputTypeCountHealthRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.HealthRecordWhereInput
-}
-
-/**
- * RabbitCountOutputType without action
- */
-export type RabbitCountOutputTypeCountSaleItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.SaleItemWhereInput
 }
 
 /**
@@ -4510,20 +4215,6 @@ export type RabbitCountOutputTypeCountIdentificationsArgs<ExtArgs extends runtim
  */
 export type RabbitCountOutputTypeCountCageMovementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.RabbitCageMovementWhereInput
-}
-
-/**
- * RabbitCountOutputType without action
- */
-export type RabbitCountOutputTypeCountLotMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.LotMembershipWhereInput
-}
-
-/**
- * RabbitCountOutputType without action
- */
-export type RabbitCountOutputTypeCountWeighingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.WeighingWhereInput
 }
 
 /**
@@ -4561,6 +4252,34 @@ export type RabbitCountOutputTypeCountFatherLittersArgs<ExtArgs extends runtime.
   where?: Prisma.LitterWhereInput
 }
 
+/**
+ * RabbitCountOutputType without action
+ */
+export type RabbitCountOutputTypeCountLotMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LotMembershipWhereInput
+}
+
+/**
+ * RabbitCountOutputType without action
+ */
+export type RabbitCountOutputTypeCountWeighingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WeighingWhereInput
+}
+
+/**
+ * RabbitCountOutputType without action
+ */
+export type RabbitCountOutputTypeCountHealthRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.HealthRecordWhereInput
+}
+
+/**
+ * RabbitCountOutputType without action
+ */
+export type RabbitCountOutputTypeCountSaleItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SaleItemWhereInput
+}
+
 
 export type RabbitSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -4568,39 +4287,36 @@ export type RabbitSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   code?: boolean
   sex?: boolean
   status?: boolean
-  geneticType?: boolean
   breedId?: boolean
   crossBreedId?: boolean
   fatherId?: boolean
   motherId?: boolean
   birthDate?: boolean
   color?: boolean
-  size?: boolean
-  earFeature?: boolean
-  mark?: boolean
-  observation?: boolean
+  weight?: boolean
+  observations?: boolean
   birthLitterId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  healthRecords?: boolean | Prisma.Rabbit$healthRecordsArgs<ExtArgs>
-  saleItems?: boolean | Prisma.Rabbit$saleItemsArgs<ExtArgs>
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   breed?: boolean | Prisma.Rabbit$breedArgs<ExtArgs>
   crossBreed?: boolean | Prisma.Rabbit$crossBreedArgs<ExtArgs>
   father?: boolean | Prisma.Rabbit$fatherArgs<ExtArgs>
-  childrenAsFather?: boolean | Prisma.Rabbit$childrenAsFatherArgs<ExtArgs>
   mother?: boolean | Prisma.Rabbit$motherArgs<ExtArgs>
+  childrenAsFather?: boolean | Prisma.Rabbit$childrenAsFatherArgs<ExtArgs>
   childrenAsMother?: boolean | Prisma.Rabbit$childrenAsMotherArgs<ExtArgs>
   identifications?: boolean | Prisma.Rabbit$identificationsArgs<ExtArgs>
   cageMovements?: boolean | Prisma.Rabbit$cageMovementsArgs<ExtArgs>
-  lotMemberships?: boolean | Prisma.Rabbit$lotMembershipsArgs<ExtArgs>
-  weighings?: boolean | Prisma.Rabbit$weighingsArgs<ExtArgs>
-  birthLitter?: boolean | Prisma.Rabbit$birthLitterArgs<ExtArgs>
   breedingsAsFemale?: boolean | Prisma.Rabbit$breedingsAsFemaleArgs<ExtArgs>
   breedingsAsMale?: boolean | Prisma.Rabbit$breedingsAsMaleArgs<ExtArgs>
   motherBirths?: boolean | Prisma.Rabbit$motherBirthsArgs<ExtArgs>
   motherLitters?: boolean | Prisma.Rabbit$motherLittersArgs<ExtArgs>
   fatherLitters?: boolean | Prisma.Rabbit$fatherLittersArgs<ExtArgs>
+  birthLitter?: boolean | Prisma.Rabbit$birthLitterArgs<ExtArgs>
+  lotMemberships?: boolean | Prisma.Rabbit$lotMembershipsArgs<ExtArgs>
+  weighings?: boolean | Prisma.Rabbit$weighingsArgs<ExtArgs>
+  healthRecords?: boolean | Prisma.Rabbit$healthRecordsArgs<ExtArgs>
+  saleItems?: boolean | Prisma.Rabbit$saleItemsArgs<ExtArgs>
   _count?: boolean | Prisma.RabbitCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["rabbit"]>
 
@@ -4610,17 +4326,14 @@ export type RabbitSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   code?: boolean
   sex?: boolean
   status?: boolean
-  geneticType?: boolean
   breedId?: boolean
   crossBreedId?: boolean
   fatherId?: boolean
   motherId?: boolean
   birthDate?: boolean
   color?: boolean
-  size?: boolean
-  earFeature?: boolean
-  mark?: boolean
-  observation?: boolean
+  weight?: boolean
+  observations?: boolean
   birthLitterId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -4638,17 +4351,14 @@ export type RabbitSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   code?: boolean
   sex?: boolean
   status?: boolean
-  geneticType?: boolean
   breedId?: boolean
   crossBreedId?: boolean
   fatherId?: boolean
   motherId?: boolean
   birthDate?: boolean
   color?: boolean
-  size?: boolean
-  earFeature?: boolean
-  mark?: boolean
-  observation?: boolean
+  weight?: boolean
+  observations?: boolean
   birthLitterId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -4666,43 +4376,40 @@ export type RabbitSelectScalar = {
   code?: boolean
   sex?: boolean
   status?: boolean
-  geneticType?: boolean
   breedId?: boolean
   crossBreedId?: boolean
   fatherId?: boolean
   motherId?: boolean
   birthDate?: boolean
   color?: boolean
-  size?: boolean
-  earFeature?: boolean
-  mark?: boolean
-  observation?: boolean
+  weight?: boolean
+  observations?: boolean
   birthLitterId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type RabbitOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "code" | "sex" | "status" | "geneticType" | "breedId" | "crossBreedId" | "fatherId" | "motherId" | "birthDate" | "color" | "size" | "earFeature" | "mark" | "observation" | "birthLitterId" | "createdAt" | "updatedAt", ExtArgs["result"]["rabbit"]>
+export type RabbitOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "code" | "sex" | "status" | "breedId" | "crossBreedId" | "fatherId" | "motherId" | "birthDate" | "color" | "weight" | "observations" | "birthLitterId" | "createdAt" | "updatedAt", ExtArgs["result"]["rabbit"]>
 export type RabbitInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  healthRecords?: boolean | Prisma.Rabbit$healthRecordsArgs<ExtArgs>
-  saleItems?: boolean | Prisma.Rabbit$saleItemsArgs<ExtArgs>
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   breed?: boolean | Prisma.Rabbit$breedArgs<ExtArgs>
   crossBreed?: boolean | Prisma.Rabbit$crossBreedArgs<ExtArgs>
   father?: boolean | Prisma.Rabbit$fatherArgs<ExtArgs>
-  childrenAsFather?: boolean | Prisma.Rabbit$childrenAsFatherArgs<ExtArgs>
   mother?: boolean | Prisma.Rabbit$motherArgs<ExtArgs>
+  childrenAsFather?: boolean | Prisma.Rabbit$childrenAsFatherArgs<ExtArgs>
   childrenAsMother?: boolean | Prisma.Rabbit$childrenAsMotherArgs<ExtArgs>
   identifications?: boolean | Prisma.Rabbit$identificationsArgs<ExtArgs>
   cageMovements?: boolean | Prisma.Rabbit$cageMovementsArgs<ExtArgs>
-  lotMemberships?: boolean | Prisma.Rabbit$lotMembershipsArgs<ExtArgs>
-  weighings?: boolean | Prisma.Rabbit$weighingsArgs<ExtArgs>
-  birthLitter?: boolean | Prisma.Rabbit$birthLitterArgs<ExtArgs>
   breedingsAsFemale?: boolean | Prisma.Rabbit$breedingsAsFemaleArgs<ExtArgs>
   breedingsAsMale?: boolean | Prisma.Rabbit$breedingsAsMaleArgs<ExtArgs>
   motherBirths?: boolean | Prisma.Rabbit$motherBirthsArgs<ExtArgs>
   motherLitters?: boolean | Prisma.Rabbit$motherLittersArgs<ExtArgs>
   fatherLitters?: boolean | Prisma.Rabbit$fatherLittersArgs<ExtArgs>
+  birthLitter?: boolean | Prisma.Rabbit$birthLitterArgs<ExtArgs>
+  lotMemberships?: boolean | Prisma.Rabbit$lotMembershipsArgs<ExtArgs>
+  weighings?: boolean | Prisma.Rabbit$weighingsArgs<ExtArgs>
+  healthRecords?: boolean | Prisma.Rabbit$healthRecordsArgs<ExtArgs>
+  saleItems?: boolean | Prisma.Rabbit$saleItemsArgs<ExtArgs>
   _count?: boolean | Prisma.RabbitCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type RabbitIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4725,25 +4432,25 @@ export type RabbitIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type $RabbitPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Rabbit"
   objects: {
-    healthRecords: Prisma.$HealthRecordPayload<ExtArgs>[]
-    saleItems: Prisma.$SaleItemPayload<ExtArgs>[]
     farm: Prisma.$FarmPayload<ExtArgs>
     breed: Prisma.$BreedPayload<ExtArgs> | null
     crossBreed: Prisma.$CrossBreedPayload<ExtArgs> | null
     father: Prisma.$RabbitPayload<ExtArgs> | null
-    childrenAsFather: Prisma.$RabbitPayload<ExtArgs>[]
     mother: Prisma.$RabbitPayload<ExtArgs> | null
+    childrenAsFather: Prisma.$RabbitPayload<ExtArgs>[]
     childrenAsMother: Prisma.$RabbitPayload<ExtArgs>[]
     identifications: Prisma.$RabbitIdentificationPayload<ExtArgs>[]
     cageMovements: Prisma.$RabbitCageMovementPayload<ExtArgs>[]
-    lotMemberships: Prisma.$LotMembershipPayload<ExtArgs>[]
-    weighings: Prisma.$WeighingPayload<ExtArgs>[]
-    birthLitter: Prisma.$LitterPayload<ExtArgs> | null
     breedingsAsFemale: Prisma.$BreedingPayload<ExtArgs>[]
     breedingsAsMale: Prisma.$BreedingPayload<ExtArgs>[]
     motherBirths: Prisma.$BirthPayload<ExtArgs>[]
     motherLitters: Prisma.$LitterPayload<ExtArgs>[]
     fatherLitters: Prisma.$LitterPayload<ExtArgs>[]
+    birthLitter: Prisma.$LitterPayload<ExtArgs> | null
+    lotMemberships: Prisma.$LotMembershipPayload<ExtArgs>[]
+    weighings: Prisma.$WeighingPayload<ExtArgs>[]
+    healthRecords: Prisma.$HealthRecordPayload<ExtArgs>[]
+    saleItems: Prisma.$SaleItemPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -4751,17 +4458,14 @@ export type $RabbitPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     code: string
     sex: $Enums.RabbitSex
     status: $Enums.RabbitStatus
-    geneticType: string | null
     breedId: string | null
     crossBreedId: string | null
     fatherId: string | null
     motherId: string | null
     birthDate: Date | null
     color: string | null
-    size: string | null
-    earFeature: string | null
-    mark: string | null
-    observation: string | null
+    weight: runtime.Decimal | null
+    observations: string | null
     birthLitterId: string | null
     createdAt: Date
     updatedAt: Date
@@ -5159,25 +4863,25 @@ readonly fields: RabbitFieldRefs;
  */
 export interface Prisma__RabbitClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  healthRecords<T extends Prisma.Rabbit$healthRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$healthRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HealthRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  saleItems<T extends Prisma.Rabbit$saleItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$saleItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SaleItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   farm<T extends Prisma.FarmDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FarmDefaultArgs<ExtArgs>>): Prisma.Prisma__FarmClient<runtime.Types.Result.GetResult<Prisma.$FarmPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   breed<T extends Prisma.Rabbit$breedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$breedArgs<ExtArgs>>): Prisma.Prisma__BreedClient<runtime.Types.Result.GetResult<Prisma.$BreedPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   crossBreed<T extends Prisma.Rabbit$crossBreedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$crossBreedArgs<ExtArgs>>): Prisma.Prisma__CrossBreedClient<runtime.Types.Result.GetResult<Prisma.$CrossBreedPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   father<T extends Prisma.Rabbit$fatherArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$fatherArgs<ExtArgs>>): Prisma.Prisma__RabbitClient<runtime.Types.Result.GetResult<Prisma.$RabbitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  childrenAsFather<T extends Prisma.Rabbit$childrenAsFatherArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$childrenAsFatherArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RabbitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   mother<T extends Prisma.Rabbit$motherArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$motherArgs<ExtArgs>>): Prisma.Prisma__RabbitClient<runtime.Types.Result.GetResult<Prisma.$RabbitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  childrenAsFather<T extends Prisma.Rabbit$childrenAsFatherArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$childrenAsFatherArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RabbitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   childrenAsMother<T extends Prisma.Rabbit$childrenAsMotherArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$childrenAsMotherArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RabbitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   identifications<T extends Prisma.Rabbit$identificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$identificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RabbitIdentificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   cageMovements<T extends Prisma.Rabbit$cageMovementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$cageMovementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RabbitCageMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  lotMemberships<T extends Prisma.Rabbit$lotMembershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$lotMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LotMembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  weighings<T extends Prisma.Rabbit$weighingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$weighingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WeighingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  birthLitter<T extends Prisma.Rabbit$birthLitterArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$birthLitterArgs<ExtArgs>>): Prisma.Prisma__LitterClient<runtime.Types.Result.GetResult<Prisma.$LitterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   breedingsAsFemale<T extends Prisma.Rabbit$breedingsAsFemaleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$breedingsAsFemaleArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BreedingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   breedingsAsMale<T extends Prisma.Rabbit$breedingsAsMaleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$breedingsAsMaleArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BreedingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   motherBirths<T extends Prisma.Rabbit$motherBirthsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$motherBirthsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BirthPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   motherLitters<T extends Prisma.Rabbit$motherLittersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$motherLittersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LitterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   fatherLitters<T extends Prisma.Rabbit$fatherLittersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$fatherLittersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LitterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  birthLitter<T extends Prisma.Rabbit$birthLitterArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$birthLitterArgs<ExtArgs>>): Prisma.Prisma__LitterClient<runtime.Types.Result.GetResult<Prisma.$LitterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  lotMemberships<T extends Prisma.Rabbit$lotMembershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$lotMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LotMembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  weighings<T extends Prisma.Rabbit$weighingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$weighingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WeighingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  healthRecords<T extends Prisma.Rabbit$healthRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$healthRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HealthRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  saleItems<T extends Prisma.Rabbit$saleItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$saleItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SaleItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5212,17 +4916,14 @@ export interface RabbitFieldRefs {
   readonly code: Prisma.FieldRef<"Rabbit", 'String'>
   readonly sex: Prisma.FieldRef<"Rabbit", 'RabbitSex'>
   readonly status: Prisma.FieldRef<"Rabbit", 'RabbitStatus'>
-  readonly geneticType: Prisma.FieldRef<"Rabbit", 'String'>
   readonly breedId: Prisma.FieldRef<"Rabbit", 'String'>
   readonly crossBreedId: Prisma.FieldRef<"Rabbit", 'String'>
   readonly fatherId: Prisma.FieldRef<"Rabbit", 'String'>
   readonly motherId: Prisma.FieldRef<"Rabbit", 'String'>
   readonly birthDate: Prisma.FieldRef<"Rabbit", 'DateTime'>
   readonly color: Prisma.FieldRef<"Rabbit", 'String'>
-  readonly size: Prisma.FieldRef<"Rabbit", 'String'>
-  readonly earFeature: Prisma.FieldRef<"Rabbit", 'String'>
-  readonly mark: Prisma.FieldRef<"Rabbit", 'String'>
-  readonly observation: Prisma.FieldRef<"Rabbit", 'String'>
+  readonly weight: Prisma.FieldRef<"Rabbit", 'Decimal'>
+  readonly observations: Prisma.FieldRef<"Rabbit", 'String'>
   readonly birthLitterId: Prisma.FieldRef<"Rabbit", 'String'>
   readonly createdAt: Prisma.FieldRef<"Rabbit", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Rabbit", 'DateTime'>
@@ -5627,54 +5328,6 @@ export type RabbitDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
- * Rabbit.healthRecords
- */
-export type Rabbit$healthRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the HealthRecord
-   */
-  select?: Prisma.HealthRecordSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the HealthRecord
-   */
-  omit?: Prisma.HealthRecordOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.HealthRecordInclude<ExtArgs> | null
-  where?: Prisma.HealthRecordWhereInput
-  orderBy?: Prisma.HealthRecordOrderByWithRelationInput | Prisma.HealthRecordOrderByWithRelationInput[]
-  cursor?: Prisma.HealthRecordWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.HealthRecordScalarFieldEnum | Prisma.HealthRecordScalarFieldEnum[]
-}
-
-/**
- * Rabbit.saleItems
- */
-export type Rabbit$saleItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the SaleItem
-   */
-  select?: Prisma.SaleItemSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the SaleItem
-   */
-  omit?: Prisma.SaleItemOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.SaleItemInclude<ExtArgs> | null
-  where?: Prisma.SaleItemWhereInput
-  orderBy?: Prisma.SaleItemOrderByWithRelationInput | Prisma.SaleItemOrderByWithRelationInput[]
-  cursor?: Prisma.SaleItemWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.SaleItemScalarFieldEnum | Prisma.SaleItemScalarFieldEnum[]
-}
-
-/**
  * Rabbit.breed
  */
 export type Rabbit$breedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -5732,6 +5385,25 @@ export type Rabbit$fatherArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 }
 
 /**
+ * Rabbit.mother
+ */
+export type Rabbit$motherArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Rabbit
+   */
+  select?: Prisma.RabbitSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Rabbit
+   */
+  omit?: Prisma.RabbitOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RabbitInclude<ExtArgs> | null
+  where?: Prisma.RabbitWhereInput
+}
+
+/**
  * Rabbit.childrenAsFather
  */
 export type Rabbit$childrenAsFatherArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -5753,25 +5425,6 @@ export type Rabbit$childrenAsFatherArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.RabbitScalarFieldEnum | Prisma.RabbitScalarFieldEnum[]
-}
-
-/**
- * Rabbit.mother
- */
-export type Rabbit$motherArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Rabbit
-   */
-  select?: Prisma.RabbitSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Rabbit
-   */
-  omit?: Prisma.RabbitOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.RabbitInclude<ExtArgs> | null
-  where?: Prisma.RabbitWhereInput
 }
 
 /**
@@ -5844,73 +5497,6 @@ export type Rabbit$cageMovementsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.RabbitCageMovementScalarFieldEnum | Prisma.RabbitCageMovementScalarFieldEnum[]
-}
-
-/**
- * Rabbit.lotMemberships
- */
-export type Rabbit$lotMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the LotMembership
-   */
-  select?: Prisma.LotMembershipSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the LotMembership
-   */
-  omit?: Prisma.LotMembershipOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.LotMembershipInclude<ExtArgs> | null
-  where?: Prisma.LotMembershipWhereInput
-  orderBy?: Prisma.LotMembershipOrderByWithRelationInput | Prisma.LotMembershipOrderByWithRelationInput[]
-  cursor?: Prisma.LotMembershipWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.LotMembershipScalarFieldEnum | Prisma.LotMembershipScalarFieldEnum[]
-}
-
-/**
- * Rabbit.weighings
- */
-export type Rabbit$weighingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Weighing
-   */
-  select?: Prisma.WeighingSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Weighing
-   */
-  omit?: Prisma.WeighingOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.WeighingInclude<ExtArgs> | null
-  where?: Prisma.WeighingWhereInput
-  orderBy?: Prisma.WeighingOrderByWithRelationInput | Prisma.WeighingOrderByWithRelationInput[]
-  cursor?: Prisma.WeighingWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.WeighingScalarFieldEnum | Prisma.WeighingScalarFieldEnum[]
-}
-
-/**
- * Rabbit.birthLitter
- */
-export type Rabbit$birthLitterArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Litter
-   */
-  select?: Prisma.LitterSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Litter
-   */
-  omit?: Prisma.LitterOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.LitterInclude<ExtArgs> | null
-  where?: Prisma.LitterWhereInput
 }
 
 /**
@@ -6031,6 +5617,121 @@ export type Rabbit$fatherLittersArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.LitterScalarFieldEnum | Prisma.LitterScalarFieldEnum[]
+}
+
+/**
+ * Rabbit.birthLitter
+ */
+export type Rabbit$birthLitterArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Litter
+   */
+  select?: Prisma.LitterSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Litter
+   */
+  omit?: Prisma.LitterOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LitterInclude<ExtArgs> | null
+  where?: Prisma.LitterWhereInput
+}
+
+/**
+ * Rabbit.lotMemberships
+ */
+export type Rabbit$lotMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LotMembership
+   */
+  select?: Prisma.LotMembershipSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LotMembership
+   */
+  omit?: Prisma.LotMembershipOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LotMembershipInclude<ExtArgs> | null
+  where?: Prisma.LotMembershipWhereInput
+  orderBy?: Prisma.LotMembershipOrderByWithRelationInput | Prisma.LotMembershipOrderByWithRelationInput[]
+  cursor?: Prisma.LotMembershipWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LotMembershipScalarFieldEnum | Prisma.LotMembershipScalarFieldEnum[]
+}
+
+/**
+ * Rabbit.weighings
+ */
+export type Rabbit$weighingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Weighing
+   */
+  select?: Prisma.WeighingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Weighing
+   */
+  omit?: Prisma.WeighingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WeighingInclude<ExtArgs> | null
+  where?: Prisma.WeighingWhereInput
+  orderBy?: Prisma.WeighingOrderByWithRelationInput | Prisma.WeighingOrderByWithRelationInput[]
+  cursor?: Prisma.WeighingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WeighingScalarFieldEnum | Prisma.WeighingScalarFieldEnum[]
+}
+
+/**
+ * Rabbit.healthRecords
+ */
+export type Rabbit$healthRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the HealthRecord
+   */
+  select?: Prisma.HealthRecordSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the HealthRecord
+   */
+  omit?: Prisma.HealthRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.HealthRecordInclude<ExtArgs> | null
+  where?: Prisma.HealthRecordWhereInput
+  orderBy?: Prisma.HealthRecordOrderByWithRelationInput | Prisma.HealthRecordOrderByWithRelationInput[]
+  cursor?: Prisma.HealthRecordWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.HealthRecordScalarFieldEnum | Prisma.HealthRecordScalarFieldEnum[]
+}
+
+/**
+ * Rabbit.saleItems
+ */
+export type Rabbit$saleItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SaleItem
+   */
+  select?: Prisma.SaleItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SaleItem
+   */
+  omit?: Prisma.SaleItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SaleItemInclude<ExtArgs> | null
+  where?: Prisma.SaleItemWhereInput
+  orderBy?: Prisma.SaleItemOrderByWithRelationInput | Prisma.SaleItemOrderByWithRelationInput[]
+  cursor?: Prisma.SaleItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SaleItemScalarFieldEnum | Prisma.SaleItemScalarFieldEnum[]
 }
 
 /**

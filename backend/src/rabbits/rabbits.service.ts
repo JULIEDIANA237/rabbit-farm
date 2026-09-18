@@ -72,6 +72,230 @@ export class RabbitsService {
     }
   }
 
+  private async isDescendant(
+    possibleDescendantId: string,
+    ancestorId: string,
+    currentUser: CurrentUserType,
+    visited = new Set<string>(),
+  ): Promise<boolean> {
+    if (possibleDescendantId === ancestorId) {
+      return true;
+    }
+
+    if (visited.has(possibleDescendantId)) {
+      return false;
+    }
+
+    visited.add(possibleDescendantId);
+
+    const rabbit = await this.prisma.rabbit.findFirst({
+      where: {
+        id: possibleDescendantId,
+        farmId: currentUser.farmId,
+      },
+      select: {
+        fatherId: true,
+        motherId: true,
+      },
+    });
+
+    if (!rabbit) {
+      return false;
+    }
+
+    if (
+      rabbit.fatherId &&
+      (await this.isDescendant(
+        rabbit.fatherId,
+        ancestorId,
+        currentUser,
+        visited,
+      ))
+    ) {
+      return true;
+    }
+
+    if (
+      rabbit.motherId &&
+      (await this.isDescendant(
+        rabbit.motherId,
+        ancestorId,
+        currentUser,
+        visited,
+      ))
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
+  private async collectAncestors(
+    rabbitId: string,
+    currentUser: CurrentUserType,
+    visited = new Set<string>(),
+  ): Promise<Set<string>> {
+    if (visited.has(rabbitId)) {
+      return visited;
+    }
+
+    visited.add(rabbitId);
+
+    const rabbit = await this.prisma.rabbit.findFirst({
+      where: {
+        id: rabbitId,
+        farmId: currentUser.farmId,
+      },
+      select: {
+        fatherId: true,
+        motherId: true,
+      },
+    });
+
+    if (!rabbit) {
+      return visited;
+    }
+
+    if (rabbit.fatherId) {
+      await this.collectAncestors(
+        rabbit.fatherId,
+        currentUser,
+        visited,
+      );
+    }
+
+    if (rabbit.motherId) {
+      await this.collectAncestors(
+        rabbit.motherId,
+        currentUser,
+        visited,
+      );
+    }
+
+    return visited;
+  }
+
+  private async validateGenealogy(
+    rabbitId: string | undefined,
+    fatherId: string | undefined,
+    motherId: string | undefined,
+    currentUser: CurrentUserType,
+  ) {
+    if (!fatherId && !motherId) {
+      return;
+    }
+
+    if (!fatherId || !motherId) {
+      throw new BadRequestException(
+        'Le père et la mère doivent être renseignés ensemble.',
+      );
+    }
+
+    if (fatherId === motherId) {
+      throw new BadRequestException(
+        'Le père et la mère doivent être deux lapins différents.',
+      );
+    }
+
+    if (rabbitId && (rabbitId === fatherId || rabbitId === motherId)) {
+      throw new BadRequestException(
+        'Un lapin ne peut pas être son propre parent.',
+      );
+    }
+
+    if (rabbitId && fatherId && motherId) {
+      const fatherWouldBecomeDescendant =
+        await this.isDescendant(
+          fatherId,
+          rabbitId,
+          currentUser,
+        );
+
+      const motherWouldBecomeDescendant =
+        await this.isDescendant(
+          motherId,
+          rabbitId,
+          currentUser,
+        );
+
+      if (
+        fatherWouldBecomeDescendant ||
+        motherWouldBecomeDescendant
+      ) {
+        throw new BadRequestException(
+          'Cette filiation créerait un cycle généalogique interdit.',
+        );
+      }
+    }
+
+    const parents = await this.prisma.rabbit.findMany({
+      where: {
+        farmId: currentUser.farmId,
+        id: {
+          in: [fatherId, motherId],
+        },
+      },
+    });
+
+    if (parents.length !== 2) {
+      throw new BadRequestException(
+        "Le père ou la mère n'appartient pas à cette ferme.",
+      );
+    }
+
+    const father = parents.find(
+      (parent) => parent.id === fatherId,
+    );
+
+    const mother = parents.find(
+      (parent) => parent.id === motherId,
+    );
+
+    if (!father || !mother) {
+      throw new BadRequestException(
+        'Impossible de retrouver les deux parents.',
+      );
+    }
+
+    if (father.sex !== 'MALE') {
+      throw new BadRequestException(
+        'Le parent déclaré comme père doit être un mâle.',
+      );
+    }
+
+    if (mother.sex !== 'FEMALE') {
+      throw new BadRequestException(
+        'Le parent déclaré comme mère doit être une femelle.',
+      );
+    }
+
+    if (father.status !== 'ACTIVE' || mother.status !== 'ACTIVE') {
+      throw new BadRequestException(
+        'Les deux parents doivent être actifs.',
+      );
+    }
+  }
+
+  async detectCommonAncestors(
+    rabbitAId: string,
+    rabbitBId: string,
+    currentUser: CurrentUserType,
+  ) {
+    const ancestorsA = await this.collectAncestors(
+      rabbitAId,
+      currentUser,
+    );
+
+    const ancestorsB = await this.collectAncestors(
+      rabbitBId,
+      currentUser,
+    );
+
+    return [...ancestorsA].filter((id) =>
+      ancestorsB.has(id),
+    );
+  }
+
   async findAll(currentUser: CurrentUserType) {
     return this.prisma.rabbit.findMany({
       where: { farmId: currentUser.farmId },
@@ -109,9 +333,11 @@ export class RabbitsService {
       );
     }
 
-    await this.validateParents(
-      [input.fatherId, input.motherId],
-      currentUser.farmId,
+    await this.validateGenealogy(
+      undefined,
+      input.fatherId,
+      input.motherId,
+      currentUser,
     );
 
     return this.prisma.rabbit.create({

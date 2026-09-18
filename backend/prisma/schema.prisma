@@ -283,11 +283,11 @@ model Breed {
   name        String
   description String?
 
-  farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  farm    Farm     @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  rabbits Rabbit[]
 
-  rabbits     Rabbit[]
-  crossBreedA CrossBreed[] @relation("CrossBreedBreedA")
-  crossBreedB CrossBreed[] @relation("CrossBreedBreedB")
+  crossBreedsAsParentA CrossBreed[] @relation("CrossBreedParentA")
+  crossBreedsAsParentB CrossBreed[] @relation("CrossBreedParentB")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -306,13 +306,13 @@ model CrossBreed {
   name        String
   description String?
 
-  breedAId String
-  breedBId String
+  parentBreedAId String
+  parentBreedBId String
 
   farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)
 
-  breedA Breed @relation("CrossBreedBreedA", fields: [breedAId], references: [id])
-  breedB Breed @relation("CrossBreedBreedB", fields: [breedBId], references: [id])
+  parentBreedA Breed @relation("CrossBreedParentA", fields: [parentBreedAId], references: [id])
+  parentBreedB Breed @relation("CrossBreedParentB", fields: [parentBreedBId], references: [id])
 
   rabbits Rabbit[]
 
@@ -321,24 +321,19 @@ model CrossBreed {
 
   @@unique([farmId, name])
   @@index([farmId])
-  @@index([breedAId])
-  @@index([breedBId])
+  @@index([parentBreedAId])
+  @@index([parentBreedBId])
 }
 
 // ============================================================
 // RABBIT
-// ============================================================
-
 model Rabbit {
-  id String @id @default(uuid())
-
+  id     String @id @default(uuid())
   farmId String
   code   String
 
   sex    RabbitSex
   status RabbitStatus @default(ACTIVE)
-
-  geneticType String?
 
   breedId      String?
   crossBreedId String?
@@ -346,57 +341,50 @@ model Rabbit {
   fatherId String?
   motherId String?
 
-  birthDate DateTime?
-
-  color       String?
-  size        String?
-  earFeature  String?
-  mark        String?
-  observation String?
-
-  healthRecords HealthRecord[]
-  saleItems     SaleItem[]
+  birthDate    DateTime?
+  color        String?
+  weight       Decimal?
+  observations String?
 
   farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)
 
-  breed      Breed?      @relation(fields: [breedId], references: [id], onDelete: SetNull)
-  crossBreed CrossBreed? @relation(fields: [crossBreedId], references: [id], onDelete: SetNull)
+  breed      Breed?      @relation(fields: [breedId], references: [id])
+  crossBreed CrossBreed? @relation(fields: [crossBreedId], references: [id])
 
-  father           Rabbit?  @relation("RabbitFather", fields: [fatherId], references: [id], onDelete: SetNull)
+  father Rabbit? @relation("RabbitFather", fields: [fatherId], references: [id])
+  mother Rabbit? @relation("RabbitMother", fields: [motherId], references: [id])
+
   childrenAsFather Rabbit[] @relation("RabbitFather")
-
-  mother           Rabbit?  @relation("RabbitMother", fields: [motherId], references: [id], onDelete: SetNull)
   childrenAsMother Rabbit[] @relation("RabbitMother")
 
   identifications RabbitIdentification[]
   cageMovements   RabbitCageMovement[]
 
-  birthLitterId String?
-
-  lotMemberships LotMembership[]
-  weighings      Weighing[]
-
-  birthLitter Litter? @relation(fields: [birthLitterId], references: [id], onDelete: SetNull)
-
   breedingsAsFemale Breeding[] @relation("FemaleBreedings")
   breedingsAsMale   Breeding[] @relation("MaleBreedings")
 
-  motherBirths Birth[] @relation("MotherBirths")
-
+  motherBirths  Birth[]  @relation("MotherBirths")
   motherLitters Litter[] @relation("MotherLitters")
   fatherLitters Litter[] @relation("FatherLitters")
+
+  birthLitterId String?
+  birthLitter   Litter? @relation(fields: [birthLitterId], references: [id], onDelete: SetNull)
+
+  lotMemberships LotMembership[]
+  weighings      Weighing[]
+  healthRecords  HealthRecord[]
+  saleItems      SaleItem[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([farmId, code])
   @@index([farmId])
-  @@index([breedId])
-  @@index([crossBreedId])
   @@index([fatherId])
   @@index([motherId])
-  @@index([status])
-  @@index([sex])
+  @@index([breedId])
+  @@index([crossBreedId])
+  @@index([birthLitterId])
 }
 
 // ============================================================

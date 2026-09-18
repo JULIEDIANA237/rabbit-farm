@@ -665,12 +665,6 @@ export type LitterUncheckedUpdateManyWithoutFarmNestedInput = {
   deleteMany?: Prisma.LitterScalarWhereInput | Prisma.LitterScalarWhereInput[]
 }
 
-export type LitterCreateNestedOneWithoutRabbitsInput = {
-  create?: Prisma.XOR<Prisma.LitterCreateWithoutRabbitsInput, Prisma.LitterUncheckedCreateWithoutRabbitsInput>
-  connectOrCreate?: Prisma.LitterCreateOrConnectWithoutRabbitsInput
-  connect?: Prisma.LitterWhereUniqueInput
-}
-
 export type LitterCreateNestedManyWithoutMotherInput = {
   create?: Prisma.XOR<Prisma.LitterCreateWithoutMotherInput, Prisma.LitterUncheckedCreateWithoutMotherInput> | Prisma.LitterCreateWithoutMotherInput[] | Prisma.LitterUncheckedCreateWithoutMotherInput[]
   connectOrCreate?: Prisma.LitterCreateOrConnectWithoutMotherInput | Prisma.LitterCreateOrConnectWithoutMotherInput[]
@@ -685,6 +679,12 @@ export type LitterCreateNestedManyWithoutFatherInput = {
   connect?: Prisma.LitterWhereUniqueInput | Prisma.LitterWhereUniqueInput[]
 }
 
+export type LitterCreateNestedOneWithoutRabbitsInput = {
+  create?: Prisma.XOR<Prisma.LitterCreateWithoutRabbitsInput, Prisma.LitterUncheckedCreateWithoutRabbitsInput>
+  connectOrCreate?: Prisma.LitterCreateOrConnectWithoutRabbitsInput
+  connect?: Prisma.LitterWhereUniqueInput
+}
+
 export type LitterUncheckedCreateNestedManyWithoutMotherInput = {
   create?: Prisma.XOR<Prisma.LitterCreateWithoutMotherInput, Prisma.LitterUncheckedCreateWithoutMotherInput> | Prisma.LitterCreateWithoutMotherInput[] | Prisma.LitterUncheckedCreateWithoutMotherInput[]
   connectOrCreate?: Prisma.LitterCreateOrConnectWithoutMotherInput | Prisma.LitterCreateOrConnectWithoutMotherInput[]
@@ -697,16 +697,6 @@ export type LitterUncheckedCreateNestedManyWithoutFatherInput = {
   connectOrCreate?: Prisma.LitterCreateOrConnectWithoutFatherInput | Prisma.LitterCreateOrConnectWithoutFatherInput[]
   createMany?: Prisma.LitterCreateManyFatherInputEnvelope
   connect?: Prisma.LitterWhereUniqueInput | Prisma.LitterWhereUniqueInput[]
-}
-
-export type LitterUpdateOneWithoutRabbitsNestedInput = {
-  create?: Prisma.XOR<Prisma.LitterCreateWithoutRabbitsInput, Prisma.LitterUncheckedCreateWithoutRabbitsInput>
-  connectOrCreate?: Prisma.LitterCreateOrConnectWithoutRabbitsInput
-  upsert?: Prisma.LitterUpsertWithoutRabbitsInput
-  disconnect?: Prisma.LitterWhereInput | boolean
-  delete?: Prisma.LitterWhereInput | boolean
-  connect?: Prisma.LitterWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.LitterUpdateToOneWithWhereWithoutRabbitsInput, Prisma.LitterUpdateWithoutRabbitsInput>, Prisma.LitterUncheckedUpdateWithoutRabbitsInput>
 }
 
 export type LitterUpdateManyWithoutMotherNestedInput = {
@@ -735,6 +725,16 @@ export type LitterUpdateManyWithoutFatherNestedInput = {
   update?: Prisma.LitterUpdateWithWhereUniqueWithoutFatherInput | Prisma.LitterUpdateWithWhereUniqueWithoutFatherInput[]
   updateMany?: Prisma.LitterUpdateManyWithWhereWithoutFatherInput | Prisma.LitterUpdateManyWithWhereWithoutFatherInput[]
   deleteMany?: Prisma.LitterScalarWhereInput | Prisma.LitterScalarWhereInput[]
+}
+
+export type LitterUpdateOneWithoutRabbitsNestedInput = {
+  create?: Prisma.XOR<Prisma.LitterCreateWithoutRabbitsInput, Prisma.LitterUncheckedCreateWithoutRabbitsInput>
+  connectOrCreate?: Prisma.LitterCreateOrConnectWithoutRabbitsInput
+  upsert?: Prisma.LitterUpsertWithoutRabbitsInput
+  disconnect?: Prisma.LitterWhereInput | boolean
+  delete?: Prisma.LitterWhereInput | boolean
+  connect?: Prisma.LitterWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LitterUpdateToOneWithWhereWithoutRabbitsInput, Prisma.LitterUpdateWithoutRabbitsInput>, Prisma.LitterUncheckedUpdateWithoutRabbitsInput>
 }
 
 export type LitterUncheckedUpdateManyWithoutMotherNestedInput = {
@@ -971,51 +971,6 @@ export type LitterScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Litter"> | Date | string
 }
 
-export type LitterCreateWithoutRabbitsInput = {
-  id?: string
-  code: string
-  birthDate: Date | string
-  liveBorn: number
-  stillBorn: number
-  currentCount: number
-  status?: $Enums.LitterStatus
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  mother: Prisma.RabbitCreateNestedOneWithoutMotherLittersInput
-  father?: Prisma.RabbitCreateNestedOneWithoutFatherLittersInput
-  farm: Prisma.FarmCreateNestedOneWithoutLittersInput
-  breeding?: Prisma.BreedingCreateNestedOneWithoutLittersInput
-  birth?: Prisma.BirthCreateNestedOneWithoutLitterInput
-  sourceAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutSourceLitterInput
-  destinationAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutDestinationLitterInput
-  weaning?: Prisma.WeaningCreateNestedOneWithoutLitterInput
-}
-
-export type LitterUncheckedCreateWithoutRabbitsInput = {
-  id?: string
-  farmId: string
-  code: string
-  breedingId?: string | null
-  birthId?: string | null
-  motherId: string
-  fatherId?: string | null
-  birthDate: Date | string
-  liveBorn: number
-  stillBorn: number
-  currentCount: number
-  status?: $Enums.LitterStatus
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  sourceAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutSourceLitterInput
-  destinationAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutDestinationLitterInput
-  weaning?: Prisma.WeaningUncheckedCreateNestedOneWithoutLitterInput
-}
-
-export type LitterCreateOrConnectWithoutRabbitsInput = {
-  where: Prisma.LitterWhereUniqueInput
-  create: Prisma.XOR<Prisma.LitterCreateWithoutRabbitsInput, Prisma.LitterUncheckedCreateWithoutRabbitsInput>
-}
-
 export type LitterCreateWithoutMotherInput = {
   id?: string
   code: string
@@ -1116,6 +1071,83 @@ export type LitterCreateManyFatherInputEnvelope = {
   skipDuplicates?: boolean
 }
 
+export type LitterCreateWithoutRabbitsInput = {
+  id?: string
+  code: string
+  birthDate: Date | string
+  liveBorn: number
+  stillBorn: number
+  currentCount: number
+  status?: $Enums.LitterStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  mother: Prisma.RabbitCreateNestedOneWithoutMotherLittersInput
+  father?: Prisma.RabbitCreateNestedOneWithoutFatherLittersInput
+  farm: Prisma.FarmCreateNestedOneWithoutLittersInput
+  breeding?: Prisma.BreedingCreateNestedOneWithoutLittersInput
+  birth?: Prisma.BirthCreateNestedOneWithoutLitterInput
+  sourceAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutSourceLitterInput
+  destinationAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutDestinationLitterInput
+  weaning?: Prisma.WeaningCreateNestedOneWithoutLitterInput
+}
+
+export type LitterUncheckedCreateWithoutRabbitsInput = {
+  id?: string
+  farmId: string
+  code: string
+  breedingId?: string | null
+  birthId?: string | null
+  motherId: string
+  fatherId?: string | null
+  birthDate: Date | string
+  liveBorn: number
+  stillBorn: number
+  currentCount: number
+  status?: $Enums.LitterStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sourceAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutSourceLitterInput
+  destinationAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutDestinationLitterInput
+  weaning?: Prisma.WeaningUncheckedCreateNestedOneWithoutLitterInput
+}
+
+export type LitterCreateOrConnectWithoutRabbitsInput = {
+  where: Prisma.LitterWhereUniqueInput
+  create: Prisma.XOR<Prisma.LitterCreateWithoutRabbitsInput, Prisma.LitterUncheckedCreateWithoutRabbitsInput>
+}
+
+export type LitterUpsertWithWhereUniqueWithoutMotherInput = {
+  where: Prisma.LitterWhereUniqueInput
+  update: Prisma.XOR<Prisma.LitterUpdateWithoutMotherInput, Prisma.LitterUncheckedUpdateWithoutMotherInput>
+  create: Prisma.XOR<Prisma.LitterCreateWithoutMotherInput, Prisma.LitterUncheckedCreateWithoutMotherInput>
+}
+
+export type LitterUpdateWithWhereUniqueWithoutMotherInput = {
+  where: Prisma.LitterWhereUniqueInput
+  data: Prisma.XOR<Prisma.LitterUpdateWithoutMotherInput, Prisma.LitterUncheckedUpdateWithoutMotherInput>
+}
+
+export type LitterUpdateManyWithWhereWithoutMotherInput = {
+  where: Prisma.LitterScalarWhereInput
+  data: Prisma.XOR<Prisma.LitterUpdateManyMutationInput, Prisma.LitterUncheckedUpdateManyWithoutMotherInput>
+}
+
+export type LitterUpsertWithWhereUniqueWithoutFatherInput = {
+  where: Prisma.LitterWhereUniqueInput
+  update: Prisma.XOR<Prisma.LitterUpdateWithoutFatherInput, Prisma.LitterUncheckedUpdateWithoutFatherInput>
+  create: Prisma.XOR<Prisma.LitterCreateWithoutFatherInput, Prisma.LitterUncheckedCreateWithoutFatherInput>
+}
+
+export type LitterUpdateWithWhereUniqueWithoutFatherInput = {
+  where: Prisma.LitterWhereUniqueInput
+  data: Prisma.XOR<Prisma.LitterUpdateWithoutFatherInput, Prisma.LitterUncheckedUpdateWithoutFatherInput>
+}
+
+export type LitterUpdateManyWithWhereWithoutFatherInput = {
+  where: Prisma.LitterScalarWhereInput
+  data: Prisma.XOR<Prisma.LitterUpdateManyMutationInput, Prisma.LitterUncheckedUpdateManyWithoutFatherInput>
+}
+
 export type LitterUpsertWithoutRabbitsInput = {
   update: Prisma.XOR<Prisma.LitterUpdateWithoutRabbitsInput, Prisma.LitterUncheckedUpdateWithoutRabbitsInput>
   create: Prisma.XOR<Prisma.LitterCreateWithoutRabbitsInput, Prisma.LitterUncheckedCreateWithoutRabbitsInput>
@@ -1165,38 +1197,6 @@ export type LitterUncheckedUpdateWithoutRabbitsInput = {
   sourceAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutSourceLitterNestedInput
   destinationAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutDestinationLitterNestedInput
   weaning?: Prisma.WeaningUncheckedUpdateOneWithoutLitterNestedInput
-}
-
-export type LitterUpsertWithWhereUniqueWithoutMotherInput = {
-  where: Prisma.LitterWhereUniqueInput
-  update: Prisma.XOR<Prisma.LitterUpdateWithoutMotherInput, Prisma.LitterUncheckedUpdateWithoutMotherInput>
-  create: Prisma.XOR<Prisma.LitterCreateWithoutMotherInput, Prisma.LitterUncheckedCreateWithoutMotherInput>
-}
-
-export type LitterUpdateWithWhereUniqueWithoutMotherInput = {
-  where: Prisma.LitterWhereUniqueInput
-  data: Prisma.XOR<Prisma.LitterUpdateWithoutMotherInput, Prisma.LitterUncheckedUpdateWithoutMotherInput>
-}
-
-export type LitterUpdateManyWithWhereWithoutMotherInput = {
-  where: Prisma.LitterScalarWhereInput
-  data: Prisma.XOR<Prisma.LitterUpdateManyMutationInput, Prisma.LitterUncheckedUpdateManyWithoutMotherInput>
-}
-
-export type LitterUpsertWithWhereUniqueWithoutFatherInput = {
-  where: Prisma.LitterWhereUniqueInput
-  update: Prisma.XOR<Prisma.LitterUpdateWithoutFatherInput, Prisma.LitterUncheckedUpdateWithoutFatherInput>
-  create: Prisma.XOR<Prisma.LitterCreateWithoutFatherInput, Prisma.LitterUncheckedCreateWithoutFatherInput>
-}
-
-export type LitterUpdateWithWhereUniqueWithoutFatherInput = {
-  where: Prisma.LitterWhereUniqueInput
-  data: Prisma.XOR<Prisma.LitterUpdateWithoutFatherInput, Prisma.LitterUncheckedUpdateWithoutFatherInput>
-}
-
-export type LitterUpdateManyWithWhereWithoutFatherInput = {
-  where: Prisma.LitterScalarWhereInput
-  data: Prisma.XOR<Prisma.LitterUpdateManyMutationInput, Prisma.LitterUncheckedUpdateManyWithoutFatherInput>
 }
 
 export type LitterCreateWithoutBreedingInput = {

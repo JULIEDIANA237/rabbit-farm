@@ -2638,8 +2638,8 @@ export const CrossBreedScalarFieldEnum = {
   farmId: 'farmId',
   name: 'name',
   description: 'description',
-  breedAId: 'breedAId',
-  breedBId: 'breedBId',
+  parentBreedAId: 'parentBreedAId',
+  parentBreedBId: 'parentBreedBId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -2653,17 +2653,14 @@ export const RabbitScalarFieldEnum = {
   code: 'code',
   sex: 'sex',
   status: 'status',
-  geneticType: 'geneticType',
   breedId: 'breedId',
   crossBreedId: 'crossBreedId',
   fatherId: 'fatherId',
   motherId: 'motherId',
   birthDate: 'birthDate',
   color: 'color',
-  size: 'size',
-  earFeature: 'earFeature',
-  mark: 'mark',
-  observation: 'observation',
+  weight: 'weight',
+  observations: 'observations',
   birthLitterId: 'birthLitterId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -3132,6 +3129,20 @@ export type ListEnumRabbitStatusFieldRefInput<$PrismaModel> = FieldRefInputType<
 
 
 /**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
  * Reference to a field of type 'RabbitIdentificationType'
  */
 export type EnumRabbitIdentificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RabbitIdentificationType'>
@@ -3226,20 +3237,6 @@ export type EnumFatteningLotStatusFieldRefInput<$PrismaModel> = FieldRefInputTyp
  * Reference to a field of type 'FatteningLotStatus[]'
  */
 export type ListEnumFatteningLotStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FatteningLotStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal'
- */
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal[]'
- */
-export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
     
 
 
