@@ -9,12 +9,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SectionsModule = void 0;
 const common_1 = require("@nestjs/common");
 const sections_service_1 = require("./sections.service");
+const sections_resolver_1 = require("./sections.resolver");
 let SectionsModule = class SectionsModule {
 };
 exports.SectionsModule = SectionsModule;
 exports.SectionsModule = SectionsModule = __decorate([
     (0, common_1.Module)({
-        providers: [sections_service_1.SectionsService]
+        providers: [sections_service_1.SectionsService, sections_resolver_1.SectionsResolver]
     })
 ], SectionsModule);
 //# sourceMappingURL=sections.module.js.map

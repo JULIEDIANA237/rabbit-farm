@@ -15,10 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FarmsResolver = void 0;
 const graphql_1 = require("@nestjs/graphql");
 const common_1 = require("@nestjs/common");
-const farms_service_1 = require("./farms.service");
+const client_1 = require("../generated/prisma/client");
 const farm_model_1 = require("./models/farm.model");
 const create_farm_input_1 = require("./dto/create-farm.input");
+const farms_service_1 = require("./farms.service");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
+const roles_guard_1 = require("../auth/guards/roles.guard");
+const roles_decorator_1 = require("../auth/decorators/roles.decorator");
 const current_user_decorator_1 = require("../auth/decorators/current-user.decorator");
 let FarmsResolver = class FarmsResolver {
     farmsService;
@@ -38,23 +41,29 @@ let FarmsResolver = class FarmsResolver {
 exports.FarmsResolver = FarmsResolver;
 __decorate([
     (0, graphql_1.Mutation)(() => farm_model_1.FarmModel),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(client_1.FarmRole.ADMIN),
     __param(0, (0, graphql_1.Args)('input')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_farm_input_1.CreateFarmInput]),
     __metadata("design:returntype", Promise)
 ], FarmsResolver.prototype, "createFarm", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, graphql_1.Query)(() => [farm_model_1.FarmModel]),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], FarmsResolver.prototype, "farms", null);
 __decorate([
+    (0, graphql_1.Query)(() => farm_model_1.FarmModel, {
+        nullable: true,
+    }),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    (0, graphql_1.Query)(() => farm_model_1.FarmModel, { nullable: true }),
-    __param(0, (0, graphql_1.Args)('id', { type: () => graphql_1.ID })),
+    __param(0, (0, graphql_1.Args)('id', {
+        type: () => graphql_1.ID,
+    })),
     __param(1, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
