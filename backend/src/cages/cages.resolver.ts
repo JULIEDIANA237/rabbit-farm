@@ -18,35 +18,35 @@ import { Roles } from '../auth/decorators/roles.decorator';
 
 import type { CurrentUserType } from '../auth/types/current-user.type';
 
-import { CreateSectionInput } from './inputs/create-section.input';
-import { UpdateSectionInput } from './inputs/update-section.input';
+import { CreateCageInput } from './inputs/create-cage.input';
+import { UpdateCageInput } from './inputs/update-cage.input';
 
-import { SectionModel } from './models/section.model';
+import { CageModel } from './models/cage.model';
 
-import { SectionsService } from './sections.service';
+import { CagesService } from './cages.service';
 
-@Resolver(() => SectionModel)
+@Resolver(() => CageModel)
 @UseGuards(
   JwtAuthGuard,
   RolesGuard,
 )
-export class SectionsResolver {
+export class CagesResolver {
   constructor(
-    private readonly sectionsService: SectionsService,
+    private readonly cagesService: CagesService,
   ) {}
 
-  @Query(() => [SectionModel])
-  async sections(
+  @Query(() => [CageModel])
+  async cages(
     @CurrentUser()
     currentUser: CurrentUserType,
   ) {
-    return this.sectionsService.findAll(
+    return this.cagesService.findAll(
       currentUser,
     );
   }
 
-  @Query(() => SectionModel)
-  async section(
+  @Query(() => CageModel)
+  async cage(
     @Args('id', {
       type: () => ID,
     })
@@ -55,45 +55,45 @@ export class SectionsResolver {
     @CurrentUser()
     currentUser: CurrentUserType,
   ) {
-    return this.sectionsService.findOne(
+    return this.cagesService.findOne(
       id,
       currentUser,
     );
   }
 
-  @Mutation(() => SectionModel)
+  @Mutation(() => CageModel)
   @Roles(FarmRole.ADMIN)
-  async createSection(
+  async createCage(
     @Args('input')
-    input: CreateSectionInput,
+    input: CreateCageInput,
 
     @CurrentUser()
     currentUser: CurrentUserType,
   ) {
-    return this.sectionsService.create(
+    return this.cagesService.create(
       input,
       currentUser,
     );
   }
 
-  @Mutation(() => SectionModel)
+  @Mutation(() => CageModel)
   @Roles(FarmRole.ADMIN)
-  async updateSection(
+  async updateCage(
     @Args('input')
-    input: UpdateSectionInput,
+    input: UpdateCageInput,
 
     @CurrentUser()
     currentUser: CurrentUserType,
   ) {
-    return this.sectionsService.update(
+    return this.cagesService.update(
       input,
       currentUser,
     );
   }
 
-  @Mutation(() => SectionModel)
+  @Mutation(() => CageModel)
   @Roles(FarmRole.ADMIN)
-  async deleteSection(
+  async deleteCage(
     @Args('id', {
       type: () => ID,
     })
@@ -102,7 +102,7 @@ export class SectionsResolver {
     @CurrentUser()
     currentUser: CurrentUserType,
   ) {
-    return this.sectionsService.remove(
+    return this.cagesService.remove(
       id,
       currentUser,
     );

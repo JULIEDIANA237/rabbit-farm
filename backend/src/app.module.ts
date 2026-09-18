@@ -10,6 +10,8 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { FarmsModule } from './farms/farms.module';
 import { UsersModule } from './users/users.module';
+import { SectionsModule } from './sections/sections.module';
+import { CagesModule } from './cages/cages.module';
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     FarmsModule,
     UsersModule,
+    SectionsModule,
+    CagesModule,
   ],
 })
 export class AppModule {}

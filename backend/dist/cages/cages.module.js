@@ -8,13 +8,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CagesModule = void 0;
 const common_1 = require("@nestjs/common");
+const auth_module_1 = require("../auth/auth.module");
 const cages_service_1 = require("./cages.service");
+const cages_resolver_1 = require("./cages.resolver");
 let CagesModule = class CagesModule {
 };
 exports.CagesModule = CagesModule;
 exports.CagesModule = CagesModule = __decorate([
     (0, common_1.Module)({
-        providers: [cages_service_1.CagesService]
+        imports: [
+            auth_module_1.AuthModule,
+        ],
+        providers: [
+            cages_service_1.CagesService,
+            cages_resolver_1.CagesResolver,
+        ],
+        exports: [
+            cages_service_1.CagesService,
+        ],
     })
 ], CagesModule);
 //# sourceMappingURL=cages.module.js.map
