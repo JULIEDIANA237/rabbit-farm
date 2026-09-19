@@ -14,6 +14,7 @@ import { SectionsModule } from './sections/sections.module';
 import { CagesModule } from './cages/cages.module';
 import { RabbitsModule } from './rabbits/rabbits.module';
 import { GeneticsModule } from './genetics/genetics.module';
+import { BreedingModule } from './breeding/breeding.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { GeneticsModule } from './genetics/genetics.module';
     CagesModule,
     RabbitsModule,
     GeneticsModule,
+    BreedingModule,
   ],
 })
 export class AppModule {}

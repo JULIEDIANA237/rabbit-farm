@@ -353,7 +353,7 @@ export class RabbitsService {
         geneticType: input.geneticType,
         color: input.color,
         weight: input.weight,
-        observation: input.observations,
+        observations: input.observations,
       },
       include: { identifications: true },
     });
@@ -396,7 +396,7 @@ export class RabbitsService {
         crossBreedId: input.crossBreedId,
         color: input.color,
         weight: input.weight,
-        observation: input.observations,
+        observations: input.observations,
       },
       include: { identifications: true },
     });

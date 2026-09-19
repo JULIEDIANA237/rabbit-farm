@@ -41,7 +41,11 @@ export declare const RabbitIdentificationType: {
 export type RabbitIdentificationType = (typeof RabbitIdentificationType)[keyof typeof RabbitIdentificationType];
 export declare const BreedingStatus: {
     readonly PLANNED: "PLANNED";
-    readonly COMPLETED: "COMPLETED";
+    readonly AWAITING_PALPATION: "AWAITING_PALPATION";
+    readonly PREGNANT: "PREGNANT";
+    readonly NON_PREGNANT: "NON_PREGNANT";
+    readonly INCONCLUSIVE: "INCONCLUSIVE";
+    readonly BIRTH_RECORDED: "BIRTH_RECORDED";
     readonly CANCELLED: "CANCELLED";
 };
 export type BreedingStatus = (typeof BreedingStatus)[keyof typeof BreedingStatus];

@@ -70,7 +70,11 @@ export type RabbitIdentificationType = (typeof RabbitIdentificationType)[keyof t
 
 export const BreedingStatus = {
   PLANNED: 'PLANNED',
-  COMPLETED: 'COMPLETED',
+  AWAITING_PALPATION: 'AWAITING_PALPATION',
+  PREGNANT: 'PREGNANT',
+  NON_PREGNANT: 'NON_PREGNANT',
+  INCONCLUSIVE: 'INCONCLUSIVE',
+  BIRTH_RECORDED: 'BIRTH_RECORDED',
   CANCELLED: 'CANCELLED'
 } as const
 

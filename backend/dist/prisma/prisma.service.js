@@ -17,7 +17,8 @@ const client_1 = require("../generated/prisma/client");
 let PrismaService = class PrismaService extends client_1.PrismaClient {
     constructor() {
         const adapter = new adapter_pg_1.PrismaPg({
-            connectionString: process.env.DATABASE_URL,
+            connectionString: process.env.DATABASE_URL_UNPOOLED ??
+                process.env.DATABASE_URL,
         });
         super({ adapter });
     }

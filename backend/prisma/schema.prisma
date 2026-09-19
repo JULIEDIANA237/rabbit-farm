@@ -54,7 +54,11 @@ enum RabbitIdentificationType {
 
 enum BreedingStatus {
   PLANNED
-  COMPLETED
+  AWAITING_PALPATION
+  PREGNANT
+  NON_PREGNANT
+  INCONCLUSIVE
+  BIRTH_RECORDED
   CANCELLED
 }
 
@@ -452,7 +456,7 @@ model Breeding {
   expectedBirthStartDate DateTime?
   expectedBirthEndDate   DateTime?
 
-  status      BreedingStatus @default(COMPLETED)
+  status      BreedingStatus @default(PLANNED)
   observation String?
 
   farm   Farm   @relation(fields: [farmId], references: [id], onDelete: Cascade)
