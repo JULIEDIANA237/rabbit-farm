@@ -16,6 +16,8 @@ import { RabbitsModule } from './rabbits/rabbits.module';
 import { GeneticsModule } from './genetics/genetics.module';
 import { BreedingModule } from './breeding/breeding.module';
 import { PregnancyModule } from './pregnancy/pregnancy.module';
+import { BirthsModule } from './births/births.module';
+import { LittersModule } from './litters/litters.module';
 
 @Module({
   imports: [
@@ -38,6 +40,8 @@ import { PregnancyModule } from './pregnancy/pregnancy.module';
     GeneticsModule,
     BreedingModule,
     PregnancyModule,
+    BirthsModule,
+    LittersModule,
   ],
 })
 export class AppModule {}

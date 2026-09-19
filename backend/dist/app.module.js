@@ -20,6 +20,8 @@ const rabbits_module_1 = require("./rabbits/rabbits.module");
 const genetics_module_1 = require("./genetics/genetics.module");
 const breeding_module_1 = require("./breeding/breeding.module");
 const pregnancy_module_1 = require("./pregnancy/pregnancy.module");
+const births_module_1 = require("./births/births.module");
+const litters_module_1 = require("./litters/litters.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -43,6 +45,8 @@ exports.AppModule = AppModule = __decorate([
             genetics_module_1.GeneticsModule,
             breeding_module_1.BreedingModule,
             pregnancy_module_1.PregnancyModule,
+            births_module_1.BirthsModule,
+            litters_module_1.LittersModule,
         ],
     })
 ], AppModule);

@@ -50,6 +50,7 @@ export type LitterMinAggregateOutputType = {
   liveBorn: number | null
   stillBorn: number | null
   currentCount: number | null
+  observation: string | null
   status: $Enums.LitterStatus | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -67,6 +68,7 @@ export type LitterMaxAggregateOutputType = {
   liveBorn: number | null
   stillBorn: number | null
   currentCount: number | null
+  observation: string | null
   status: $Enums.LitterStatus | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -84,6 +86,7 @@ export type LitterCountAggregateOutputType = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation: number
   status: number
   createdAt: number
   updatedAt: number
@@ -115,6 +118,7 @@ export type LitterMinAggregateInputType = {
   liveBorn?: true
   stillBorn?: true
   currentCount?: true
+  observation?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -132,6 +136,7 @@ export type LitterMaxAggregateInputType = {
   liveBorn?: true
   stillBorn?: true
   currentCount?: true
+  observation?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -149,6 +154,7 @@ export type LitterCountAggregateInputType = {
   liveBorn?: true
   stillBorn?: true
   currentCount?: true
+  observation?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -253,6 +259,7 @@ export type LitterGroupByOutputType = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation: string | null
   status: $Enums.LitterStatus
   createdAt: Date
   updatedAt: Date
@@ -293,6 +300,7 @@ export type LitterWhereInput = {
   liveBorn?: Prisma.IntFilter<"Litter"> | number
   stillBorn?: Prisma.IntFilter<"Litter"> | number
   currentCount?: Prisma.IntFilter<"Litter"> | number
+  observation?: Prisma.StringNullableFilter<"Litter"> | string | null
   status?: Prisma.EnumLitterStatusFilter<"Litter"> | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFilter<"Litter"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Litter"> | Date | string
@@ -319,6 +327,7 @@ export type LitterOrderByWithRelationInput = {
   liveBorn?: Prisma.SortOrder
   stillBorn?: Prisma.SortOrder
   currentCount?: Prisma.SortOrder
+  observation?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -349,6 +358,7 @@ export type LitterWhereUniqueInput = Prisma.AtLeast<{
   liveBorn?: Prisma.IntFilter<"Litter"> | number
   stillBorn?: Prisma.IntFilter<"Litter"> | number
   currentCount?: Prisma.IntFilter<"Litter"> | number
+  observation?: Prisma.StringNullableFilter<"Litter"> | string | null
   status?: Prisma.EnumLitterStatusFilter<"Litter"> | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFilter<"Litter"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Litter"> | Date | string
@@ -375,6 +385,7 @@ export type LitterOrderByWithAggregationInput = {
   liveBorn?: Prisma.SortOrder
   stillBorn?: Prisma.SortOrder
   currentCount?: Prisma.SortOrder
+  observation?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -400,6 +411,7 @@ export type LitterScalarWhereWithAggregatesInput = {
   liveBorn?: Prisma.IntWithAggregatesFilter<"Litter"> | number
   stillBorn?: Prisma.IntWithAggregatesFilter<"Litter"> | number
   currentCount?: Prisma.IntWithAggregatesFilter<"Litter"> | number
+  observation?: Prisma.StringNullableWithAggregatesFilter<"Litter"> | string | null
   status?: Prisma.EnumLitterStatusWithAggregatesFilter<"Litter"> | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Litter"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Litter"> | Date | string
@@ -412,6 +424,7 @@ export type LitterCreateInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -438,6 +451,7 @@ export type LitterUncheckedCreateInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -454,6 +468,7 @@ export type LitterUpdateInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -480,6 +495,7 @@ export type LitterUncheckedUpdateInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -501,6 +517,7 @@ export type LitterCreateManyInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -513,6 +530,7 @@ export type LitterUpdateManyMutationInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -530,6 +548,7 @@ export type LitterUncheckedUpdateManyInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -567,6 +586,7 @@ export type LitterCountOrderByAggregateInput = {
   liveBorn?: Prisma.SortOrder
   stillBorn?: Prisma.SortOrder
   currentCount?: Prisma.SortOrder
+  observation?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -590,6 +610,7 @@ export type LitterMaxOrderByAggregateInput = {
   liveBorn?: Prisma.SortOrder
   stillBorn?: Prisma.SortOrder
   currentCount?: Prisma.SortOrder
+  observation?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -607,6 +628,7 @@ export type LitterMinOrderByAggregateInput = {
   liveBorn?: Prisma.SortOrder
   stillBorn?: Prisma.SortOrder
   currentCount?: Prisma.SortOrder
+  observation?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -892,6 +914,7 @@ export type LitterCreateWithoutFarmInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -916,6 +939,7 @@ export type LitterUncheckedCreateWithoutFarmInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -966,6 +990,7 @@ export type LitterScalarWhereInput = {
   liveBorn?: Prisma.IntFilter<"Litter"> | number
   stillBorn?: Prisma.IntFilter<"Litter"> | number
   currentCount?: Prisma.IntFilter<"Litter"> | number
+  observation?: Prisma.StringNullableFilter<"Litter"> | string | null
   status?: Prisma.EnumLitterStatusFilter<"Litter"> | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFilter<"Litter"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Litter"> | Date | string
@@ -978,6 +1003,7 @@ export type LitterCreateWithoutMotherInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1002,6 +1028,7 @@ export type LitterUncheckedCreateWithoutMotherInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1028,6 +1055,7 @@ export type LitterCreateWithoutFatherInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1052,6 +1080,7 @@ export type LitterUncheckedCreateWithoutFatherInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1078,6 +1107,7 @@ export type LitterCreateWithoutRabbitsInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1103,6 +1133,7 @@ export type LitterUncheckedCreateWithoutRabbitsInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1166,6 +1197,7 @@ export type LitterUpdateWithoutRabbitsInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1191,6 +1223,7 @@ export type LitterUncheckedUpdateWithoutRabbitsInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1206,6 +1239,7 @@ export type LitterCreateWithoutBreedingInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1230,6 +1264,7 @@ export type LitterUncheckedCreateWithoutBreedingInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1272,6 +1307,7 @@ export type LitterCreateWithoutBirthInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1296,6 +1332,7 @@ export type LitterUncheckedCreateWithoutBirthInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1328,6 +1365,7 @@ export type LitterUpdateWithoutBirthInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1352,6 +1390,7 @@ export type LitterUncheckedUpdateWithoutBirthInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1368,6 +1407,7 @@ export type LitterCreateWithoutSourceAdoptionsInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1393,6 +1433,7 @@ export type LitterUncheckedCreateWithoutSourceAdoptionsInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1413,6 +1454,7 @@ export type LitterCreateWithoutDestinationAdoptionsInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1438,6 +1480,7 @@ export type LitterUncheckedCreateWithoutDestinationAdoptionsInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1469,6 +1512,7 @@ export type LitterUpdateWithoutSourceAdoptionsInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1494,6 +1538,7 @@ export type LitterUncheckedUpdateWithoutSourceAdoptionsInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1520,6 +1565,7 @@ export type LitterUpdateWithoutDestinationAdoptionsInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1545,6 +1591,7 @@ export type LitterUncheckedUpdateWithoutDestinationAdoptionsInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1560,6 +1607,7 @@ export type LitterCreateWithoutWeaningInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1585,6 +1633,7 @@ export type LitterUncheckedCreateWithoutWeaningInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1616,6 +1665,7 @@ export type LitterUpdateWithoutWeaningInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1641,6 +1691,7 @@ export type LitterUncheckedUpdateWithoutWeaningInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1660,6 +1711,7 @@ export type LitterCreateManyFarmInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1672,6 +1724,7 @@ export type LitterUpdateWithoutFarmInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1696,6 +1749,7 @@ export type LitterUncheckedUpdateWithoutFarmInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1716,6 +1770,7 @@ export type LitterUncheckedUpdateManyWithoutFarmInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1732,6 +1787,7 @@ export type LitterCreateManyMotherInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1748,6 +1804,7 @@ export type LitterCreateManyFatherInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1760,6 +1817,7 @@ export type LitterUpdateWithoutMotherInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1784,6 +1842,7 @@ export type LitterUncheckedUpdateWithoutMotherInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1804,6 +1863,7 @@ export type LitterUncheckedUpdateManyWithoutMotherInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1816,6 +1876,7 @@ export type LitterUpdateWithoutFatherInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1840,6 +1901,7 @@ export type LitterUncheckedUpdateWithoutFatherInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1860,6 +1922,7 @@ export type LitterUncheckedUpdateManyWithoutFatherInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1876,6 +1939,7 @@ export type LitterCreateManyBreedingInput = {
   liveBorn: number
   stillBorn: number
   currentCount: number
+  observation?: string | null
   status?: $Enums.LitterStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1888,6 +1952,7 @@ export type LitterUpdateWithoutBreedingInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1912,6 +1977,7 @@ export type LitterUncheckedUpdateWithoutBreedingInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1932,6 +1998,7 @@ export type LitterUncheckedUpdateManyWithoutBreedingInput = {
   liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
   stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
   currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1998,6 +2065,7 @@ export type LitterSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   liveBorn?: boolean
   stillBorn?: boolean
   currentCount?: boolean
+  observation?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -2025,6 +2093,7 @@ export type LitterSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   liveBorn?: boolean
   stillBorn?: boolean
   currentCount?: boolean
+  observation?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -2047,6 +2116,7 @@ export type LitterSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   liveBorn?: boolean
   stillBorn?: boolean
   currentCount?: boolean
+  observation?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -2069,12 +2139,13 @@ export type LitterSelectScalar = {
   liveBorn?: boolean
   stillBorn?: boolean
   currentCount?: boolean
+  observation?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type LitterOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "code" | "breedingId" | "birthId" | "motherId" | "fatherId" | "birthDate" | "liveBorn" | "stillBorn" | "currentCount" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["litter"]>
+export type LitterOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "code" | "breedingId" | "birthId" | "motherId" | "fatherId" | "birthDate" | "liveBorn" | "stillBorn" | "currentCount" | "observation" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["litter"]>
 export type LitterInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   mother?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>
   father?: boolean | Prisma.Litter$fatherArgs<ExtArgs>
@@ -2127,6 +2198,7 @@ export type $LitterPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     liveBorn: number
     stillBorn: number
     currentCount: number
+    observation: string | null
     status: $Enums.LitterStatus
     createdAt: Date
     updatedAt: Date
@@ -2573,6 +2645,7 @@ export interface LitterFieldRefs {
   readonly liveBorn: Prisma.FieldRef<"Litter", 'Int'>
   readonly stillBorn: Prisma.FieldRef<"Litter", 'Int'>
   readonly currentCount: Prisma.FieldRef<"Litter", 'Int'>
+  readonly observation: Prisma.FieldRef<"Litter", 'String'>
   readonly status: Prisma.FieldRef<"Litter", 'LitterStatus'>
   readonly createdAt: Prisma.FieldRef<"Litter", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Litter", 'DateTime'>

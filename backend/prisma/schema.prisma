@@ -542,6 +542,7 @@ model Litter {
   liveBorn     Int
   stillBorn    Int
   currentCount Int
+  observation  String?
 
   status LitterStatus @default(ACTIVE)
 

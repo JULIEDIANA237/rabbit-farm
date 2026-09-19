@@ -210,6 +210,7 @@ export declare const LitterScalarFieldEnum: {
     readonly liveBorn: "liveBorn";
     readonly stillBorn: "stillBorn";
     readonly currentCount: "currentCount";
+    readonly observation: "observation";
     readonly status: "status";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";

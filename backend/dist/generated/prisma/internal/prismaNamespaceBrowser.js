@@ -229,6 +229,7 @@ exports.LitterScalarFieldEnum = {
     liveBorn: 'liveBorn',
     stillBorn: 'stillBorn',
     currentCount: 'currentCount',
+    observation: 'observation',
     status: 'status',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
