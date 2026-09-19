@@ -18,6 +18,7 @@ import { BreedingModule } from './breeding/breeding.module';
 import { PregnancyModule } from './pregnancy/pregnancy.module';
 import { BirthsModule } from './births/births.module';
 import { LittersModule } from './litters/litters.module';
+import { AdoptionsModule } from './adoptions/adoptions.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { LittersModule } from './litters/litters.module';
     PregnancyModule,
     BirthsModule,
     LittersModule,
+    AdoptionsModule,
   ],
 })
 export class AppModule {}

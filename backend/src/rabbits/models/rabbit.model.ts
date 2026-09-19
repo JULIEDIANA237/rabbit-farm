@@ -38,6 +38,9 @@ export class RabbitModel {
   @Field({ nullable: true })
   birthDate?: Date;
 
+  @Field(() => ID, { nullable: true })
+  birthLitterId?: string;
+
   @Field({ nullable: true })
   geneticType?: string;
 

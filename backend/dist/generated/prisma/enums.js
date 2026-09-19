@@ -21,7 +21,8 @@ exports.CageStatus = {
 };
 exports.RabbitSex = {
     MALE: 'MALE',
-    FEMALE: 'FEMALE'
+    FEMALE: 'FEMALE',
+    UNKNOWN: 'UNKNOWN'
 };
 exports.RabbitStatus = {
     ACTIVE: 'ACTIVE',

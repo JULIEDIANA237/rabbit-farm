@@ -22,6 +22,7 @@ export type CageStatus = (typeof CageStatus)[keyof typeof CageStatus];
 export declare const RabbitSex: {
     readonly MALE: "MALE";
     readonly FEMALE: "FEMALE";
+    readonly UNKNOWN: "UNKNOWN";
 };
 export type RabbitSex = (typeof RabbitSex)[keyof typeof RabbitSex];
 export declare const RabbitStatus: {

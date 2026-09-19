@@ -19,6 +19,13 @@ import { Roles } from '../auth/decorators/roles.decorator';
 
 import { FarmRole } from '../generated/prisma/client';
 
+import { CreateLitterRabbitsInput } from './inputs/create-litter-rabbits.input';
+import { RabbitModel } from '../rabbits/models/rabbit.model';
+
+import { RabbitCageMovementModel } from '../rabbits/models/rabbit-cage-movement.model';
+
+import { AssignLitterRabbitsToCageInput } from './inputs/assign-litter-rabbits-to-cage.input';
+
 @Resolver(() => LitterModel)
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class LittersResolver {
@@ -81,4 +88,41 @@ export class LittersResolver {
       currentUser,
     );
   }
+
+  @Mutation(() => [RabbitModel])
+@Roles(
+  FarmRole.ADMIN,
+  FarmRole.BREEDING_MANAGER,
+)
+async createLitterRabbits(
+  @Args('input')
+  input: CreateLitterRabbitsInput,
+
+  @CurrentUser()
+  currentUser: CurrentUserType,
+) {
+  return this.littersService.createRabbits(
+    input,
+    currentUser,
+  );
+}
+
+@Mutation(() => [RabbitCageMovementModel])
+@Roles(
+  FarmRole.ADMIN,
+  FarmRole.BREEDING_MANAGER,
+  FarmRole.EMPLOYEE,
+)
+async assignLitterRabbitsToCage(
+  @Args('input')
+  input: AssignLitterRabbitsToCageInput,
+
+  @CurrentUser()
+  currentUser: CurrentUserType,
+) {
+  return this.littersService.assignRabbitsToCage(
+    input,
+    currentUser,
+  );
+}
 }

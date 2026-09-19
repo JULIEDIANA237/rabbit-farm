@@ -41,7 +41,8 @@ export type CageStatus = (typeof CageStatus)[keyof typeof CageStatus]
 
 export const RabbitSex = {
   MALE: 'MALE',
-  FEMALE: 'FEMALE'
+  FEMALE: 'FEMALE',
+  UNKNOWN: 'UNKNOWN'
 } as const
 
 export type RabbitSex = (typeof RabbitSex)[keyof typeof RabbitSex]
