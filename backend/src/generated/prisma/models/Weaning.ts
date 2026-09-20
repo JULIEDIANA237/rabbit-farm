@@ -28,42 +28,47 @@ export type AggregateWeaning = {
 
 export type WeaningAvgAggregateOutputType = {
   quantity: number | null
-  totalWeight: number | null
-  averageWeight: number | null
+  totalWeight: runtime.Decimal | null
+  averageWeight: runtime.Decimal | null
 }
 
 export type WeaningSumAggregateOutputType = {
   quantity: number | null
-  totalWeight: number | null
-  averageWeight: number | null
+  totalWeight: runtime.Decimal | null
+  averageWeight: runtime.Decimal | null
 }
 
 export type WeaningMinAggregateOutputType = {
   id: string | null
+  farmId: string | null
   litterId: string | null
   plannedDate: Date | null
   actualDate: Date | null
   quantity: number | null
-  totalWeight: number | null
-  averageWeight: number | null
+  totalWeight: runtime.Decimal | null
+  averageWeight: runtime.Decimal | null
   observation: string | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type WeaningMaxAggregateOutputType = {
   id: string | null
+  farmId: string | null
   litterId: string | null
   plannedDate: Date | null
   actualDate: Date | null
   quantity: number | null
-  totalWeight: number | null
-  averageWeight: number | null
+  totalWeight: runtime.Decimal | null
+  averageWeight: runtime.Decimal | null
   observation: string | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type WeaningCountAggregateOutputType = {
   id: number
+  farmId: number
   litterId: number
   plannedDate: number
   actualDate: number
@@ -72,6 +77,7 @@ export type WeaningCountAggregateOutputType = {
   averageWeight: number
   observation: number
   createdAt: number
+  updatedAt: number
   _all: number
 }
 
@@ -90,6 +96,7 @@ export type WeaningSumAggregateInputType = {
 
 export type WeaningMinAggregateInputType = {
   id?: true
+  farmId?: true
   litterId?: true
   plannedDate?: true
   actualDate?: true
@@ -98,10 +105,12 @@ export type WeaningMinAggregateInputType = {
   averageWeight?: true
   observation?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type WeaningMaxAggregateInputType = {
   id?: true
+  farmId?: true
   litterId?: true
   plannedDate?: true
   actualDate?: true
@@ -110,10 +119,12 @@ export type WeaningMaxAggregateInputType = {
   averageWeight?: true
   observation?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type WeaningCountAggregateInputType = {
   id?: true
+  farmId?: true
   litterId?: true
   plannedDate?: true
   actualDate?: true
@@ -122,6 +133,7 @@ export type WeaningCountAggregateInputType = {
   averageWeight?: true
   observation?: true
   createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -213,14 +225,16 @@ export type WeaningGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 
 export type WeaningGroupByOutputType = {
   id: string
+  farmId: string
   litterId: string
-  plannedDate: Date | null
+  plannedDate: Date
   actualDate: Date | null
-  quantity: number | null
-  totalWeight: number | null
-  averageWeight: number | null
+  quantity: number
+  totalWeight: runtime.Decimal | null
+  averageWeight: runtime.Decimal | null
   observation: string | null
   createdAt: Date
+  updatedAt: Date
   _count: WeaningCountAggregateOutputType | null
   _avg: WeaningAvgAggregateOutputType | null
   _sum: WeaningSumAggregateOutputType | null
@@ -248,56 +262,70 @@ export type WeaningWhereInput = {
   OR?: Prisma.WeaningWhereInput[]
   NOT?: Prisma.WeaningWhereInput | Prisma.WeaningWhereInput[]
   id?: Prisma.StringFilter<"Weaning"> | string
+  farmId?: Prisma.StringFilter<"Weaning"> | string
   litterId?: Prisma.StringFilter<"Weaning"> | string
-  plannedDate?: Prisma.DateTimeNullableFilter<"Weaning"> | Date | string | null
+  plannedDate?: Prisma.DateTimeFilter<"Weaning"> | Date | string
   actualDate?: Prisma.DateTimeNullableFilter<"Weaning"> | Date | string | null
-  quantity?: Prisma.IntNullableFilter<"Weaning"> | number | null
-  totalWeight?: Prisma.FloatNullableFilter<"Weaning"> | number | null
-  averageWeight?: Prisma.FloatNullableFilter<"Weaning"> | number | null
+  quantity?: Prisma.IntFilter<"Weaning"> | number
+  totalWeight?: Prisma.DecimalNullableFilter<"Weaning"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: Prisma.DecimalNullableFilter<"Weaning"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observation?: Prisma.StringNullableFilter<"Weaning"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Weaning"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Weaning"> | Date | string
+  farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
   litter?: Prisma.XOR<Prisma.LitterScalarRelationFilter, Prisma.LitterWhereInput>
+  rabbits?: Prisma.WeaningRabbitListRelationFilter
 }
 
 export type WeaningOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  farmId?: Prisma.SortOrder
   litterId?: Prisma.SortOrder
-  plannedDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  plannedDate?: Prisma.SortOrder
   actualDate?: Prisma.SortOrderInput | Prisma.SortOrder
-  quantity?: Prisma.SortOrderInput | Prisma.SortOrder
+  quantity?: Prisma.SortOrder
   totalWeight?: Prisma.SortOrderInput | Prisma.SortOrder
   averageWeight?: Prisma.SortOrderInput | Prisma.SortOrder
   observation?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  farm?: Prisma.FarmOrderByWithRelationInput
   litter?: Prisma.LitterOrderByWithRelationInput
+  rabbits?: Prisma.WeaningRabbitOrderByRelationAggregateInput
 }
 
 export type WeaningWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  litterId?: string
   AND?: Prisma.WeaningWhereInput | Prisma.WeaningWhereInput[]
   OR?: Prisma.WeaningWhereInput[]
   NOT?: Prisma.WeaningWhereInput | Prisma.WeaningWhereInput[]
-  plannedDate?: Prisma.DateTimeNullableFilter<"Weaning"> | Date | string | null
+  farmId?: Prisma.StringFilter<"Weaning"> | string
+  litterId?: Prisma.StringFilter<"Weaning"> | string
+  plannedDate?: Prisma.DateTimeFilter<"Weaning"> | Date | string
   actualDate?: Prisma.DateTimeNullableFilter<"Weaning"> | Date | string | null
-  quantity?: Prisma.IntNullableFilter<"Weaning"> | number | null
-  totalWeight?: Prisma.FloatNullableFilter<"Weaning"> | number | null
-  averageWeight?: Prisma.FloatNullableFilter<"Weaning"> | number | null
+  quantity?: Prisma.IntFilter<"Weaning"> | number
+  totalWeight?: Prisma.DecimalNullableFilter<"Weaning"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: Prisma.DecimalNullableFilter<"Weaning"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observation?: Prisma.StringNullableFilter<"Weaning"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Weaning"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Weaning"> | Date | string
+  farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
   litter?: Prisma.XOR<Prisma.LitterScalarRelationFilter, Prisma.LitterWhereInput>
-}, "id" | "litterId">
+  rabbits?: Prisma.WeaningRabbitListRelationFilter
+}, "id">
 
 export type WeaningOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  farmId?: Prisma.SortOrder
   litterId?: Prisma.SortOrder
-  plannedDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  plannedDate?: Prisma.SortOrder
   actualDate?: Prisma.SortOrderInput | Prisma.SortOrder
-  quantity?: Prisma.SortOrderInput | Prisma.SortOrder
+  quantity?: Prisma.SortOrder
   totalWeight?: Prisma.SortOrderInput | Prisma.SortOrder
   averageWeight?: Prisma.SortOrderInput | Prisma.SortOrder
   observation?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.WeaningCountOrderByAggregateInput
   _avg?: Prisma.WeaningAvgOrderByAggregateInput
   _max?: Prisma.WeaningMaxOrderByAggregateInput
@@ -310,106 +338,131 @@ export type WeaningScalarWhereWithAggregatesInput = {
   OR?: Prisma.WeaningScalarWhereWithAggregatesInput[]
   NOT?: Prisma.WeaningScalarWhereWithAggregatesInput | Prisma.WeaningScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Weaning"> | string
+  farmId?: Prisma.StringWithAggregatesFilter<"Weaning"> | string
   litterId?: Prisma.StringWithAggregatesFilter<"Weaning"> | string
-  plannedDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Weaning"> | Date | string | null
+  plannedDate?: Prisma.DateTimeWithAggregatesFilter<"Weaning"> | Date | string
   actualDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Weaning"> | Date | string | null
-  quantity?: Prisma.IntNullableWithAggregatesFilter<"Weaning"> | number | null
-  totalWeight?: Prisma.FloatNullableWithAggregatesFilter<"Weaning"> | number | null
-  averageWeight?: Prisma.FloatNullableWithAggregatesFilter<"Weaning"> | number | null
+  quantity?: Prisma.IntWithAggregatesFilter<"Weaning"> | number
+  totalWeight?: Prisma.DecimalNullableWithAggregatesFilter<"Weaning"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: Prisma.DecimalNullableWithAggregatesFilter<"Weaning"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observation?: Prisma.StringNullableWithAggregatesFilter<"Weaning"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Weaning"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Weaning"> | Date | string
 }
 
 export type WeaningCreateInput = {
   id?: string
-  plannedDate?: Date | string | null
+  plannedDate: Date | string
   actualDate?: Date | string | null
-  quantity?: number | null
-  totalWeight?: number | null
-  averageWeight?: number | null
+  quantity: number
+  totalWeight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observation?: string | null
   createdAt?: Date | string
-  litter: Prisma.LitterCreateNestedOneWithoutWeaningInput
+  updatedAt?: Date | string
+  farm: Prisma.FarmCreateNestedOneWithoutWeaningsInput
+  litter: Prisma.LitterCreateNestedOneWithoutWeaningsInput
+  rabbits?: Prisma.WeaningRabbitCreateNestedManyWithoutWeaningInput
 }
 
 export type WeaningUncheckedCreateInput = {
   id?: string
+  farmId: string
   litterId: string
-  plannedDate?: Date | string | null
+  plannedDate: Date | string
   actualDate?: Date | string | null
-  quantity?: number | null
-  totalWeight?: number | null
-  averageWeight?: number | null
+  quantity: number
+  totalWeight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observation?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  rabbits?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutWeaningInput
 }
 
 export type WeaningUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  plannedDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  plannedDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  totalWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  averageWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  litter?: Prisma.LitterUpdateOneRequiredWithoutWeaningNestedInput
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  farm?: Prisma.FarmUpdateOneRequiredWithoutWeaningsNestedInput
+  litter?: Prisma.LitterUpdateOneRequiredWithoutWeaningsNestedInput
+  rabbits?: Prisma.WeaningRabbitUpdateManyWithoutWeaningNestedInput
 }
 
 export type WeaningUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
   litterId?: Prisma.StringFieldUpdateOperationsInput | string
-  plannedDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  plannedDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  totalWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  averageWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rabbits?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutWeaningNestedInput
 }
 
 export type WeaningCreateManyInput = {
   id?: string
+  farmId: string
   litterId: string
-  plannedDate?: Date | string | null
+  plannedDate: Date | string
   actualDate?: Date | string | null
-  quantity?: number | null
-  totalWeight?: number | null
-  averageWeight?: number | null
+  quantity: number
+  totalWeight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observation?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type WeaningUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  plannedDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  plannedDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  totalWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  averageWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type WeaningUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
   litterId?: Prisma.StringFieldUpdateOperationsInput | string
-  plannedDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  plannedDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  totalWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  averageWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type WeaningNullableScalarRelationFilter = {
-  is?: Prisma.WeaningWhereInput | null
-  isNot?: Prisma.WeaningWhereInput | null
+export type WeaningListRelationFilter = {
+  every?: Prisma.WeaningWhereInput
+  some?: Prisma.WeaningWhereInput
+  none?: Prisma.WeaningWhereInput
+}
+
+export type WeaningOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type WeaningCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  farmId?: Prisma.SortOrder
   litterId?: Prisma.SortOrder
   plannedDate?: Prisma.SortOrder
   actualDate?: Prisma.SortOrder
@@ -418,6 +471,7 @@ export type WeaningCountOrderByAggregateInput = {
   averageWeight?: Prisma.SortOrder
   observation?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type WeaningAvgOrderByAggregateInput = {
@@ -428,6 +482,7 @@ export type WeaningAvgOrderByAggregateInput = {
 
 export type WeaningMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  farmId?: Prisma.SortOrder
   litterId?: Prisma.SortOrder
   plannedDate?: Prisma.SortOrder
   actualDate?: Prisma.SortOrder
@@ -436,10 +491,12 @@ export type WeaningMaxOrderByAggregateInput = {
   averageWeight?: Prisma.SortOrder
   observation?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type WeaningMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  farmId?: Prisma.SortOrder
   litterId?: Prisma.SortOrder
   plannedDate?: Prisma.SortOrder
   actualDate?: Prisma.SortOrder
@@ -448,6 +505,7 @@ export type WeaningMinOrderByAggregateInput = {
   averageWeight?: Prisma.SortOrder
   observation?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type WeaningSumOrderByAggregateInput = {
@@ -456,74 +514,206 @@ export type WeaningSumOrderByAggregateInput = {
   averageWeight?: Prisma.SortOrder
 }
 
-export type WeaningCreateNestedOneWithoutLitterInput = {
-  create?: Prisma.XOR<Prisma.WeaningCreateWithoutLitterInput, Prisma.WeaningUncheckedCreateWithoutLitterInput>
-  connectOrCreate?: Prisma.WeaningCreateOrConnectWithoutLitterInput
+export type WeaningScalarRelationFilter = {
+  is?: Prisma.WeaningWhereInput
+  isNot?: Prisma.WeaningWhereInput
+}
+
+export type WeaningCreateNestedManyWithoutFarmInput = {
+  create?: Prisma.XOR<Prisma.WeaningCreateWithoutFarmInput, Prisma.WeaningUncheckedCreateWithoutFarmInput> | Prisma.WeaningCreateWithoutFarmInput[] | Prisma.WeaningUncheckedCreateWithoutFarmInput[]
+  connectOrCreate?: Prisma.WeaningCreateOrConnectWithoutFarmInput | Prisma.WeaningCreateOrConnectWithoutFarmInput[]
+  createMany?: Prisma.WeaningCreateManyFarmInputEnvelope
+  connect?: Prisma.WeaningWhereUniqueInput | Prisma.WeaningWhereUniqueInput[]
+}
+
+export type WeaningUncheckedCreateNestedManyWithoutFarmInput = {
+  create?: Prisma.XOR<Prisma.WeaningCreateWithoutFarmInput, Prisma.WeaningUncheckedCreateWithoutFarmInput> | Prisma.WeaningCreateWithoutFarmInput[] | Prisma.WeaningUncheckedCreateWithoutFarmInput[]
+  connectOrCreate?: Prisma.WeaningCreateOrConnectWithoutFarmInput | Prisma.WeaningCreateOrConnectWithoutFarmInput[]
+  createMany?: Prisma.WeaningCreateManyFarmInputEnvelope
+  connect?: Prisma.WeaningWhereUniqueInput | Prisma.WeaningWhereUniqueInput[]
+}
+
+export type WeaningUpdateManyWithoutFarmNestedInput = {
+  create?: Prisma.XOR<Prisma.WeaningCreateWithoutFarmInput, Prisma.WeaningUncheckedCreateWithoutFarmInput> | Prisma.WeaningCreateWithoutFarmInput[] | Prisma.WeaningUncheckedCreateWithoutFarmInput[]
+  connectOrCreate?: Prisma.WeaningCreateOrConnectWithoutFarmInput | Prisma.WeaningCreateOrConnectWithoutFarmInput[]
+  upsert?: Prisma.WeaningUpsertWithWhereUniqueWithoutFarmInput | Prisma.WeaningUpsertWithWhereUniqueWithoutFarmInput[]
+  createMany?: Prisma.WeaningCreateManyFarmInputEnvelope
+  set?: Prisma.WeaningWhereUniqueInput | Prisma.WeaningWhereUniqueInput[]
+  disconnect?: Prisma.WeaningWhereUniqueInput | Prisma.WeaningWhereUniqueInput[]
+  delete?: Prisma.WeaningWhereUniqueInput | Prisma.WeaningWhereUniqueInput[]
+  connect?: Prisma.WeaningWhereUniqueInput | Prisma.WeaningWhereUniqueInput[]
+  update?: Prisma.WeaningUpdateWithWhereUniqueWithoutFarmInput | Prisma.WeaningUpdateWithWhereUniqueWithoutFarmInput[]
+  updateMany?: Prisma.WeaningUpdateManyWithWhereWithoutFarmInput | Prisma.WeaningUpdateManyWithWhereWithoutFarmInput[]
+  deleteMany?: Prisma.WeaningScalarWhereInput | Prisma.WeaningScalarWhereInput[]
+}
+
+export type WeaningUncheckedUpdateManyWithoutFarmNestedInput = {
+  create?: Prisma.XOR<Prisma.WeaningCreateWithoutFarmInput, Prisma.WeaningUncheckedCreateWithoutFarmInput> | Prisma.WeaningCreateWithoutFarmInput[] | Prisma.WeaningUncheckedCreateWithoutFarmInput[]
+  connectOrCreate?: Prisma.WeaningCreateOrConnectWithoutFarmInput | Prisma.WeaningCreateOrConnectWithoutFarmInput[]
+  upsert?: Prisma.WeaningUpsertWithWhereUniqueWithoutFarmInput | Prisma.WeaningUpsertWithWhereUniqueWithoutFarmInput[]
+  createMany?: Prisma.WeaningCreateManyFarmInputEnvelope
+  set?: Prisma.WeaningWhereUniqueInput | Prisma.WeaningWhereUniqueInput[]
+  disconnect?: Prisma.WeaningWhereUniqueInput | Prisma.WeaningWhereUniqueInput[]
+  delete?: Prisma.WeaningWhereUniqueInput | Prisma.WeaningWhereUniqueInput[]
+  connect?: Prisma.WeaningWhereUniqueInput | Prisma.WeaningWhereUniqueInput[]
+  update?: Prisma.WeaningUpdateWithWhereUniqueWithoutFarmInput | Prisma.WeaningUpdateWithWhereUniqueWithoutFarmInput[]
+  updateMany?: Prisma.WeaningUpdateManyWithWhereWithoutFarmInput | Prisma.WeaningUpdateManyWithWhereWithoutFarmInput[]
+  deleteMany?: Prisma.WeaningScalarWhereInput | Prisma.WeaningScalarWhereInput[]
+}
+
+export type WeaningCreateNestedManyWithoutLitterInput = {
+  create?: Prisma.XOR<Prisma.WeaningCreateWithoutLitterInput, Prisma.WeaningUncheckedCreateWithoutLitterInput> | Prisma.WeaningCreateWithoutLitterInput[] | Prisma.WeaningUncheckedCreateWithoutLitterInput[]
+  connectOrCreate?: Prisma.WeaningCreateOrConnectWithoutLitterInput | Prisma.WeaningCreateOrConnectWithoutLitterInput[]
+  createMany?: Prisma.WeaningCreateManyLitterInputEnvelope
+  connect?: Prisma.WeaningWhereUniqueInput | Prisma.WeaningWhereUniqueInput[]
+}
+
+export type WeaningUncheckedCreateNestedManyWithoutLitterInput = {
+  create?: Prisma.XOR<Prisma.WeaningCreateWithoutLitterInput, Prisma.WeaningUncheckedCreateWithoutLitterInput> | Prisma.WeaningCreateWithoutLitterInput[] | Prisma.WeaningUncheckedCreateWithoutLitterInput[]
+  connectOrCreate?: Prisma.WeaningCreateOrConnectWithoutLitterInput | Prisma.WeaningCreateOrConnectWithoutLitterInput[]
+  createMany?: Prisma.WeaningCreateManyLitterInputEnvelope
+  connect?: Prisma.WeaningWhereUniqueInput | Prisma.WeaningWhereUniqueInput[]
+}
+
+export type WeaningUpdateManyWithoutLitterNestedInput = {
+  create?: Prisma.XOR<Prisma.WeaningCreateWithoutLitterInput, Prisma.WeaningUncheckedCreateWithoutLitterInput> | Prisma.WeaningCreateWithoutLitterInput[] | Prisma.WeaningUncheckedCreateWithoutLitterInput[]
+  connectOrCreate?: Prisma.WeaningCreateOrConnectWithoutLitterInput | Prisma.WeaningCreateOrConnectWithoutLitterInput[]
+  upsert?: Prisma.WeaningUpsertWithWhereUniqueWithoutLitterInput | Prisma.WeaningUpsertWithWhereUniqueWithoutLitterInput[]
+  createMany?: Prisma.WeaningCreateManyLitterInputEnvelope
+  set?: Prisma.WeaningWhereUniqueInput | Prisma.WeaningWhereUniqueInput[]
+  disconnect?: Prisma.WeaningWhereUniqueInput | Prisma.WeaningWhereUniqueInput[]
+  delete?: Prisma.WeaningWhereUniqueInput | Prisma.WeaningWhereUniqueInput[]
+  connect?: Prisma.WeaningWhereUniqueInput | Prisma.WeaningWhereUniqueInput[]
+  update?: Prisma.WeaningUpdateWithWhereUniqueWithoutLitterInput | Prisma.WeaningUpdateWithWhereUniqueWithoutLitterInput[]
+  updateMany?: Prisma.WeaningUpdateManyWithWhereWithoutLitterInput | Prisma.WeaningUpdateManyWithWhereWithoutLitterInput[]
+  deleteMany?: Prisma.WeaningScalarWhereInput | Prisma.WeaningScalarWhereInput[]
+}
+
+export type WeaningUncheckedUpdateManyWithoutLitterNestedInput = {
+  create?: Prisma.XOR<Prisma.WeaningCreateWithoutLitterInput, Prisma.WeaningUncheckedCreateWithoutLitterInput> | Prisma.WeaningCreateWithoutLitterInput[] | Prisma.WeaningUncheckedCreateWithoutLitterInput[]
+  connectOrCreate?: Prisma.WeaningCreateOrConnectWithoutLitterInput | Prisma.WeaningCreateOrConnectWithoutLitterInput[]
+  upsert?: Prisma.WeaningUpsertWithWhereUniqueWithoutLitterInput | Prisma.WeaningUpsertWithWhereUniqueWithoutLitterInput[]
+  createMany?: Prisma.WeaningCreateManyLitterInputEnvelope
+  set?: Prisma.WeaningWhereUniqueInput | Prisma.WeaningWhereUniqueInput[]
+  disconnect?: Prisma.WeaningWhereUniqueInput | Prisma.WeaningWhereUniqueInput[]
+  delete?: Prisma.WeaningWhereUniqueInput | Prisma.WeaningWhereUniqueInput[]
+  connect?: Prisma.WeaningWhereUniqueInput | Prisma.WeaningWhereUniqueInput[]
+  update?: Prisma.WeaningUpdateWithWhereUniqueWithoutLitterInput | Prisma.WeaningUpdateWithWhereUniqueWithoutLitterInput[]
+  updateMany?: Prisma.WeaningUpdateManyWithWhereWithoutLitterInput | Prisma.WeaningUpdateManyWithWhereWithoutLitterInput[]
+  deleteMany?: Prisma.WeaningScalarWhereInput | Prisma.WeaningScalarWhereInput[]
+}
+
+export type WeaningCreateNestedOneWithoutRabbitsInput = {
+  create?: Prisma.XOR<Prisma.WeaningCreateWithoutRabbitsInput, Prisma.WeaningUncheckedCreateWithoutRabbitsInput>
+  connectOrCreate?: Prisma.WeaningCreateOrConnectWithoutRabbitsInput
   connect?: Prisma.WeaningWhereUniqueInput
 }
 
-export type WeaningUncheckedCreateNestedOneWithoutLitterInput = {
-  create?: Prisma.XOR<Prisma.WeaningCreateWithoutLitterInput, Prisma.WeaningUncheckedCreateWithoutLitterInput>
-  connectOrCreate?: Prisma.WeaningCreateOrConnectWithoutLitterInput
+export type WeaningUpdateOneRequiredWithoutRabbitsNestedInput = {
+  create?: Prisma.XOR<Prisma.WeaningCreateWithoutRabbitsInput, Prisma.WeaningUncheckedCreateWithoutRabbitsInput>
+  connectOrCreate?: Prisma.WeaningCreateOrConnectWithoutRabbitsInput
+  upsert?: Prisma.WeaningUpsertWithoutRabbitsInput
   connect?: Prisma.WeaningWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WeaningUpdateToOneWithWhereWithoutRabbitsInput, Prisma.WeaningUpdateWithoutRabbitsInput>, Prisma.WeaningUncheckedUpdateWithoutRabbitsInput>
 }
 
-export type WeaningUpdateOneWithoutLitterNestedInput = {
-  create?: Prisma.XOR<Prisma.WeaningCreateWithoutLitterInput, Prisma.WeaningUncheckedCreateWithoutLitterInput>
-  connectOrCreate?: Prisma.WeaningCreateOrConnectWithoutLitterInput
-  upsert?: Prisma.WeaningUpsertWithoutLitterInput
-  disconnect?: Prisma.WeaningWhereInput | boolean
-  delete?: Prisma.WeaningWhereInput | boolean
-  connect?: Prisma.WeaningWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.WeaningUpdateToOneWithWhereWithoutLitterInput, Prisma.WeaningUpdateWithoutLitterInput>, Prisma.WeaningUncheckedUpdateWithoutLitterInput>
+export type WeaningCreateWithoutFarmInput = {
+  id?: string
+  plannedDate: Date | string
+  actualDate?: Date | string | null
+  quantity: number
+  totalWeight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observation?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  litter: Prisma.LitterCreateNestedOneWithoutWeaningsInput
+  rabbits?: Prisma.WeaningRabbitCreateNestedManyWithoutWeaningInput
 }
 
-export type WeaningUncheckedUpdateOneWithoutLitterNestedInput = {
-  create?: Prisma.XOR<Prisma.WeaningCreateWithoutLitterInput, Prisma.WeaningUncheckedCreateWithoutLitterInput>
-  connectOrCreate?: Prisma.WeaningCreateOrConnectWithoutLitterInput
-  upsert?: Prisma.WeaningUpsertWithoutLitterInput
-  disconnect?: Prisma.WeaningWhereInput | boolean
-  delete?: Prisma.WeaningWhereInput | boolean
-  connect?: Prisma.WeaningWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.WeaningUpdateToOneWithWhereWithoutLitterInput, Prisma.WeaningUpdateWithoutLitterInput>, Prisma.WeaningUncheckedUpdateWithoutLitterInput>
+export type WeaningUncheckedCreateWithoutFarmInput = {
+  id?: string
+  litterId: string
+  plannedDate: Date | string
+  actualDate?: Date | string | null
+  quantity: number
+  totalWeight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observation?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  rabbits?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutWeaningInput
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
+export type WeaningCreateOrConnectWithoutFarmInput = {
+  where: Prisma.WeaningWhereUniqueInput
+  create: Prisma.XOR<Prisma.WeaningCreateWithoutFarmInput, Prisma.WeaningUncheckedCreateWithoutFarmInput>
 }
 
-export type NullableFloatFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
+export type WeaningCreateManyFarmInputEnvelope = {
+  data: Prisma.WeaningCreateManyFarmInput | Prisma.WeaningCreateManyFarmInput[]
+  skipDuplicates?: boolean
+}
+
+export type WeaningUpsertWithWhereUniqueWithoutFarmInput = {
+  where: Prisma.WeaningWhereUniqueInput
+  update: Prisma.XOR<Prisma.WeaningUpdateWithoutFarmInput, Prisma.WeaningUncheckedUpdateWithoutFarmInput>
+  create: Prisma.XOR<Prisma.WeaningCreateWithoutFarmInput, Prisma.WeaningUncheckedCreateWithoutFarmInput>
+}
+
+export type WeaningUpdateWithWhereUniqueWithoutFarmInput = {
+  where: Prisma.WeaningWhereUniqueInput
+  data: Prisma.XOR<Prisma.WeaningUpdateWithoutFarmInput, Prisma.WeaningUncheckedUpdateWithoutFarmInput>
+}
+
+export type WeaningUpdateManyWithWhereWithoutFarmInput = {
+  where: Prisma.WeaningScalarWhereInput
+  data: Prisma.XOR<Prisma.WeaningUpdateManyMutationInput, Prisma.WeaningUncheckedUpdateManyWithoutFarmInput>
+}
+
+export type WeaningScalarWhereInput = {
+  AND?: Prisma.WeaningScalarWhereInput | Prisma.WeaningScalarWhereInput[]
+  OR?: Prisma.WeaningScalarWhereInput[]
+  NOT?: Prisma.WeaningScalarWhereInput | Prisma.WeaningScalarWhereInput[]
+  id?: Prisma.StringFilter<"Weaning"> | string
+  farmId?: Prisma.StringFilter<"Weaning"> | string
+  litterId?: Prisma.StringFilter<"Weaning"> | string
+  plannedDate?: Prisma.DateTimeFilter<"Weaning"> | Date | string
+  actualDate?: Prisma.DateTimeNullableFilter<"Weaning"> | Date | string | null
+  quantity?: Prisma.IntFilter<"Weaning"> | number
+  totalWeight?: Prisma.DecimalNullableFilter<"Weaning"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: Prisma.DecimalNullableFilter<"Weaning"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observation?: Prisma.StringNullableFilter<"Weaning"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Weaning"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Weaning"> | Date | string
 }
 
 export type WeaningCreateWithoutLitterInput = {
   id?: string
-  plannedDate?: Date | string | null
+  plannedDate: Date | string
   actualDate?: Date | string | null
-  quantity?: number | null
-  totalWeight?: number | null
-  averageWeight?: number | null
+  quantity: number
+  totalWeight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observation?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  farm: Prisma.FarmCreateNestedOneWithoutWeaningsInput
+  rabbits?: Prisma.WeaningRabbitCreateNestedManyWithoutWeaningInput
 }
 
 export type WeaningUncheckedCreateWithoutLitterInput = {
   id?: string
-  plannedDate?: Date | string | null
+  farmId: string
+  plannedDate: Date | string
   actualDate?: Date | string | null
-  quantity?: number | null
-  totalWeight?: number | null
-  averageWeight?: number | null
+  quantity: number
+  totalWeight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observation?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  rabbits?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutWeaningInput
 }
 
 export type WeaningCreateOrConnectWithoutLitterInput = {
@@ -531,43 +721,241 @@ export type WeaningCreateOrConnectWithoutLitterInput = {
   create: Prisma.XOR<Prisma.WeaningCreateWithoutLitterInput, Prisma.WeaningUncheckedCreateWithoutLitterInput>
 }
 
-export type WeaningUpsertWithoutLitterInput = {
+export type WeaningCreateManyLitterInputEnvelope = {
+  data: Prisma.WeaningCreateManyLitterInput | Prisma.WeaningCreateManyLitterInput[]
+  skipDuplicates?: boolean
+}
+
+export type WeaningUpsertWithWhereUniqueWithoutLitterInput = {
+  where: Prisma.WeaningWhereUniqueInput
   update: Prisma.XOR<Prisma.WeaningUpdateWithoutLitterInput, Prisma.WeaningUncheckedUpdateWithoutLitterInput>
   create: Prisma.XOR<Prisma.WeaningCreateWithoutLitterInput, Prisma.WeaningUncheckedCreateWithoutLitterInput>
+}
+
+export type WeaningUpdateWithWhereUniqueWithoutLitterInput = {
+  where: Prisma.WeaningWhereUniqueInput
+  data: Prisma.XOR<Prisma.WeaningUpdateWithoutLitterInput, Prisma.WeaningUncheckedUpdateWithoutLitterInput>
+}
+
+export type WeaningUpdateManyWithWhereWithoutLitterInput = {
+  where: Prisma.WeaningScalarWhereInput
+  data: Prisma.XOR<Prisma.WeaningUpdateManyMutationInput, Prisma.WeaningUncheckedUpdateManyWithoutLitterInput>
+}
+
+export type WeaningCreateWithoutRabbitsInput = {
+  id?: string
+  plannedDate: Date | string
+  actualDate?: Date | string | null
+  quantity: number
+  totalWeight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observation?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  farm: Prisma.FarmCreateNestedOneWithoutWeaningsInput
+  litter: Prisma.LitterCreateNestedOneWithoutWeaningsInput
+}
+
+export type WeaningUncheckedCreateWithoutRabbitsInput = {
+  id?: string
+  farmId: string
+  litterId: string
+  plannedDate: Date | string
+  actualDate?: Date | string | null
+  quantity: number
+  totalWeight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observation?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type WeaningCreateOrConnectWithoutRabbitsInput = {
+  where: Prisma.WeaningWhereUniqueInput
+  create: Prisma.XOR<Prisma.WeaningCreateWithoutRabbitsInput, Prisma.WeaningUncheckedCreateWithoutRabbitsInput>
+}
+
+export type WeaningUpsertWithoutRabbitsInput = {
+  update: Prisma.XOR<Prisma.WeaningUpdateWithoutRabbitsInput, Prisma.WeaningUncheckedUpdateWithoutRabbitsInput>
+  create: Prisma.XOR<Prisma.WeaningCreateWithoutRabbitsInput, Prisma.WeaningUncheckedCreateWithoutRabbitsInput>
   where?: Prisma.WeaningWhereInput
 }
 
-export type WeaningUpdateToOneWithWhereWithoutLitterInput = {
+export type WeaningUpdateToOneWithWhereWithoutRabbitsInput = {
   where?: Prisma.WeaningWhereInput
-  data: Prisma.XOR<Prisma.WeaningUpdateWithoutLitterInput, Prisma.WeaningUncheckedUpdateWithoutLitterInput>
+  data: Prisma.XOR<Prisma.WeaningUpdateWithoutRabbitsInput, Prisma.WeaningUncheckedUpdateWithoutRabbitsInput>
+}
+
+export type WeaningUpdateWithoutRabbitsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  plannedDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  farm?: Prisma.FarmUpdateOneRequiredWithoutWeaningsNestedInput
+  litter?: Prisma.LitterUpdateOneRequiredWithoutWeaningsNestedInput
+}
+
+export type WeaningUncheckedUpdateWithoutRabbitsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  litterId?: Prisma.StringFieldUpdateOperationsInput | string
+  plannedDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type WeaningCreateManyFarmInput = {
+  id?: string
+  litterId: string
+  plannedDate: Date | string
+  actualDate?: Date | string | null
+  quantity: number
+  totalWeight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observation?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type WeaningUpdateWithoutFarmInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  plannedDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  litter?: Prisma.LitterUpdateOneRequiredWithoutWeaningsNestedInput
+  rabbits?: Prisma.WeaningRabbitUpdateManyWithoutWeaningNestedInput
+}
+
+export type WeaningUncheckedUpdateWithoutFarmInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  litterId?: Prisma.StringFieldUpdateOperationsInput | string
+  plannedDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rabbits?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutWeaningNestedInput
+}
+
+export type WeaningUncheckedUpdateManyWithoutFarmInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  litterId?: Prisma.StringFieldUpdateOperationsInput | string
+  plannedDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type WeaningCreateManyLitterInput = {
+  id?: string
+  farmId: string
+  plannedDate: Date | string
+  actualDate?: Date | string | null
+  quantity: number
+  totalWeight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observation?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type WeaningUpdateWithoutLitterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  plannedDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  plannedDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  totalWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  averageWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  farm?: Prisma.FarmUpdateOneRequiredWithoutWeaningsNestedInput
+  rabbits?: Prisma.WeaningRabbitUpdateManyWithoutWeaningNestedInput
 }
 
 export type WeaningUncheckedUpdateWithoutLitterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  plannedDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  plannedDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  totalWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  averageWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rabbits?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutWeaningNestedInput
 }
 
+export type WeaningUncheckedUpdateManyWithoutLitterInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  plannedDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  averageWeight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+
+/**
+ * Count Type WeaningCountOutputType
+ */
+
+export type WeaningCountOutputType = {
+  rabbits: number
+}
+
+export type WeaningCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  rabbits?: boolean | WeaningCountOutputTypeCountRabbitsArgs
+}
+
+/**
+ * WeaningCountOutputType without action
+ */
+export type WeaningCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WeaningCountOutputType
+   */
+  select?: Prisma.WeaningCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * WeaningCountOutputType without action
+ */
+export type WeaningCountOutputTypeCountRabbitsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WeaningRabbitWhereInput
+}
 
 
 export type WeaningSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  farmId?: boolean
   litterId?: boolean
   plannedDate?: boolean
   actualDate?: boolean
@@ -576,11 +964,16 @@ export type WeaningSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   averageWeight?: boolean
   observation?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   litter?: boolean | Prisma.LitterDefaultArgs<ExtArgs>
+  rabbits?: boolean | Prisma.Weaning$rabbitsArgs<ExtArgs>
+  _count?: boolean | Prisma.WeaningCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["weaning"]>
 
 export type WeaningSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  farmId?: boolean
   litterId?: boolean
   plannedDate?: boolean
   actualDate?: boolean
@@ -589,11 +982,14 @@ export type WeaningSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   averageWeight?: boolean
   observation?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   litter?: boolean | Prisma.LitterDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["weaning"]>
 
 export type WeaningSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  farmId?: boolean
   litterId?: boolean
   plannedDate?: boolean
   actualDate?: boolean
@@ -602,11 +998,14 @@ export type WeaningSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   averageWeight?: boolean
   observation?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   litter?: boolean | Prisma.LitterDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["weaning"]>
 
 export type WeaningSelectScalar = {
   id?: boolean
+  farmId?: boolean
   litterId?: boolean
   plannedDate?: boolean
   actualDate?: boolean
@@ -615,34 +1014,44 @@ export type WeaningSelectScalar = {
   averageWeight?: boolean
   observation?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type WeaningOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "litterId" | "plannedDate" | "actualDate" | "quantity" | "totalWeight" | "averageWeight" | "observation" | "createdAt", ExtArgs["result"]["weaning"]>
+export type WeaningOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "litterId" | "plannedDate" | "actualDate" | "quantity" | "totalWeight" | "averageWeight" | "observation" | "createdAt" | "updatedAt", ExtArgs["result"]["weaning"]>
 export type WeaningInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   litter?: boolean | Prisma.LitterDefaultArgs<ExtArgs>
+  rabbits?: boolean | Prisma.Weaning$rabbitsArgs<ExtArgs>
+  _count?: boolean | Prisma.WeaningCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type WeaningIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   litter?: boolean | Prisma.LitterDefaultArgs<ExtArgs>
 }
 export type WeaningIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   litter?: boolean | Prisma.LitterDefaultArgs<ExtArgs>
 }
 
 export type $WeaningPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Weaning"
   objects: {
+    farm: Prisma.$FarmPayload<ExtArgs>
     litter: Prisma.$LitterPayload<ExtArgs>
+    rabbits: Prisma.$WeaningRabbitPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    farmId: string
     litterId: string
-    plannedDate: Date | null
+    plannedDate: Date
     actualDate: Date | null
-    quantity: number | null
-    totalWeight: number | null
-    averageWeight: number | null
+    quantity: number
+    totalWeight: runtime.Decimal | null
+    averageWeight: runtime.Decimal | null
     observation: string | null
     createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["weaning"]>
   composites: {}
 }
@@ -1037,7 +1446,9 @@ readonly fields: WeaningFieldRefs;
  */
 export interface Prisma__WeaningClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  farm<T extends Prisma.FarmDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FarmDefaultArgs<ExtArgs>>): Prisma.Prisma__FarmClient<runtime.Types.Result.GetResult<Prisma.$FarmPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   litter<T extends Prisma.LitterDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LitterDefaultArgs<ExtArgs>>): Prisma.Prisma__LitterClient<runtime.Types.Result.GetResult<Prisma.$LitterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  rabbits<T extends Prisma.Weaning$rabbitsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Weaning$rabbitsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WeaningRabbitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1068,14 +1479,16 @@ export interface Prisma__WeaningClient<T, Null = never, ExtArgs extends runtime.
  */
 export interface WeaningFieldRefs {
   readonly id: Prisma.FieldRef<"Weaning", 'String'>
+  readonly farmId: Prisma.FieldRef<"Weaning", 'String'>
   readonly litterId: Prisma.FieldRef<"Weaning", 'String'>
   readonly plannedDate: Prisma.FieldRef<"Weaning", 'DateTime'>
   readonly actualDate: Prisma.FieldRef<"Weaning", 'DateTime'>
   readonly quantity: Prisma.FieldRef<"Weaning", 'Int'>
-  readonly totalWeight: Prisma.FieldRef<"Weaning", 'Float'>
-  readonly averageWeight: Prisma.FieldRef<"Weaning", 'Float'>
+  readonly totalWeight: Prisma.FieldRef<"Weaning", 'Decimal'>
+  readonly averageWeight: Prisma.FieldRef<"Weaning", 'Decimal'>
   readonly observation: Prisma.FieldRef<"Weaning", 'String'>
   readonly createdAt: Prisma.FieldRef<"Weaning", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Weaning", 'DateTime'>
 }
     
 
@@ -1474,6 +1887,30 @@ export type WeaningDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Weanings to delete.
    */
   limit?: number
+}
+
+/**
+ * Weaning.rabbits
+ */
+export type Weaning$rabbitsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WeaningRabbit
+   */
+  select?: Prisma.WeaningRabbitSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WeaningRabbit
+   */
+  omit?: Prisma.WeaningRabbitOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WeaningRabbitInclude<ExtArgs> | null
+  where?: Prisma.WeaningRabbitWhereInput
+  orderBy?: Prisma.WeaningRabbitOrderByWithRelationInput | Prisma.WeaningRabbitOrderByWithRelationInput[]
+  cursor?: Prisma.WeaningRabbitWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WeaningRabbitScalarFieldEnum | Prisma.WeaningRabbitScalarFieldEnum[]
 }
 
 /**

@@ -213,7 +213,7 @@ export type LitterWhereInput = {
     rabbits?: Prisma.RabbitListRelationFilter;
     sourceAdoptions?: Prisma.LitterAdoptionListRelationFilter;
     destinationAdoptions?: Prisma.LitterAdoptionListRelationFilter;
-    weaning?: Prisma.XOR<Prisma.WeaningNullableScalarRelationFilter, Prisma.WeaningWhereInput> | null;
+    weanings?: Prisma.WeaningListRelationFilter;
 };
 export type LitterOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -239,7 +239,7 @@ export type LitterOrderByWithRelationInput = {
     rabbits?: Prisma.RabbitOrderByRelationAggregateInput;
     sourceAdoptions?: Prisma.LitterAdoptionOrderByRelationAggregateInput;
     destinationAdoptions?: Prisma.LitterAdoptionOrderByRelationAggregateInput;
-    weaning?: Prisma.WeaningOrderByWithRelationInput;
+    weanings?: Prisma.WeaningOrderByRelationAggregateInput;
 };
 export type LitterWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -269,7 +269,7 @@ export type LitterWhereUniqueInput = Prisma.AtLeast<{
     rabbits?: Prisma.RabbitListRelationFilter;
     sourceAdoptions?: Prisma.LitterAdoptionListRelationFilter;
     destinationAdoptions?: Prisma.LitterAdoptionListRelationFilter;
-    weaning?: Prisma.XOR<Prisma.WeaningNullableScalarRelationFilter, Prisma.WeaningWhereInput> | null;
+    weanings?: Prisma.WeaningListRelationFilter;
 }, "id" | "birthId" | "farmId_code">;
 export type LitterOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -332,7 +332,7 @@ export type LitterCreateInput = {
     rabbits?: Prisma.RabbitCreateNestedManyWithoutBirthLitterInput;
     sourceAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutSourceLitterInput;
     destinationAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutDestinationLitterInput;
-    weaning?: Prisma.WeaningCreateNestedOneWithoutLitterInput;
+    weanings?: Prisma.WeaningCreateNestedManyWithoutLitterInput;
 };
 export type LitterUncheckedCreateInput = {
     id?: string;
@@ -353,7 +353,7 @@ export type LitterUncheckedCreateInput = {
     rabbits?: Prisma.RabbitUncheckedCreateNestedManyWithoutBirthLitterInput;
     sourceAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutSourceLitterInput;
     destinationAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutDestinationLitterInput;
-    weaning?: Prisma.WeaningUncheckedCreateNestedOneWithoutLitterInput;
+    weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutLitterInput;
 };
 export type LitterUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -374,7 +374,7 @@ export type LitterUpdateInput = {
     rabbits?: Prisma.RabbitUpdateManyWithoutBirthLitterNestedInput;
     sourceAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutSourceLitterNestedInput;
     destinationAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutDestinationLitterNestedInput;
-    weaning?: Prisma.WeaningUpdateOneWithoutLitterNestedInput;
+    weanings?: Prisma.WeaningUpdateManyWithoutLitterNestedInput;
 };
 export type LitterUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -395,7 +395,7 @@ export type LitterUncheckedUpdateInput = {
     rabbits?: Prisma.RabbitUncheckedUpdateManyWithoutBirthLitterNestedInput;
     sourceAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutSourceLitterNestedInput;
     destinationAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutDestinationLitterNestedInput;
-    weaning?: Prisma.WeaningUncheckedUpdateOneWithoutLitterNestedInput;
+    weanings?: Prisma.WeaningUncheckedUpdateManyWithoutLitterNestedInput;
 };
 export type LitterCreateManyInput = {
     id?: string;
@@ -745,17 +745,17 @@ export type LitterUpdateOneRequiredWithoutDestinationAdoptionsNestedInput = {
     connect?: Prisma.LitterWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.LitterUpdateToOneWithWhereWithoutDestinationAdoptionsInput, Prisma.LitterUpdateWithoutDestinationAdoptionsInput>, Prisma.LitterUncheckedUpdateWithoutDestinationAdoptionsInput>;
 };
-export type LitterCreateNestedOneWithoutWeaningInput = {
-    create?: Prisma.XOR<Prisma.LitterCreateWithoutWeaningInput, Prisma.LitterUncheckedCreateWithoutWeaningInput>;
-    connectOrCreate?: Prisma.LitterCreateOrConnectWithoutWeaningInput;
+export type LitterCreateNestedOneWithoutWeaningsInput = {
+    create?: Prisma.XOR<Prisma.LitterCreateWithoutWeaningsInput, Prisma.LitterUncheckedCreateWithoutWeaningsInput>;
+    connectOrCreate?: Prisma.LitterCreateOrConnectWithoutWeaningsInput;
     connect?: Prisma.LitterWhereUniqueInput;
 };
-export type LitterUpdateOneRequiredWithoutWeaningNestedInput = {
-    create?: Prisma.XOR<Prisma.LitterCreateWithoutWeaningInput, Prisma.LitterUncheckedCreateWithoutWeaningInput>;
-    connectOrCreate?: Prisma.LitterCreateOrConnectWithoutWeaningInput;
-    upsert?: Prisma.LitterUpsertWithoutWeaningInput;
+export type LitterUpdateOneRequiredWithoutWeaningsNestedInput = {
+    create?: Prisma.XOR<Prisma.LitterCreateWithoutWeaningsInput, Prisma.LitterUncheckedCreateWithoutWeaningsInput>;
+    connectOrCreate?: Prisma.LitterCreateOrConnectWithoutWeaningsInput;
+    upsert?: Prisma.LitterUpsertWithoutWeaningsInput;
     connect?: Prisma.LitterWhereUniqueInput;
-    update?: Prisma.XOR<Prisma.XOR<Prisma.LitterUpdateToOneWithWhereWithoutWeaningInput, Prisma.LitterUpdateWithoutWeaningInput>, Prisma.LitterUncheckedUpdateWithoutWeaningInput>;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.LitterUpdateToOneWithWhereWithoutWeaningsInput, Prisma.LitterUpdateWithoutWeaningsInput>, Prisma.LitterUncheckedUpdateWithoutWeaningsInput>;
 };
 export type LitterCreateWithoutFarmInput = {
     id?: string;
@@ -775,7 +775,7 @@ export type LitterCreateWithoutFarmInput = {
     rabbits?: Prisma.RabbitCreateNestedManyWithoutBirthLitterInput;
     sourceAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutSourceLitterInput;
     destinationAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutDestinationLitterInput;
-    weaning?: Prisma.WeaningCreateNestedOneWithoutLitterInput;
+    weanings?: Prisma.WeaningCreateNestedManyWithoutLitterInput;
 };
 export type LitterUncheckedCreateWithoutFarmInput = {
     id?: string;
@@ -795,7 +795,7 @@ export type LitterUncheckedCreateWithoutFarmInput = {
     rabbits?: Prisma.RabbitUncheckedCreateNestedManyWithoutBirthLitterInput;
     sourceAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutSourceLitterInput;
     destinationAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutDestinationLitterInput;
-    weaning?: Prisma.WeaningUncheckedCreateNestedOneWithoutLitterInput;
+    weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutLitterInput;
 };
 export type LitterCreateOrConnectWithoutFarmInput = {
     where: Prisma.LitterWhereUniqueInput;
@@ -856,7 +856,7 @@ export type LitterCreateWithoutMotherInput = {
     rabbits?: Prisma.RabbitCreateNestedManyWithoutBirthLitterInput;
     sourceAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutSourceLitterInput;
     destinationAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutDestinationLitterInput;
-    weaning?: Prisma.WeaningCreateNestedOneWithoutLitterInput;
+    weanings?: Prisma.WeaningCreateNestedManyWithoutLitterInput;
 };
 export type LitterUncheckedCreateWithoutMotherInput = {
     id?: string;
@@ -876,7 +876,7 @@ export type LitterUncheckedCreateWithoutMotherInput = {
     rabbits?: Prisma.RabbitUncheckedCreateNestedManyWithoutBirthLitterInput;
     sourceAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutSourceLitterInput;
     destinationAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutDestinationLitterInput;
-    weaning?: Prisma.WeaningUncheckedCreateNestedOneWithoutLitterInput;
+    weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutLitterInput;
 };
 export type LitterCreateOrConnectWithoutMotherInput = {
     where: Prisma.LitterWhereUniqueInput;
@@ -904,7 +904,7 @@ export type LitterCreateWithoutFatherInput = {
     rabbits?: Prisma.RabbitCreateNestedManyWithoutBirthLitterInput;
     sourceAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutSourceLitterInput;
     destinationAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutDestinationLitterInput;
-    weaning?: Prisma.WeaningCreateNestedOneWithoutLitterInput;
+    weanings?: Prisma.WeaningCreateNestedManyWithoutLitterInput;
 };
 export type LitterUncheckedCreateWithoutFatherInput = {
     id?: string;
@@ -924,7 +924,7 @@ export type LitterUncheckedCreateWithoutFatherInput = {
     rabbits?: Prisma.RabbitUncheckedCreateNestedManyWithoutBirthLitterInput;
     sourceAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutSourceLitterInput;
     destinationAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutDestinationLitterInput;
-    weaning?: Prisma.WeaningUncheckedCreateNestedOneWithoutLitterInput;
+    weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutLitterInput;
 };
 export type LitterCreateOrConnectWithoutFatherInput = {
     where: Prisma.LitterWhereUniqueInput;
@@ -952,7 +952,7 @@ export type LitterCreateWithoutRabbitsInput = {
     birth?: Prisma.BirthCreateNestedOneWithoutLitterInput;
     sourceAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutSourceLitterInput;
     destinationAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutDestinationLitterInput;
-    weaning?: Prisma.WeaningCreateNestedOneWithoutLitterInput;
+    weanings?: Prisma.WeaningCreateNestedManyWithoutLitterInput;
 };
 export type LitterUncheckedCreateWithoutRabbitsInput = {
     id?: string;
@@ -972,7 +972,7 @@ export type LitterUncheckedCreateWithoutRabbitsInput = {
     updatedAt?: Date | string;
     sourceAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutSourceLitterInput;
     destinationAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutDestinationLitterInput;
-    weaning?: Prisma.WeaningUncheckedCreateNestedOneWithoutLitterInput;
+    weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutLitterInput;
 };
 export type LitterCreateOrConnectWithoutRabbitsInput = {
     where: Prisma.LitterWhereUniqueInput;
@@ -1031,7 +1031,7 @@ export type LitterUpdateWithoutRabbitsInput = {
     birth?: Prisma.BirthUpdateOneWithoutLitterNestedInput;
     sourceAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutSourceLitterNestedInput;
     destinationAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutDestinationLitterNestedInput;
-    weaning?: Prisma.WeaningUpdateOneWithoutLitterNestedInput;
+    weanings?: Prisma.WeaningUpdateManyWithoutLitterNestedInput;
 };
 export type LitterUncheckedUpdateWithoutRabbitsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1051,7 +1051,7 @@ export type LitterUncheckedUpdateWithoutRabbitsInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     sourceAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutSourceLitterNestedInput;
     destinationAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutDestinationLitterNestedInput;
-    weaning?: Prisma.WeaningUncheckedUpdateOneWithoutLitterNestedInput;
+    weanings?: Prisma.WeaningUncheckedUpdateManyWithoutLitterNestedInput;
 };
 export type LitterCreateWithoutBreedingInput = {
     id?: string;
@@ -1071,7 +1071,7 @@ export type LitterCreateWithoutBreedingInput = {
     rabbits?: Prisma.RabbitCreateNestedManyWithoutBirthLitterInput;
     sourceAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutSourceLitterInput;
     destinationAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutDestinationLitterInput;
-    weaning?: Prisma.WeaningCreateNestedOneWithoutLitterInput;
+    weanings?: Prisma.WeaningCreateNestedManyWithoutLitterInput;
 };
 export type LitterUncheckedCreateWithoutBreedingInput = {
     id?: string;
@@ -1091,7 +1091,7 @@ export type LitterUncheckedCreateWithoutBreedingInput = {
     rabbits?: Prisma.RabbitUncheckedCreateNestedManyWithoutBirthLitterInput;
     sourceAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutSourceLitterInput;
     destinationAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutDestinationLitterInput;
-    weaning?: Prisma.WeaningUncheckedCreateNestedOneWithoutLitterInput;
+    weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutLitterInput;
 };
 export type LitterCreateOrConnectWithoutBreedingInput = {
     where: Prisma.LitterWhereUniqueInput;
@@ -1132,7 +1132,7 @@ export type LitterCreateWithoutBirthInput = {
     rabbits?: Prisma.RabbitCreateNestedManyWithoutBirthLitterInput;
     sourceAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutSourceLitterInput;
     destinationAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutDestinationLitterInput;
-    weaning?: Prisma.WeaningCreateNestedOneWithoutLitterInput;
+    weanings?: Prisma.WeaningCreateNestedManyWithoutLitterInput;
 };
 export type LitterUncheckedCreateWithoutBirthInput = {
     id?: string;
@@ -1152,7 +1152,7 @@ export type LitterUncheckedCreateWithoutBirthInput = {
     rabbits?: Prisma.RabbitUncheckedCreateNestedManyWithoutBirthLitterInput;
     sourceAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutSourceLitterInput;
     destinationAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutDestinationLitterInput;
-    weaning?: Prisma.WeaningUncheckedCreateNestedOneWithoutLitterInput;
+    weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutLitterInput;
 };
 export type LitterCreateOrConnectWithoutBirthInput = {
     where: Prisma.LitterWhereUniqueInput;
@@ -1185,7 +1185,7 @@ export type LitterUpdateWithoutBirthInput = {
     rabbits?: Prisma.RabbitUpdateManyWithoutBirthLitterNestedInput;
     sourceAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutSourceLitterNestedInput;
     destinationAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutDestinationLitterNestedInput;
-    weaning?: Prisma.WeaningUpdateOneWithoutLitterNestedInput;
+    weanings?: Prisma.WeaningUpdateManyWithoutLitterNestedInput;
 };
 export type LitterUncheckedUpdateWithoutBirthInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1205,7 +1205,7 @@ export type LitterUncheckedUpdateWithoutBirthInput = {
     rabbits?: Prisma.RabbitUncheckedUpdateManyWithoutBirthLitterNestedInput;
     sourceAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutSourceLitterNestedInput;
     destinationAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutDestinationLitterNestedInput;
-    weaning?: Prisma.WeaningUncheckedUpdateOneWithoutLitterNestedInput;
+    weanings?: Prisma.WeaningUncheckedUpdateManyWithoutLitterNestedInput;
 };
 export type LitterCreateWithoutSourceAdoptionsInput = {
     id?: string;
@@ -1225,7 +1225,7 @@ export type LitterCreateWithoutSourceAdoptionsInput = {
     birth?: Prisma.BirthCreateNestedOneWithoutLitterInput;
     rabbits?: Prisma.RabbitCreateNestedManyWithoutBirthLitterInput;
     destinationAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutDestinationLitterInput;
-    weaning?: Prisma.WeaningCreateNestedOneWithoutLitterInput;
+    weanings?: Prisma.WeaningCreateNestedManyWithoutLitterInput;
 };
 export type LitterUncheckedCreateWithoutSourceAdoptionsInput = {
     id?: string;
@@ -1245,7 +1245,7 @@ export type LitterUncheckedCreateWithoutSourceAdoptionsInput = {
     updatedAt?: Date | string;
     rabbits?: Prisma.RabbitUncheckedCreateNestedManyWithoutBirthLitterInput;
     destinationAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutDestinationLitterInput;
-    weaning?: Prisma.WeaningUncheckedCreateNestedOneWithoutLitterInput;
+    weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutLitterInput;
 };
 export type LitterCreateOrConnectWithoutSourceAdoptionsInput = {
     where: Prisma.LitterWhereUniqueInput;
@@ -1269,7 +1269,7 @@ export type LitterCreateWithoutDestinationAdoptionsInput = {
     birth?: Prisma.BirthCreateNestedOneWithoutLitterInput;
     rabbits?: Prisma.RabbitCreateNestedManyWithoutBirthLitterInput;
     sourceAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutSourceLitterInput;
-    weaning?: Prisma.WeaningCreateNestedOneWithoutLitterInput;
+    weanings?: Prisma.WeaningCreateNestedManyWithoutLitterInput;
 };
 export type LitterUncheckedCreateWithoutDestinationAdoptionsInput = {
     id?: string;
@@ -1289,7 +1289,7 @@ export type LitterUncheckedCreateWithoutDestinationAdoptionsInput = {
     updatedAt?: Date | string;
     rabbits?: Prisma.RabbitUncheckedCreateNestedManyWithoutBirthLitterInput;
     sourceAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutSourceLitterInput;
-    weaning?: Prisma.WeaningUncheckedCreateNestedOneWithoutLitterInput;
+    weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutLitterInput;
 };
 export type LitterCreateOrConnectWithoutDestinationAdoptionsInput = {
     where: Prisma.LitterWhereUniqueInput;
@@ -1322,7 +1322,7 @@ export type LitterUpdateWithoutSourceAdoptionsInput = {
     birth?: Prisma.BirthUpdateOneWithoutLitterNestedInput;
     rabbits?: Prisma.RabbitUpdateManyWithoutBirthLitterNestedInput;
     destinationAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutDestinationLitterNestedInput;
-    weaning?: Prisma.WeaningUpdateOneWithoutLitterNestedInput;
+    weanings?: Prisma.WeaningUpdateManyWithoutLitterNestedInput;
 };
 export type LitterUncheckedUpdateWithoutSourceAdoptionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1342,7 +1342,7 @@ export type LitterUncheckedUpdateWithoutSourceAdoptionsInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     rabbits?: Prisma.RabbitUncheckedUpdateManyWithoutBirthLitterNestedInput;
     destinationAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutDestinationLitterNestedInput;
-    weaning?: Prisma.WeaningUncheckedUpdateOneWithoutLitterNestedInput;
+    weanings?: Prisma.WeaningUncheckedUpdateManyWithoutLitterNestedInput;
 };
 export type LitterUpsertWithoutDestinationAdoptionsInput = {
     update: Prisma.XOR<Prisma.LitterUpdateWithoutDestinationAdoptionsInput, Prisma.LitterUncheckedUpdateWithoutDestinationAdoptionsInput>;
@@ -1371,7 +1371,7 @@ export type LitterUpdateWithoutDestinationAdoptionsInput = {
     birth?: Prisma.BirthUpdateOneWithoutLitterNestedInput;
     rabbits?: Prisma.RabbitUpdateManyWithoutBirthLitterNestedInput;
     sourceAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutSourceLitterNestedInput;
-    weaning?: Prisma.WeaningUpdateOneWithoutLitterNestedInput;
+    weanings?: Prisma.WeaningUpdateManyWithoutLitterNestedInput;
 };
 export type LitterUncheckedUpdateWithoutDestinationAdoptionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1391,9 +1391,9 @@ export type LitterUncheckedUpdateWithoutDestinationAdoptionsInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     rabbits?: Prisma.RabbitUncheckedUpdateManyWithoutBirthLitterNestedInput;
     sourceAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutSourceLitterNestedInput;
-    weaning?: Prisma.WeaningUncheckedUpdateOneWithoutLitterNestedInput;
+    weanings?: Prisma.WeaningUncheckedUpdateManyWithoutLitterNestedInput;
 };
-export type LitterCreateWithoutWeaningInput = {
+export type LitterCreateWithoutWeaningsInput = {
     id?: string;
     code: string;
     birthDate: Date | string;
@@ -1413,7 +1413,7 @@ export type LitterCreateWithoutWeaningInput = {
     sourceAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutSourceLitterInput;
     destinationAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutDestinationLitterInput;
 };
-export type LitterUncheckedCreateWithoutWeaningInput = {
+export type LitterUncheckedCreateWithoutWeaningsInput = {
     id?: string;
     farmId: string;
     code: string;
@@ -1433,20 +1433,20 @@ export type LitterUncheckedCreateWithoutWeaningInput = {
     sourceAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutSourceLitterInput;
     destinationAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutDestinationLitterInput;
 };
-export type LitterCreateOrConnectWithoutWeaningInput = {
+export type LitterCreateOrConnectWithoutWeaningsInput = {
     where: Prisma.LitterWhereUniqueInput;
-    create: Prisma.XOR<Prisma.LitterCreateWithoutWeaningInput, Prisma.LitterUncheckedCreateWithoutWeaningInput>;
+    create: Prisma.XOR<Prisma.LitterCreateWithoutWeaningsInput, Prisma.LitterUncheckedCreateWithoutWeaningsInput>;
 };
-export type LitterUpsertWithoutWeaningInput = {
-    update: Prisma.XOR<Prisma.LitterUpdateWithoutWeaningInput, Prisma.LitterUncheckedUpdateWithoutWeaningInput>;
-    create: Prisma.XOR<Prisma.LitterCreateWithoutWeaningInput, Prisma.LitterUncheckedCreateWithoutWeaningInput>;
+export type LitterUpsertWithoutWeaningsInput = {
+    update: Prisma.XOR<Prisma.LitterUpdateWithoutWeaningsInput, Prisma.LitterUncheckedUpdateWithoutWeaningsInput>;
+    create: Prisma.XOR<Prisma.LitterCreateWithoutWeaningsInput, Prisma.LitterUncheckedCreateWithoutWeaningsInput>;
     where?: Prisma.LitterWhereInput;
 };
-export type LitterUpdateToOneWithWhereWithoutWeaningInput = {
+export type LitterUpdateToOneWithWhereWithoutWeaningsInput = {
     where?: Prisma.LitterWhereInput;
-    data: Prisma.XOR<Prisma.LitterUpdateWithoutWeaningInput, Prisma.LitterUncheckedUpdateWithoutWeaningInput>;
+    data: Prisma.XOR<Prisma.LitterUpdateWithoutWeaningsInput, Prisma.LitterUncheckedUpdateWithoutWeaningsInput>;
 };
-export type LitterUpdateWithoutWeaningInput = {
+export type LitterUpdateWithoutWeaningsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     code?: Prisma.StringFieldUpdateOperationsInput | string;
     birthDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1466,7 +1466,7 @@ export type LitterUpdateWithoutWeaningInput = {
     sourceAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutSourceLitterNestedInput;
     destinationAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutDestinationLitterNestedInput;
 };
-export type LitterUncheckedUpdateWithoutWeaningInput = {
+export type LitterUncheckedUpdateWithoutWeaningsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     farmId?: Prisma.StringFieldUpdateOperationsInput | string;
     code?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1520,7 +1520,7 @@ export type LitterUpdateWithoutFarmInput = {
     rabbits?: Prisma.RabbitUpdateManyWithoutBirthLitterNestedInput;
     sourceAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutSourceLitterNestedInput;
     destinationAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutDestinationLitterNestedInput;
-    weaning?: Prisma.WeaningUpdateOneWithoutLitterNestedInput;
+    weanings?: Prisma.WeaningUpdateManyWithoutLitterNestedInput;
 };
 export type LitterUncheckedUpdateWithoutFarmInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1540,7 +1540,7 @@ export type LitterUncheckedUpdateWithoutFarmInput = {
     rabbits?: Prisma.RabbitUncheckedUpdateManyWithoutBirthLitterNestedInput;
     sourceAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutSourceLitterNestedInput;
     destinationAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutDestinationLitterNestedInput;
-    weaning?: Prisma.WeaningUncheckedUpdateOneWithoutLitterNestedInput;
+    weanings?: Prisma.WeaningUncheckedUpdateManyWithoutLitterNestedInput;
 };
 export type LitterUncheckedUpdateManyWithoutFarmInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1608,7 +1608,7 @@ export type LitterUpdateWithoutMotherInput = {
     rabbits?: Prisma.RabbitUpdateManyWithoutBirthLitterNestedInput;
     sourceAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutSourceLitterNestedInput;
     destinationAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutDestinationLitterNestedInput;
-    weaning?: Prisma.WeaningUpdateOneWithoutLitterNestedInput;
+    weanings?: Prisma.WeaningUpdateManyWithoutLitterNestedInput;
 };
 export type LitterUncheckedUpdateWithoutMotherInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1628,7 +1628,7 @@ export type LitterUncheckedUpdateWithoutMotherInput = {
     rabbits?: Prisma.RabbitUncheckedUpdateManyWithoutBirthLitterNestedInput;
     sourceAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutSourceLitterNestedInput;
     destinationAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutDestinationLitterNestedInput;
-    weaning?: Prisma.WeaningUncheckedUpdateOneWithoutLitterNestedInput;
+    weanings?: Prisma.WeaningUncheckedUpdateManyWithoutLitterNestedInput;
 };
 export type LitterUncheckedUpdateManyWithoutMotherInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1664,7 +1664,7 @@ export type LitterUpdateWithoutFatherInput = {
     rabbits?: Prisma.RabbitUpdateManyWithoutBirthLitterNestedInput;
     sourceAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutSourceLitterNestedInput;
     destinationAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutDestinationLitterNestedInput;
-    weaning?: Prisma.WeaningUpdateOneWithoutLitterNestedInput;
+    weanings?: Prisma.WeaningUpdateManyWithoutLitterNestedInput;
 };
 export type LitterUncheckedUpdateWithoutFatherInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1684,7 +1684,7 @@ export type LitterUncheckedUpdateWithoutFatherInput = {
     rabbits?: Prisma.RabbitUncheckedUpdateManyWithoutBirthLitterNestedInput;
     sourceAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutSourceLitterNestedInput;
     destinationAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutDestinationLitterNestedInput;
-    weaning?: Prisma.WeaningUncheckedUpdateOneWithoutLitterNestedInput;
+    weanings?: Prisma.WeaningUncheckedUpdateManyWithoutLitterNestedInput;
 };
 export type LitterUncheckedUpdateManyWithoutFatherInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1736,7 +1736,7 @@ export type LitterUpdateWithoutBreedingInput = {
     rabbits?: Prisma.RabbitUpdateManyWithoutBirthLitterNestedInput;
     sourceAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutSourceLitterNestedInput;
     destinationAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutDestinationLitterNestedInput;
-    weaning?: Prisma.WeaningUpdateOneWithoutLitterNestedInput;
+    weanings?: Prisma.WeaningUpdateManyWithoutLitterNestedInput;
 };
 export type LitterUncheckedUpdateWithoutBreedingInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1756,7 +1756,7 @@ export type LitterUncheckedUpdateWithoutBreedingInput = {
     rabbits?: Prisma.RabbitUncheckedUpdateManyWithoutBirthLitterNestedInput;
     sourceAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutSourceLitterNestedInput;
     destinationAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutDestinationLitterNestedInput;
-    weaning?: Prisma.WeaningUncheckedUpdateOneWithoutLitterNestedInput;
+    weanings?: Prisma.WeaningUncheckedUpdateManyWithoutLitterNestedInput;
 };
 export type LitterUncheckedUpdateManyWithoutBreedingInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1778,11 +1778,13 @@ export type LitterCountOutputType = {
     rabbits: number;
     sourceAdoptions: number;
     destinationAdoptions: number;
+    weanings: number;
 };
 export type LitterCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     rabbits?: boolean | LitterCountOutputTypeCountRabbitsArgs;
     sourceAdoptions?: boolean | LitterCountOutputTypeCountSourceAdoptionsArgs;
     destinationAdoptions?: boolean | LitterCountOutputTypeCountDestinationAdoptionsArgs;
+    weanings?: boolean | LitterCountOutputTypeCountWeaningsArgs;
 };
 export type LitterCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.LitterCountOutputTypeSelect<ExtArgs> | null;
@@ -1795,6 +1797,9 @@ export type LitterCountOutputTypeCountSourceAdoptionsArgs<ExtArgs extends runtim
 };
 export type LitterCountOutputTypeCountDestinationAdoptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.LitterAdoptionWhereInput;
+};
+export type LitterCountOutputTypeCountWeaningsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.WeaningWhereInput;
 };
 export type LitterSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -1820,7 +1825,7 @@ export type LitterSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     rabbits?: boolean | Prisma.Litter$rabbitsArgs<ExtArgs>;
     sourceAdoptions?: boolean | Prisma.Litter$sourceAdoptionsArgs<ExtArgs>;
     destinationAdoptions?: boolean | Prisma.Litter$destinationAdoptionsArgs<ExtArgs>;
-    weaning?: boolean | Prisma.Litter$weaningArgs<ExtArgs>;
+    weanings?: boolean | Prisma.Litter$weaningsArgs<ExtArgs>;
     _count?: boolean | Prisma.LitterCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["litter"]>;
 export type LitterSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1894,7 +1899,7 @@ export type LitterInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     rabbits?: boolean | Prisma.Litter$rabbitsArgs<ExtArgs>;
     sourceAdoptions?: boolean | Prisma.Litter$sourceAdoptionsArgs<ExtArgs>;
     destinationAdoptions?: boolean | Prisma.Litter$destinationAdoptionsArgs<ExtArgs>;
-    weaning?: boolean | Prisma.Litter$weaningArgs<ExtArgs>;
+    weanings?: boolean | Prisma.Litter$weaningsArgs<ExtArgs>;
     _count?: boolean | Prisma.LitterCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type LitterIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1922,7 +1927,7 @@ export type $LitterPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
         rabbits: Prisma.$RabbitPayload<ExtArgs>[];
         sourceAdoptions: Prisma.$LitterAdoptionPayload<ExtArgs>[];
         destinationAdoptions: Prisma.$LitterAdoptionPayload<ExtArgs>[];
-        weaning: Prisma.$WeaningPayload<ExtArgs> | null;
+        weanings: Prisma.$WeaningPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -2000,7 +2005,7 @@ export interface Prisma__LitterClient<T, Null = never, ExtArgs extends runtime.T
     rabbits<T extends Prisma.Litter$rabbitsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Litter$rabbitsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RabbitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     sourceAdoptions<T extends Prisma.Litter$sourceAdoptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Litter$sourceAdoptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LitterAdoptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     destinationAdoptions<T extends Prisma.Litter$destinationAdoptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Litter$destinationAdoptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LitterAdoptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    weaning<T extends Prisma.Litter$weaningArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Litter$weaningArgs<ExtArgs>>): Prisma.Prisma__WeaningClient<runtime.Types.Result.GetResult<Prisma.$WeaningPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    weanings<T extends Prisma.Litter$weaningsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Litter$weaningsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WeaningPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -2173,11 +2178,16 @@ export type Litter$destinationAdoptionsArgs<ExtArgs extends runtime.Types.Extens
     skip?: number;
     distinct?: Prisma.LitterAdoptionScalarFieldEnum | Prisma.LitterAdoptionScalarFieldEnum[];
 };
-export type Litter$weaningArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Litter$weaningsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.WeaningSelect<ExtArgs> | null;
     omit?: Prisma.WeaningOmit<ExtArgs> | null;
     include?: Prisma.WeaningInclude<ExtArgs> | null;
     where?: Prisma.WeaningWhereInput;
+    orderBy?: Prisma.WeaningOrderByWithRelationInput | Prisma.WeaningOrderByWithRelationInput[];
+    cursor?: Prisma.WeaningWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.WeaningScalarFieldEnum | Prisma.WeaningScalarFieldEnum[];
 };
 export type LitterDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.LitterSelect<ExtArgs> | null;

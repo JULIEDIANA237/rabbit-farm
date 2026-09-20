@@ -26,7 +26,9 @@ export declare const ModelName: {
     readonly Birth: "Birth";
     readonly Litter: "Litter";
     readonly LitterAdoption: "LitterAdoption";
+    readonly AdoptionRabbit: "AdoptionRabbit";
     readonly Weaning: "Weaning";
+    readonly WeaningRabbit: "WeaningRabbit";
     readonly FatteningLot: "FatteningLot";
     readonly LotMembership: "LotMembership";
     readonly Weighing: "Weighing";
@@ -218,17 +220,27 @@ export declare const LitterScalarFieldEnum: {
 export type LitterScalarFieldEnum = (typeof LitterScalarFieldEnum)[keyof typeof LitterScalarFieldEnum];
 export declare const LitterAdoptionScalarFieldEnum: {
     readonly id: "id";
+    readonly farmId: "farmId";
     readonly sourceLitterId: "sourceLitterId";
     readonly destinationLitterId: "destinationLitterId";
+    readonly adoptedAt: "adoptedAt";
     readonly quantity: "quantity";
-    readonly date: "date";
     readonly reason: "reason";
     readonly observation: "observation";
     readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
 };
 export type LitterAdoptionScalarFieldEnum = (typeof LitterAdoptionScalarFieldEnum)[keyof typeof LitterAdoptionScalarFieldEnum];
+export declare const AdoptionRabbitScalarFieldEnum: {
+    readonly id: "id";
+    readonly adoptionId: "adoptionId";
+    readonly rabbitId: "rabbitId";
+    readonly createdAt: "createdAt";
+};
+export type AdoptionRabbitScalarFieldEnum = (typeof AdoptionRabbitScalarFieldEnum)[keyof typeof AdoptionRabbitScalarFieldEnum];
 export declare const WeaningScalarFieldEnum: {
     readonly id: "id";
+    readonly farmId: "farmId";
     readonly litterId: "litterId";
     readonly plannedDate: "plannedDate";
     readonly actualDate: "actualDate";
@@ -237,8 +249,17 @@ export declare const WeaningScalarFieldEnum: {
     readonly averageWeight: "averageWeight";
     readonly observation: "observation";
     readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
 };
 export type WeaningScalarFieldEnum = (typeof WeaningScalarFieldEnum)[keyof typeof WeaningScalarFieldEnum];
+export declare const WeaningRabbitScalarFieldEnum: {
+    readonly id: "id";
+    readonly weaningId: "weaningId";
+    readonly rabbitId: "rabbitId";
+    readonly weight: "weight";
+    readonly createdAt: "createdAt";
+};
+export type WeaningRabbitScalarFieldEnum = (typeof WeaningRabbitScalarFieldEnum)[keyof typeof WeaningRabbitScalarFieldEnum];
 export declare const FatteningLotScalarFieldEnum: {
     readonly id: "id";
     readonly farmId: "farmId";

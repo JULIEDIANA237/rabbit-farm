@@ -60,8 +60,9 @@ export class AdoptionsService {
           sourceLitterId: sourceLitter.id,
           destinationLitterId: destinationLitter.id,
           quantity: input.quantity,
-          date: input.date,
+          adoptedAt: input.date,
           reason: input.reason,
+          farmId: currentUser.farmId,
           observation: input.observation?.trim() || null,
         },
       });
@@ -86,7 +87,7 @@ export class AdoptionsService {
         sourceLitter: { farmId: currentUser.farmId },
       },
       orderBy: {
-        date: 'desc',
+        adoptedAt: 'desc',
       },
     });
   }
@@ -116,7 +117,7 @@ export class AdoptionsService {
         ],
       },
       orderBy: {
-        date: 'desc',
+        adoptedAt: 'desc',
       },
     });
   }

@@ -201,6 +201,9 @@ model Farm {
   inventoryItems InventoryItem[]
   tasks          Task[]
 
+  adoptions LitterAdoption[]
+  weanings  Weaning[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -332,6 +335,8 @@ model CrossBreed {
 
 // ============================================================
 // RABBIT
+
+
 model Rabbit {
   id     String @id @default(uuid())
   farmId String
@@ -364,6 +369,10 @@ model Rabbit {
 
   identifications RabbitIdentification[]
   cageMovements   RabbitCageMovement[]
+
+  adoptionHistory AdoptionRabbit[]
+
+  weaningHistory WeaningRabbit[]
 
   breedingsAsFemale Breeding[] @relation("FemaleBreedings")
   breedingsAsMale   Breeding[] @relation("MaleBreedings")
@@ -559,7 +568,7 @@ model Litter {
 
   sourceAdoptions      LitterAdoption[] @relation("SourceLitterAdoptions")
   destinationAdoptions LitterAdoption[] @relation("DestinationLitterAdoptions")
-  weaning              Weaning?
+  weanings             Weaning[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -575,49 +584,92 @@ model Litter {
 }
 
 model LitterAdoption {
-  id String @id @default(uuid())
+  id     String @id @default(uuid())
+  farmId String
 
   sourceLitterId      String
   destinationLitterId String
 
-  quantity Int
-  date     DateTime
+  adoptedAt DateTime
+  quantity  Int
 
-  reason      AdoptionReason
+  reason      String?
   observation String?
 
+  farm              Farm   @relation(fields: [farmId], references: [id], onDelete: Cascade)
   sourceLitter      Litter @relation("SourceLitterAdoptions", fields: [sourceLitterId], references: [id])
   destinationLitter Litter @relation("DestinationLitterAdoptions", fields: [destinationLitterId], references: [id])
 
-  createdAt DateTime @default(now())
+  rabbits AdoptionRabbit[]
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([farmId])
   @@index([sourceLitterId])
   @@index([destinationLitterId])
-  @@index([date])
+  @@index([adoptedAt])
+}
+
+model AdoptionRabbit {
+  id         String @id @default(uuid())
+  adoptionId String
+  rabbitId   String
+
+  adoption LitterAdoption @relation(fields: [adoptionId], references: [id], onDelete: Cascade)
+  rabbit   Rabbit         @relation(fields: [rabbitId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([adoptionId, rabbitId])
+  @@index([adoptionId])
+  @@index([rabbitId])
 }
 
 model Weaning {
-  id String @id @default(uuid())
-
+  id       String @id @default(uuid())
+  farmId   String
   litterId String
 
-  plannedDate DateTime?
+  plannedDate DateTime
   actualDate  DateTime?
 
-  quantity Int?
+  quantity Int
 
-  totalWeight   Float?
-  averageWeight Float?
+  totalWeight   Decimal?
+  averageWeight Decimal?
 
   observation String?
 
+  farm   Farm   @relation(fields: [farmId], references: [id], onDelete: Cascade)
   litter Litter @relation(fields: [litterId], references: [id], onDelete: Cascade)
+
+  rabbits WeaningRabbit[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([farmId])
+  @@index([litterId])
+  @@index([plannedDate])
+  @@index([actualDate])
+}
+
+model WeaningRabbit {
+  id        String @id @default(uuid())
+  weaningId String
+  rabbitId  String
+
+  weight Decimal?
+
+  weaning Weaning @relation(fields: [weaningId], references: [id], onDelete: Cascade)
+  rabbit  Rabbit  @relation(fields: [rabbitId], references: [id])
 
   createdAt DateTime @default(now())
 
-  @@unique([litterId])
-  @@index([litterId])
-  @@index([actualDate])
+  @@unique([weaningId, rabbitId])
+  @@index([weaningId])
+  @@index([rabbitId])
 }
 
 model FatteningLot {

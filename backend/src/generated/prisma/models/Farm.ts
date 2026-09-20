@@ -207,6 +207,8 @@ export type FarmWhereInput = {
   expenses?: Prisma.ExpenseListRelationFilter
   inventoryItems?: Prisma.InventoryItemListRelationFilter
   tasks?: Prisma.TaskListRelationFilter
+  adoptions?: Prisma.LitterAdoptionListRelationFilter
+  weanings?: Prisma.WeaningListRelationFilter
 }
 
 export type FarmOrderByWithRelationInput = {
@@ -233,6 +235,8 @@ export type FarmOrderByWithRelationInput = {
   expenses?: Prisma.ExpenseOrderByRelationAggregateInput
   inventoryItems?: Prisma.InventoryItemOrderByRelationAggregateInput
   tasks?: Prisma.TaskOrderByRelationAggregateInput
+  adoptions?: Prisma.LitterAdoptionOrderByRelationAggregateInput
+  weanings?: Prisma.WeaningOrderByRelationAggregateInput
 }
 
 export type FarmWhereUniqueInput = Prisma.AtLeast<{
@@ -262,6 +266,8 @@ export type FarmWhereUniqueInput = Prisma.AtLeast<{
   expenses?: Prisma.ExpenseListRelationFilter
   inventoryItems?: Prisma.InventoryItemListRelationFilter
   tasks?: Prisma.TaskListRelationFilter
+  adoptions?: Prisma.LitterAdoptionListRelationFilter
+  weanings?: Prisma.WeaningListRelationFilter
 }, "id">
 
 export type FarmOrderByWithAggregationInput = {
@@ -312,6 +318,8 @@ export type FarmCreateInput = {
   expenses?: Prisma.ExpenseCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateInput = {
@@ -338,6 +346,8 @@ export type FarmUncheckedCreateInput = {
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUpdateInput = {
@@ -364,6 +374,8 @@ export type FarmUpdateInput = {
   expenses?: Prisma.ExpenseUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateInput = {
@@ -390,6 +402,8 @@ export type FarmUncheckedUpdateInput = {
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateManyInput = {
@@ -604,6 +618,34 @@ export type FarmUpdateOneRequiredWithoutLittersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.FarmUpdateToOneWithWhereWithoutLittersInput, Prisma.FarmUpdateWithoutLittersInput>, Prisma.FarmUncheckedUpdateWithoutLittersInput>
 }
 
+export type FarmCreateNestedOneWithoutAdoptionsInput = {
+  create?: Prisma.XOR<Prisma.FarmCreateWithoutAdoptionsInput, Prisma.FarmUncheckedCreateWithoutAdoptionsInput>
+  connectOrCreate?: Prisma.FarmCreateOrConnectWithoutAdoptionsInput
+  connect?: Prisma.FarmWhereUniqueInput
+}
+
+export type FarmUpdateOneRequiredWithoutAdoptionsNestedInput = {
+  create?: Prisma.XOR<Prisma.FarmCreateWithoutAdoptionsInput, Prisma.FarmUncheckedCreateWithoutAdoptionsInput>
+  connectOrCreate?: Prisma.FarmCreateOrConnectWithoutAdoptionsInput
+  upsert?: Prisma.FarmUpsertWithoutAdoptionsInput
+  connect?: Prisma.FarmWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FarmUpdateToOneWithWhereWithoutAdoptionsInput, Prisma.FarmUpdateWithoutAdoptionsInput>, Prisma.FarmUncheckedUpdateWithoutAdoptionsInput>
+}
+
+export type FarmCreateNestedOneWithoutWeaningsInput = {
+  create?: Prisma.XOR<Prisma.FarmCreateWithoutWeaningsInput, Prisma.FarmUncheckedCreateWithoutWeaningsInput>
+  connectOrCreate?: Prisma.FarmCreateOrConnectWithoutWeaningsInput
+  connect?: Prisma.FarmWhereUniqueInput
+}
+
+export type FarmUpdateOneRequiredWithoutWeaningsNestedInput = {
+  create?: Prisma.XOR<Prisma.FarmCreateWithoutWeaningsInput, Prisma.FarmUncheckedCreateWithoutWeaningsInput>
+  connectOrCreate?: Prisma.FarmCreateOrConnectWithoutWeaningsInput
+  upsert?: Prisma.FarmUpsertWithoutWeaningsInput
+  connect?: Prisma.FarmWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FarmUpdateToOneWithWhereWithoutWeaningsInput, Prisma.FarmUpdateWithoutWeaningsInput>, Prisma.FarmUncheckedUpdateWithoutWeaningsInput>
+}
+
 export type FarmCreateNestedOneWithoutFatteningLotsInput = {
   create?: Prisma.XOR<Prisma.FarmCreateWithoutFatteningLotsInput, Prisma.FarmUncheckedCreateWithoutFatteningLotsInput>
   connectOrCreate?: Prisma.FarmCreateOrConnectWithoutFatteningLotsInput
@@ -725,6 +767,8 @@ export type FarmCreateWithoutMembershipsInput = {
   expenses?: Prisma.ExpenseCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutMembershipsInput = {
@@ -750,6 +794,8 @@ export type FarmUncheckedCreateWithoutMembershipsInput = {
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutMembershipsInput = {
@@ -791,6 +837,8 @@ export type FarmUpdateWithoutMembershipsInput = {
   expenses?: Prisma.ExpenseUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutMembershipsInput = {
@@ -816,6 +864,8 @@ export type FarmUncheckedUpdateWithoutMembershipsInput = {
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutSectionsInput = {
@@ -841,6 +891,8 @@ export type FarmCreateWithoutSectionsInput = {
   expenses?: Prisma.ExpenseCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutSectionsInput = {
@@ -866,6 +918,8 @@ export type FarmUncheckedCreateWithoutSectionsInput = {
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutSectionsInput = {
@@ -907,6 +961,8 @@ export type FarmUpdateWithoutSectionsInput = {
   expenses?: Prisma.ExpenseUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutSectionsInput = {
@@ -932,6 +988,8 @@ export type FarmUncheckedUpdateWithoutSectionsInput = {
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutCagesInput = {
@@ -957,6 +1015,8 @@ export type FarmCreateWithoutCagesInput = {
   expenses?: Prisma.ExpenseCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutCagesInput = {
@@ -982,6 +1042,8 @@ export type FarmUncheckedCreateWithoutCagesInput = {
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutCagesInput = {
@@ -1023,6 +1085,8 @@ export type FarmUpdateWithoutCagesInput = {
   expenses?: Prisma.ExpenseUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutCagesInput = {
@@ -1048,6 +1112,8 @@ export type FarmUncheckedUpdateWithoutCagesInput = {
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutBreedsInput = {
@@ -1073,6 +1139,8 @@ export type FarmCreateWithoutBreedsInput = {
   expenses?: Prisma.ExpenseCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutBreedsInput = {
@@ -1098,6 +1166,8 @@ export type FarmUncheckedCreateWithoutBreedsInput = {
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutBreedsInput = {
@@ -1139,6 +1209,8 @@ export type FarmUpdateWithoutBreedsInput = {
   expenses?: Prisma.ExpenseUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutBreedsInput = {
@@ -1164,6 +1236,8 @@ export type FarmUncheckedUpdateWithoutBreedsInput = {
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutCrossBreedsInput = {
@@ -1189,6 +1263,8 @@ export type FarmCreateWithoutCrossBreedsInput = {
   expenses?: Prisma.ExpenseCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutCrossBreedsInput = {
@@ -1214,6 +1290,8 @@ export type FarmUncheckedCreateWithoutCrossBreedsInput = {
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutCrossBreedsInput = {
@@ -1255,6 +1333,8 @@ export type FarmUpdateWithoutCrossBreedsInput = {
   expenses?: Prisma.ExpenseUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutCrossBreedsInput = {
@@ -1280,6 +1360,8 @@ export type FarmUncheckedUpdateWithoutCrossBreedsInput = {
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutRabbitsInput = {
@@ -1305,6 +1387,8 @@ export type FarmCreateWithoutRabbitsInput = {
   expenses?: Prisma.ExpenseCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutRabbitsInput = {
@@ -1330,6 +1414,8 @@ export type FarmUncheckedCreateWithoutRabbitsInput = {
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutRabbitsInput = {
@@ -1371,6 +1457,8 @@ export type FarmUpdateWithoutRabbitsInput = {
   expenses?: Prisma.ExpenseUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutRabbitsInput = {
@@ -1396,6 +1484,8 @@ export type FarmUncheckedUpdateWithoutRabbitsInput = {
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutBreedingsInput = {
@@ -1421,6 +1511,8 @@ export type FarmCreateWithoutBreedingsInput = {
   expenses?: Prisma.ExpenseCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutBreedingsInput = {
@@ -1446,6 +1538,8 @@ export type FarmUncheckedCreateWithoutBreedingsInput = {
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutBreedingsInput = {
@@ -1487,6 +1581,8 @@ export type FarmUpdateWithoutBreedingsInput = {
   expenses?: Prisma.ExpenseUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutBreedingsInput = {
@@ -1512,6 +1608,8 @@ export type FarmUncheckedUpdateWithoutBreedingsInput = {
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutPregnanciesInput = {
@@ -1537,6 +1635,8 @@ export type FarmCreateWithoutPregnanciesInput = {
   expenses?: Prisma.ExpenseCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutPregnanciesInput = {
@@ -1562,6 +1662,8 @@ export type FarmUncheckedCreateWithoutPregnanciesInput = {
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutPregnanciesInput = {
@@ -1603,6 +1705,8 @@ export type FarmUpdateWithoutPregnanciesInput = {
   expenses?: Prisma.ExpenseUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutPregnanciesInput = {
@@ -1628,6 +1732,8 @@ export type FarmUncheckedUpdateWithoutPregnanciesInput = {
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutBirthsInput = {
@@ -1653,6 +1759,8 @@ export type FarmCreateWithoutBirthsInput = {
   expenses?: Prisma.ExpenseCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutBirthsInput = {
@@ -1678,6 +1786,8 @@ export type FarmUncheckedCreateWithoutBirthsInput = {
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutBirthsInput = {
@@ -1719,6 +1829,8 @@ export type FarmUpdateWithoutBirthsInput = {
   expenses?: Prisma.ExpenseUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutBirthsInput = {
@@ -1744,6 +1856,8 @@ export type FarmUncheckedUpdateWithoutBirthsInput = {
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutLittersInput = {
@@ -1769,6 +1883,8 @@ export type FarmCreateWithoutLittersInput = {
   expenses?: Prisma.ExpenseCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutLittersInput = {
@@ -1794,6 +1910,8 @@ export type FarmUncheckedCreateWithoutLittersInput = {
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutLittersInput = {
@@ -1835,6 +1953,8 @@ export type FarmUpdateWithoutLittersInput = {
   expenses?: Prisma.ExpenseUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutLittersInput = {
@@ -1860,6 +1980,256 @@ export type FarmUncheckedUpdateWithoutLittersInput = {
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
+}
+
+export type FarmCreateWithoutAdoptionsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
+  sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
+  cages?: Prisma.CageCreateNestedManyWithoutFarmInput
+  breeds?: Prisma.BreedCreateNestedManyWithoutFarmInput
+  crossBreeds?: Prisma.CrossBreedCreateNestedManyWithoutFarmInput
+  rabbits?: Prisma.RabbitCreateNestedManyWithoutFarmInput
+  breedings?: Prisma.BreedingCreateNestedManyWithoutFarmInput
+  pregnancies?: Prisma.PregnancyCreateNestedManyWithoutFarmInput
+  births?: Prisma.BirthCreateNestedManyWithoutFarmInput
+  litters?: Prisma.LitterCreateNestedManyWithoutFarmInput
+  fatteningLots?: Prisma.FatteningLotCreateNestedManyWithoutFarmInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutFarmInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutFarmInput
+  sales?: Prisma.SaleCreateNestedManyWithoutFarmInput
+  expenses?: Prisma.ExpenseCreateNestedManyWithoutFarmInput
+  inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutFarmInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
+}
+
+export type FarmUncheckedCreateWithoutAdoptionsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
+  sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
+  cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
+  breeds?: Prisma.BreedUncheckedCreateNestedManyWithoutFarmInput
+  crossBreeds?: Prisma.CrossBreedUncheckedCreateNestedManyWithoutFarmInput
+  rabbits?: Prisma.RabbitUncheckedCreateNestedManyWithoutFarmInput
+  breedings?: Prisma.BreedingUncheckedCreateNestedManyWithoutFarmInput
+  pregnancies?: Prisma.PregnancyUncheckedCreateNestedManyWithoutFarmInput
+  births?: Prisma.BirthUncheckedCreateNestedManyWithoutFarmInput
+  litters?: Prisma.LitterUncheckedCreateNestedManyWithoutFarmInput
+  fatteningLots?: Prisma.FatteningLotUncheckedCreateNestedManyWithoutFarmInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutFarmInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutFarmInput
+  sales?: Prisma.SaleUncheckedCreateNestedManyWithoutFarmInput
+  expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutFarmInput
+  inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutFarmInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
+}
+
+export type FarmCreateOrConnectWithoutAdoptionsInput = {
+  where: Prisma.FarmWhereUniqueInput
+  create: Prisma.XOR<Prisma.FarmCreateWithoutAdoptionsInput, Prisma.FarmUncheckedCreateWithoutAdoptionsInput>
+}
+
+export type FarmUpsertWithoutAdoptionsInput = {
+  update: Prisma.XOR<Prisma.FarmUpdateWithoutAdoptionsInput, Prisma.FarmUncheckedUpdateWithoutAdoptionsInput>
+  create: Prisma.XOR<Prisma.FarmCreateWithoutAdoptionsInput, Prisma.FarmUncheckedCreateWithoutAdoptionsInput>
+  where?: Prisma.FarmWhereInput
+}
+
+export type FarmUpdateToOneWithWhereWithoutAdoptionsInput = {
+  where?: Prisma.FarmWhereInput
+  data: Prisma.XOR<Prisma.FarmUpdateWithoutAdoptionsInput, Prisma.FarmUncheckedUpdateWithoutAdoptionsInput>
+}
+
+export type FarmUpdateWithoutAdoptionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
+  sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
+  cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
+  breeds?: Prisma.BreedUpdateManyWithoutFarmNestedInput
+  crossBreeds?: Prisma.CrossBreedUpdateManyWithoutFarmNestedInput
+  rabbits?: Prisma.RabbitUpdateManyWithoutFarmNestedInput
+  breedings?: Prisma.BreedingUpdateManyWithoutFarmNestedInput
+  pregnancies?: Prisma.PregnancyUpdateManyWithoutFarmNestedInput
+  births?: Prisma.BirthUpdateManyWithoutFarmNestedInput
+  litters?: Prisma.LitterUpdateManyWithoutFarmNestedInput
+  fatteningLots?: Prisma.FatteningLotUpdateManyWithoutFarmNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutFarmNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutFarmNestedInput
+  sales?: Prisma.SaleUpdateManyWithoutFarmNestedInput
+  expenses?: Prisma.ExpenseUpdateManyWithoutFarmNestedInput
+  inventoryItems?: Prisma.InventoryItemUpdateManyWithoutFarmNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
+}
+
+export type FarmUncheckedUpdateWithoutAdoptionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
+  sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
+  cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
+  breeds?: Prisma.BreedUncheckedUpdateManyWithoutFarmNestedInput
+  crossBreeds?: Prisma.CrossBreedUncheckedUpdateManyWithoutFarmNestedInput
+  rabbits?: Prisma.RabbitUncheckedUpdateManyWithoutFarmNestedInput
+  breedings?: Prisma.BreedingUncheckedUpdateManyWithoutFarmNestedInput
+  pregnancies?: Prisma.PregnancyUncheckedUpdateManyWithoutFarmNestedInput
+  births?: Prisma.BirthUncheckedUpdateManyWithoutFarmNestedInput
+  litters?: Prisma.LitterUncheckedUpdateManyWithoutFarmNestedInput
+  fatteningLots?: Prisma.FatteningLotUncheckedUpdateManyWithoutFarmNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutFarmNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutFarmNestedInput
+  sales?: Prisma.SaleUncheckedUpdateManyWithoutFarmNestedInput
+  expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutFarmNestedInput
+  inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutFarmNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
+}
+
+export type FarmCreateWithoutWeaningsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
+  sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
+  cages?: Prisma.CageCreateNestedManyWithoutFarmInput
+  breeds?: Prisma.BreedCreateNestedManyWithoutFarmInput
+  crossBreeds?: Prisma.CrossBreedCreateNestedManyWithoutFarmInput
+  rabbits?: Prisma.RabbitCreateNestedManyWithoutFarmInput
+  breedings?: Prisma.BreedingCreateNestedManyWithoutFarmInput
+  pregnancies?: Prisma.PregnancyCreateNestedManyWithoutFarmInput
+  births?: Prisma.BirthCreateNestedManyWithoutFarmInput
+  litters?: Prisma.LitterCreateNestedManyWithoutFarmInput
+  fatteningLots?: Prisma.FatteningLotCreateNestedManyWithoutFarmInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutFarmInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutFarmInput
+  sales?: Prisma.SaleCreateNestedManyWithoutFarmInput
+  expenses?: Prisma.ExpenseCreateNestedManyWithoutFarmInput
+  inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutFarmInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutFarmInput
+}
+
+export type FarmUncheckedCreateWithoutWeaningsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
+  sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
+  cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
+  breeds?: Prisma.BreedUncheckedCreateNestedManyWithoutFarmInput
+  crossBreeds?: Prisma.CrossBreedUncheckedCreateNestedManyWithoutFarmInput
+  rabbits?: Prisma.RabbitUncheckedCreateNestedManyWithoutFarmInput
+  breedings?: Prisma.BreedingUncheckedCreateNestedManyWithoutFarmInput
+  pregnancies?: Prisma.PregnancyUncheckedCreateNestedManyWithoutFarmInput
+  births?: Prisma.BirthUncheckedCreateNestedManyWithoutFarmInput
+  litters?: Prisma.LitterUncheckedCreateNestedManyWithoutFarmInput
+  fatteningLots?: Prisma.FatteningLotUncheckedCreateNestedManyWithoutFarmInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutFarmInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutFarmInput
+  sales?: Prisma.SaleUncheckedCreateNestedManyWithoutFarmInput
+  expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutFarmInput
+  inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutFarmInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutFarmInput
+}
+
+export type FarmCreateOrConnectWithoutWeaningsInput = {
+  where: Prisma.FarmWhereUniqueInput
+  create: Prisma.XOR<Prisma.FarmCreateWithoutWeaningsInput, Prisma.FarmUncheckedCreateWithoutWeaningsInput>
+}
+
+export type FarmUpsertWithoutWeaningsInput = {
+  update: Prisma.XOR<Prisma.FarmUpdateWithoutWeaningsInput, Prisma.FarmUncheckedUpdateWithoutWeaningsInput>
+  create: Prisma.XOR<Prisma.FarmCreateWithoutWeaningsInput, Prisma.FarmUncheckedCreateWithoutWeaningsInput>
+  where?: Prisma.FarmWhereInput
+}
+
+export type FarmUpdateToOneWithWhereWithoutWeaningsInput = {
+  where?: Prisma.FarmWhereInput
+  data: Prisma.XOR<Prisma.FarmUpdateWithoutWeaningsInput, Prisma.FarmUncheckedUpdateWithoutWeaningsInput>
+}
+
+export type FarmUpdateWithoutWeaningsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
+  sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
+  cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
+  breeds?: Prisma.BreedUpdateManyWithoutFarmNestedInput
+  crossBreeds?: Prisma.CrossBreedUpdateManyWithoutFarmNestedInput
+  rabbits?: Prisma.RabbitUpdateManyWithoutFarmNestedInput
+  breedings?: Prisma.BreedingUpdateManyWithoutFarmNestedInput
+  pregnancies?: Prisma.PregnancyUpdateManyWithoutFarmNestedInput
+  births?: Prisma.BirthUpdateManyWithoutFarmNestedInput
+  litters?: Prisma.LitterUpdateManyWithoutFarmNestedInput
+  fatteningLots?: Prisma.FatteningLotUpdateManyWithoutFarmNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutFarmNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutFarmNestedInput
+  sales?: Prisma.SaleUpdateManyWithoutFarmNestedInput
+  expenses?: Prisma.ExpenseUpdateManyWithoutFarmNestedInput
+  inventoryItems?: Prisma.InventoryItemUpdateManyWithoutFarmNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUpdateManyWithoutFarmNestedInput
+}
+
+export type FarmUncheckedUpdateWithoutWeaningsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
+  sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
+  cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
+  breeds?: Prisma.BreedUncheckedUpdateManyWithoutFarmNestedInput
+  crossBreeds?: Prisma.CrossBreedUncheckedUpdateManyWithoutFarmNestedInput
+  rabbits?: Prisma.RabbitUncheckedUpdateManyWithoutFarmNestedInput
+  breedings?: Prisma.BreedingUncheckedUpdateManyWithoutFarmNestedInput
+  pregnancies?: Prisma.PregnancyUncheckedUpdateManyWithoutFarmNestedInput
+  births?: Prisma.BirthUncheckedUpdateManyWithoutFarmNestedInput
+  litters?: Prisma.LitterUncheckedUpdateManyWithoutFarmNestedInput
+  fatteningLots?: Prisma.FatteningLotUncheckedUpdateManyWithoutFarmNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutFarmNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutFarmNestedInput
+  sales?: Prisma.SaleUncheckedUpdateManyWithoutFarmNestedInput
+  expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutFarmNestedInput
+  inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutFarmNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutFatteningLotsInput = {
@@ -1885,6 +2255,8 @@ export type FarmCreateWithoutFatteningLotsInput = {
   expenses?: Prisma.ExpenseCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutFatteningLotsInput = {
@@ -1910,6 +2282,8 @@ export type FarmUncheckedCreateWithoutFatteningLotsInput = {
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutFatteningLotsInput = {
@@ -1951,6 +2325,8 @@ export type FarmUpdateWithoutFatteningLotsInput = {
   expenses?: Prisma.ExpenseUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutFatteningLotsInput = {
@@ -1976,6 +2352,8 @@ export type FarmUncheckedUpdateWithoutFatteningLotsInput = {
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutHealthRecordsInput = {
@@ -2001,6 +2379,8 @@ export type FarmCreateWithoutHealthRecordsInput = {
   expenses?: Prisma.ExpenseCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutHealthRecordsInput = {
@@ -2026,6 +2406,8 @@ export type FarmUncheckedCreateWithoutHealthRecordsInput = {
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutHealthRecordsInput = {
@@ -2067,6 +2449,8 @@ export type FarmUpdateWithoutHealthRecordsInput = {
   expenses?: Prisma.ExpenseUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutHealthRecordsInput = {
@@ -2092,6 +2476,8 @@ export type FarmUncheckedUpdateWithoutHealthRecordsInput = {
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutCustomersInput = {
@@ -2117,6 +2503,8 @@ export type FarmCreateWithoutCustomersInput = {
   expenses?: Prisma.ExpenseCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutCustomersInput = {
@@ -2142,6 +2530,8 @@ export type FarmUncheckedCreateWithoutCustomersInput = {
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutCustomersInput = {
@@ -2183,6 +2573,8 @@ export type FarmUpdateWithoutCustomersInput = {
   expenses?: Prisma.ExpenseUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutCustomersInput = {
@@ -2208,6 +2600,8 @@ export type FarmUncheckedUpdateWithoutCustomersInput = {
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutSalesInput = {
@@ -2233,6 +2627,8 @@ export type FarmCreateWithoutSalesInput = {
   expenses?: Prisma.ExpenseCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutSalesInput = {
@@ -2258,6 +2654,8 @@ export type FarmUncheckedCreateWithoutSalesInput = {
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutSalesInput = {
@@ -2299,6 +2697,8 @@ export type FarmUpdateWithoutSalesInput = {
   expenses?: Prisma.ExpenseUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutSalesInput = {
@@ -2324,6 +2724,8 @@ export type FarmUncheckedUpdateWithoutSalesInput = {
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutExpensesInput = {
@@ -2349,6 +2751,8 @@ export type FarmCreateWithoutExpensesInput = {
   sales?: Prisma.SaleCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutExpensesInput = {
@@ -2374,6 +2778,8 @@ export type FarmUncheckedCreateWithoutExpensesInput = {
   sales?: Prisma.SaleUncheckedCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutExpensesInput = {
@@ -2415,6 +2821,8 @@ export type FarmUpdateWithoutExpensesInput = {
   sales?: Prisma.SaleUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutExpensesInput = {
@@ -2440,6 +2848,8 @@ export type FarmUncheckedUpdateWithoutExpensesInput = {
   sales?: Prisma.SaleUncheckedUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutInventoryItemsInput = {
@@ -2465,6 +2875,8 @@ export type FarmCreateWithoutInventoryItemsInput = {
   sales?: Prisma.SaleCreateNestedManyWithoutFarmInput
   expenses?: Prisma.ExpenseCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutInventoryItemsInput = {
@@ -2490,6 +2902,8 @@ export type FarmUncheckedCreateWithoutInventoryItemsInput = {
   sales?: Prisma.SaleUncheckedCreateNestedManyWithoutFarmInput
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutFarmInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutInventoryItemsInput = {
@@ -2531,6 +2945,8 @@ export type FarmUpdateWithoutInventoryItemsInput = {
   sales?: Prisma.SaleUpdateManyWithoutFarmNestedInput
   expenses?: Prisma.ExpenseUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutInventoryItemsInput = {
@@ -2556,6 +2972,8 @@ export type FarmUncheckedUpdateWithoutInventoryItemsInput = {
   sales?: Prisma.SaleUncheckedUpdateManyWithoutFarmNestedInput
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutFarmNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutTasksInput = {
@@ -2581,6 +2999,8 @@ export type FarmCreateWithoutTasksInput = {
   sales?: Prisma.SaleCreateNestedManyWithoutFarmInput
   expenses?: Prisma.ExpenseCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutTasksInput = {
@@ -2606,6 +3026,8 @@ export type FarmUncheckedCreateWithoutTasksInput = {
   sales?: Prisma.SaleUncheckedCreateNestedManyWithoutFarmInput
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutFarmInput
   inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutTasksInput = {
@@ -2647,6 +3069,8 @@ export type FarmUpdateWithoutTasksInput = {
   sales?: Prisma.SaleUpdateManyWithoutFarmNestedInput
   expenses?: Prisma.ExpenseUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutTasksInput = {
@@ -2672,6 +3096,8 @@ export type FarmUncheckedUpdateWithoutTasksInput = {
   sales?: Prisma.SaleUncheckedUpdateManyWithoutFarmNestedInput
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutFarmNestedInput
   inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 
@@ -2697,6 +3123,8 @@ export type FarmCountOutputType = {
   expenses: number
   inventoryItems: number
   tasks: number
+  adoptions: number
+  weanings: number
 }
 
 export type FarmCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2717,6 +3145,8 @@ export type FarmCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   expenses?: boolean | FarmCountOutputTypeCountExpensesArgs
   inventoryItems?: boolean | FarmCountOutputTypeCountInventoryItemsArgs
   tasks?: boolean | FarmCountOutputTypeCountTasksArgs
+  adoptions?: boolean | FarmCountOutputTypeCountAdoptionsArgs
+  weanings?: boolean | FarmCountOutputTypeCountWeaningsArgs
 }
 
 /**
@@ -2848,6 +3278,20 @@ export type FarmCountOutputTypeCountTasksArgs<ExtArgs extends runtime.Types.Exte
   where?: Prisma.TaskWhereInput
 }
 
+/**
+ * FarmCountOutputType without action
+ */
+export type FarmCountOutputTypeCountAdoptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LitterAdoptionWhereInput
+}
+
+/**
+ * FarmCountOutputType without action
+ */
+export type FarmCountOutputTypeCountWeaningsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WeaningWhereInput
+}
+
 
 export type FarmSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2873,6 +3317,8 @@ export type FarmSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   expenses?: boolean | Prisma.Farm$expensesArgs<ExtArgs>
   inventoryItems?: boolean | Prisma.Farm$inventoryItemsArgs<ExtArgs>
   tasks?: boolean | Prisma.Farm$tasksArgs<ExtArgs>
+  adoptions?: boolean | Prisma.Farm$adoptionsArgs<ExtArgs>
+  weanings?: boolean | Prisma.Farm$weaningsArgs<ExtArgs>
   _count?: boolean | Prisma.FarmCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["farm"]>
 
@@ -2922,6 +3368,8 @@ export type FarmInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   expenses?: boolean | Prisma.Farm$expensesArgs<ExtArgs>
   inventoryItems?: boolean | Prisma.Farm$inventoryItemsArgs<ExtArgs>
   tasks?: boolean | Prisma.Farm$tasksArgs<ExtArgs>
+  adoptions?: boolean | Prisma.Farm$adoptionsArgs<ExtArgs>
+  weanings?: boolean | Prisma.Farm$weaningsArgs<ExtArgs>
   _count?: boolean | Prisma.FarmCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type FarmIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2947,6 +3395,8 @@ export type $FarmPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     expenses: Prisma.$ExpensePayload<ExtArgs>[]
     inventoryItems: Prisma.$InventoryItemPayload<ExtArgs>[]
     tasks: Prisma.$TaskPayload<ExtArgs>[]
+    adoptions: Prisma.$LitterAdoptionPayload<ExtArgs>[]
+    weanings: Prisma.$WeaningPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3366,6 +3816,8 @@ export interface Prisma__FarmClient<T, Null = never, ExtArgs extends runtime.Typ
   expenses<T extends Prisma.Farm$expensesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$expensesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExpensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   inventoryItems<T extends Prisma.Farm$inventoryItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$inventoryItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InventoryItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tasks<T extends Prisma.Farm$tasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  adoptions<T extends Prisma.Farm$adoptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$adoptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LitterAdoptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  weanings<T extends Prisma.Farm$weaningsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$weaningsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WeaningPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4199,6 +4651,54 @@ export type Farm$tasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
   take?: number
   skip?: number
   distinct?: Prisma.TaskScalarFieldEnum | Prisma.TaskScalarFieldEnum[]
+}
+
+/**
+ * Farm.adoptions
+ */
+export type Farm$adoptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LitterAdoption
+   */
+  select?: Prisma.LitterAdoptionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LitterAdoption
+   */
+  omit?: Prisma.LitterAdoptionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LitterAdoptionInclude<ExtArgs> | null
+  where?: Prisma.LitterAdoptionWhereInput
+  orderBy?: Prisma.LitterAdoptionOrderByWithRelationInput | Prisma.LitterAdoptionOrderByWithRelationInput[]
+  cursor?: Prisma.LitterAdoptionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LitterAdoptionScalarFieldEnum | Prisma.LitterAdoptionScalarFieldEnum[]
+}
+
+/**
+ * Farm.weanings
+ */
+export type Farm$weaningsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Weaning
+   */
+  select?: Prisma.WeaningSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Weaning
+   */
+  omit?: Prisma.WeaningOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WeaningInclude<ExtArgs> | null
+  where?: Prisma.WeaningWhereInput
+  orderBy?: Prisma.WeaningOrderByWithRelationInput | Prisma.WeaningOrderByWithRelationInput[]
+  cursor?: Prisma.WeaningWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WeaningScalarFieldEnum | Prisma.WeaningScalarFieldEnum[]
 }
 
 /**

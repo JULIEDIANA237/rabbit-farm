@@ -115,10 +115,20 @@ export type Litter = Prisma.LitterModel
  */
 export type LitterAdoption = Prisma.LitterAdoptionModel
 /**
+ * Model AdoptionRabbit
+ * 
+ */
+export type AdoptionRabbit = Prisma.AdoptionRabbitModel
+/**
  * Model Weaning
  * 
  */
 export type Weaning = Prisma.WeaningModel
+/**
+ * Model WeaningRabbit
+ * 
+ */
+export type WeaningRabbit = Prisma.WeaningRabbitModel
 /**
  * Model FatteningLot
  * 

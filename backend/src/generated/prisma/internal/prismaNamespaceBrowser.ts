@@ -66,7 +66,9 @@ export const ModelName = {
   Birth: 'Birth',
   Litter: 'Litter',
   LitterAdoption: 'LitterAdoption',
+  AdoptionRabbit: 'AdoptionRabbit',
   Weaning: 'Weaning',
+  WeaningRabbit: 'WeaningRabbit',
   FatteningLot: 'FatteningLot',
   LotMembership: 'LotMembership',
   Weighing: 'Weighing',
@@ -309,20 +311,33 @@ export type LitterScalarFieldEnum = (typeof LitterScalarFieldEnum)[keyof typeof 
 
 export const LitterAdoptionScalarFieldEnum = {
   id: 'id',
+  farmId: 'farmId',
   sourceLitterId: 'sourceLitterId',
   destinationLitterId: 'destinationLitterId',
+  adoptedAt: 'adoptedAt',
   quantity: 'quantity',
-  date: 'date',
   reason: 'reason',
   observation: 'observation',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type LitterAdoptionScalarFieldEnum = (typeof LitterAdoptionScalarFieldEnum)[keyof typeof LitterAdoptionScalarFieldEnum]
 
 
+export const AdoptionRabbitScalarFieldEnum = {
+  id: 'id',
+  adoptionId: 'adoptionId',
+  rabbitId: 'rabbitId',
+  createdAt: 'createdAt'
+} as const
+
+export type AdoptionRabbitScalarFieldEnum = (typeof AdoptionRabbitScalarFieldEnum)[keyof typeof AdoptionRabbitScalarFieldEnum]
+
+
 export const WeaningScalarFieldEnum = {
   id: 'id',
+  farmId: 'farmId',
   litterId: 'litterId',
   plannedDate: 'plannedDate',
   actualDate: 'actualDate',
@@ -330,10 +345,22 @@ export const WeaningScalarFieldEnum = {
   totalWeight: 'totalWeight',
   averageWeight: 'averageWeight',
   observation: 'observation',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type WeaningScalarFieldEnum = (typeof WeaningScalarFieldEnum)[keyof typeof WeaningScalarFieldEnum]
+
+
+export const WeaningRabbitScalarFieldEnum = {
+  id: 'id',
+  weaningId: 'weaningId',
+  rabbitId: 'rabbitId',
+  weight: 'weight',
+  createdAt: 'createdAt'
+} as const
+
+export type WeaningRabbitScalarFieldEnum = (typeof WeaningRabbitScalarFieldEnum)[keyof typeof WeaningRabbitScalarFieldEnum]
 
 
 export const FatteningLotScalarFieldEnum = {

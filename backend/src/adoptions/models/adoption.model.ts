@@ -19,7 +19,7 @@ export class AdoptionModel {
   reason: AdoptionReason;
 
   @Field()
-  date: Date;
+  adoptedAt: Date;
 
   @Field({ nullable: true })
   observation?: string;

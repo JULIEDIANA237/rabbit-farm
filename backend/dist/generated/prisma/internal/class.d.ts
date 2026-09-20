@@ -75,7 +75,13 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get litterAdoption(): Prisma.LitterAdoptionDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
+    get adoptionRabbit(): Prisma.AdoptionRabbitDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
     get weaning(): Prisma.WeaningDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get weaningRabbit(): Prisma.WeaningRabbitDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
     get fatteningLot(): Prisma.FatteningLotDelegate<ExtArgs, {
