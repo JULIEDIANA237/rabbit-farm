@@ -23,6 +23,11 @@ const pregnancy_module_1 = require("./pregnancy/pregnancy.module");
 const births_module_1 = require("./births/births.module");
 const litters_module_1 = require("./litters/litters.module");
 const adoptions_module_1 = require("./adoptions/adoptions.module");
+const weaning_module_1 = require("./weaning/weaning.module");
+const fattening_module_1 = require("./fattening/fattening.module");
+const health_module_1 = require("./health/health.module");
+const sales_module_1 = require("./sales/sales.module");
+const operations_module_1 = require("./operations/operations.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -49,6 +54,11 @@ exports.AppModule = AppModule = __decorate([
             births_module_1.BirthsModule,
             litters_module_1.LittersModule,
             adoptions_module_1.AdoptionsModule,
+            weaning_module_1.WeaningModule,
+            fattening_module_1.FatteningModule,
+            health_module_1.HealthModule,
+            sales_module_1.SalesModule,
+            operations_module_1.OperationsModule,
         ],
     })
 ], AppModule);

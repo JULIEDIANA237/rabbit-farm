@@ -19,6 +19,11 @@ import { PregnancyModule } from './pregnancy/pregnancy.module';
 import { BirthsModule } from './births/births.module';
 import { LittersModule } from './litters/litters.module';
 import { AdoptionsModule } from './adoptions/adoptions.module';
+import { WeaningModule } from './weaning/weaning.module';
+import { FatteningModule } from './fattening/fattening.module';
+import { HealthModule } from './health/health.module';
+import { SalesModule } from './sales/sales.module';
+import { OperationsModule } from './operations/operations.module';
 
 @Module({
   imports: [
@@ -44,6 +49,11 @@ import { AdoptionsModule } from './adoptions/adoptions.module';
     BirthsModule,
     LittersModule,
     AdoptionsModule,
+    WeaningModule,
+    FatteningModule,
+    HealthModule,
+    SalesModule,
+    OperationsModule,
   ],
 })
 export class AppModule {}
