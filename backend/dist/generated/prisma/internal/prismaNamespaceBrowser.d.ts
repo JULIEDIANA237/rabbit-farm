@@ -366,6 +366,7 @@ export declare const ExpenseScalarFieldEnum: {
     readonly date: "date";
     readonly description: "description";
     readonly reference: "reference";
+    readonly supplier: "supplier";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };
@@ -376,6 +377,7 @@ export declare const InventoryItemScalarFieldEnum: {
     readonly name: "name";
     readonly type: "type";
     readonly unit: "unit";
+    readonly currentStock: "currentStock";
     readonly minimumStock: "minimumStock";
     readonly description: "description";
     readonly createdAt: "createdAt";
@@ -399,6 +401,7 @@ export declare const TaskScalarFieldEnum: {
     readonly farmId: "farmId";
     readonly title: "title";
     readonly description: "description";
+    readonly rabbitId: "rabbitId";
     readonly dueDate: "dueDate";
     readonly priority: "priority";
     readonly status: "status";

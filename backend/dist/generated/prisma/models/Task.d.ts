@@ -12,11 +12,12 @@ export type TaskMinAggregateOutputType = {
     farmId: string | null;
     title: string | null;
     description: string | null;
+    rabbitId: string | null;
     dueDate: Date | null;
     priority: $Enums.TaskPriority | null;
     status: $Enums.TaskStatus | null;
     assignedToId: string | null;
-    sourceType: string | null;
+    sourceType: $Enums.TaskSourceType | null;
     sourceId: string | null;
     completedAt: Date | null;
     createdAt: Date | null;
@@ -27,11 +28,12 @@ export type TaskMaxAggregateOutputType = {
     farmId: string | null;
     title: string | null;
     description: string | null;
+    rabbitId: string | null;
     dueDate: Date | null;
     priority: $Enums.TaskPriority | null;
     status: $Enums.TaskStatus | null;
     assignedToId: string | null;
-    sourceType: string | null;
+    sourceType: $Enums.TaskSourceType | null;
     sourceId: string | null;
     completedAt: Date | null;
     createdAt: Date | null;
@@ -42,6 +44,7 @@ export type TaskCountAggregateOutputType = {
     farmId: number;
     title: number;
     description: number;
+    rabbitId: number;
     dueDate: number;
     priority: number;
     status: number;
@@ -58,6 +61,7 @@ export type TaskMinAggregateInputType = {
     farmId?: true;
     title?: true;
     description?: true;
+    rabbitId?: true;
     dueDate?: true;
     priority?: true;
     status?: true;
@@ -73,6 +77,7 @@ export type TaskMaxAggregateInputType = {
     farmId?: true;
     title?: true;
     description?: true;
+    rabbitId?: true;
     dueDate?: true;
     priority?: true;
     status?: true;
@@ -88,6 +93,7 @@ export type TaskCountAggregateInputType = {
     farmId?: true;
     title?: true;
     description?: true;
+    rabbitId?: true;
     dueDate?: true;
     priority?: true;
     status?: true;
@@ -128,11 +134,12 @@ export type TaskGroupByOutputType = {
     farmId: string;
     title: string;
     description: string | null;
+    rabbitId: string | null;
     dueDate: Date;
     priority: $Enums.TaskPriority;
     status: $Enums.TaskStatus;
     assignedToId: string | null;
-    sourceType: string | null;
+    sourceType: $Enums.TaskSourceType | null;
     sourceId: string | null;
     completedAt: Date | null;
     createdAt: Date;
@@ -152,23 +159,26 @@ export type TaskWhereInput = {
     farmId?: Prisma.StringFilter<"Task"> | string;
     title?: Prisma.StringFilter<"Task"> | string;
     description?: Prisma.StringNullableFilter<"Task"> | string | null;
+    rabbitId?: Prisma.StringNullableFilter<"Task"> | string | null;
     dueDate?: Prisma.DateTimeFilter<"Task"> | Date | string;
     priority?: Prisma.EnumTaskPriorityFilter<"Task"> | $Enums.TaskPriority;
     status?: Prisma.EnumTaskStatusFilter<"Task"> | $Enums.TaskStatus;
     assignedToId?: Prisma.StringNullableFilter<"Task"> | string | null;
-    sourceType?: Prisma.StringNullableFilter<"Task"> | string | null;
+    sourceType?: Prisma.EnumTaskSourceTypeNullableFilter<"Task"> | $Enums.TaskSourceType | null;
     sourceId?: Prisma.StringNullableFilter<"Task"> | string | null;
     completedAt?: Prisma.DateTimeNullableFilter<"Task"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"Task"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Task"> | Date | string;
     farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>;
     assignedTo?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null;
+    rabbit?: Prisma.XOR<Prisma.RabbitNullableScalarRelationFilter, Prisma.RabbitWhereInput> | null;
 };
 export type TaskOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
     farmId?: Prisma.SortOrder;
     title?: Prisma.SortOrder;
     description?: Prisma.SortOrderInput | Prisma.SortOrder;
+    rabbitId?: Prisma.SortOrderInput | Prisma.SortOrder;
     dueDate?: Prisma.SortOrder;
     priority?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
@@ -180,6 +190,7 @@ export type TaskOrderByWithRelationInput = {
     updatedAt?: Prisma.SortOrder;
     farm?: Prisma.FarmOrderByWithRelationInput;
     assignedTo?: Prisma.UserOrderByWithRelationInput;
+    rabbit?: Prisma.RabbitOrderByWithRelationInput;
 };
 export type TaskWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -189,23 +200,26 @@ export type TaskWhereUniqueInput = Prisma.AtLeast<{
     farmId?: Prisma.StringFilter<"Task"> | string;
     title?: Prisma.StringFilter<"Task"> | string;
     description?: Prisma.StringNullableFilter<"Task"> | string | null;
+    rabbitId?: Prisma.StringNullableFilter<"Task"> | string | null;
     dueDate?: Prisma.DateTimeFilter<"Task"> | Date | string;
     priority?: Prisma.EnumTaskPriorityFilter<"Task"> | $Enums.TaskPriority;
     status?: Prisma.EnumTaskStatusFilter<"Task"> | $Enums.TaskStatus;
     assignedToId?: Prisma.StringNullableFilter<"Task"> | string | null;
-    sourceType?: Prisma.StringNullableFilter<"Task"> | string | null;
+    sourceType?: Prisma.EnumTaskSourceTypeNullableFilter<"Task"> | $Enums.TaskSourceType | null;
     sourceId?: Prisma.StringNullableFilter<"Task"> | string | null;
     completedAt?: Prisma.DateTimeNullableFilter<"Task"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"Task"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Task"> | Date | string;
     farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>;
     assignedTo?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null;
+    rabbit?: Prisma.XOR<Prisma.RabbitNullableScalarRelationFilter, Prisma.RabbitWhereInput> | null;
 }, "id">;
 export type TaskOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
     farmId?: Prisma.SortOrder;
     title?: Prisma.SortOrder;
     description?: Prisma.SortOrderInput | Prisma.SortOrder;
+    rabbitId?: Prisma.SortOrderInput | Prisma.SortOrder;
     dueDate?: Prisma.SortOrder;
     priority?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
@@ -227,11 +241,12 @@ export type TaskScalarWhereWithAggregatesInput = {
     farmId?: Prisma.StringWithAggregatesFilter<"Task"> | string;
     title?: Prisma.StringWithAggregatesFilter<"Task"> | string;
     description?: Prisma.StringNullableWithAggregatesFilter<"Task"> | string | null;
+    rabbitId?: Prisma.StringNullableWithAggregatesFilter<"Task"> | string | null;
     dueDate?: Prisma.DateTimeWithAggregatesFilter<"Task"> | Date | string;
     priority?: Prisma.EnumTaskPriorityWithAggregatesFilter<"Task"> | $Enums.TaskPriority;
     status?: Prisma.EnumTaskStatusWithAggregatesFilter<"Task"> | $Enums.TaskStatus;
     assignedToId?: Prisma.StringNullableWithAggregatesFilter<"Task"> | string | null;
-    sourceType?: Prisma.StringNullableWithAggregatesFilter<"Task"> | string | null;
+    sourceType?: Prisma.EnumTaskSourceTypeNullableWithAggregatesFilter<"Task"> | $Enums.TaskSourceType | null;
     sourceId?: Prisma.StringNullableWithAggregatesFilter<"Task"> | string | null;
     completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Task"> | Date | string | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"Task"> | Date | string;
@@ -244,24 +259,26 @@ export type TaskCreateInput = {
     dueDate: Date | string;
     priority?: $Enums.TaskPriority;
     status?: $Enums.TaskStatus;
-    sourceType?: string | null;
+    sourceType?: $Enums.TaskSourceType | null;
     sourceId?: string | null;
     completedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     farm: Prisma.FarmCreateNestedOneWithoutTasksInput;
     assignedTo?: Prisma.UserCreateNestedOneWithoutAssignedTasksInput;
+    rabbit?: Prisma.RabbitCreateNestedOneWithoutTasksInput;
 };
 export type TaskUncheckedCreateInput = {
     id?: string;
     farmId: string;
     title: string;
     description?: string | null;
+    rabbitId?: string | null;
     dueDate: Date | string;
     priority?: $Enums.TaskPriority;
     status?: $Enums.TaskStatus;
     assignedToId?: string | null;
-    sourceType?: string | null;
+    sourceType?: $Enums.TaskSourceType | null;
     sourceId?: string | null;
     completedAt?: Date | string | null;
     createdAt?: Date | string;
@@ -274,24 +291,26 @@ export type TaskUpdateInput = {
     dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority;
     status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus;
-    sourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sourceType?: Prisma.NullableEnumTaskSourceTypeFieldUpdateOperationsInput | $Enums.TaskSourceType | null;
     sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     farm?: Prisma.FarmUpdateOneRequiredWithoutTasksNestedInput;
     assignedTo?: Prisma.UserUpdateOneWithoutAssignedTasksNestedInput;
+    rabbit?: Prisma.RabbitUpdateOneWithoutTasksNestedInput;
 };
 export type TaskUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     farmId?: Prisma.StringFieldUpdateOperationsInput | string;
     title?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    rabbitId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority;
     status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus;
     assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    sourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sourceType?: Prisma.NullableEnumTaskSourceTypeFieldUpdateOperationsInput | $Enums.TaskSourceType | null;
     sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -302,11 +321,12 @@ export type TaskCreateManyInput = {
     farmId: string;
     title: string;
     description?: string | null;
+    rabbitId?: string | null;
     dueDate: Date | string;
     priority?: $Enums.TaskPriority;
     status?: $Enums.TaskStatus;
     assignedToId?: string | null;
-    sourceType?: string | null;
+    sourceType?: $Enums.TaskSourceType | null;
     sourceId?: string | null;
     completedAt?: Date | string | null;
     createdAt?: Date | string;
@@ -319,7 +339,7 @@ export type TaskUpdateManyMutationInput = {
     dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority;
     status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus;
-    sourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sourceType?: Prisma.NullableEnumTaskSourceTypeFieldUpdateOperationsInput | $Enums.TaskSourceType | null;
     sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -330,11 +350,12 @@ export type TaskUncheckedUpdateManyInput = {
     farmId?: Prisma.StringFieldUpdateOperationsInput | string;
     title?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    rabbitId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority;
     status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus;
     assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    sourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sourceType?: Prisma.NullableEnumTaskSourceTypeFieldUpdateOperationsInput | $Enums.TaskSourceType | null;
     sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -353,6 +374,7 @@ export type TaskCountOrderByAggregateInput = {
     farmId?: Prisma.SortOrder;
     title?: Prisma.SortOrder;
     description?: Prisma.SortOrder;
+    rabbitId?: Prisma.SortOrder;
     dueDate?: Prisma.SortOrder;
     priority?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
@@ -368,6 +390,7 @@ export type TaskMaxOrderByAggregateInput = {
     farmId?: Prisma.SortOrder;
     title?: Prisma.SortOrder;
     description?: Prisma.SortOrder;
+    rabbitId?: Prisma.SortOrder;
     dueDate?: Prisma.SortOrder;
     priority?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
@@ -383,6 +406,7 @@ export type TaskMinOrderByAggregateInput = {
     farmId?: Prisma.SortOrder;
     title?: Prisma.SortOrder;
     description?: Prisma.SortOrder;
+    rabbitId?: Prisma.SortOrder;
     dueDate?: Prisma.SortOrder;
     priority?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
@@ -469,11 +493,52 @@ export type TaskUncheckedUpdateManyWithoutFarmNestedInput = {
     updateMany?: Prisma.TaskUpdateManyWithWhereWithoutFarmInput | Prisma.TaskUpdateManyWithWhereWithoutFarmInput[];
     deleteMany?: Prisma.TaskScalarWhereInput | Prisma.TaskScalarWhereInput[];
 };
+export type TaskCreateNestedManyWithoutRabbitInput = {
+    create?: Prisma.XOR<Prisma.TaskCreateWithoutRabbitInput, Prisma.TaskUncheckedCreateWithoutRabbitInput> | Prisma.TaskCreateWithoutRabbitInput[] | Prisma.TaskUncheckedCreateWithoutRabbitInput[];
+    connectOrCreate?: Prisma.TaskCreateOrConnectWithoutRabbitInput | Prisma.TaskCreateOrConnectWithoutRabbitInput[];
+    createMany?: Prisma.TaskCreateManyRabbitInputEnvelope;
+    connect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[];
+};
+export type TaskUncheckedCreateNestedManyWithoutRabbitInput = {
+    create?: Prisma.XOR<Prisma.TaskCreateWithoutRabbitInput, Prisma.TaskUncheckedCreateWithoutRabbitInput> | Prisma.TaskCreateWithoutRabbitInput[] | Prisma.TaskUncheckedCreateWithoutRabbitInput[];
+    connectOrCreate?: Prisma.TaskCreateOrConnectWithoutRabbitInput | Prisma.TaskCreateOrConnectWithoutRabbitInput[];
+    createMany?: Prisma.TaskCreateManyRabbitInputEnvelope;
+    connect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[];
+};
+export type TaskUpdateManyWithoutRabbitNestedInput = {
+    create?: Prisma.XOR<Prisma.TaskCreateWithoutRabbitInput, Prisma.TaskUncheckedCreateWithoutRabbitInput> | Prisma.TaskCreateWithoutRabbitInput[] | Prisma.TaskUncheckedCreateWithoutRabbitInput[];
+    connectOrCreate?: Prisma.TaskCreateOrConnectWithoutRabbitInput | Prisma.TaskCreateOrConnectWithoutRabbitInput[];
+    upsert?: Prisma.TaskUpsertWithWhereUniqueWithoutRabbitInput | Prisma.TaskUpsertWithWhereUniqueWithoutRabbitInput[];
+    createMany?: Prisma.TaskCreateManyRabbitInputEnvelope;
+    set?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[];
+    disconnect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[];
+    delete?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[];
+    connect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[];
+    update?: Prisma.TaskUpdateWithWhereUniqueWithoutRabbitInput | Prisma.TaskUpdateWithWhereUniqueWithoutRabbitInput[];
+    updateMany?: Prisma.TaskUpdateManyWithWhereWithoutRabbitInput | Prisma.TaskUpdateManyWithWhereWithoutRabbitInput[];
+    deleteMany?: Prisma.TaskScalarWhereInput | Prisma.TaskScalarWhereInput[];
+};
+export type TaskUncheckedUpdateManyWithoutRabbitNestedInput = {
+    create?: Prisma.XOR<Prisma.TaskCreateWithoutRabbitInput, Prisma.TaskUncheckedCreateWithoutRabbitInput> | Prisma.TaskCreateWithoutRabbitInput[] | Prisma.TaskUncheckedCreateWithoutRabbitInput[];
+    connectOrCreate?: Prisma.TaskCreateOrConnectWithoutRabbitInput | Prisma.TaskCreateOrConnectWithoutRabbitInput[];
+    upsert?: Prisma.TaskUpsertWithWhereUniqueWithoutRabbitInput | Prisma.TaskUpsertWithWhereUniqueWithoutRabbitInput[];
+    createMany?: Prisma.TaskCreateManyRabbitInputEnvelope;
+    set?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[];
+    disconnect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[];
+    delete?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[];
+    connect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[];
+    update?: Prisma.TaskUpdateWithWhereUniqueWithoutRabbitInput | Prisma.TaskUpdateWithWhereUniqueWithoutRabbitInput[];
+    updateMany?: Prisma.TaskUpdateManyWithWhereWithoutRabbitInput | Prisma.TaskUpdateManyWithWhereWithoutRabbitInput[];
+    deleteMany?: Prisma.TaskScalarWhereInput | Prisma.TaskScalarWhereInput[];
+};
 export type EnumTaskPriorityFieldUpdateOperationsInput = {
     set?: $Enums.TaskPriority;
 };
 export type EnumTaskStatusFieldUpdateOperationsInput = {
     set?: $Enums.TaskStatus;
+};
+export type NullableEnumTaskSourceTypeFieldUpdateOperationsInput = {
+    set?: $Enums.TaskSourceType | null;
 };
 export type TaskCreateWithoutAssignedToInput = {
     id?: string;
@@ -482,22 +547,24 @@ export type TaskCreateWithoutAssignedToInput = {
     dueDate: Date | string;
     priority?: $Enums.TaskPriority;
     status?: $Enums.TaskStatus;
-    sourceType?: string | null;
+    sourceType?: $Enums.TaskSourceType | null;
     sourceId?: string | null;
     completedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     farm: Prisma.FarmCreateNestedOneWithoutTasksInput;
+    rabbit?: Prisma.RabbitCreateNestedOneWithoutTasksInput;
 };
 export type TaskUncheckedCreateWithoutAssignedToInput = {
     id?: string;
     farmId: string;
     title: string;
     description?: string | null;
+    rabbitId?: string | null;
     dueDate: Date | string;
     priority?: $Enums.TaskPriority;
     status?: $Enums.TaskStatus;
-    sourceType?: string | null;
+    sourceType?: $Enums.TaskSourceType | null;
     sourceId?: string | null;
     completedAt?: Date | string | null;
     createdAt?: Date | string;
@@ -532,11 +599,12 @@ export type TaskScalarWhereInput = {
     farmId?: Prisma.StringFilter<"Task"> | string;
     title?: Prisma.StringFilter<"Task"> | string;
     description?: Prisma.StringNullableFilter<"Task"> | string | null;
+    rabbitId?: Prisma.StringNullableFilter<"Task"> | string | null;
     dueDate?: Prisma.DateTimeFilter<"Task"> | Date | string;
     priority?: Prisma.EnumTaskPriorityFilter<"Task"> | $Enums.TaskPriority;
     status?: Prisma.EnumTaskStatusFilter<"Task"> | $Enums.TaskStatus;
     assignedToId?: Prisma.StringNullableFilter<"Task"> | string | null;
-    sourceType?: Prisma.StringNullableFilter<"Task"> | string | null;
+    sourceType?: Prisma.EnumTaskSourceTypeNullableFilter<"Task"> | $Enums.TaskSourceType | null;
     sourceId?: Prisma.StringNullableFilter<"Task"> | string | null;
     completedAt?: Prisma.DateTimeNullableFilter<"Task"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"Task"> | Date | string;
@@ -549,22 +617,24 @@ export type TaskCreateWithoutFarmInput = {
     dueDate: Date | string;
     priority?: $Enums.TaskPriority;
     status?: $Enums.TaskStatus;
-    sourceType?: string | null;
+    sourceType?: $Enums.TaskSourceType | null;
     sourceId?: string | null;
     completedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     assignedTo?: Prisma.UserCreateNestedOneWithoutAssignedTasksInput;
+    rabbit?: Prisma.RabbitCreateNestedOneWithoutTasksInput;
 };
 export type TaskUncheckedCreateWithoutFarmInput = {
     id?: string;
     title: string;
     description?: string | null;
+    rabbitId?: string | null;
     dueDate: Date | string;
     priority?: $Enums.TaskPriority;
     status?: $Enums.TaskStatus;
     assignedToId?: string | null;
-    sourceType?: string | null;
+    sourceType?: $Enums.TaskSourceType | null;
     sourceId?: string | null;
     completedAt?: Date | string | null;
     createdAt?: Date | string;
@@ -591,7 +661,22 @@ export type TaskUpdateManyWithWhereWithoutFarmInput = {
     where: Prisma.TaskScalarWhereInput;
     data: Prisma.XOR<Prisma.TaskUpdateManyMutationInput, Prisma.TaskUncheckedUpdateManyWithoutFarmInput>;
 };
-export type TaskCreateManyAssignedToInput = {
+export type TaskCreateWithoutRabbitInput = {
+    id?: string;
+    title: string;
+    description?: string | null;
+    dueDate: Date | string;
+    priority?: $Enums.TaskPriority;
+    status?: $Enums.TaskStatus;
+    sourceType?: $Enums.TaskSourceType | null;
+    sourceId?: string | null;
+    completedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    farm: Prisma.FarmCreateNestedOneWithoutTasksInput;
+    assignedTo?: Prisma.UserCreateNestedOneWithoutAssignedTasksInput;
+};
+export type TaskUncheckedCreateWithoutRabbitInput = {
     id?: string;
     farmId: string;
     title: string;
@@ -599,7 +684,44 @@ export type TaskCreateManyAssignedToInput = {
     dueDate: Date | string;
     priority?: $Enums.TaskPriority;
     status?: $Enums.TaskStatus;
-    sourceType?: string | null;
+    assignedToId?: string | null;
+    sourceType?: $Enums.TaskSourceType | null;
+    sourceId?: string | null;
+    completedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type TaskCreateOrConnectWithoutRabbitInput = {
+    where: Prisma.TaskWhereUniqueInput;
+    create: Prisma.XOR<Prisma.TaskCreateWithoutRabbitInput, Prisma.TaskUncheckedCreateWithoutRabbitInput>;
+};
+export type TaskCreateManyRabbitInputEnvelope = {
+    data: Prisma.TaskCreateManyRabbitInput | Prisma.TaskCreateManyRabbitInput[];
+    skipDuplicates?: boolean;
+};
+export type TaskUpsertWithWhereUniqueWithoutRabbitInput = {
+    where: Prisma.TaskWhereUniqueInput;
+    update: Prisma.XOR<Prisma.TaskUpdateWithoutRabbitInput, Prisma.TaskUncheckedUpdateWithoutRabbitInput>;
+    create: Prisma.XOR<Prisma.TaskCreateWithoutRabbitInput, Prisma.TaskUncheckedCreateWithoutRabbitInput>;
+};
+export type TaskUpdateWithWhereUniqueWithoutRabbitInput = {
+    where: Prisma.TaskWhereUniqueInput;
+    data: Prisma.XOR<Prisma.TaskUpdateWithoutRabbitInput, Prisma.TaskUncheckedUpdateWithoutRabbitInput>;
+};
+export type TaskUpdateManyWithWhereWithoutRabbitInput = {
+    where: Prisma.TaskScalarWhereInput;
+    data: Prisma.XOR<Prisma.TaskUpdateManyMutationInput, Prisma.TaskUncheckedUpdateManyWithoutRabbitInput>;
+};
+export type TaskCreateManyAssignedToInput = {
+    id?: string;
+    farmId: string;
+    title: string;
+    description?: string | null;
+    rabbitId?: string | null;
+    dueDate: Date | string;
+    priority?: $Enums.TaskPriority;
+    status?: $Enums.TaskStatus;
+    sourceType?: $Enums.TaskSourceType | null;
     sourceId?: string | null;
     completedAt?: Date | string | null;
     createdAt?: Date | string;
@@ -612,22 +734,24 @@ export type TaskUpdateWithoutAssignedToInput = {
     dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority;
     status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus;
-    sourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sourceType?: Prisma.NullableEnumTaskSourceTypeFieldUpdateOperationsInput | $Enums.TaskSourceType | null;
     sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     farm?: Prisma.FarmUpdateOneRequiredWithoutTasksNestedInput;
+    rabbit?: Prisma.RabbitUpdateOneWithoutTasksNestedInput;
 };
 export type TaskUncheckedUpdateWithoutAssignedToInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     farmId?: Prisma.StringFieldUpdateOperationsInput | string;
     title?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    rabbitId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority;
     status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus;
-    sourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sourceType?: Prisma.NullableEnumTaskSourceTypeFieldUpdateOperationsInput | $Enums.TaskSourceType | null;
     sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -638,10 +762,11 @@ export type TaskUncheckedUpdateManyWithoutAssignedToInput = {
     farmId?: Prisma.StringFieldUpdateOperationsInput | string;
     title?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    rabbitId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority;
     status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus;
-    sourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sourceType?: Prisma.NullableEnumTaskSourceTypeFieldUpdateOperationsInput | $Enums.TaskSourceType | null;
     sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -651,11 +776,12 @@ export type TaskCreateManyFarmInput = {
     id?: string;
     title: string;
     description?: string | null;
+    rabbitId?: string | null;
     dueDate: Date | string;
     priority?: $Enums.TaskPriority;
     status?: $Enums.TaskStatus;
     assignedToId?: string | null;
-    sourceType?: string | null;
+    sourceType?: $Enums.TaskSourceType | null;
     sourceId?: string | null;
     completedAt?: Date | string | null;
     createdAt?: Date | string;
@@ -668,22 +794,24 @@ export type TaskUpdateWithoutFarmInput = {
     dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority;
     status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus;
-    sourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sourceType?: Prisma.NullableEnumTaskSourceTypeFieldUpdateOperationsInput | $Enums.TaskSourceType | null;
     sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     assignedTo?: Prisma.UserUpdateOneWithoutAssignedTasksNestedInput;
+    rabbit?: Prisma.RabbitUpdateOneWithoutTasksNestedInput;
 };
 export type TaskUncheckedUpdateWithoutFarmInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     title?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    rabbitId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority;
     status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus;
     assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    sourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sourceType?: Prisma.NullableEnumTaskSourceTypeFieldUpdateOperationsInput | $Enums.TaskSourceType | null;
     sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -693,11 +821,72 @@ export type TaskUncheckedUpdateManyWithoutFarmInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     title?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    rabbitId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority;
     status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus;
     assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    sourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sourceType?: Prisma.NullableEnumTaskSourceTypeFieldUpdateOperationsInput | $Enums.TaskSourceType | null;
+    sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type TaskCreateManyRabbitInput = {
+    id?: string;
+    farmId: string;
+    title: string;
+    description?: string | null;
+    dueDate: Date | string;
+    priority?: $Enums.TaskPriority;
+    status?: $Enums.TaskStatus;
+    assignedToId?: string | null;
+    sourceType?: $Enums.TaskSourceType | null;
+    sourceId?: string | null;
+    completedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type TaskUpdateWithoutRabbitInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    title?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority;
+    status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus;
+    sourceType?: Prisma.NullableEnumTaskSourceTypeFieldUpdateOperationsInput | $Enums.TaskSourceType | null;
+    sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    farm?: Prisma.FarmUpdateOneRequiredWithoutTasksNestedInput;
+    assignedTo?: Prisma.UserUpdateOneWithoutAssignedTasksNestedInput;
+};
+export type TaskUncheckedUpdateWithoutRabbitInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    farmId?: Prisma.StringFieldUpdateOperationsInput | string;
+    title?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority;
+    status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus;
+    assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sourceType?: Prisma.NullableEnumTaskSourceTypeFieldUpdateOperationsInput | $Enums.TaskSourceType | null;
+    sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type TaskUncheckedUpdateManyWithoutRabbitInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    farmId?: Prisma.StringFieldUpdateOperationsInput | string;
+    title?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority;
+    status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus;
+    assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sourceType?: Prisma.NullableEnumTaskSourceTypeFieldUpdateOperationsInput | $Enums.TaskSourceType | null;
     sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -708,6 +897,7 @@ export type TaskSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     farmId?: boolean;
     title?: boolean;
     description?: boolean;
+    rabbitId?: boolean;
     dueDate?: boolean;
     priority?: boolean;
     status?: boolean;
@@ -719,12 +909,14 @@ export type TaskSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     updatedAt?: boolean;
     farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>;
     assignedTo?: boolean | Prisma.Task$assignedToArgs<ExtArgs>;
+    rabbit?: boolean | Prisma.Task$rabbitArgs<ExtArgs>;
 }, ExtArgs["result"]["task"]>;
 export type TaskSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     farmId?: boolean;
     title?: boolean;
     description?: boolean;
+    rabbitId?: boolean;
     dueDate?: boolean;
     priority?: boolean;
     status?: boolean;
@@ -736,12 +928,14 @@ export type TaskSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     updatedAt?: boolean;
     farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>;
     assignedTo?: boolean | Prisma.Task$assignedToArgs<ExtArgs>;
+    rabbit?: boolean | Prisma.Task$rabbitArgs<ExtArgs>;
 }, ExtArgs["result"]["task"]>;
 export type TaskSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     farmId?: boolean;
     title?: boolean;
     description?: boolean;
+    rabbitId?: boolean;
     dueDate?: boolean;
     priority?: boolean;
     status?: boolean;
@@ -753,12 +947,14 @@ export type TaskSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     updatedAt?: boolean;
     farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>;
     assignedTo?: boolean | Prisma.Task$assignedToArgs<ExtArgs>;
+    rabbit?: boolean | Prisma.Task$rabbitArgs<ExtArgs>;
 }, ExtArgs["result"]["task"]>;
 export type TaskSelectScalar = {
     id?: boolean;
     farmId?: boolean;
     title?: boolean;
     description?: boolean;
+    rabbitId?: boolean;
     dueDate?: boolean;
     priority?: boolean;
     status?: boolean;
@@ -769,35 +965,40 @@ export type TaskSelectScalar = {
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type TaskOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "title" | "description" | "dueDate" | "priority" | "status" | "assignedToId" | "sourceType" | "sourceId" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["task"]>;
+export type TaskOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "title" | "description" | "rabbitId" | "dueDate" | "priority" | "status" | "assignedToId" | "sourceType" | "sourceId" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["task"]>;
 export type TaskInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>;
     assignedTo?: boolean | Prisma.Task$assignedToArgs<ExtArgs>;
+    rabbit?: boolean | Prisma.Task$rabbitArgs<ExtArgs>;
 };
 export type TaskIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>;
     assignedTo?: boolean | Prisma.Task$assignedToArgs<ExtArgs>;
+    rabbit?: boolean | Prisma.Task$rabbitArgs<ExtArgs>;
 };
 export type TaskIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>;
     assignedTo?: boolean | Prisma.Task$assignedToArgs<ExtArgs>;
+    rabbit?: boolean | Prisma.Task$rabbitArgs<ExtArgs>;
 };
 export type $TaskPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "Task";
     objects: {
         farm: Prisma.$FarmPayload<ExtArgs>;
         assignedTo: Prisma.$UserPayload<ExtArgs> | null;
+        rabbit: Prisma.$RabbitPayload<ExtArgs> | null;
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
         farmId: string;
         title: string;
         description: string | null;
+        rabbitId: string | null;
         dueDate: Date;
         priority: $Enums.TaskPriority;
         status: $Enums.TaskStatus;
         assignedToId: string | null;
-        sourceType: string | null;
+        sourceType: $Enums.TaskSourceType | null;
         sourceId: string | null;
         completedAt: Date | null;
         createdAt: Date;
@@ -856,6 +1057,7 @@ export interface Prisma__TaskClient<T, Null = never, ExtArgs extends runtime.Typ
     readonly [Symbol.toStringTag]: "PrismaPromise";
     farm<T extends Prisma.FarmDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FarmDefaultArgs<ExtArgs>>): Prisma.Prisma__FarmClient<runtime.Types.Result.GetResult<Prisma.$FarmPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     assignedTo<T extends Prisma.Task$assignedToArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Task$assignedToArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    rabbit<T extends Prisma.Task$rabbitArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Task$rabbitArgs<ExtArgs>>): Prisma.Prisma__RabbitClient<runtime.Types.Result.GetResult<Prisma.$RabbitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -865,11 +1067,12 @@ export interface TaskFieldRefs {
     readonly farmId: Prisma.FieldRef<"Task", 'String'>;
     readonly title: Prisma.FieldRef<"Task", 'String'>;
     readonly description: Prisma.FieldRef<"Task", 'String'>;
+    readonly rabbitId: Prisma.FieldRef<"Task", 'String'>;
     readonly dueDate: Prisma.FieldRef<"Task", 'DateTime'>;
     readonly priority: Prisma.FieldRef<"Task", 'TaskPriority'>;
     readonly status: Prisma.FieldRef<"Task", 'TaskStatus'>;
     readonly assignedToId: Prisma.FieldRef<"Task", 'String'>;
-    readonly sourceType: Prisma.FieldRef<"Task", 'String'>;
+    readonly sourceType: Prisma.FieldRef<"Task", 'TaskSourceType'>;
     readonly sourceId: Prisma.FieldRef<"Task", 'String'>;
     readonly completedAt: Prisma.FieldRef<"Task", 'DateTime'>;
     readonly createdAt: Prisma.FieldRef<"Task", 'DateTime'>;
@@ -980,6 +1183,12 @@ export type Task$assignedToArgs<ExtArgs extends runtime.Types.Extensions.Interna
     omit?: Prisma.UserOmit<ExtArgs> | null;
     include?: Prisma.UserInclude<ExtArgs> | null;
     where?: Prisma.UserWhereInput;
+};
+export type Task$rabbitArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.RabbitSelect<ExtArgs> | null;
+    omit?: Prisma.RabbitOmit<ExtArgs> | null;
+    include?: Prisma.RabbitInclude<ExtArgs> | null;
+    where?: Prisma.RabbitWhereInput;
 };
 export type TaskDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.TaskSelect<ExtArgs> | null;

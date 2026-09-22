@@ -27,10 +27,12 @@ export type AggregateInventoryItem = {
 }
 
 export type InventoryItemAvgAggregateOutputType = {
+  currentStock: number | null
   minimumStock: number | null
 }
 
 export type InventoryItemSumAggregateOutputType = {
+  currentStock: number | null
   minimumStock: number | null
 }
 
@@ -40,6 +42,7 @@ export type InventoryItemMinAggregateOutputType = {
   name: string | null
   type: $Enums.InventoryItemType | null
   unit: string | null
+  currentStock: number | null
   minimumStock: number | null
   description: string | null
   createdAt: Date | null
@@ -52,6 +55,7 @@ export type InventoryItemMaxAggregateOutputType = {
   name: string | null
   type: $Enums.InventoryItemType | null
   unit: string | null
+  currentStock: number | null
   minimumStock: number | null
   description: string | null
   createdAt: Date | null
@@ -64,6 +68,7 @@ export type InventoryItemCountAggregateOutputType = {
   name: number
   type: number
   unit: number
+  currentStock: number
   minimumStock: number
   description: number
   createdAt: number
@@ -73,10 +78,12 @@ export type InventoryItemCountAggregateOutputType = {
 
 
 export type InventoryItemAvgAggregateInputType = {
+  currentStock?: true
   minimumStock?: true
 }
 
 export type InventoryItemSumAggregateInputType = {
+  currentStock?: true
   minimumStock?: true
 }
 
@@ -86,6 +93,7 @@ export type InventoryItemMinAggregateInputType = {
   name?: true
   type?: true
   unit?: true
+  currentStock?: true
   minimumStock?: true
   description?: true
   createdAt?: true
@@ -98,6 +106,7 @@ export type InventoryItemMaxAggregateInputType = {
   name?: true
   type?: true
   unit?: true
+  currentStock?: true
   minimumStock?: true
   description?: true
   createdAt?: true
@@ -110,6 +119,7 @@ export type InventoryItemCountAggregateInputType = {
   name?: true
   type?: true
   unit?: true
+  currentStock?: true
   minimumStock?: true
   description?: true
   createdAt?: true
@@ -209,6 +219,7 @@ export type InventoryItemGroupByOutputType = {
   name: string
   type: $Enums.InventoryItemType
   unit: string
+  currentStock: number
   minimumStock: number | null
   description: string | null
   createdAt: Date
@@ -244,6 +255,7 @@ export type InventoryItemWhereInput = {
   name?: Prisma.StringFilter<"InventoryItem"> | string
   type?: Prisma.EnumInventoryItemTypeFilter<"InventoryItem"> | $Enums.InventoryItemType
   unit?: Prisma.StringFilter<"InventoryItem"> | string
+  currentStock?: Prisma.FloatFilter<"InventoryItem"> | number
   minimumStock?: Prisma.FloatNullableFilter<"InventoryItem"> | number | null
   description?: Prisma.StringNullableFilter<"InventoryItem"> | string | null
   createdAt?: Prisma.DateTimeFilter<"InventoryItem"> | Date | string
@@ -258,6 +270,7 @@ export type InventoryItemOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   unit?: Prisma.SortOrder
+  currentStock?: Prisma.SortOrder
   minimumStock?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -276,6 +289,7 @@ export type InventoryItemWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"InventoryItem"> | string
   type?: Prisma.EnumInventoryItemTypeFilter<"InventoryItem"> | $Enums.InventoryItemType
   unit?: Prisma.StringFilter<"InventoryItem"> | string
+  currentStock?: Prisma.FloatFilter<"InventoryItem"> | number
   minimumStock?: Prisma.FloatNullableFilter<"InventoryItem"> | number | null
   description?: Prisma.StringNullableFilter<"InventoryItem"> | string | null
   createdAt?: Prisma.DateTimeFilter<"InventoryItem"> | Date | string
@@ -290,6 +304,7 @@ export type InventoryItemOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   unit?: Prisma.SortOrder
+  currentStock?: Prisma.SortOrder
   minimumStock?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -310,6 +325,7 @@ export type InventoryItemScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"InventoryItem"> | string
   type?: Prisma.EnumInventoryItemTypeWithAggregatesFilter<"InventoryItem"> | $Enums.InventoryItemType
   unit?: Prisma.StringWithAggregatesFilter<"InventoryItem"> | string
+  currentStock?: Prisma.FloatWithAggregatesFilter<"InventoryItem"> | number
   minimumStock?: Prisma.FloatNullableWithAggregatesFilter<"InventoryItem"> | number | null
   description?: Prisma.StringNullableWithAggregatesFilter<"InventoryItem"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"InventoryItem"> | Date | string
@@ -321,6 +337,7 @@ export type InventoryItemCreateInput = {
   name: string
   type: $Enums.InventoryItemType
   unit: string
+  currentStock?: number
   minimumStock?: number | null
   description?: string | null
   createdAt?: Date | string
@@ -335,6 +352,7 @@ export type InventoryItemUncheckedCreateInput = {
   name: string
   type: $Enums.InventoryItemType
   unit: string
+  currentStock?: number
   minimumStock?: number | null
   description?: string | null
   createdAt?: Date | string
@@ -347,6 +365,7 @@ export type InventoryItemUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumInventoryItemTypeFieldUpdateOperationsInput | $Enums.InventoryItemType
   unit?: Prisma.StringFieldUpdateOperationsInput | string
+  currentStock?: Prisma.FloatFieldUpdateOperationsInput | number
   minimumStock?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -361,6 +380,7 @@ export type InventoryItemUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumInventoryItemTypeFieldUpdateOperationsInput | $Enums.InventoryItemType
   unit?: Prisma.StringFieldUpdateOperationsInput | string
+  currentStock?: Prisma.FloatFieldUpdateOperationsInput | number
   minimumStock?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -374,6 +394,7 @@ export type InventoryItemCreateManyInput = {
   name: string
   type: $Enums.InventoryItemType
   unit: string
+  currentStock?: number
   minimumStock?: number | null
   description?: string | null
   createdAt?: Date | string
@@ -385,6 +406,7 @@ export type InventoryItemUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumInventoryItemTypeFieldUpdateOperationsInput | $Enums.InventoryItemType
   unit?: Prisma.StringFieldUpdateOperationsInput | string
+  currentStock?: Prisma.FloatFieldUpdateOperationsInput | number
   minimumStock?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -397,6 +419,7 @@ export type InventoryItemUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumInventoryItemTypeFieldUpdateOperationsInput | $Enums.InventoryItemType
   unit?: Prisma.StringFieldUpdateOperationsInput | string
+  currentStock?: Prisma.FloatFieldUpdateOperationsInput | number
   minimumStock?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -424,6 +447,7 @@ export type InventoryItemCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   unit?: Prisma.SortOrder
+  currentStock?: Prisma.SortOrder
   minimumStock?: Prisma.SortOrder
   description?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -431,6 +455,7 @@ export type InventoryItemCountOrderByAggregateInput = {
 }
 
 export type InventoryItemAvgOrderByAggregateInput = {
+  currentStock?: Prisma.SortOrder
   minimumStock?: Prisma.SortOrder
 }
 
@@ -440,6 +465,7 @@ export type InventoryItemMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   unit?: Prisma.SortOrder
+  currentStock?: Prisma.SortOrder
   minimumStock?: Prisma.SortOrder
   description?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -452,6 +478,7 @@ export type InventoryItemMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   unit?: Prisma.SortOrder
+  currentStock?: Prisma.SortOrder
   minimumStock?: Prisma.SortOrder
   description?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -459,6 +486,7 @@ export type InventoryItemMinOrderByAggregateInput = {
 }
 
 export type InventoryItemSumOrderByAggregateInput = {
+  currentStock?: Prisma.SortOrder
   minimumStock?: Prisma.SortOrder
 }
 
@@ -532,6 +560,7 @@ export type InventoryItemCreateWithoutFarmInput = {
   name: string
   type: $Enums.InventoryItemType
   unit: string
+  currentStock?: number
   minimumStock?: number | null
   description?: string | null
   createdAt?: Date | string
@@ -544,6 +573,7 @@ export type InventoryItemUncheckedCreateWithoutFarmInput = {
   name: string
   type: $Enums.InventoryItemType
   unit: string
+  currentStock?: number
   minimumStock?: number | null
   description?: string | null
   createdAt?: Date | string
@@ -586,6 +616,7 @@ export type InventoryItemScalarWhereInput = {
   name?: Prisma.StringFilter<"InventoryItem"> | string
   type?: Prisma.EnumInventoryItemTypeFilter<"InventoryItem"> | $Enums.InventoryItemType
   unit?: Prisma.StringFilter<"InventoryItem"> | string
+  currentStock?: Prisma.FloatFilter<"InventoryItem"> | number
   minimumStock?: Prisma.FloatNullableFilter<"InventoryItem"> | number | null
   description?: Prisma.StringNullableFilter<"InventoryItem"> | string | null
   createdAt?: Prisma.DateTimeFilter<"InventoryItem"> | Date | string
@@ -597,6 +628,7 @@ export type InventoryItemCreateWithoutMovementsInput = {
   name: string
   type: $Enums.InventoryItemType
   unit: string
+  currentStock?: number
   minimumStock?: number | null
   description?: string | null
   createdAt?: Date | string
@@ -610,6 +642,7 @@ export type InventoryItemUncheckedCreateWithoutMovementsInput = {
   name: string
   type: $Enums.InventoryItemType
   unit: string
+  currentStock?: number
   minimumStock?: number | null
   description?: string | null
   createdAt?: Date | string
@@ -637,6 +670,7 @@ export type InventoryItemUpdateWithoutMovementsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumInventoryItemTypeFieldUpdateOperationsInput | $Enums.InventoryItemType
   unit?: Prisma.StringFieldUpdateOperationsInput | string
+  currentStock?: Prisma.FloatFieldUpdateOperationsInput | number
   minimumStock?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -650,6 +684,7 @@ export type InventoryItemUncheckedUpdateWithoutMovementsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumInventoryItemTypeFieldUpdateOperationsInput | $Enums.InventoryItemType
   unit?: Prisma.StringFieldUpdateOperationsInput | string
+  currentStock?: Prisma.FloatFieldUpdateOperationsInput | number
   minimumStock?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -661,6 +696,7 @@ export type InventoryItemCreateManyFarmInput = {
   name: string
   type: $Enums.InventoryItemType
   unit: string
+  currentStock?: number
   minimumStock?: number | null
   description?: string | null
   createdAt?: Date | string
@@ -672,6 +708,7 @@ export type InventoryItemUpdateWithoutFarmInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumInventoryItemTypeFieldUpdateOperationsInput | $Enums.InventoryItemType
   unit?: Prisma.StringFieldUpdateOperationsInput | string
+  currentStock?: Prisma.FloatFieldUpdateOperationsInput | number
   minimumStock?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -684,6 +721,7 @@ export type InventoryItemUncheckedUpdateWithoutFarmInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumInventoryItemTypeFieldUpdateOperationsInput | $Enums.InventoryItemType
   unit?: Prisma.StringFieldUpdateOperationsInput | string
+  currentStock?: Prisma.FloatFieldUpdateOperationsInput | number
   minimumStock?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -696,6 +734,7 @@ export type InventoryItemUncheckedUpdateManyWithoutFarmInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumInventoryItemTypeFieldUpdateOperationsInput | $Enums.InventoryItemType
   unit?: Prisma.StringFieldUpdateOperationsInput | string
+  currentStock?: Prisma.FloatFieldUpdateOperationsInput | number
   minimumStock?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -739,6 +778,7 @@ export type InventoryItemSelect<ExtArgs extends runtime.Types.Extensions.Interna
   name?: boolean
   type?: boolean
   unit?: boolean
+  currentStock?: boolean
   minimumStock?: boolean
   description?: boolean
   createdAt?: boolean
@@ -754,6 +794,7 @@ export type InventoryItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   name?: boolean
   type?: boolean
   unit?: boolean
+  currentStock?: boolean
   minimumStock?: boolean
   description?: boolean
   createdAt?: boolean
@@ -767,6 +808,7 @@ export type InventoryItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   name?: boolean
   type?: boolean
   unit?: boolean
+  currentStock?: boolean
   minimumStock?: boolean
   description?: boolean
   createdAt?: boolean
@@ -780,13 +822,14 @@ export type InventoryItemSelectScalar = {
   name?: boolean
   type?: boolean
   unit?: boolean
+  currentStock?: boolean
   minimumStock?: boolean
   description?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type InventoryItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "name" | "type" | "unit" | "minimumStock" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["inventoryItem"]>
+export type InventoryItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "name" | "type" | "unit" | "currentStock" | "minimumStock" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["inventoryItem"]>
 export type InventoryItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   movements?: boolean | Prisma.InventoryItem$movementsArgs<ExtArgs>
@@ -811,6 +854,7 @@ export type $InventoryItemPayload<ExtArgs extends runtime.Types.Extensions.Inter
     name: string
     type: $Enums.InventoryItemType
     unit: string
+    currentStock: number
     minimumStock: number | null
     description: string | null
     createdAt: Date
@@ -1245,6 +1289,7 @@ export interface InventoryItemFieldRefs {
   readonly name: Prisma.FieldRef<"InventoryItem", 'String'>
   readonly type: Prisma.FieldRef<"InventoryItem", 'InventoryItemType'>
   readonly unit: Prisma.FieldRef<"InventoryItem", 'String'>
+  readonly currentStock: Prisma.FieldRef<"InventoryItem", 'Float'>
   readonly minimumStock: Prisma.FieldRef<"InventoryItem", 'Float'>
   readonly description: Prisma.FieldRef<"InventoryItem", 'String'>
   readonly createdAt: Prisma.FieldRef<"InventoryItem", 'DateTime'>

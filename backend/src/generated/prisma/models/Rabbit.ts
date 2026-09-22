@@ -315,6 +315,7 @@ export type RabbitWhereInput = {
   cageMovements?: Prisma.RabbitCageMovementListRelationFilter
   adoptionHistory?: Prisma.AdoptionRabbitListRelationFilter
   weaningHistory?: Prisma.WeaningRabbitListRelationFilter
+  tasks?: Prisma.TaskListRelationFilter
   breedingsAsFemale?: Prisma.BreedingListRelationFilter
   breedingsAsMale?: Prisma.BreedingListRelationFilter
   motherBirths?: Prisma.BirthListRelationFilter
@@ -355,6 +356,7 @@ export type RabbitOrderByWithRelationInput = {
   cageMovements?: Prisma.RabbitCageMovementOrderByRelationAggregateInput
   adoptionHistory?: Prisma.AdoptionRabbitOrderByRelationAggregateInput
   weaningHistory?: Prisma.WeaningRabbitOrderByRelationAggregateInput
+  tasks?: Prisma.TaskOrderByRelationAggregateInput
   breedingsAsFemale?: Prisma.BreedingOrderByRelationAggregateInput
   breedingsAsMale?: Prisma.BreedingOrderByRelationAggregateInput
   motherBirths?: Prisma.BirthOrderByRelationAggregateInput
@@ -399,6 +401,7 @@ export type RabbitWhereUniqueInput = Prisma.AtLeast<{
   cageMovements?: Prisma.RabbitCageMovementListRelationFilter
   adoptionHistory?: Prisma.AdoptionRabbitListRelationFilter
   weaningHistory?: Prisma.WeaningRabbitListRelationFilter
+  tasks?: Prisma.TaskListRelationFilter
   breedingsAsFemale?: Prisma.BreedingListRelationFilter
   breedingsAsMale?: Prisma.BreedingListRelationFilter
   motherBirths?: Prisma.BirthListRelationFilter
@@ -479,6 +482,7 @@ export type RabbitCreateInput = {
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
@@ -514,6 +518,7 @@ export type RabbitUncheckedCreateInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
@@ -547,6 +552,7 @@ export type RabbitUpdateInput = {
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
@@ -582,6 +588,7 @@ export type RabbitUncheckedUpdateInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
@@ -1226,6 +1233,22 @@ export type RabbitUpdateOneWithoutSaleItemsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.RabbitUpdateToOneWithWhereWithoutSaleItemsInput, Prisma.RabbitUpdateWithoutSaleItemsInput>, Prisma.RabbitUncheckedUpdateWithoutSaleItemsInput>
 }
 
+export type RabbitCreateNestedOneWithoutTasksInput = {
+  create?: Prisma.XOR<Prisma.RabbitCreateWithoutTasksInput, Prisma.RabbitUncheckedCreateWithoutTasksInput>
+  connectOrCreate?: Prisma.RabbitCreateOrConnectWithoutTasksInput
+  connect?: Prisma.RabbitWhereUniqueInput
+}
+
+export type RabbitUpdateOneWithoutTasksNestedInput = {
+  create?: Prisma.XOR<Prisma.RabbitCreateWithoutTasksInput, Prisma.RabbitUncheckedCreateWithoutTasksInput>
+  connectOrCreate?: Prisma.RabbitCreateOrConnectWithoutTasksInput
+  upsert?: Prisma.RabbitUpsertWithoutTasksInput
+  disconnect?: Prisma.RabbitWhereInput | boolean
+  delete?: Prisma.RabbitWhereInput | boolean
+  connect?: Prisma.RabbitWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.RabbitUpdateToOneWithWhereWithoutTasksInput, Prisma.RabbitUpdateWithoutTasksInput>, Prisma.RabbitUncheckedUpdateWithoutTasksInput>
+}
+
 export type RabbitCreateWithoutFarmInput = {
   id?: string
   code: string
@@ -1247,6 +1270,7 @@ export type RabbitCreateWithoutFarmInput = {
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
@@ -1281,6 +1305,7 @@ export type RabbitUncheckedCreateWithoutFarmInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
@@ -1361,6 +1386,7 @@ export type RabbitCreateWithoutBreedInput = {
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
@@ -1395,6 +1421,7 @@ export type RabbitUncheckedCreateWithoutBreedInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
@@ -1453,6 +1480,7 @@ export type RabbitCreateWithoutCrossBreedInput = {
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
@@ -1487,6 +1515,7 @@ export type RabbitUncheckedCreateWithoutCrossBreedInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
@@ -1545,6 +1574,7 @@ export type RabbitCreateWithoutChildrenAsFatherInput = {
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
@@ -1579,6 +1609,7 @@ export type RabbitUncheckedCreateWithoutChildrenAsFatherInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
@@ -1616,6 +1647,7 @@ export type RabbitCreateWithoutChildrenAsMotherInput = {
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
@@ -1650,6 +1682,7 @@ export type RabbitUncheckedCreateWithoutChildrenAsMotherInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
@@ -1687,6 +1720,7 @@ export type RabbitCreateWithoutFatherInput = {
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
@@ -1721,6 +1755,7 @@ export type RabbitUncheckedCreateWithoutFatherInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
@@ -1763,6 +1798,7 @@ export type RabbitCreateWithoutMotherInput = {
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
@@ -1797,6 +1833,7 @@ export type RabbitUncheckedCreateWithoutMotherInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
@@ -1850,6 +1887,7 @@ export type RabbitUpdateWithoutChildrenAsFatherInput = {
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
@@ -1884,6 +1922,7 @@ export type RabbitUncheckedUpdateWithoutChildrenAsFatherInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
@@ -1927,6 +1966,7 @@ export type RabbitUpdateWithoutChildrenAsMotherInput = {
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
@@ -1961,6 +2001,7 @@ export type RabbitUncheckedUpdateWithoutChildrenAsMotherInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
@@ -2025,6 +2066,7 @@ export type RabbitCreateWithoutIdentificationsInput = {
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
@@ -2059,6 +2101,7 @@ export type RabbitUncheckedCreateWithoutIdentificationsInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
@@ -2107,6 +2150,7 @@ export type RabbitUpdateWithoutIdentificationsInput = {
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
@@ -2141,6 +2185,7 @@ export type RabbitUncheckedUpdateWithoutIdentificationsInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
@@ -2173,6 +2218,7 @@ export type RabbitCreateWithoutCageMovementsInput = {
   identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
@@ -2207,6 +2253,7 @@ export type RabbitUncheckedCreateWithoutCageMovementsInput = {
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
@@ -2255,6 +2302,7 @@ export type RabbitUpdateWithoutCageMovementsInput = {
   identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
@@ -2289,6 +2337,7 @@ export type RabbitUncheckedUpdateWithoutCageMovementsInput = {
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
@@ -2322,6 +2371,7 @@ export type RabbitCreateWithoutBreedingsAsFemaleInput = {
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
@@ -2356,6 +2406,7 @@ export type RabbitUncheckedCreateWithoutBreedingsAsFemaleInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
@@ -2393,6 +2444,7 @@ export type RabbitCreateWithoutBreedingsAsMaleInput = {
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
@@ -2427,6 +2479,7 @@ export type RabbitUncheckedCreateWithoutBreedingsAsMaleInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
   motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
@@ -2475,6 +2528,7 @@ export type RabbitUpdateWithoutBreedingsAsFemaleInput = {
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
@@ -2509,6 +2563,7 @@ export type RabbitUncheckedUpdateWithoutBreedingsAsFemaleInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
@@ -2552,6 +2607,7 @@ export type RabbitUpdateWithoutBreedingsAsMaleInput = {
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
@@ -2586,6 +2642,7 @@ export type RabbitUncheckedUpdateWithoutBreedingsAsMaleInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
   motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
@@ -2618,6 +2675,7 @@ export type RabbitCreateWithoutMotherBirthsInput = {
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
@@ -2652,6 +2710,7 @@ export type RabbitUncheckedCreateWithoutMotherBirthsInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
@@ -2700,6 +2759,7 @@ export type RabbitUpdateWithoutMotherBirthsInput = {
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
@@ -2734,6 +2794,7 @@ export type RabbitUncheckedUpdateWithoutMotherBirthsInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
@@ -2766,6 +2827,7 @@ export type RabbitCreateWithoutMotherLittersInput = {
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
@@ -2800,6 +2862,7 @@ export type RabbitUncheckedCreateWithoutMotherLittersInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
@@ -2837,6 +2900,7 @@ export type RabbitCreateWithoutFatherLittersInput = {
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
@@ -2871,6 +2935,7 @@ export type RabbitUncheckedCreateWithoutFatherLittersInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
@@ -2908,6 +2973,7 @@ export type RabbitCreateWithoutBirthLitterInput = {
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
@@ -2941,6 +3007,7 @@ export type RabbitUncheckedCreateWithoutBirthLitterInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
@@ -2995,6 +3062,7 @@ export type RabbitUpdateWithoutMotherLittersInput = {
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
@@ -3029,6 +3097,7 @@ export type RabbitUncheckedUpdateWithoutMotherLittersInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
@@ -3072,6 +3141,7 @@ export type RabbitUpdateWithoutFatherLittersInput = {
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
@@ -3106,6 +3176,7 @@ export type RabbitUncheckedUpdateWithoutFatherLittersInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
@@ -3153,6 +3224,7 @@ export type RabbitCreateWithoutAdoptionHistoryInput = {
   identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
@@ -3187,6 +3259,7 @@ export type RabbitUncheckedCreateWithoutAdoptionHistoryInput = {
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
@@ -3235,6 +3308,7 @@ export type RabbitUpdateWithoutAdoptionHistoryInput = {
   identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
@@ -3269,6 +3343,7 @@ export type RabbitUncheckedUpdateWithoutAdoptionHistoryInput = {
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
@@ -3301,6 +3376,7 @@ export type RabbitCreateWithoutWeaningHistoryInput = {
   identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
@@ -3335,6 +3411,7 @@ export type RabbitUncheckedCreateWithoutWeaningHistoryInput = {
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
@@ -3383,6 +3460,7 @@ export type RabbitUpdateWithoutWeaningHistoryInput = {
   identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
@@ -3417,6 +3495,7 @@ export type RabbitUncheckedUpdateWithoutWeaningHistoryInput = {
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
@@ -3450,6 +3529,7 @@ export type RabbitCreateWithoutLotMembershipsInput = {
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
@@ -3484,6 +3564,7 @@ export type RabbitUncheckedCreateWithoutLotMembershipsInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
@@ -3532,6 +3613,7 @@ export type RabbitUpdateWithoutLotMembershipsInput = {
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
@@ -3566,6 +3648,7 @@ export type RabbitUncheckedUpdateWithoutLotMembershipsInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
@@ -3598,6 +3681,7 @@ export type RabbitCreateWithoutWeighingsInput = {
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
@@ -3632,6 +3716,7 @@ export type RabbitUncheckedCreateWithoutWeighingsInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
@@ -3680,6 +3765,7 @@ export type RabbitUpdateWithoutWeighingsInput = {
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
@@ -3714,6 +3800,7 @@ export type RabbitUncheckedUpdateWithoutWeighingsInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
@@ -3746,6 +3833,7 @@ export type RabbitCreateWithoutHealthRecordsInput = {
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
@@ -3780,6 +3868,7 @@ export type RabbitUncheckedCreateWithoutHealthRecordsInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
@@ -3828,6 +3917,7 @@ export type RabbitUpdateWithoutHealthRecordsInput = {
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
@@ -3862,6 +3952,7 @@ export type RabbitUncheckedUpdateWithoutHealthRecordsInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
@@ -3894,6 +3985,7 @@ export type RabbitCreateWithoutSaleItemsInput = {
   cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
@@ -3928,6 +4020,7 @@ export type RabbitUncheckedCreateWithoutSaleItemsInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
   breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
   breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
   motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
@@ -3976,6 +4069,7 @@ export type RabbitUpdateWithoutSaleItemsInput = {
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
@@ -4010,6 +4104,7 @@ export type RabbitUncheckedUpdateWithoutSaleItemsInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
@@ -4018,6 +4113,158 @@ export type RabbitUncheckedUpdateWithoutSaleItemsInput = {
   lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+}
+
+export type RabbitCreateWithoutTasksInput = {
+  id?: string
+  code: string
+  sex: $Enums.RabbitSex
+  status?: $Enums.RabbitStatus
+  birthDate?: Date | string | null
+  color?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
+  breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
+  crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
+  father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
+  mother?: Prisma.RabbitCreateNestedOneWithoutChildrenAsMotherInput
+  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
+  childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
+  identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
+  cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
+  adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
+  weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
+  breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
+  motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
+  motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
+  fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
+  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
+  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+}
+
+export type RabbitUncheckedCreateWithoutTasksInput = {
+  id?: string
+  farmId: string
+  code: string
+  sex: $Enums.RabbitSex
+  status?: $Enums.RabbitStatus
+  breedId?: string | null
+  crossBreedId?: string | null
+  fatherId?: string | null
+  motherId?: string | null
+  birthDate?: Date | string | null
+  color?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
+  birthLitterId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
+  childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
+  identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
+  cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
+  adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
+  breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
+  motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
+  motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
+  fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
+  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+}
+
+export type RabbitCreateOrConnectWithoutTasksInput = {
+  where: Prisma.RabbitWhereUniqueInput
+  create: Prisma.XOR<Prisma.RabbitCreateWithoutTasksInput, Prisma.RabbitUncheckedCreateWithoutTasksInput>
+}
+
+export type RabbitUpsertWithoutTasksInput = {
+  update: Prisma.XOR<Prisma.RabbitUpdateWithoutTasksInput, Prisma.RabbitUncheckedUpdateWithoutTasksInput>
+  create: Prisma.XOR<Prisma.RabbitCreateWithoutTasksInput, Prisma.RabbitUncheckedCreateWithoutTasksInput>
+  where?: Prisma.RabbitWhereInput
+}
+
+export type RabbitUpdateToOneWithWhereWithoutTasksInput = {
+  where?: Prisma.RabbitWhereInput
+  data: Prisma.XOR<Prisma.RabbitUpdateWithoutTasksInput, Prisma.RabbitUncheckedUpdateWithoutTasksInput>
+}
+
+export type RabbitUpdateWithoutTasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
+  status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
+  breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
+  crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
+  father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
+  mother?: Prisma.RabbitUpdateOneWithoutChildrenAsMotherNestedInput
+  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
+  childrenAsMother?: Prisma.RabbitUpdateManyWithoutMotherNestedInput
+  identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
+  cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
+  adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
+  weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
+  breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
+  motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
+  motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
+  fatherLitters?: Prisma.LitterUpdateManyWithoutFatherNestedInput
+  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
+  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+}
+
+export type RabbitUncheckedUpdateWithoutTasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
+  status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
+  breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
+  childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
+  identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
+  cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
+  adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
+  breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
+  motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
+  motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
+  fatherLitters?: Prisma.LitterUncheckedUpdateManyWithoutFatherNestedInput
+  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateManyFarmInput = {
@@ -4059,6 +4306,7 @@ export type RabbitUpdateWithoutFarmInput = {
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
@@ -4093,6 +4341,7 @@ export type RabbitUncheckedUpdateWithoutFarmInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
@@ -4161,6 +4410,7 @@ export type RabbitUpdateWithoutBreedInput = {
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
@@ -4195,6 +4445,7 @@ export type RabbitUncheckedUpdateWithoutBreedInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
@@ -4263,6 +4514,7 @@ export type RabbitUpdateWithoutCrossBreedInput = {
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
@@ -4297,6 +4549,7 @@ export type RabbitUncheckedUpdateWithoutCrossBreedInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
@@ -4383,6 +4636,7 @@ export type RabbitUpdateWithoutFatherInput = {
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
@@ -4417,6 +4671,7 @@ export type RabbitUncheckedUpdateWithoutFatherInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
@@ -4467,6 +4722,7 @@ export type RabbitUpdateWithoutMotherInput = {
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
@@ -4501,6 +4757,7 @@ export type RabbitUncheckedUpdateWithoutMotherInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
@@ -4570,6 +4827,7 @@ export type RabbitUpdateWithoutBirthLitterInput = {
   cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
@@ -4603,6 +4861,7 @@ export type RabbitUncheckedUpdateWithoutBirthLitterInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
@@ -4644,6 +4903,7 @@ export type RabbitCountOutputType = {
   cageMovements: number
   adoptionHistory: number
   weaningHistory: number
+  tasks: number
   breedingsAsFemale: number
   breedingsAsMale: number
   motherBirths: number
@@ -4662,6 +4922,7 @@ export type RabbitCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   cageMovements?: boolean | RabbitCountOutputTypeCountCageMovementsArgs
   adoptionHistory?: boolean | RabbitCountOutputTypeCountAdoptionHistoryArgs
   weaningHistory?: boolean | RabbitCountOutputTypeCountWeaningHistoryArgs
+  tasks?: boolean | RabbitCountOutputTypeCountTasksArgs
   breedingsAsFemale?: boolean | RabbitCountOutputTypeCountBreedingsAsFemaleArgs
   breedingsAsMale?: boolean | RabbitCountOutputTypeCountBreedingsAsMaleArgs
   motherBirths?: boolean | RabbitCountOutputTypeCountMotherBirthsArgs
@@ -4723,6 +4984,13 @@ export type RabbitCountOutputTypeCountAdoptionHistoryArgs<ExtArgs extends runtim
  */
 export type RabbitCountOutputTypeCountWeaningHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.WeaningRabbitWhereInput
+}
+
+/**
+ * RabbitCountOutputType without action
+ */
+export type RabbitCountOutputTypeCountTasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TaskWhereInput
 }
 
 /**
@@ -4817,6 +5085,7 @@ export type RabbitSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   cageMovements?: boolean | Prisma.Rabbit$cageMovementsArgs<ExtArgs>
   adoptionHistory?: boolean | Prisma.Rabbit$adoptionHistoryArgs<ExtArgs>
   weaningHistory?: boolean | Prisma.Rabbit$weaningHistoryArgs<ExtArgs>
+  tasks?: boolean | Prisma.Rabbit$tasksArgs<ExtArgs>
   breedingsAsFemale?: boolean | Prisma.Rabbit$breedingsAsFemaleArgs<ExtArgs>
   breedingsAsMale?: boolean | Prisma.Rabbit$breedingsAsMaleArgs<ExtArgs>
   motherBirths?: boolean | Prisma.Rabbit$motherBirthsArgs<ExtArgs>
@@ -4912,6 +5181,7 @@ export type RabbitInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   cageMovements?: boolean | Prisma.Rabbit$cageMovementsArgs<ExtArgs>
   adoptionHistory?: boolean | Prisma.Rabbit$adoptionHistoryArgs<ExtArgs>
   weaningHistory?: boolean | Prisma.Rabbit$weaningHistoryArgs<ExtArgs>
+  tasks?: boolean | Prisma.Rabbit$tasksArgs<ExtArgs>
   breedingsAsFemale?: boolean | Prisma.Rabbit$breedingsAsFemaleArgs<ExtArgs>
   breedingsAsMale?: boolean | Prisma.Rabbit$breedingsAsMaleArgs<ExtArgs>
   motherBirths?: boolean | Prisma.Rabbit$motherBirthsArgs<ExtArgs>
@@ -4955,6 +5225,7 @@ export type $RabbitPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     cageMovements: Prisma.$RabbitCageMovementPayload<ExtArgs>[]
     adoptionHistory: Prisma.$AdoptionRabbitPayload<ExtArgs>[]
     weaningHistory: Prisma.$WeaningRabbitPayload<ExtArgs>[]
+    tasks: Prisma.$TaskPayload<ExtArgs>[]
     breedingsAsFemale: Prisma.$BreedingPayload<ExtArgs>[]
     breedingsAsMale: Prisma.$BreedingPayload<ExtArgs>[]
     motherBirths: Prisma.$BirthPayload<ExtArgs>[]
@@ -5388,6 +5659,7 @@ export interface Prisma__RabbitClient<T, Null = never, ExtArgs extends runtime.T
   cageMovements<T extends Prisma.Rabbit$cageMovementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$cageMovementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RabbitCageMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   adoptionHistory<T extends Prisma.Rabbit$adoptionHistoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$adoptionHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdoptionRabbitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   weaningHistory<T extends Prisma.Rabbit$weaningHistoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$weaningHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WeaningRabbitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  tasks<T extends Prisma.Rabbit$tasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   breedingsAsFemale<T extends Prisma.Rabbit$breedingsAsFemaleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$breedingsAsFemaleArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BreedingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   breedingsAsMale<T extends Prisma.Rabbit$breedingsAsMaleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$breedingsAsMaleArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BreedingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   motherBirths<T extends Prisma.Rabbit$motherBirthsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$motherBirthsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BirthPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -6061,6 +6333,30 @@ export type Rabbit$weaningHistoryArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.WeaningRabbitScalarFieldEnum | Prisma.WeaningRabbitScalarFieldEnum[]
+}
+
+/**
+ * Rabbit.tasks
+ */
+export type Rabbit$tasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Task
+   */
+  select?: Prisma.TaskSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Task
+   */
+  omit?: Prisma.TaskOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TaskInclude<ExtArgs> | null
+  where?: Prisma.TaskWhereInput
+  orderBy?: Prisma.TaskOrderByWithRelationInput | Prisma.TaskOrderByWithRelationInput[]
+  cursor?: Prisma.TaskWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TaskScalarFieldEnum | Prisma.TaskScalarFieldEnum[]
 }
 
 /**

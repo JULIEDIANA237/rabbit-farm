@@ -315,7 +315,7 @@ export class RabbitsService {
     const code = input.code.trim();
 
     if (!code) {
-      throw new ConflictException('Le code du lapin est obligatoire.');
+      throw new BadRequestException('Le code du lapin est obligatoire.');
     }
 
     const existing = await this.prisma.rabbit.findUnique({
@@ -369,7 +369,7 @@ export class RabbitsService {
       const code = input.code.trim();
 
       if (!code) {
-        throw new ConflictException('Le code du lapin est obligatoire.');
+        throw new BadRequestException('Le code du lapin est obligatoire.');
       }
 
       const existing = await this.prisma.rabbit.findFirst({
@@ -412,7 +412,7 @@ export class RabbitsService {
     const value = input.value.trim();
 
     if (!value) {
-      throw new ConflictException("La valeur de l'identification est obligatoire.");
+      throw new BadRequestException("La valeur de l'identification est obligatoire.");
     }
 
     try {

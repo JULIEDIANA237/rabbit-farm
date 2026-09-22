@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+
 import { FarmRole } from '../../generated/prisma/client';
 import { getJwtSecret } from '../jwt-secret';
 
@@ -22,7 +23,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload) {
-    if (!payload.sub || !payload.farmId || !payload.role) {
+    if (
+      !payload.sub ||
+      !payload.email ||
+      !payload.farmId ||
+      !payload.role
+    ) {
       throw new UnauthorizedException('Token JWT invalide.');
     }
 

@@ -465,11 +465,6 @@ export type FarmScalarRelationFilter = {
   isNot?: Prisma.FarmWhereInput
 }
 
-export type FarmNullableScalarRelationFilter = {
-  is?: Prisma.FarmWhereInput | null
-  isNot?: Prisma.FarmWhereInput | null
-}
-
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
@@ -578,12 +573,10 @@ export type FarmCreateNestedOneWithoutPregnanciesInput = {
   connect?: Prisma.FarmWhereUniqueInput
 }
 
-export type FarmUpdateOneWithoutPregnanciesNestedInput = {
+export type FarmUpdateOneRequiredWithoutPregnanciesNestedInput = {
   create?: Prisma.XOR<Prisma.FarmCreateWithoutPregnanciesInput, Prisma.FarmUncheckedCreateWithoutPregnanciesInput>
   connectOrCreate?: Prisma.FarmCreateOrConnectWithoutPregnanciesInput
   upsert?: Prisma.FarmUpsertWithoutPregnanciesInput
-  disconnect?: Prisma.FarmWhereInput | boolean
-  delete?: Prisma.FarmWhereInput | boolean
   connect?: Prisma.FarmWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.FarmUpdateToOneWithWhereWithoutPregnanciesInput, Prisma.FarmUpdateWithoutPregnanciesInput>, Prisma.FarmUncheckedUpdateWithoutPregnanciesInput>
 }
@@ -594,12 +587,10 @@ export type FarmCreateNestedOneWithoutBirthsInput = {
   connect?: Prisma.FarmWhereUniqueInput
 }
 
-export type FarmUpdateOneWithoutBirthsNestedInput = {
+export type FarmUpdateOneRequiredWithoutBirthsNestedInput = {
   create?: Prisma.XOR<Prisma.FarmCreateWithoutBirthsInput, Prisma.FarmUncheckedCreateWithoutBirthsInput>
   connectOrCreate?: Prisma.FarmCreateOrConnectWithoutBirthsInput
   upsert?: Prisma.FarmUpsertWithoutBirthsInput
-  disconnect?: Prisma.FarmWhereInput | boolean
-  delete?: Prisma.FarmWhereInput | boolean
   connect?: Prisma.FarmWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.FarmUpdateToOneWithWhereWithoutBirthsInput, Prisma.FarmUpdateWithoutBirthsInput>, Prisma.FarmUncheckedUpdateWithoutBirthsInput>
 }

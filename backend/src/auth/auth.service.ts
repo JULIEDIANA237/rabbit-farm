@@ -91,6 +91,9 @@ export class AuthService {
           include: {
             farm: true,
           },
+          orderBy: {
+            createdAt: 'asc',
+          },
         },
       },
     });
@@ -108,11 +111,23 @@ export class AuthService {
       throw new UnauthorizedException('Email ou mot de passe incorrect.');
     }
 
-    const membership = user.memberships[0];
+    /**
+     * Ferme de la session :
+     * celle demandée si elle appartient bien
+     * à l'utilisateur, sinon la première (tri
+     * déterministe par date de création).
+     */
+    const membership = input.farmId
+      ? user.memberships.find(
+          (candidate) => candidate.farmId === input.farmId,
+        )
+      : user.memberships[0];
 
     if (!membership) {
       throw new UnauthorizedException(
-        "L'utilisateur n'est associé à aucune ferme.",
+        input.farmId
+          ? "L'utilisateur n'est pas membre de cette ferme."
+          : "L'utilisateur n'est associé à aucune ferme.",
       );
     }
 

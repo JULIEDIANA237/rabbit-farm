@@ -27,7 +27,7 @@ let SectionsService = class SectionsService {
     async create(input, currentUser) {
         const name = input.name.trim();
         if (!name) {
-            throw new common_1.ConflictException('Le nom de la section est obligatoire.');
+            throw new common_1.BadRequestException('Le nom de la section est obligatoire.');
         }
         const existing = await this.prisma.section.findUnique({
             where: {
@@ -107,7 +107,7 @@ let SectionsService = class SectionsService {
         if (input.name !== undefined) {
             const name = input.name.trim();
             if (!name) {
-                throw new common_1.ConflictException('Le nom de la section est obligatoire.');
+                throw new common_1.BadRequestException('Le nom de la section est obligatoire.');
             }
             const existing = await this.prisma.section.findFirst({
                 where: {

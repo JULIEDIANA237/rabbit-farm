@@ -18,10 +18,10 @@ export declare class UsersService {
             updatedAt: Date;
         };
     } & {
+        farmId: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        farmId: string;
         role: FarmRole;
         userId: string;
     })[]>;
@@ -37,10 +37,10 @@ export declare class UsersService {
             updatedAt: Date;
         };
     } & {
+        farmId: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        farmId: string;
         role: FarmRole;
         userId: string;
     }>;
@@ -56,10 +56,10 @@ export declare class UsersService {
             updatedAt: Date;
         };
     } & {
+        farmId: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        farmId: string;
         role: FarmRole;
         userId: string;
     }>;
@@ -75,10 +75,10 @@ export declare class UsersService {
             updatedAt: Date;
         };
     } & {
+        farmId: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        farmId: string;
         role: FarmRole;
         userId: string;
     }>;

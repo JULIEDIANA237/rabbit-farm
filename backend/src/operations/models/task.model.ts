@@ -1,6 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 import { TaskPriority } from '../graphql/task-priority.enum';
+import { TaskSourceType } from '../graphql/task-source-type.enum';
 import { TaskStatus } from '../graphql/task-status.enum';
 
 @ObjectType()
@@ -29,8 +30,8 @@ export class TaskModel {
   @Field(() => ID, { nullable: true })
   assignedToId?: string;
 
-  @Field({ nullable: true })
-  sourceType?: string;
+  @Field(() => TaskSourceType, { nullable: true })
+  sourceType?: TaskSourceType;
 
   @Field(() => ID, { nullable: true })
   sourceId?: string;

@@ -130,3 +130,15 @@ export declare const TaskStatus: {
     readonly CANCELLED: "CANCELLED";
 };
 export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus];
+export declare const TaskSourceType: {
+    readonly MANUAL: "MANUAL";
+    readonly BREEDING: "BREEDING";
+    readonly PREGNANCY: "PREGNANCY";
+    readonly BIRTH: "BIRTH";
+    readonly WEANING: "WEANING";
+    readonly HEALTH: "HEALTH";
+    readonly SALE: "SALE";
+    readonly INVENTORY: "INVENTORY";
+    readonly OTHER: "OTHER";
+};
+export type TaskSourceType = (typeof TaskSourceType)[keyof typeof TaskSourceType];

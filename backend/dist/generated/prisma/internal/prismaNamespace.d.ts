@@ -2773,6 +2773,7 @@ export declare const ExpenseScalarFieldEnum: {
     readonly date: "date";
     readonly description: "description";
     readonly reference: "reference";
+    readonly supplier: "supplier";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };
@@ -2783,6 +2784,7 @@ export declare const InventoryItemScalarFieldEnum: {
     readonly name: "name";
     readonly type: "type";
     readonly unit: "unit";
+    readonly currentStock: "currentStock";
     readonly minimumStock: "minimumStock";
     readonly description: "description";
     readonly createdAt: "createdAt";
@@ -2806,6 +2808,7 @@ export declare const TaskScalarFieldEnum: {
     readonly farmId: "farmId";
     readonly title: "title";
     readonly description: "description";
+    readonly rabbitId: "rabbitId";
     readonly dueDate: "dueDate";
     readonly priority: "priority";
     readonly status: "status";
@@ -2877,6 +2880,8 @@ export type EnumTaskPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
 export type ListEnumTaskPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaskPriority[]'>;
 export type EnumTaskStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaskStatus'>;
 export type ListEnumTaskStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaskStatus[]'>;
+export type EnumTaskSourceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaskSourceType'>;
+export type ListEnumTaskSourceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaskSourceType[]'>;
 export type BatchPayload = {
     count: number;
 };

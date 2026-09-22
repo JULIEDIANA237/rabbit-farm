@@ -2,6 +2,50 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input AddLotMembersInput {
+  lotId: ID!
+  rabbitIds: [ID!]!
+  reason: String
+}
+
+input AddMemberInput {
+  email: String!
+  role: FarmRole!
+}
+
+input AddRabbitIdentificationInput {
+  type: RabbitIdentificationType!
+  value: String!
+}
+
+type AdoptionModel {
+  adoptedAt: DateTime!
+  createdAt: DateTime!
+  destinationLitterId: ID!
+  id: ID!
+  observation: String
+  quantity: Float!
+  reason: String
+  sourceLitterId: ID!
+  updatedAt: DateTime!
+}
+
+enum AdoptionReason {
+  EQUALIZATION
+  MOTHER_REJECTED
+  ORPHAN
+  OTHER
+  SURPLUS
+}
+
+input AssignLitterRabbitsToCageInput {
+  cageId: ID!
+  litterId: ID!
+  observation: String
+  rabbitIds: [ID!]!
+  reason: String
+}
+
 type AuthModel {
   accessToken: String!
   email: String!
@@ -11,16 +55,424 @@ type AuthModel {
   userId: String!
 }
 
+type BirthModel {
+  birthDate: DateTime!
+  breedingId: ID!
+  createdAt: DateTime!
+  id: ID!
+  liveBorn: Int!
+  motherId: ID!
+  observation: String
+  stillBorn: Int!
+}
+
+type BreedModel {
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  name: String!
+  updatedAt: DateTime!
+}
+
+type BreedingModel {
+  breedingDate: DateTime!
+  createdAt: DateTime!
+  expectedBirthEndDate: DateTime!
+  expectedBirthStartDate: DateTime!
+  femaleId: ID!
+  id: ID!
+  maleId: ID!
+  nestDate: DateTime!
+  observation: String
+  palpationEndDate: DateTime!
+  palpationStartDate: DateTime!
+  status: BreedingStatus!
+  updatedAt: DateTime!
+}
+
+enum BreedingStatus {
+  AWAITING_PALPATION
+  BIRTH_RECORDED
+  CANCELLED
+  INCONCLUSIVE
+  NON_PREGNANT
+  PLANNED
+  PREGNANT
+}
+
+type CageModel {
+  capacity: Int!
+  code: String!
+  createdAt: DateTime!
+  id: ID!
+  rabbitCount: Int!
+  sectionId: String!
+  status: CageStatus!
+  type: String
+  updatedAt: DateTime!
+}
+
+enum CageStatus {
+  ACTIVE
+  INACTIVE
+  MAINTENANCE
+}
+
+input CompleteFatteningLotInput {
+  exitDate: DateTime
+  id: ID!
+  observation: String
+}
+
+input CompleteWeaningInput {
+  actualDate: DateTime!
+  averageWeight: Float
+  id: ID!
+  quantity: Int
+  rabbitIds: [ID!]
+  totalWeight: Float
+}
+
+input CreateAdoptionInput {
+  date: DateTime!
+  destinationLitterId: ID!
+  observation: String
+  quantity: Float!
+  reason: AdoptionReason!
+  sourceLitterId: ID!
+}
+
+input CreateBirthInput {
+  birthDate: DateTime!
+  breedingId: ID!
+  liveBorn: Int!
+  observation: String
+  stillBorn: Int!
+}
+
+input CreateBreedInput {
+  description: String
+  name: String!
+}
+
+input CreateBreedingInput {
+  breedingDate: DateTime!
+  femaleId: ID!
+  maleId: ID!
+  observation: String
+}
+
+input CreateCageInput {
+  capacity: Int!
+  code: String!
+  sectionId: ID!
+  status: CageStatus
+  type: String
+}
+
+input CreateCrossBreedInput {
+  description: String
+  name: String!
+  parentBreedAId: ID!
+  parentBreedBId: ID!
+}
+
+input CreateCustomerInput {
+  address: String
+  email: String
+  name: String!
+  notes: String
+  phone: String
+}
+
+input CreateExpenseInput {
+  amount: Float!
+  category: ExpenseCategory!
+  date: DateTime!
+  description: String
+  reference: String
+  supplier: String
+}
+
 input CreateFarmInput {
   description: String
   location: String
   name: String!
 }
 
+input CreateFatteningLotInput {
+  code: String!
+  entryDate: DateTime!
+  observation: String
+}
+
+input CreateHealthRecordInput {
+  date: DateTime!
+  diagnosis: String
+  dosage: String
+  medication: String
+  nextDueDate: DateTime
+  observation: String
+  rabbitId: ID!
+  suspicion: String
+  symptoms: String
+  treatment: String
+}
+
+input CreateInventoryItemInput {
+  description: String
+  minimumStock: Float
+  name: String!
+  type: InventoryItemType!
+  unit: String!
+}
+
+input CreateLitterInput {
+  birthId: ID!
+  code: String!
+  observation: String
+}
+
+input CreateLitterRabbitsInput {
+  litterId: ID!
+  numberOfRabbits: Int!
+  sexes: [RabbitSex!]
+}
+
+input CreatePaymentInput {
+  amount: Float!
+  method: PaymentMethod!
+  observation: String
+  paymentDate: DateTime!
+  reference: String
+  saleId: ID!
+}
+
+input CreatePregnancyCheckInput {
+  breedingId: ID!
+  checkedDate: DateTime!
+  observation: String
+  result: PregnancyResult!
+}
+
+input CreateRabbitInput {
+  birthDate: DateTime
+  breedId: ID
+  code: String!
+  color: String
+  crossBreedId: ID
+  fatherId: ID
+  geneticType: String
+  motherId: ID
+  observations: String
+  sex: RabbitSex!
+  weight: Float
+}
+
+input CreateSaleInput {
+  customerId: ID
+  items: [CreateSaleItemInput!]!
+  observation: String
+  saleDate: DateTime!
+}
+
+input CreateSaleItemInput {
+  description: String
+  quantity: Int!
+  rabbitId: ID
+  unitPrice: Float!
+}
+
+input CreateSectionInput {
+  description: String
+  name: String!
+  type: SectionType!
+}
+
+input CreateStockMovementInput {
+  date: DateTime!
+  description: String
+  inventoryItemId: ID!
+  quantity: Float!
+  reference: String
+  type: StockMovementType!
+  unitCost: Float
+}
+
+input CreateTaskInput {
+  assignedToId: ID
+  description: String
+  dueDate: DateTime!
+  priority: TaskPriority
+  rabbitId: ID
+  sourceId: ID
+  sourceType: TaskSourceType
+  title: String!
+}
+
+input CreateWeaningInput {
+  actualDate: DateTime
+  averageWeight: Float
+  litterId: ID!
+  observation: String
+  plannedDate: DateTime!
+  quantity: Int!
+  rabbitIds: [ID!]
+  totalWeight: Float
+}
+
+input CreateWeighingInput {
+  ageInDays: Int
+  animalCount: Int!
+  averageWeight: Float
+  date: DateTime!
+  lotId: ID
+  observation: String
+  rabbitId: ID
+  totalWeight: Float!
+}
+
+type CrossBreedModel {
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  name: String!
+  parentBreedA: BreedModel!
+  parentBreedAId: ID!
+  parentBreedB: BreedModel!
+  parentBreedBId: ID!
+  updatedAt: DateTime!
+}
+
+type CustomerModel {
+  address: String
+  createdAt: DateTime!
+  email: String
+  id: ID!
+  name: String!
+  notes: String
+  phone: String
+  updatedAt: DateTime!
+}
+
+type DashboardBirthModel {
+  birthDate: DateTime!
+  breedingId: ID!
+  femaleCode: String!
+  femaleId: ID!
+  id: ID!
+  liveBorn: Int!
+  stillBorn: Int!
+  totalBorn: Int!
+}
+
+type DashboardBreedingActionModel {
+  breedingDate: DateTime!
+  expectedBirthEndDate: DateTime
+  expectedBirthStartDate: DateTime
+  femaleCode: String!
+  femaleId: ID!
+  id: ID!
+  nestDate: DateTime
+  palpationEndDate: DateTime
+  palpationStartDate: DateTime
+}
+
+type DashboardModel {
+  activeRabbits: Int!
+  averageLitterSize: Float
+  birthsThisMonth: Int!
+  breedingFemales: Int!
+  breedingMales: Int!
+  breedingSuccessRate: Float
+  date: DateTime!
+  expectedBirthList: [DashboardBirthModel!]!
+  expectedBirths: Int!
+  femalesToPalpate: Int!
+  kitsBornThisMonth: Int!
+  lowStockItems: Int!
+  lowStockList: [DashboardStockAlertModel!]!
+  monthlyExpenses: Float!
+  nestInstallationList: [DashboardBreedingActionModel!]!
+  nestsToInstall: Int!
+  overdueTasks: Int!
+  palpationList: [DashboardBreedingActionModel!]!
+  plannedWeanings: Int!
+  recentBirthList: [DashboardBirthModel!]!
+  recentBirths: Int!
+  tasksToday: Int!
+  totalRabbits: Int!
+  urgentTaskList: [DashboardTaskModel!]!
+  urgentTasks: Int!
+  weaningList: [DashboardWeaningModel!]!
+  youngRabbits: Int!
+}
+
+type DashboardStockAlertModel {
+  currentStock: Float!
+  id: ID!
+  minimumStock: Float
+  name: String!
+  unit: String!
+}
+
+type DashboardTaskModel {
+  assignedToId: ID
+  completedAt: DateTime
+  description: String
+  dueDate: DateTime!
+  id: ID!
+  priority: TaskPriority!
+  rabbitId: ID
+  sourceId: ID
+  sourceType: String
+  status: TaskStatus!
+  title: String!
+}
+
+type DashboardWeaningModel {
+  averageWeight: Float
+  id: ID!
+  litterId: ID!
+  plannedDate: DateTime!
+  quantity: Int!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+enum ExpenseCategory {
+  EQUIPMENT
+  FEED
+  MAINTENANCE
+  MEDICATION
+  OTHER
+  SALARY
+  TRANSPORT
+}
+
+type ExpenseModel {
+  amount: Float!
+  category: ExpenseCategory!
+  createdAt: DateTime!
+  date: DateTime!
+  description: String
+  farmId: ID!
+  id: ID!
+  reference: String
+  supplier: String
+  updatedAt: DateTime!
+}
+
+type FarmMembershipModel {
+  createdAt: DateTime!
+  id: ID!
+  role: FarmRole!
+  updatedAt: DateTime!
+  user: UserModel!
+}
 
 type FarmModel {
   createdAt: DateTime!
@@ -31,20 +483,286 @@ type FarmModel {
   updatedAt: DateTime!
 }
 
+enum FarmRole {
+  ADMIN
+  BREEDING_MANAGER
+  EMPLOYEE
+  VETERINARIAN
+}
+
+type FatteningLotModel {
+  code: String!
+  createdAt: DateTime!
+  entryDate: DateTime!
+  exitDate: DateTime
+  id: ID!
+  observation: String
+  status: FatteningLotStatus!
+  updatedAt: DateTime!
+}
+
+enum FatteningLotStatus {
+  ACTIVE
+  CANCELLED
+  COMPLETED
+}
+
+type HealthRecordModel {
+  createdAt: DateTime!
+  createdById: String
+  date: DateTime!
+  diagnosis: String
+  dosage: String
+  farmId: ID!
+  id: ID!
+  medication: String
+  nextDueDate: DateTime
+  observation: String
+  rabbitId: ID!
+  suspicion: String
+  symptoms: String
+  treatment: String
+}
+
+type InventoryItemModel {
+  createdAt: DateTime!
+  currentStock: Float!
+  description: String
+  farmId: ID!
+  id: ID!
+  minimumStock: Float
+  name: String!
+  type: InventoryItemType!
+  unit: String!
+  updatedAt: DateTime!
+}
+
+enum InventoryItemType {
+  EQUIPMENT
+  FEED
+  MEDICATION
+  OTHER
+}
+
+type LitterModel {
+  birthId: ID!
+  code: String!
+  createdAt: DateTime!
+  id: ID!
+  observation: String
+  updatedAt: DateTime!
+}
+
 input LoginInput {
   email: String!
+  farmId: ID
   password: String!
 }
 
+type LotMembershipModel {
+  createdAt: DateTime!
+  id: ID!
+  joinedAt: DateTime!
+  leftAt: DateTime
+  lotId: ID!
+  rabbitId: ID!
+  reason: String
+}
+
+input MoveRabbitInput {
+  cageId: ID!
+  observation: String
+  rabbitId: ID!
+  reason: String
+}
+
 type Mutation {
+  addFarmMember(input: AddMemberInput!): FarmMembershipModel!
+  addLotMembers(input: AddLotMembersInput!): [LotMembershipModel!]!
+  addPayment(input: CreatePaymentInput!): PaymentModel!
+  addRabbitIdentification(input: AddRabbitIdentificationInput!, rabbitId: ID!): RabbitIdentificationModel!
+  assignLitterRabbitsToCage(input: AssignLitterRabbitsToCageInput!): [RabbitCageMovementModel!]!
+  completeFatteningLot(input: CompleteFatteningLotInput!): FatteningLotModel!
+  completeWeaning(input: CompleteWeaningInput!): WeaningModel!
+  createAdoption(input: CreateAdoptionInput!): AdoptionModel!
+  createBirth(input: CreateBirthInput!): BirthModel!
+  createBreed(input: CreateBreedInput!): BreedModel!
+  createBreeding(input: CreateBreedingInput!): BreedingModel!
+  createCage(input: CreateCageInput!): CageModel!
+  createCrossBreed(input: CreateCrossBreedInput!): CrossBreedModel!
+  createCustomer(input: CreateCustomerInput!): CustomerModel!
+  createExpense(input: CreateExpenseInput!): ExpenseModel!
   createFarm(input: CreateFarmInput!): FarmModel!
+  createFatteningLot(input: CreateFatteningLotInput!): FatteningLotModel!
+  createHealthRecord(input: CreateHealthRecordInput!): HealthRecordModel!
+  createInventoryItem(input: CreateInventoryItemInput!): InventoryItemModel!
+  createLitter(input: CreateLitterInput!): LitterModel!
+  createLitterRabbits(input: CreateLitterRabbitsInput!): [RabbitModel!]!
+  createPregnancyCheck(input: CreatePregnancyCheckInput!): PregnancyModel!
+  createRabbit(input: CreateRabbitInput!): RabbitModel!
+  createSale(input: CreateSaleInput!): SaleModel!
+  createSection(input: CreateSectionInput!): SectionModel!
+  createStockMovement(input: CreateStockMovementInput!): StockMovementModel!
+  createTask(input: CreateTaskInput!): TaskModel!
+  createWeaning(input: CreateWeaningInput!): WeaningModel!
+  createWeighing(input: CreateWeighingInput!): WeighingModel!
+  deleteBreed(id: ID!): Boolean!
+  deleteCage(id: ID!): CageModel!
+  deleteCrossBreed(id: ID!): Boolean!
+  deleteSection(id: ID!): SectionModel!
   login(input: LoginInput!): AuthModel!
+  moveRabbit(input: MoveRabbitInput!): RabbitCageMovementModel!
   register(input: RegisterInput!): AuthModel!
+  removeFarmMember(membershipId: ID!): FarmMembershipModel!
+  removeLotMembers(input: RemoveLotMembersInput!): [LotMembershipModel!]!
+  updateBreed(input: UpdateBreedInput!): BreedModel!
+  updateCage(input: UpdateCageInput!): CageModel!
+  updateCrossBreed(input: UpdateCrossBreedInput!): CrossBreedModel!
+  updateFarmMemberRole(input: UpdateMemberRoleInput!): FarmMembershipModel!
+  updateRabbit(input: UpdateRabbitInput!): RabbitModel!
+  updateSection(input: UpdateSectionInput!): SectionModel!
+  updateTask(input: UpdateTaskInput!): TaskModel!
+}
+
+enum PaymentMethod {
+  BANK_TRANSFER
+  CASH
+  MOBILE_MONEY
+  OTHER
+}
+
+type PaymentModel {
+  amount: Float!
+  id: ID!
+  method: PaymentMethod!
+  observation: String
+  paymentDate: DateTime!
+  reference: String
+}
+
+type PregnancyModel {
+  breedingId: ID!
+  checkedDate: DateTime!
+  createdAt: DateTime!
+  id: ID!
+  observation: String
+  result: PregnancyResult!
+  updatedAt: DateTime!
+}
+
+enum PregnancyResult {
+  INCONCLUSIVE
+  NOT_PREGNANT
+  PREGNANT
 }
 
 type Query {
+  adoptions: [AdoptionModel!]!
+  birth(id: ID!): BirthModel!
+  births: [BirthModel!]!
+  breed(id: ID!): BreedModel!
+  breeding(id: ID!): BreedingModel!
+  breedings: [BreedingModel!]!
+  breeds: [BreedModel!]!
+  cage(id: ID!): CageModel!
+  cages: [CageModel!]!
+  crossBreed(id: ID!): CrossBreedModel!
+  crossBreeds: [CrossBreedModel!]!
+  customer(id: ID!): CustomerModel!
+  customers: [CustomerModel!]!
+  dashboard: DashboardModel!
+  expenses: [ExpenseModel!]!
   farm(id: ID!): FarmModel
+  farmMembers: [FarmMembershipModel!]!
   farms: [FarmModel!]!
+  fatteningLot(id: ID!): FatteningLotModel!
+  fatteningLots: [FatteningLotModel!]!
+  healthRecord(id: ID!): HealthRecordModel!
+  healthRecords: [HealthRecordModel!]!
+  healthRecordsByRabbit(rabbitId: ID!): [HealthRecordModel!]!
+  inventoryItem(id: ID!): InventoryItemModel!
+  inventoryItems: [InventoryItemModel!]!
+  litter(id: ID!): LitterModel
+  litterAdoptions(litterId: ID!): [AdoptionModel!]!
+  litterByBirth(birthId: ID!): LitterModel
+  litters: [LitterModel!]!
+  lotMemberships(lotId: ID!): [LotMembershipModel!]!
+  pregnancies: [PregnancyModel!]!
+  pregnancyChecksByBreeding(breedingId: ID!): [PregnancyModel!]!
+  rabbit(id: ID!): RabbitModel!
+  rabbitCageMovements(rabbitId: ID!): [RabbitCageMovementModel!]!
+  rabbitIdentifications(rabbitId: ID!): [RabbitIdentificationModel!]!
+  rabbits: [RabbitModel!]!
+  sale(id: ID!): SaleModel!
+  sales: [SaleModel!]!
+  section(id: ID!): SectionModel!
+  sections: [SectionModel!]!
+  task(id: ID!): TaskModel!
+  tasks: [TaskModel!]!
+  weaning(id: ID!): WeaningModel
+  weanings: [WeaningModel!]!
+  weaningsByLitter(litterId: ID!): [WeaningModel!]!
+  weighings: [WeighingModel!]!
+}
+
+type RabbitCageMovementModel {
+  cageId: ID!
+  createdAt: DateTime!
+  endedAt: DateTime
+  id: ID!
+  observation: String
+  rabbitId: ID!
+  reason: String
+  startedAt: DateTime!
+}
+
+type RabbitIdentificationModel {
+  createdAt: DateTime!
+  id: ID!
+  type: RabbitIdentificationType!
+  updatedAt: DateTime!
+  value: String!
+}
+
+enum RabbitIdentificationType {
+  EAR_TAG
+  OTHER
+  RING
+  TATTOO
+}
+
+type RabbitModel {
+  birthDate: DateTime
+  birthLitterId: ID
+  breedId: String
+  code: String!
+  color: String
+  createdAt: DateTime!
+  crossBreedId: String
+  fatherId: String
+  geneticType: String
+  id: ID!
+  identifications: [RabbitIdentificationModel!]!
+  motherId: String
+  observations: String
+  sex: RabbitSex!
+  status: RabbitStatus!
+  updatedAt: DateTime!
+  weight: Float
+}
+
+enum RabbitSex {
+  FEMALE
+  MALE
+  UNKNOWN
+}
+
+enum RabbitStatus {
+  ACTIVE
+  CULLED
+  DEAD
+  SOLD
+  TRANSFERRED
 }
 
 input RegisterInput {
@@ -55,4 +773,225 @@ input RegisterInput {
   firstName: String!
   lastName: String!
   password: String!
+}
+
+input RemoveLotMembersInput {
+  lotId: ID!
+  rabbitIds: [ID!]!
+  reason: String
+}
+
+type SaleItemModel {
+  description: String!
+  id: ID!
+  quantity: Int!
+  rabbitId: ID
+  totalPrice: Float!
+  unitPrice: Float!
+}
+
+type SaleModel {
+  createdAt: DateTime!
+  customerId: ID
+  id: ID!
+  items: [SaleItemModel!]!
+  observation: String
+  payments: [PaymentModel!]!
+  saleDate: DateTime!
+  status: SaleStatus!
+  totalAmount: Float!
+  updatedAt: DateTime!
+}
+
+enum SaleStatus {
+  CANCELLED
+  PAID
+  PARTIALLY_PAID
+  UNPAID
+}
+
+type SectionModel {
+  cageCount: Int!
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  name: String!
+  type: SectionType!
+  updatedAt: DateTime!
+}
+
+enum SectionType {
+  FATTENING
+  MATERNITY
+  OTHER
+  QUARANTINE
+  REPRODUCTION
+}
+
+type StockMovementModel {
+  createdAt: DateTime!
+  date: DateTime!
+  description: String
+  id: ID!
+  inventoryItemId: ID!
+  quantity: Float!
+  reference: String
+  type: StockMovementType!
+  unitCost: Float
+}
+
+enum StockMovementType {
+  ADJUSTMENT
+  CONSUMPTION
+  INITIAL
+  LOSS
+  PURCHASE
+  RETURN
+}
+
+type TaskModel {
+  assignedToId: ID
+  completedAt: DateTime
+  createdAt: DateTime!
+  description: String
+  dueDate: DateTime!
+  farmId: ID!
+  id: ID!
+  priority: TaskPriority!
+  sourceId: ID
+  sourceType: TaskSourceType
+  status: TaskStatus!
+  title: String!
+  updatedAt: DateTime!
+}
+
+enum TaskPriority {
+  HIGH
+  LOW
+  MEDIUM
+  URGENT
+}
+
+enum TaskSourceType {
+  BIRTH
+  BREEDING
+  HEALTH
+  INVENTORY
+  MANUAL
+  OTHER
+  PREGNANCY
+  SALE
+  WEANING
+}
+
+enum TaskStatus {
+  CANCELLED
+  COMPLETED
+  IN_PROGRESS
+  TODO
+}
+
+input UpdateBreedInput {
+  description: String
+  id: ID!
+  name: String
+}
+
+input UpdateCageInput {
+  capacity: Int
+  code: String
+  id: ID!
+  sectionId: ID
+  status: CageStatus
+  type: String
+}
+
+input UpdateCrossBreedInput {
+  description: String
+  id: ID!
+  name: String
+  parentBreedAId: ID
+  parentBreedBId: ID
+}
+
+input UpdateMemberRoleInput {
+  membershipId: ID!
+  role: FarmRole!
+}
+
+input UpdateRabbitInput {
+  breedId: ID
+  code: String
+  color: String
+  crossBreedId: ID
+  id: ID!
+  observations: String
+  status: RabbitStatus
+  weight: Float
+}
+
+input UpdateSectionInput {
+  description: String
+  id: ID!
+  name: String
+  type: SectionType
+}
+
+input UpdateTaskInput {
+  assignedToId: ID
+  description: String
+  dueDate: DateTime
+  id: ID!
+  priority: TaskPriority
+  rabbitId: ID
+  sourceId: ID
+  sourceType: TaskSourceType
+  status: TaskStatus
+  title: String
+}
+
+type UserModel {
+  createdAt: DateTime!
+  email: String!
+  firstName: String!
+  id: ID!
+  isActive: Boolean!
+  lastName: String!
+  updatedAt: DateTime!
+}
+
+type WeaningModel {
+  actualDate: DateTime
+  averageWeight: Float
+  createdAt: DateTime!
+  farmId: ID!
+  id: ID!
+  litterId: ID!
+  observation: String
+  plannedDate: DateTime!
+  quantity: Int!
+  rabbits: [WeaningRabbitModel!]!
+  totalWeight: Float
+  updatedAt: DateTime!
+}
+
+type WeaningRabbitModel {
+  createdAt: DateTime!
+  id: ID!
+  rabbitId: ID!
+  weaningId: ID!
+  weight: Float
+}
+
+type WeighingModel {
+  ageInDays: Int
+  animalCount: Int!
+  averageWeight: Float
+  createdAt: DateTime!
+  date: DateTime!
+  id: ID!
+  lotId: ID
+  observation: String
+  rabbitId: ID
+  totalWeight: Float!
 }

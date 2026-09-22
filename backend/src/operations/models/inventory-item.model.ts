@@ -1,7 +1,6 @@
 import { Field, Float, ID, ObjectType } from '@nestjs/graphql';
 
 import { InventoryItemType } from '../graphql/inventory-item-type.enum';
-import { StockMovementModel } from './stock-movement.model';
 
 @ObjectType()
 export class InventoryItemModel {
@@ -23,14 +22,11 @@ export class InventoryItemModel {
   @Field(() => Float, { nullable: true })
   minimumStock?: number;
 
-  @Field({ nullable: true })
-  description?: string;
-
   @Field(() => Float)
   currentStock: number;
 
-  @Field(() => [StockMovementModel])
-  movements: StockMovementModel[];
+  @Field({ nullable: true })
+  description?: string;
 
   @Field()
   createdAt: Date;

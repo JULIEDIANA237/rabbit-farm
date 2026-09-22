@@ -372,6 +372,7 @@ exports.ExpenseScalarFieldEnum = {
     date: 'date',
     description: 'description',
     reference: 'reference',
+    supplier: 'supplier',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };
@@ -381,6 +382,7 @@ exports.InventoryItemScalarFieldEnum = {
     name: 'name',
     type: 'type',
     unit: 'unit',
+    currentStock: 'currentStock',
     minimumStock: 'minimumStock',
     description: 'description',
     createdAt: 'createdAt',
@@ -402,6 +404,7 @@ exports.TaskScalarFieldEnum = {
     farmId: 'farmId',
     title: 'title',
     description: 'description',
+    rabbitId: 'rabbitId',
     dueDate: 'dueDate',
     priority: 'priority',
     status: 'status',

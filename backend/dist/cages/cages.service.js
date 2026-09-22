@@ -40,10 +40,10 @@ let CagesService = class CagesService {
     async create(input, currentUser) {
         const code = input.code.trim();
         if (!code) {
-            throw new common_1.ConflictException('Le nom de la cage est obligatoire.');
+            throw new common_1.BadRequestException('Le nom de la cage est obligatoire.');
         }
         if (input.capacity <= 0) {
-            throw new common_1.ConflictException('La capacité de la cage doit être supérieure à zéro.');
+            throw new common_1.BadRequestException('La capacité de la cage doit être supérieure à zéro.');
         }
         await this.getSectionForFarm(input.sectionId, currentUser.farmId);
         const existing = await this.prisma.cage.findUnique({
@@ -145,7 +145,7 @@ let CagesService = class CagesService {
         if (input.code !== undefined) {
             const code = input.code.trim();
             if (!code) {
-                throw new common_1.ConflictException('Le nom de la cage est obligatoire.');
+                throw new common_1.BadRequestException('Le nom de la cage est obligatoire.');
             }
             const existing = await this.prisma.cage.findFirst({
                 where: {

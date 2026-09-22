@@ -129,7 +129,7 @@ export type BirthGroupByOutputType = {
     stillBorn: number;
     observation: string | null;
     createdAt: Date;
-    farmId: string | null;
+    farmId: string;
     _count: BirthCountAggregateOutputType | null;
     _avg: BirthAvgAggregateOutputType | null;
     _sum: BirthSumAggregateOutputType | null;
@@ -151,11 +151,11 @@ export type BirthWhereInput = {
     stillBorn?: Prisma.IntFilter<"Birth"> | number;
     observation?: Prisma.StringNullableFilter<"Birth"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"Birth"> | Date | string;
-    farmId?: Prisma.StringNullableFilter<"Birth"> | string | null;
+    farmId?: Prisma.StringFilter<"Birth"> | string;
     breeding?: Prisma.XOR<Prisma.BreedingScalarRelationFilter, Prisma.BreedingWhereInput>;
     mother?: Prisma.XOR<Prisma.RabbitScalarRelationFilter, Prisma.RabbitWhereInput>;
     litter?: Prisma.XOR<Prisma.LitterNullableScalarRelationFilter, Prisma.LitterWhereInput> | null;
-    farm?: Prisma.XOR<Prisma.FarmNullableScalarRelationFilter, Prisma.FarmWhereInput> | null;
+    farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>;
 };
 export type BirthOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -166,7 +166,7 @@ export type BirthOrderByWithRelationInput = {
     stillBorn?: Prisma.SortOrder;
     observation?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
-    farmId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    farmId?: Prisma.SortOrder;
     breeding?: Prisma.BreedingOrderByWithRelationInput;
     mother?: Prisma.RabbitOrderByWithRelationInput;
     litter?: Prisma.LitterOrderByWithRelationInput;
@@ -184,11 +184,11 @@ export type BirthWhereUniqueInput = Prisma.AtLeast<{
     stillBorn?: Prisma.IntFilter<"Birth"> | number;
     observation?: Prisma.StringNullableFilter<"Birth"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"Birth"> | Date | string;
-    farmId?: Prisma.StringNullableFilter<"Birth"> | string | null;
+    farmId?: Prisma.StringFilter<"Birth"> | string;
     breeding?: Prisma.XOR<Prisma.BreedingScalarRelationFilter, Prisma.BreedingWhereInput>;
     mother?: Prisma.XOR<Prisma.RabbitScalarRelationFilter, Prisma.RabbitWhereInput>;
     litter?: Prisma.XOR<Prisma.LitterNullableScalarRelationFilter, Prisma.LitterWhereInput> | null;
-    farm?: Prisma.XOR<Prisma.FarmNullableScalarRelationFilter, Prisma.FarmWhereInput> | null;
+    farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>;
 }, "id" | "breedingId">;
 export type BirthOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -199,7 +199,7 @@ export type BirthOrderByWithAggregationInput = {
     stillBorn?: Prisma.SortOrder;
     observation?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
-    farmId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    farmId?: Prisma.SortOrder;
     _count?: Prisma.BirthCountOrderByAggregateInput;
     _avg?: Prisma.BirthAvgOrderByAggregateInput;
     _max?: Prisma.BirthMaxOrderByAggregateInput;
@@ -218,7 +218,7 @@ export type BirthScalarWhereWithAggregatesInput = {
     stillBorn?: Prisma.IntWithAggregatesFilter<"Birth"> | number;
     observation?: Prisma.StringNullableWithAggregatesFilter<"Birth"> | string | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"Birth"> | Date | string;
-    farmId?: Prisma.StringNullableWithAggregatesFilter<"Birth"> | string | null;
+    farmId?: Prisma.StringWithAggregatesFilter<"Birth"> | string;
 };
 export type BirthCreateInput = {
     id?: string;
@@ -230,7 +230,7 @@ export type BirthCreateInput = {
     breeding: Prisma.BreedingCreateNestedOneWithoutBirthInput;
     mother: Prisma.RabbitCreateNestedOneWithoutMotherBirthsInput;
     litter?: Prisma.LitterCreateNestedOneWithoutBirthInput;
-    farm?: Prisma.FarmCreateNestedOneWithoutBirthsInput;
+    farm: Prisma.FarmCreateNestedOneWithoutBirthsInput;
 };
 export type BirthUncheckedCreateInput = {
     id?: string;
@@ -241,7 +241,7 @@ export type BirthUncheckedCreateInput = {
     stillBorn: number;
     observation?: string | null;
     createdAt?: Date | string;
-    farmId?: string | null;
+    farmId: string;
     litter?: Prisma.LitterUncheckedCreateNestedOneWithoutBirthInput;
 };
 export type BirthUpdateInput = {
@@ -254,7 +254,7 @@ export type BirthUpdateInput = {
     breeding?: Prisma.BreedingUpdateOneRequiredWithoutBirthNestedInput;
     mother?: Prisma.RabbitUpdateOneRequiredWithoutMotherBirthsNestedInput;
     litter?: Prisma.LitterUpdateOneWithoutBirthNestedInput;
-    farm?: Prisma.FarmUpdateOneWithoutBirthsNestedInput;
+    farm?: Prisma.FarmUpdateOneRequiredWithoutBirthsNestedInput;
 };
 export type BirthUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -265,7 +265,7 @@ export type BirthUncheckedUpdateInput = {
     stillBorn?: Prisma.IntFieldUpdateOperationsInput | number;
     observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    farmId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    farmId?: Prisma.StringFieldUpdateOperationsInput | string;
     litter?: Prisma.LitterUncheckedUpdateOneWithoutBirthNestedInput;
 };
 export type BirthCreateManyInput = {
@@ -277,7 +277,7 @@ export type BirthCreateManyInput = {
     stillBorn: number;
     observation?: string | null;
     createdAt?: Date | string;
-    farmId?: string | null;
+    farmId: string;
 };
 export type BirthUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -296,7 +296,7 @@ export type BirthUncheckedUpdateManyInput = {
     stillBorn?: Prisma.IntFieldUpdateOperationsInput | number;
     observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    farmId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    farmId?: Prisma.StringFieldUpdateOperationsInput | string;
 };
 export type BirthListRelationFilter = {
     every?: Prisma.BirthWhereInput;
@@ -524,7 +524,7 @@ export type BirthScalarWhereInput = {
     stillBorn?: Prisma.IntFilter<"Birth"> | number;
     observation?: Prisma.StringNullableFilter<"Birth"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"Birth"> | Date | string;
-    farmId?: Prisma.StringNullableFilter<"Birth"> | string | null;
+    farmId?: Prisma.StringFilter<"Birth"> | string;
 };
 export type BirthCreateWithoutMotherInput = {
     id?: string;
@@ -535,7 +535,7 @@ export type BirthCreateWithoutMotherInput = {
     createdAt?: Date | string;
     breeding: Prisma.BreedingCreateNestedOneWithoutBirthInput;
     litter?: Prisma.LitterCreateNestedOneWithoutBirthInput;
-    farm?: Prisma.FarmCreateNestedOneWithoutBirthsInput;
+    farm: Prisma.FarmCreateNestedOneWithoutBirthsInput;
 };
 export type BirthUncheckedCreateWithoutMotherInput = {
     id?: string;
@@ -545,7 +545,7 @@ export type BirthUncheckedCreateWithoutMotherInput = {
     stillBorn: number;
     observation?: string | null;
     createdAt?: Date | string;
-    farmId?: string | null;
+    farmId: string;
     litter?: Prisma.LitterUncheckedCreateNestedOneWithoutBirthInput;
 };
 export type BirthCreateOrConnectWithoutMotherInput = {
@@ -578,7 +578,7 @@ export type BirthCreateWithoutBreedingInput = {
     createdAt?: Date | string;
     mother: Prisma.RabbitCreateNestedOneWithoutMotherBirthsInput;
     litter?: Prisma.LitterCreateNestedOneWithoutBirthInput;
-    farm?: Prisma.FarmCreateNestedOneWithoutBirthsInput;
+    farm: Prisma.FarmCreateNestedOneWithoutBirthsInput;
 };
 export type BirthUncheckedCreateWithoutBreedingInput = {
     id?: string;
@@ -588,7 +588,7 @@ export type BirthUncheckedCreateWithoutBreedingInput = {
     stillBorn: number;
     observation?: string | null;
     createdAt?: Date | string;
-    farmId?: string | null;
+    farmId: string;
     litter?: Prisma.LitterUncheckedCreateNestedOneWithoutBirthInput;
 };
 export type BirthCreateOrConnectWithoutBreedingInput = {
@@ -613,7 +613,7 @@ export type BirthUpdateWithoutBreedingInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     mother?: Prisma.RabbitUpdateOneRequiredWithoutMotherBirthsNestedInput;
     litter?: Prisma.LitterUpdateOneWithoutBirthNestedInput;
-    farm?: Prisma.FarmUpdateOneWithoutBirthsNestedInput;
+    farm?: Prisma.FarmUpdateOneRequiredWithoutBirthsNestedInput;
 };
 export type BirthUncheckedUpdateWithoutBreedingInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -623,7 +623,7 @@ export type BirthUncheckedUpdateWithoutBreedingInput = {
     stillBorn?: Prisma.IntFieldUpdateOperationsInput | number;
     observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    farmId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    farmId?: Prisma.StringFieldUpdateOperationsInput | string;
     litter?: Prisma.LitterUncheckedUpdateOneWithoutBirthNestedInput;
 };
 export type BirthCreateWithoutLitterInput = {
@@ -635,7 +635,7 @@ export type BirthCreateWithoutLitterInput = {
     createdAt?: Date | string;
     breeding: Prisma.BreedingCreateNestedOneWithoutBirthInput;
     mother: Prisma.RabbitCreateNestedOneWithoutMotherBirthsInput;
-    farm?: Prisma.FarmCreateNestedOneWithoutBirthsInput;
+    farm: Prisma.FarmCreateNestedOneWithoutBirthsInput;
 };
 export type BirthUncheckedCreateWithoutLitterInput = {
     id?: string;
@@ -646,7 +646,7 @@ export type BirthUncheckedCreateWithoutLitterInput = {
     stillBorn: number;
     observation?: string | null;
     createdAt?: Date | string;
-    farmId?: string | null;
+    farmId: string;
 };
 export type BirthCreateOrConnectWithoutLitterInput = {
     where: Prisma.BirthWhereUniqueInput;
@@ -670,7 +670,7 @@ export type BirthUpdateWithoutLitterInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     breeding?: Prisma.BreedingUpdateOneRequiredWithoutBirthNestedInput;
     mother?: Prisma.RabbitUpdateOneRequiredWithoutMotherBirthsNestedInput;
-    farm?: Prisma.FarmUpdateOneWithoutBirthsNestedInput;
+    farm?: Prisma.FarmUpdateOneRequiredWithoutBirthsNestedInput;
 };
 export type BirthUncheckedUpdateWithoutLitterInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -681,7 +681,7 @@ export type BirthUncheckedUpdateWithoutLitterInput = {
     stillBorn?: Prisma.IntFieldUpdateOperationsInput | number;
     observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    farmId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    farmId?: Prisma.StringFieldUpdateOperationsInput | string;
 };
 export type BirthCreateManyFarmInput = {
     id?: string;
@@ -733,7 +733,7 @@ export type BirthCreateManyMotherInput = {
     stillBorn: number;
     observation?: string | null;
     createdAt?: Date | string;
-    farmId?: string | null;
+    farmId: string;
 };
 export type BirthUpdateWithoutMotherInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -744,7 +744,7 @@ export type BirthUpdateWithoutMotherInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     breeding?: Prisma.BreedingUpdateOneRequiredWithoutBirthNestedInput;
     litter?: Prisma.LitterUpdateOneWithoutBirthNestedInput;
-    farm?: Prisma.FarmUpdateOneWithoutBirthsNestedInput;
+    farm?: Prisma.FarmUpdateOneRequiredWithoutBirthsNestedInput;
 };
 export type BirthUncheckedUpdateWithoutMotherInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -754,7 +754,7 @@ export type BirthUncheckedUpdateWithoutMotherInput = {
     stillBorn?: Prisma.IntFieldUpdateOperationsInput | number;
     observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    farmId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    farmId?: Prisma.StringFieldUpdateOperationsInput | string;
     litter?: Prisma.LitterUncheckedUpdateOneWithoutBirthNestedInput;
 };
 export type BirthUncheckedUpdateManyWithoutMotherInput = {
@@ -765,7 +765,7 @@ export type BirthUncheckedUpdateManyWithoutMotherInput = {
     stillBorn?: Prisma.IntFieldUpdateOperationsInput | number;
     observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    farmId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    farmId?: Prisma.StringFieldUpdateOperationsInput | string;
 };
 export type BirthSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -780,7 +780,7 @@ export type BirthSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     breeding?: boolean | Prisma.BreedingDefaultArgs<ExtArgs>;
     mother?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>;
     litter?: boolean | Prisma.Birth$litterArgs<ExtArgs>;
-    farm?: boolean | Prisma.Birth$farmArgs<ExtArgs>;
+    farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["birth"]>;
 export type BirthSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -794,7 +794,7 @@ export type BirthSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
     farmId?: boolean;
     breeding?: boolean | Prisma.BreedingDefaultArgs<ExtArgs>;
     mother?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>;
-    farm?: boolean | Prisma.Birth$farmArgs<ExtArgs>;
+    farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["birth"]>;
 export type BirthSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -808,7 +808,7 @@ export type BirthSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
     farmId?: boolean;
     breeding?: boolean | Prisma.BreedingDefaultArgs<ExtArgs>;
     mother?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>;
-    farm?: boolean | Prisma.Birth$farmArgs<ExtArgs>;
+    farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["birth"]>;
 export type BirthSelectScalar = {
     id?: boolean;
@@ -826,17 +826,17 @@ export type BirthInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     breeding?: boolean | Prisma.BreedingDefaultArgs<ExtArgs>;
     mother?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>;
     litter?: boolean | Prisma.Birth$litterArgs<ExtArgs>;
-    farm?: boolean | Prisma.Birth$farmArgs<ExtArgs>;
+    farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>;
 };
 export type BirthIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     breeding?: boolean | Prisma.BreedingDefaultArgs<ExtArgs>;
     mother?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>;
-    farm?: boolean | Prisma.Birth$farmArgs<ExtArgs>;
+    farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>;
 };
 export type BirthIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     breeding?: boolean | Prisma.BreedingDefaultArgs<ExtArgs>;
     mother?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>;
-    farm?: boolean | Prisma.Birth$farmArgs<ExtArgs>;
+    farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>;
 };
 export type $BirthPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "Birth";
@@ -844,7 +844,7 @@ export type $BirthPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
         breeding: Prisma.$BreedingPayload<ExtArgs>;
         mother: Prisma.$RabbitPayload<ExtArgs>;
         litter: Prisma.$LitterPayload<ExtArgs> | null;
-        farm: Prisma.$FarmPayload<ExtArgs> | null;
+        farm: Prisma.$FarmPayload<ExtArgs>;
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -855,7 +855,7 @@ export type $BirthPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
         stillBorn: number;
         observation: string | null;
         createdAt: Date;
-        farmId: string | null;
+        farmId: string;
     }, ExtArgs["result"]["birth"]>;
     composites: {};
 };
@@ -911,7 +911,7 @@ export interface Prisma__BirthClient<T, Null = never, ExtArgs extends runtime.Ty
     breeding<T extends Prisma.BreedingDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BreedingDefaultArgs<ExtArgs>>): Prisma.Prisma__BreedingClient<runtime.Types.Result.GetResult<Prisma.$BreedingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     mother<T extends Prisma.RabbitDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RabbitDefaultArgs<ExtArgs>>): Prisma.Prisma__RabbitClient<runtime.Types.Result.GetResult<Prisma.$RabbitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     litter<T extends Prisma.Birth$litterArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Birth$litterArgs<ExtArgs>>): Prisma.Prisma__LitterClient<runtime.Types.Result.GetResult<Prisma.$LitterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
-    farm<T extends Prisma.Birth$farmArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Birth$farmArgs<ExtArgs>>): Prisma.Prisma__FarmClient<runtime.Types.Result.GetResult<Prisma.$FarmPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    farm<T extends Prisma.FarmDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FarmDefaultArgs<ExtArgs>>): Prisma.Prisma__FarmClient<runtime.Types.Result.GetResult<Prisma.$FarmPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -1032,12 +1032,6 @@ export type Birth$litterArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
     omit?: Prisma.LitterOmit<ExtArgs> | null;
     include?: Prisma.LitterInclude<ExtArgs> | null;
     where?: Prisma.LitterWhereInput;
-};
-export type Birth$farmArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    select?: Prisma.FarmSelect<ExtArgs> | null;
-    omit?: Prisma.FarmOmit<ExtArgs> | null;
-    include?: Prisma.FarmInclude<ExtArgs> | null;
-    where?: Prisma.FarmWhereInput;
 };
 export type BirthDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.BirthSelect<ExtArgs> | null;

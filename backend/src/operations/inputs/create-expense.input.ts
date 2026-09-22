@@ -18,4 +18,7 @@ export class CreateExpenseInput {
 
   @Field({ nullable: true })
   reference?: string;
+
+  @Field({ nullable: true })
+  supplier?: string;
 }

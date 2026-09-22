@@ -1,6 +1,7 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 
 import { TaskPriority } from '../graphql/task-priority.enum';
+import { TaskSourceType } from '../graphql/task-source-type.enum';
 
 @InputType()
 export class CreateTaskInput {
@@ -19,9 +20,12 @@ export class CreateTaskInput {
   @Field(() => ID, { nullable: true })
   assignedToId?: string;
 
-  @Field({ nullable: true })
-  sourceType?: string;
+  @Field(() => TaskSourceType, { nullable: true })
+  sourceType?: TaskSourceType;
 
   @Field(() => ID, { nullable: true })
   sourceId?: string;
+
+  @Field(() => ID, { nullable: true })
+  rabbitId?: string;
 }

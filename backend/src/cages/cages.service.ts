@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -65,13 +66,13 @@ export class CagesService {
     const code = input.code.trim();
 
     if (!code) {
-      throw new ConflictException(
+      throw new BadRequestException(
         'Le nom de la cage est obligatoire.',
       );
     }
 
     if (input.capacity <= 0) {
-      throw new ConflictException(
+      throw new BadRequestException(
         'La capacité de la cage doit être supérieure à zéro.',
       );
     }
@@ -239,7 +240,7 @@ export class CagesService {
       const code = input.code.trim();
 
       if (!code) {
-        throw new ConflictException(
+        throw new BadRequestException(
           'Le nom de la cage est obligatoire.',
         );
       }

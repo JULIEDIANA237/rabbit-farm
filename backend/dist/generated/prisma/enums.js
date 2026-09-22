@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TaskStatus = exports.TaskPriority = exports.StockMovementType = exports.InventoryItemType = exports.ExpenseCategory = exports.PaymentMethod = exports.SaleStatus = exports.FatteningLotStatus = exports.AdoptionReason = exports.LitterStatus = exports.PregnancyResult = exports.BreedingStatus = exports.RabbitIdentificationType = exports.RabbitStatus = exports.RabbitSex = exports.CageStatus = exports.SectionType = exports.FarmRole = void 0;
+exports.TaskSourceType = exports.TaskStatus = exports.TaskPriority = exports.StockMovementType = exports.InventoryItemType = exports.ExpenseCategory = exports.PaymentMethod = exports.SaleStatus = exports.FatteningLotStatus = exports.AdoptionReason = exports.LitterStatus = exports.PregnancyResult = exports.BreedingStatus = exports.RabbitIdentificationType = exports.RabbitStatus = exports.RabbitSex = exports.CageStatus = exports.SectionType = exports.FarmRole = void 0;
 exports.FarmRole = {
     ADMIN: 'ADMIN',
     BREEDING_MANAGER: 'BREEDING_MANAGER',
@@ -114,5 +114,16 @@ exports.TaskStatus = {
     IN_PROGRESS: 'IN_PROGRESS',
     COMPLETED: 'COMPLETED',
     CANCELLED: 'CANCELLED'
+};
+exports.TaskSourceType = {
+    MANUAL: 'MANUAL',
+    BREEDING: 'BREEDING',
+    PREGNANCY: 'PREGNANCY',
+    BIRTH: 'BIRTH',
+    WEANING: 'WEANING',
+    HEALTH: 'HEALTH',
+    SALE: 'SALE',
+    INVENTORY: 'INVENTORY',
+    OTHER: 'OTHER'
 };
 //# sourceMappingURL=enums.js.map

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -38,7 +39,7 @@ export class SectionsService {
     const name = input.name.trim();
 
     if (!name) {
-      throw new ConflictException(
+      throw new BadRequestException(
         'Le nom de la section est obligatoire.',
       );
     }
@@ -165,7 +166,7 @@ export class SectionsService {
       const name = input.name.trim();
 
       if (!name) {
-        throw new ConflictException(
+        throw new BadRequestException(
           'Le nom de la section est obligatoire.',
         );
       }

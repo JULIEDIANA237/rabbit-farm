@@ -511,6 +511,12 @@ export type EnumTaskStatusFilter<$PrismaModel = never> = {
     notIn?: $Enums.TaskStatus[] | Prisma.ListEnumTaskStatusFieldRefInput<$PrismaModel>;
     not?: Prisma.NestedEnumTaskStatusFilter<$PrismaModel> | $Enums.TaskStatus;
 };
+export type EnumTaskSourceTypeNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaskSourceType | Prisma.EnumTaskSourceTypeFieldRefInput<$PrismaModel> | null;
+    in?: $Enums.TaskSourceType[] | Prisma.ListEnumTaskSourceTypeFieldRefInput<$PrismaModel> | null;
+    notIn?: $Enums.TaskSourceType[] | Prisma.ListEnumTaskSourceTypeFieldRefInput<$PrismaModel> | null;
+    not?: Prisma.NestedEnumTaskSourceTypeNullableFilter<$PrismaModel> | $Enums.TaskSourceType | null;
+};
 export type EnumTaskPriorityWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.TaskPriority | Prisma.EnumTaskPriorityFieldRefInput<$PrismaModel>;
     in?: $Enums.TaskPriority[] | Prisma.ListEnumTaskPriorityFieldRefInput<$PrismaModel>;
@@ -528,6 +534,15 @@ export type EnumTaskStatusWithAggregatesFilter<$PrismaModel = never> = {
     _count?: Prisma.NestedIntFilter<$PrismaModel>;
     _min?: Prisma.NestedEnumTaskStatusFilter<$PrismaModel>;
     _max?: Prisma.NestedEnumTaskStatusFilter<$PrismaModel>;
+};
+export type EnumTaskSourceTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaskSourceType | Prisma.EnumTaskSourceTypeFieldRefInput<$PrismaModel> | null;
+    in?: $Enums.TaskSourceType[] | Prisma.ListEnumTaskSourceTypeFieldRefInput<$PrismaModel> | null;
+    notIn?: $Enums.TaskSourceType[] | Prisma.ListEnumTaskSourceTypeFieldRefInput<$PrismaModel> | null;
+    not?: Prisma.NestedEnumTaskSourceTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.TaskSourceType | null;
+    _count?: Prisma.NestedIntNullableFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumTaskSourceTypeNullableFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumTaskSourceTypeNullableFilter<$PrismaModel>;
 };
 export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | Prisma.StringFieldRefInput<$PrismaModel>;
@@ -1031,6 +1046,12 @@ export type NestedEnumTaskStatusFilter<$PrismaModel = never> = {
     notIn?: $Enums.TaskStatus[] | Prisma.ListEnumTaskStatusFieldRefInput<$PrismaModel>;
     not?: Prisma.NestedEnumTaskStatusFilter<$PrismaModel> | $Enums.TaskStatus;
 };
+export type NestedEnumTaskSourceTypeNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaskSourceType | Prisma.EnumTaskSourceTypeFieldRefInput<$PrismaModel> | null;
+    in?: $Enums.TaskSourceType[] | Prisma.ListEnumTaskSourceTypeFieldRefInput<$PrismaModel> | null;
+    notIn?: $Enums.TaskSourceType[] | Prisma.ListEnumTaskSourceTypeFieldRefInput<$PrismaModel> | null;
+    not?: Prisma.NestedEnumTaskSourceTypeNullableFilter<$PrismaModel> | $Enums.TaskSourceType | null;
+};
 export type NestedEnumTaskPriorityWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.TaskPriority | Prisma.EnumTaskPriorityFieldRefInput<$PrismaModel>;
     in?: $Enums.TaskPriority[] | Prisma.ListEnumTaskPriorityFieldRefInput<$PrismaModel>;
@@ -1048,4 +1069,13 @@ export type NestedEnumTaskStatusWithAggregatesFilter<$PrismaModel = never> = {
     _count?: Prisma.NestedIntFilter<$PrismaModel>;
     _min?: Prisma.NestedEnumTaskStatusFilter<$PrismaModel>;
     _max?: Prisma.NestedEnumTaskStatusFilter<$PrismaModel>;
+};
+export type NestedEnumTaskSourceTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaskSourceType | Prisma.EnumTaskSourceTypeFieldRefInput<$PrismaModel> | null;
+    in?: $Enums.TaskSourceType[] | Prisma.ListEnumTaskSourceTypeFieldRefInput<$PrismaModel> | null;
+    notIn?: $Enums.TaskSourceType[] | Prisma.ListEnumTaskSourceTypeFieldRefInput<$PrismaModel> | null;
+    not?: Prisma.NestedEnumTaskSourceTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.TaskSourceType | null;
+    _count?: Prisma.NestedIntNullableFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumTaskSourceTypeNullableFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumTaskSourceTypeNullableFilter<$PrismaModel>;
 };

@@ -1,4 +1,5 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Throttle } from '@nestjs/throttler';
 
 import { AuthService } from './auth.service';
 import { RegisterInput } from './dto/register.input';
@@ -9,6 +10,7 @@ import { AuthModel } from './models/auth.model';
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
   @Mutation(() => AuthModel)
   async register(
     @Args('input') input: RegisterInput,
@@ -16,6 +18,7 @@ export class AuthResolver {
     return this.authService.register(input);
   }
 
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
   @Mutation(() => AuthModel)
   async login(
     @Args('input') input: LoginInput,

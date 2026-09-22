@@ -166,7 +166,7 @@ export type PregnancyGroupByOutputType = {
   result: $Enums.PregnancyResult
   observation: string | null
   createdAt: Date
-  farmId: string | null
+  farmId: string
   _count: PregnancyCountAggregateOutputType | null
   _min: PregnancyMinAggregateOutputType | null
   _max: PregnancyMaxAggregateOutputType | null
@@ -197,9 +197,9 @@ export type PregnancyWhereInput = {
   result?: Prisma.EnumPregnancyResultFilter<"Pregnancy"> | $Enums.PregnancyResult
   observation?: Prisma.StringNullableFilter<"Pregnancy"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Pregnancy"> | Date | string
-  farmId?: Prisma.StringNullableFilter<"Pregnancy"> | string | null
+  farmId?: Prisma.StringFilter<"Pregnancy"> | string
   breeding?: Prisma.XOR<Prisma.BreedingScalarRelationFilter, Prisma.BreedingWhereInput>
-  farm?: Prisma.XOR<Prisma.FarmNullableScalarRelationFilter, Prisma.FarmWhereInput> | null
+  farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
 }
 
 export type PregnancyOrderByWithRelationInput = {
@@ -209,7 +209,7 @@ export type PregnancyOrderByWithRelationInput = {
   result?: Prisma.SortOrder
   observation?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  farmId?: Prisma.SortOrderInput | Prisma.SortOrder
+  farmId?: Prisma.SortOrder
   breeding?: Prisma.BreedingOrderByWithRelationInput
   farm?: Prisma.FarmOrderByWithRelationInput
 }
@@ -224,9 +224,9 @@ export type PregnancyWhereUniqueInput = Prisma.AtLeast<{
   result?: Prisma.EnumPregnancyResultFilter<"Pregnancy"> | $Enums.PregnancyResult
   observation?: Prisma.StringNullableFilter<"Pregnancy"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Pregnancy"> | Date | string
-  farmId?: Prisma.StringNullableFilter<"Pregnancy"> | string | null
+  farmId?: Prisma.StringFilter<"Pregnancy"> | string
   breeding?: Prisma.XOR<Prisma.BreedingScalarRelationFilter, Prisma.BreedingWhereInput>
-  farm?: Prisma.XOR<Prisma.FarmNullableScalarRelationFilter, Prisma.FarmWhereInput> | null
+  farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
 }, "id" | "breedingId">
 
 export type PregnancyOrderByWithAggregationInput = {
@@ -236,7 +236,7 @@ export type PregnancyOrderByWithAggregationInput = {
   result?: Prisma.SortOrder
   observation?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  farmId?: Prisma.SortOrderInput | Prisma.SortOrder
+  farmId?: Prisma.SortOrder
   _count?: Prisma.PregnancyCountOrderByAggregateInput
   _max?: Prisma.PregnancyMaxOrderByAggregateInput
   _min?: Prisma.PregnancyMinOrderByAggregateInput
@@ -252,7 +252,7 @@ export type PregnancyScalarWhereWithAggregatesInput = {
   result?: Prisma.EnumPregnancyResultWithAggregatesFilter<"Pregnancy"> | $Enums.PregnancyResult
   observation?: Prisma.StringNullableWithAggregatesFilter<"Pregnancy"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Pregnancy"> | Date | string
-  farmId?: Prisma.StringNullableWithAggregatesFilter<"Pregnancy"> | string | null
+  farmId?: Prisma.StringWithAggregatesFilter<"Pregnancy"> | string
 }
 
 export type PregnancyCreateInput = {
@@ -262,7 +262,7 @@ export type PregnancyCreateInput = {
   observation?: string | null
   createdAt?: Date | string
   breeding: Prisma.BreedingCreateNestedOneWithoutPregnanciesInput
-  farm?: Prisma.FarmCreateNestedOneWithoutPregnanciesInput
+  farm: Prisma.FarmCreateNestedOneWithoutPregnanciesInput
 }
 
 export type PregnancyUncheckedCreateInput = {
@@ -272,7 +272,7 @@ export type PregnancyUncheckedCreateInput = {
   result: $Enums.PregnancyResult
   observation?: string | null
   createdAt?: Date | string
-  farmId?: string | null
+  farmId: string
 }
 
 export type PregnancyUpdateInput = {
@@ -282,7 +282,7 @@ export type PregnancyUpdateInput = {
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   breeding?: Prisma.BreedingUpdateOneRequiredWithoutPregnanciesNestedInput
-  farm?: Prisma.FarmUpdateOneWithoutPregnanciesNestedInput
+  farm?: Prisma.FarmUpdateOneRequiredWithoutPregnanciesNestedInput
 }
 
 export type PregnancyUncheckedUpdateInput = {
@@ -292,7 +292,7 @@ export type PregnancyUncheckedUpdateInput = {
   result?: Prisma.EnumPregnancyResultFieldUpdateOperationsInput | $Enums.PregnancyResult
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  farmId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type PregnancyCreateManyInput = {
@@ -302,7 +302,7 @@ export type PregnancyCreateManyInput = {
   result: $Enums.PregnancyResult
   observation?: string | null
   createdAt?: Date | string
-  farmId?: string | null
+  farmId: string
 }
 
 export type PregnancyUpdateManyMutationInput = {
@@ -320,7 +320,7 @@ export type PregnancyUncheckedUpdateManyInput = {
   result?: Prisma.EnumPregnancyResultFieldUpdateOperationsInput | $Enums.PregnancyResult
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  farmId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type PregnancyListRelationFilter = {
@@ -505,7 +505,7 @@ export type PregnancyScalarWhereInput = {
   result?: Prisma.EnumPregnancyResultFilter<"Pregnancy"> | $Enums.PregnancyResult
   observation?: Prisma.StringNullableFilter<"Pregnancy"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Pregnancy"> | Date | string
-  farmId?: Prisma.StringNullableFilter<"Pregnancy"> | string | null
+  farmId?: Prisma.StringFilter<"Pregnancy"> | string
 }
 
 export type PregnancyCreateWithoutBreedingInput = {
@@ -514,7 +514,7 @@ export type PregnancyCreateWithoutBreedingInput = {
   result: $Enums.PregnancyResult
   observation?: string | null
   createdAt?: Date | string
-  farm?: Prisma.FarmCreateNestedOneWithoutPregnanciesInput
+  farm: Prisma.FarmCreateNestedOneWithoutPregnanciesInput
 }
 
 export type PregnancyUncheckedCreateWithoutBreedingInput = {
@@ -523,7 +523,7 @@ export type PregnancyUncheckedCreateWithoutBreedingInput = {
   result: $Enums.PregnancyResult
   observation?: string | null
   createdAt?: Date | string
-  farmId?: string | null
+  farmId: string
 }
 
 export type PregnancyCreateOrConnectWithoutBreedingInput = {
@@ -594,7 +594,7 @@ export type PregnancyCreateManyBreedingInput = {
   result: $Enums.PregnancyResult
   observation?: string | null
   createdAt?: Date | string
-  farmId?: string | null
+  farmId: string
 }
 
 export type PregnancyUpdateWithoutBreedingInput = {
@@ -603,7 +603,7 @@ export type PregnancyUpdateWithoutBreedingInput = {
   result?: Prisma.EnumPregnancyResultFieldUpdateOperationsInput | $Enums.PregnancyResult
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  farm?: Prisma.FarmUpdateOneWithoutPregnanciesNestedInput
+  farm?: Prisma.FarmUpdateOneRequiredWithoutPregnanciesNestedInput
 }
 
 export type PregnancyUncheckedUpdateWithoutBreedingInput = {
@@ -612,7 +612,7 @@ export type PregnancyUncheckedUpdateWithoutBreedingInput = {
   result?: Prisma.EnumPregnancyResultFieldUpdateOperationsInput | $Enums.PregnancyResult
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  farmId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type PregnancyUncheckedUpdateManyWithoutBreedingInput = {
@@ -621,7 +621,7 @@ export type PregnancyUncheckedUpdateManyWithoutBreedingInput = {
   result?: Prisma.EnumPregnancyResultFieldUpdateOperationsInput | $Enums.PregnancyResult
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  farmId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -635,7 +635,7 @@ export type PregnancySelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   createdAt?: boolean
   farmId?: boolean
   breeding?: boolean | Prisma.BreedingDefaultArgs<ExtArgs>
-  farm?: boolean | Prisma.Pregnancy$farmArgs<ExtArgs>
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pregnancy"]>
 
 export type PregnancySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -647,7 +647,7 @@ export type PregnancySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   createdAt?: boolean
   farmId?: boolean
   breeding?: boolean | Prisma.BreedingDefaultArgs<ExtArgs>
-  farm?: boolean | Prisma.Pregnancy$farmArgs<ExtArgs>
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pregnancy"]>
 
 export type PregnancySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -659,7 +659,7 @@ export type PregnancySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   createdAt?: boolean
   farmId?: boolean
   breeding?: boolean | Prisma.BreedingDefaultArgs<ExtArgs>
-  farm?: boolean | Prisma.Pregnancy$farmArgs<ExtArgs>
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pregnancy"]>
 
 export type PregnancySelectScalar = {
@@ -675,22 +675,22 @@ export type PregnancySelectScalar = {
 export type PregnancyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "breedingId" | "checkDate" | "result" | "observation" | "createdAt" | "farmId", ExtArgs["result"]["pregnancy"]>
 export type PregnancyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   breeding?: boolean | Prisma.BreedingDefaultArgs<ExtArgs>
-  farm?: boolean | Prisma.Pregnancy$farmArgs<ExtArgs>
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
 }
 export type PregnancyIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   breeding?: boolean | Prisma.BreedingDefaultArgs<ExtArgs>
-  farm?: boolean | Prisma.Pregnancy$farmArgs<ExtArgs>
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
 }
 export type PregnancyIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   breeding?: boolean | Prisma.BreedingDefaultArgs<ExtArgs>
-  farm?: boolean | Prisma.Pregnancy$farmArgs<ExtArgs>
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
 }
 
 export type $PregnancyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Pregnancy"
   objects: {
     breeding: Prisma.$BreedingPayload<ExtArgs>
-    farm: Prisma.$FarmPayload<ExtArgs> | null
+    farm: Prisma.$FarmPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -699,7 +699,7 @@ export type $PregnancyPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     result: $Enums.PregnancyResult
     observation: string | null
     createdAt: Date
-    farmId: string | null
+    farmId: string
   }, ExtArgs["result"]["pregnancy"]>
   composites: {}
 }
@@ -1095,7 +1095,7 @@ readonly fields: PregnancyFieldRefs;
 export interface Prisma__PregnancyClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   breeding<T extends Prisma.BreedingDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BreedingDefaultArgs<ExtArgs>>): Prisma.Prisma__BreedingClient<runtime.Types.Result.GetResult<Prisma.$BreedingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  farm<T extends Prisma.Pregnancy$farmArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Pregnancy$farmArgs<ExtArgs>>): Prisma.Prisma__FarmClient<runtime.Types.Result.GetResult<Prisma.$FarmPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  farm<T extends Prisma.FarmDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FarmDefaultArgs<ExtArgs>>): Prisma.Prisma__FarmClient<runtime.Types.Result.GetResult<Prisma.$FarmPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1530,25 +1530,6 @@ export type PregnancyDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Limit how many Pregnancies to delete.
    */
   limit?: number
-}
-
-/**
- * Pregnancy.farm
- */
-export type Pregnancy$farmArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Farm
-   */
-  select?: Prisma.FarmSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Farm
-   */
-  omit?: Prisma.FarmOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.FarmInclude<ExtArgs> | null
-  where?: Prisma.FarmWhereInput
 }
 
 /**

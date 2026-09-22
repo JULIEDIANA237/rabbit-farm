@@ -8,6 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
+const core_1 = require("@nestjs/core");
+const throttler_1 = require("@nestjs/throttler");
+const path_1 = require("path");
 const apollo_1 = require("@nestjs/apollo");
 const graphql_1 = require("@nestjs/graphql");
 const prisma_module_1 = require("./prisma/prisma.module");
@@ -28,6 +31,8 @@ const fattening_module_1 = require("./fattening/fattening.module");
 const health_module_1 = require("./health/health.module");
 const sales_module_1 = require("./sales/sales.module");
 const operations_module_1 = require("./operations/operations.module");
+const dashboard_module_1 = require("./dashboard/dashboard.module");
+const gql_throttler_guard_1 = require("./auth/guards/gql-throttler.guard");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -36,11 +41,19 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             graphql_1.GraphQLModule.forRoot({
                 driver: apollo_1.ApolloDriver,
-                autoSchemaFile: true,
-                context: ({ req }) => ({
+                autoSchemaFile: (0, path_1.join)(process.cwd(), 'src/schema.gql'),
+                sortSchema: true,
+                context: ({ req, res, }) => ({
                     req,
+                    res,
                 }),
             }),
+            throttler_1.ThrottlerModule.forRoot([
+                {
+                    ttl: 60000,
+                    limit: 300,
+                },
+            ]),
             prisma_module_1.PrismaModule,
             auth_module_1.AuthModule,
             farms_module_1.FarmsModule,
@@ -59,6 +72,13 @@ exports.AppModule = AppModule = __decorate([
             health_module_1.HealthModule,
             sales_module_1.SalesModule,
             operations_module_1.OperationsModule,
+            dashboard_module_1.DashboardModule,
+        ],
+        providers: [
+            {
+                provide: core_1.APP_GUARD,
+                useClass: gql_throttler_guard_1.GqlThrottlerGuard,
+            },
         ],
     })
 ], AppModule);

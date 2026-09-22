@@ -193,3 +193,18 @@ export const TaskStatus = {
 } as const
 
 export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus]
+
+
+export const TaskSourceType = {
+  MANUAL: 'MANUAL',
+  BREEDING: 'BREEDING',
+  PREGNANCY: 'PREGNANCY',
+  BIRTH: 'BIRTH',
+  WEANING: 'WEANING',
+  HEALTH: 'HEALTH',
+  SALE: 'SALE',
+  INVENTORY: 'INVENTORY',
+  OTHER: 'OTHER'
+} as const
+
+export type TaskSourceType = (typeof TaskSourceType)[keyof typeof TaskSourceType]

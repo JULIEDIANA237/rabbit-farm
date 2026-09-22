@@ -25,6 +25,9 @@ export class ExpenseModel {
   @Field({ nullable: true })
   reference?: string;
 
+  @Field({ nullable: true })
+  supplier?: string;
+
   @Field()
   createdAt: Date;
 

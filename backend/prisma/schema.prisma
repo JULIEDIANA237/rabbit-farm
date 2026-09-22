@@ -143,6 +143,18 @@ enum TaskStatus {
   CANCELLED
 }
 
+enum TaskSourceType {
+  MANUAL
+  BREEDING
+  PREGNANCY
+  BIRTH
+  WEANING
+  HEALTH
+  SALE
+  INVENTORY
+  OTHER
+}
+
 // ============================================================
 // USER
 // ============================================================
@@ -336,7 +348,6 @@ model CrossBreed {
 // ============================================================
 // RABBIT
 
-
 model Rabbit {
   id     String @id @default(uuid())
   farmId String
@@ -373,6 +384,8 @@ model Rabbit {
   adoptionHistory AdoptionRabbit[]
 
   weaningHistory WeaningRabbit[]
+
+  tasks Task[]
 
   breedingsAsFemale Breeding[] @relation("FemaleBreedings")
   breedingsAsMale   Breeding[] @relation("MaleBreedings")
@@ -499,10 +512,11 @@ model Pregnancy {
   breeding Breeding @relation(fields: [breedingId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
-  farm      Farm?    @relation(fields: [farmId], references: [id])
-  farmId    String?
+  farm      Farm     @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  farmId    String
 
   @@unique([breedingId])
+  @@index([farmId])
   @@index([breedingId])
   @@index([checkDate])
   @@index([result])
@@ -527,10 +541,11 @@ model Birth {
   litter Litter?
 
   createdAt DateTime @default(now())
-  farm      Farm?    @relation(fields: [farmId], references: [id])
-  farmId    String?
+  farm      Farm     @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  farmId    String
 
   @@unique([breedingId])
+  @@index([farmId])
   @@index([motherId])
   @@index([birthDate])
 }
@@ -886,6 +901,7 @@ model Expense {
 
   description String?
   reference   String?
+  supplier    String?
 
   farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)
 
@@ -907,6 +923,7 @@ model InventoryItem {
 
   unit String
 
+  currentStock Float  @default(0)
   minimumStock Float?
 
   description String?
@@ -955,6 +972,8 @@ model Task {
   title       String
   description String?
 
+  rabbitId String?
+
   dueDate DateTime
 
   priority TaskPriority @default(MEDIUM)
@@ -962,7 +981,7 @@ model Task {
 
   assignedToId String?
 
-  sourceType String?
+  sourceType TaskSourceType?
   sourceId   String?
 
   completedAt DateTime?
@@ -970,6 +989,8 @@ model Task {
   farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)
 
   assignedTo User? @relation("AssignedTasks", fields: [assignedToId], references: [id], onDelete: SetNull)
+
+  rabbit Rabbit? @relation(fields: [rabbitId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -979,5 +1000,6 @@ model Task {
   @@index([status])
   @@index([priority])
   @@index([assignedToId])
+  @@index([rabbitId])
   @@index([sourceType, sourceId])
 }
