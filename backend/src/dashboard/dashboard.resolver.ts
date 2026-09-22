@@ -18,9 +18,17 @@ export class DashboardResolver {
   ) {}
 
   @Query(() => DashboardModel)
-  dashboard(
-    @CurrentUser() currentUser: CurrentUserType,
-  ) {
-    return this.dashboardService.getDashboard(currentUser);
-  }
+@UseGuards(JwtAuthGuard)
+async dashboard(
+  @CurrentUser() currentUser: CurrentUserType,
+) {
+  console.log('>>> DASHBOARD RESOLVER');
+  console.log('>>> USER:', currentUser);
+
+  const result = await this.dashboardService.getDashboard(currentUser);
+
+  console.log('>>> DASHBOARD TERMINÉ');
+
+  return result;
+}
 }
