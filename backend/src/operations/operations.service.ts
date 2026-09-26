@@ -8,7 +8,6 @@ import {
 import {
   StockMovementType,
   TaskPriority,
-  TaskSourceType,
   TaskStatus,
 } from '../generated/prisma/client';
 

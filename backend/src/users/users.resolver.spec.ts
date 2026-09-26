@@ -1,12 +1,22 @@
+import { PassportModule } from '@nestjs/passport';
 import { Test, TestingModule } from '@nestjs/testing';
+
+import { PrismaService } from '../prisma/prisma.service';
+
 import { UsersResolver } from './users.resolver';
+import { UsersService } from './users.service';
 
 describe('UsersResolver', () => {
   let resolver: UsersResolver;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UsersResolver],
+      imports: [PassportModule.register({ defaultStrategy: 'jwt' })],
+      providers: [
+        UsersResolver,
+        UsersService,
+        { provide: PrismaService, useValue: {} },
+      ],
     }).compile();
 
     resolver = module.get<UsersResolver>(UsersResolver);

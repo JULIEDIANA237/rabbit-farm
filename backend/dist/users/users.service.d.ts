@@ -8,78 +8,78 @@ export declare class UsersService {
     constructor(prisma: PrismaService);
     findFarmMembers(currentUser: CurrentUserType): Promise<({
         user: {
+            id: string;
             email: string;
+            passwordHash: string;
             firstName: string;
             lastName: string;
-            id: string;
-            passwordHash: string;
             isActive: boolean;
             createdAt: Date;
             updatedAt: Date;
         };
     } & {
-        farmId: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        role: FarmRole;
         userId: string;
+        farmId: string;
+        role: FarmRole;
     })[]>;
     addMember(input: AddMemberInput, currentUser: CurrentUserType): Promise<{
         user: {
+            id: string;
             email: string;
+            passwordHash: string;
             firstName: string;
             lastName: string;
-            id: string;
-            passwordHash: string;
             isActive: boolean;
             createdAt: Date;
             updatedAt: Date;
         };
     } & {
-        farmId: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        role: FarmRole;
         userId: string;
+        farmId: string;
+        role: FarmRole;
     }>;
     updateMemberRole(input: UpdateMemberRoleInput, currentUser: CurrentUserType): Promise<{
         user: {
+            id: string;
             email: string;
+            passwordHash: string;
             firstName: string;
             lastName: string;
-            id: string;
-            passwordHash: string;
             isActive: boolean;
             createdAt: Date;
             updatedAt: Date;
         };
     } & {
-        farmId: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        role: FarmRole;
         userId: string;
+        farmId: string;
+        role: FarmRole;
     }>;
     removeMember(membershipId: string, currentUser: CurrentUserType): Promise<{
         user: {
+            id: string;
             email: string;
+            passwordHash: string;
             firstName: string;
             lastName: string;
-            id: string;
-            passwordHash: string;
             isActive: boolean;
             createdAt: Date;
             updatedAt: Date;
         };
     } & {
-        farmId: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        role: FarmRole;
         userId: string;
+        farmId: string;
+        role: FarmRole;
     }>;
 }

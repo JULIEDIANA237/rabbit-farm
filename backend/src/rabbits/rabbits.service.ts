@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 
 import {
-  RabbitIdentificationType,
   RabbitStatus,
 } from '../generated/prisma/client';
 import { PrismaService } from '../prisma/prisma.service';

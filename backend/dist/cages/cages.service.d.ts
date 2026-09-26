@@ -12,21 +12,21 @@ export declare class CagesService {
         rabbitMovements: {
             id: string;
             createdAt: Date;
-            endedAt: Date | null;
             rabbitId: string;
             cageId: string;
             startedAt: Date;
+            endedAt: Date | null;
             reason: string | null;
             observation: string | null;
         }[];
     } & {
-        farmId: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        farmId: string;
         type: string | null;
-        code: string;
         sectionId: string;
+        code: string;
         capacity: number;
         status: CageStatus;
     }, "rabbitMovements"> & {
@@ -37,13 +37,13 @@ export declare class CagesService {
         rabbitMovements: {
             rabbitId: string;
         }[];
-        farmId: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        farmId: string;
         type: string | null;
-        code: string;
         sectionId: string;
+        code: string;
         capacity: number;
         status: CageStatus;
     }[]>;
@@ -52,13 +52,13 @@ export declare class CagesService {
         rabbitMovements: {
             rabbitId: string;
         }[];
-        farmId: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        farmId: string;
         type: string | null;
-        code: string;
         sectionId: string;
+        code: string;
         capacity: number;
         status: CageStatus;
     }>;
@@ -66,21 +66,21 @@ export declare class CagesService {
         rabbitMovements: {
             id: string;
             createdAt: Date;
-            endedAt: Date | null;
             rabbitId: string;
             cageId: string;
             startedAt: Date;
+            endedAt: Date | null;
             reason: string | null;
             observation: string | null;
         }[];
     } & {
-        farmId: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        farmId: string;
         type: string | null;
-        code: string;
         sectionId: string;
+        code: string;
         capacity: number;
         status: CageStatus;
     }, "rabbitMovements"> & {
@@ -88,13 +88,13 @@ export declare class CagesService {
     }>;
     remove(id: string, currentUser: CurrentUserType): Promise<{
         rabbitCount: number;
-        farmId: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        farmId: string;
         type: string | null;
-        code: string;
         sectionId: string;
+        code: string;
         capacity: number;
         status: CageStatus;
     }>;
