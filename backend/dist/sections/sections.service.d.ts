@@ -11,12 +11,12 @@ export declare class SectionsService {
             cages: number;
         };
     } & {
+        farmId: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
         name: string;
         description: string | null;
-        farmId: string;
         type: import("./graphql/section-type.enum").SectionType;
     }, "_count"> & {
         cageCount: number;
@@ -26,12 +26,12 @@ export declare class SectionsService {
             cages: number;
         };
     } & {
+        farmId: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
         name: string;
         description: string | null;
-        farmId: string;
         type: import("./graphql/section-type.enum").SectionType;
     }, "_count"> & {
         cageCount: number;
@@ -41,12 +41,12 @@ export declare class SectionsService {
             cages: number;
         };
     } & {
+        farmId: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
         name: string;
         description: string | null;
-        farmId: string;
         type: import("./graphql/section-type.enum").SectionType;
     }, "_count"> & {
         cageCount: number;
@@ -56,12 +56,12 @@ export declare class SectionsService {
             cages: number;
         };
     } & {
+        farmId: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
         name: string;
         description: string | null;
-        farmId: string;
         type: import("./graphql/section-type.enum").SectionType;
     }, "_count"> & {
         cageCount: number;
@@ -71,12 +71,12 @@ export declare class SectionsService {
             cages: number;
         };
     } & {
+        farmId: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
         name: string;
         description: string | null;
-        farmId: string;
         type: import("./graphql/section-type.enum").SectionType;
     }, "_count"> & {
         cageCount: number;
