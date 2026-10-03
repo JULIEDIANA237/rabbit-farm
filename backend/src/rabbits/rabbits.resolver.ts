@@ -1,6 +1,7 @@
 import {
   Args,
   ID,
+  Int,
   Mutation,
   Query,
   Resolver,
@@ -28,6 +29,9 @@ import { RabbitModel } from './models/rabbit.model';
 import { RabbitIdentificationModel } from './models/rabbit-identification.model';
 
 import { RabbitsService } from './rabbits.service';
+import { RabbitsPaginationInput } from './inputs/rabbits-pagination.input';
+import { RabbitPageModel } from './models/paginated-rabbits.model';
+//import { PaginatedRabbitsModel } from './models/paginated-rabbits.model';
 
 @Resolver(() => RabbitModel)
 @UseGuards(
@@ -42,15 +46,36 @@ export class RabbitsResolver {
   /**
    * Liste des lapins.
    */
-  @Query(() => [RabbitModel])
-  async rabbits(
-    @CurrentUser()
-    currentUser: CurrentUserType,
-  ) {
-    return this.rabbitsService.findAll(
-      currentUser,
-    );
-  }
+  @Query(() => RabbitPageModel)
+async rabbits(
+  @CurrentUser() currentUser: CurrentUserType,
+
+  @Args('page', {
+    type: () => Int,
+    nullable: true,
+    defaultValue: 1,
+  })
+  page: number,
+
+  @Args('limit', {
+    type: () => Int,
+    nullable: true,
+    defaultValue: 10,
+  })
+  limit: number,
+
+  @Args('search', {
+    nullable: true,
+  })
+  search?: string,
+) {
+  return this.rabbitsService.findAll(
+    currentUser,
+    page,
+    limit,
+    search,
+  );
+}
 
   /**
    * Détail d'un lapin.
@@ -178,4 +203,22 @@ export class RabbitsResolver {
       currentUser,
     );
   }
+
+  @Query(() => RabbitPageModel)
+async rabbitsPaginated(
+  @Args('input', {
+    nullable: true,
+    type: () => RabbitsPaginationInput,
+  })
+  input: RabbitsPaginationInput = {},
+
+  @CurrentUser()
+  currentUser: CurrentUserType,
+) {
+  return this.rabbitsService.findPaginated(
+    currentUser,
+    input,
+  );
+}
+  
 }

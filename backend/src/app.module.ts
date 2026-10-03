@@ -34,6 +34,7 @@ import { HealthModule } from './health/health.module';
 import { SalesModule } from './sales/sales.module';
 import { OperationsModule } from './operations/operations.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { RabbitPhotosModule } from './rabbit-photos/rabbit-photos.module';
 
 import { GqlThrottlerGuard } from './auth/guards/gql-throttler.guard';
 
@@ -88,6 +89,7 @@ import { GqlThrottlerGuard } from './auth/guards/gql-throttler.guard';
     SalesModule,
     OperationsModule,
     DashboardModule,
+    RabbitPhotosModule,
   ],
 
   providers: [

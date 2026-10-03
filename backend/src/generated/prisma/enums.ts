@@ -208,3 +208,13 @@ export const TaskSourceType = {
 } as const
 
 export type TaskSourceType = (typeof TaskSourceType)[keyof typeof TaskSourceType]
+
+
+export const RabbitPurpose = {
+  BREEDER: 'BREEDER',
+  FATTENING: 'FATTENING',
+  FUTURE_BREEDER: 'FUTURE_BREEDER',
+  REFORM: 'REFORM'
+} as const
+
+export type RabbitPurpose = (typeof RabbitPurpose)[keyof typeof RabbitPurpose]

@@ -54,6 +54,9 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get rabbit(): Prisma.RabbitDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
+    get rabbitPhoto(): Prisma.RabbitPhotoDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
     get rabbitIdentification(): Prisma.RabbitIdentificationDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;

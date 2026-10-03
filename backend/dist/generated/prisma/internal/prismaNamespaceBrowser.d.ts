@@ -19,6 +19,7 @@ export declare const ModelName: {
     readonly Breed: "Breed";
     readonly CrossBreed: "CrossBreed";
     readonly Rabbit: "Rabbit";
+    readonly RabbitPhoto: "RabbitPhoto";
     readonly RabbitIdentification: "RabbitIdentification";
     readonly RabbitCageMovement: "RabbitCageMovement";
     readonly Breeding: "Breeding";
@@ -127,6 +128,7 @@ export declare const RabbitScalarFieldEnum: {
     readonly code: "code";
     readonly sex: "sex";
     readonly status: "status";
+    readonly purpose: "purpose";
     readonly breedId: "breedId";
     readonly crossBreedId: "crossBreedId";
     readonly fatherId: "fatherId";
@@ -140,6 +142,16 @@ export declare const RabbitScalarFieldEnum: {
     readonly updatedAt: "updatedAt";
 };
 export type RabbitScalarFieldEnum = (typeof RabbitScalarFieldEnum)[keyof typeof RabbitScalarFieldEnum];
+export declare const RabbitPhotoScalarFieldEnum: {
+    readonly id: "id";
+    readonly rabbitId: "rabbitId";
+    readonly url: "url";
+    readonly filename: "filename";
+    readonly mimeType: "mimeType";
+    readonly isPrimary: "isPrimary";
+    readonly createdAt: "createdAt";
+};
+export type RabbitPhotoScalarFieldEnum = (typeof RabbitPhotoScalarFieldEnum)[keyof typeof RabbitPhotoScalarFieldEnum];
 export declare const RabbitIdentificationScalarFieldEnum: {
     readonly id: "id";
     readonly rabbitId: "rabbitId";

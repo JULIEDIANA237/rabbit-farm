@@ -142,3 +142,10 @@ export declare const TaskSourceType: {
     readonly OTHER: "OTHER";
 };
 export type TaskSourceType = (typeof TaskSourceType)[keyof typeof TaskSourceType];
+export declare const RabbitPurpose: {
+    readonly BREEDER: "BREEDER";
+    readonly FATTENING: "FATTENING";
+    readonly FUTURE_BREEDER: "FUTURE_BREEDER";
+    readonly REFORM: "REFORM";
+};
+export type RabbitPurpose = (typeof RabbitPurpose)[keyof typeof RabbitPurpose];

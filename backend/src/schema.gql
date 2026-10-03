@@ -262,9 +262,9 @@ input CreateRabbitInput {
   color: String
   crossBreedId: ID
   fatherId: ID
-  geneticType: String
   motherId: ID
   observations: String
+  purpose: RabbitPurpose
   sex: RabbitSex!
   weight: Float
 }
@@ -692,7 +692,8 @@ type Query {
   rabbit(id: ID!): RabbitModel!
   rabbitCageMovements(rabbitId: ID!): [RabbitCageMovementModel!]!
   rabbitIdentifications(rabbitId: ID!): [RabbitIdentificationModel!]!
-  rabbits: [RabbitModel!]!
+  rabbits(limit: Int = 10, page: Int = 1, search: String): RabbitPageModel!
+  rabbitsPaginated(input: RabbitsPaginationInput): RabbitPageModel!
   sale(id: ID!): SaleModel!
   sales: [SaleModel!]!
   section(id: ID!): SectionModel!
@@ -740,15 +741,44 @@ type RabbitModel {
   createdAt: DateTime!
   crossBreedId: String
   fatherId: String
-  geneticType: String
   id: ID!
   identifications: [RabbitIdentificationModel!]!
   motherId: String
   observations: String
+  photos: [RabbitPhotoModel!]!
+  purpose: RabbitPurpose!
   sex: RabbitSex!
   status: RabbitStatus!
   updatedAt: DateTime!
   weight: Float
+}
+
+type RabbitPageModel {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  items: [RabbitModel!]!
+  page: Int!
+  pageSize: Int!
+  total: Int!
+  totalPages: Int!
+}
+
+type RabbitPhotoModel {
+  createdAt: DateTime!
+  filename: String!
+  id: ID!
+  isPrimary: Boolean!
+  mimeType: String!
+  rabbitId: ID!
+  url: String!
+}
+
+"""Destination ou rôle du lapin dans l’élevage."""
+enum RabbitPurpose {
+  BREEDER
+  FATTENING
+  FUTURE_BREEDER
+  REFORM
 }
 
 enum RabbitSex {
@@ -763,6 +793,12 @@ enum RabbitStatus {
   DEAD
   SOLD
   TRANSFERRED
+}
+
+input RabbitsPaginationInput {
+  page: Int = 1
+  pageSize: Int = 10
+  search: String
 }
 
 input RegisterInput {
@@ -926,6 +962,8 @@ input UpdateRabbitInput {
   crossBreedId: ID
   id: ID!
   observations: String
+  purpose: RabbitPurpose
+  sex: RabbitSex
   status: RabbitStatus
   weight: Float
 }

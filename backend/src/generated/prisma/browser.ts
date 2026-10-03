@@ -58,6 +58,11 @@ export type CrossBreed = Prisma.CrossBreedModel
  */
 export type Rabbit = Prisma.RabbitModel
 /**
+ * Model RabbitPhoto
+ * 
+ */
+export type RabbitPhoto = Prisma.RabbitPhotoModel
+/**
  * Model RabbitIdentification
  * 
  */

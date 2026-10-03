@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TaskSourceType = exports.TaskStatus = exports.TaskPriority = exports.StockMovementType = exports.InventoryItemType = exports.ExpenseCategory = exports.PaymentMethod = exports.SaleStatus = exports.FatteningLotStatus = exports.AdoptionReason = exports.LitterStatus = exports.PregnancyResult = exports.BreedingStatus = exports.RabbitIdentificationType = exports.RabbitStatus = exports.RabbitSex = exports.CageStatus = exports.SectionType = exports.FarmRole = void 0;
+exports.RabbitPurpose = exports.TaskSourceType = exports.TaskStatus = exports.TaskPriority = exports.StockMovementType = exports.InventoryItemType = exports.ExpenseCategory = exports.PaymentMethod = exports.SaleStatus = exports.FatteningLotStatus = exports.AdoptionReason = exports.LitterStatus = exports.PregnancyResult = exports.BreedingStatus = exports.RabbitIdentificationType = exports.RabbitStatus = exports.RabbitSex = exports.CageStatus = exports.SectionType = exports.FarmRole = void 0;
 exports.FarmRole = {
     ADMIN: 'ADMIN',
     BREEDING_MANAGER: 'BREEDING_MANAGER',
@@ -125,5 +125,11 @@ exports.TaskSourceType = {
     SALE: 'SALE',
     INVENTORY: 'INVENTORY',
     OTHER: 'OTHER'
+};
+exports.RabbitPurpose = {
+    BREEDER: 'BREEDER',
+    FATTENING: 'FATTENING',
+    FUTURE_BREEDER: 'FUTURE_BREEDER',
+    REFORM: 'REFORM'
 };
 //# sourceMappingURL=enums.js.map

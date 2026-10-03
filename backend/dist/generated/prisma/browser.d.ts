@@ -10,6 +10,7 @@ export type Cage = Prisma.CageModel;
 export type Breed = Prisma.BreedModel;
 export type CrossBreed = Prisma.CrossBreedModel;
 export type Rabbit = Prisma.RabbitModel;
+export type RabbitPhoto = Prisma.RabbitPhotoModel;
 export type RabbitIdentification = Prisma.RabbitIdentificationModel;
 export type RabbitCageMovement = Prisma.RabbitCageMovementModel;
 export type Breeding = Prisma.BreedingModel;

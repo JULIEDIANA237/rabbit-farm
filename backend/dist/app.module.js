@@ -32,6 +32,7 @@ const health_module_1 = require("./health/health.module");
 const sales_module_1 = require("./sales/sales.module");
 const operations_module_1 = require("./operations/operations.module");
 const dashboard_module_1 = require("./dashboard/dashboard.module");
+const rabbit_photos_module_1 = require("./rabbit-photos/rabbit-photos.module");
 const gql_throttler_guard_1 = require("./auth/guards/gql-throttler.guard");
 let AppModule = class AppModule {
 };
@@ -73,6 +74,7 @@ exports.AppModule = AppModule = __decorate([
             sales_module_1.SalesModule,
             operations_module_1.OperationsModule,
             dashboard_module_1.DashboardModule,
+            rabbit_photos_module_1.RabbitPhotosModule,
         ],
         providers: [
             {

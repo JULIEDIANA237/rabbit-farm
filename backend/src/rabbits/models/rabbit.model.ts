@@ -6,8 +6,10 @@ import {
 
 import { RabbitSex } from '../graphql/rabbit-sex.enum';
 import { RabbitStatus } from '../graphql/rabbit-status.enum';
+import { RabbitPurpose } from '../graphql/rabbit-purpose.enum';
 
 import { RabbitIdentificationModel } from './rabbit-identification.model';
+import { RabbitPhotoModel } from './rabbit-photo.model';
 
 @ObjectType()
 export class RabbitModel {
@@ -22,6 +24,9 @@ export class RabbitModel {
 
   @Field(() => RabbitStatus)
   status: RabbitStatus;
+
+  @Field(() => RabbitPurpose)
+  purpose: RabbitPurpose;
 
   @Field({ nullable: true })
   breedId?: string;
@@ -38,11 +43,10 @@ export class RabbitModel {
   @Field({ nullable: true })
   birthDate?: Date;
 
-  @Field(() => ID, { nullable: true })
+  @Field(() => ID, {
+    nullable: true,
+  })
   birthLitterId?: string;
-
-  @Field({ nullable: true })
-  geneticType?: string;
 
   @Field({ nullable: true })
   color?: string;
@@ -55,6 +59,9 @@ export class RabbitModel {
 
   @Field(() => [RabbitIdentificationModel])
   identifications: RabbitIdentificationModel[];
+
+  @Field(() => [RabbitPhotoModel])
+  photos: RabbitPhotoModel[];
 
   @Field()
   createdAt: Date;

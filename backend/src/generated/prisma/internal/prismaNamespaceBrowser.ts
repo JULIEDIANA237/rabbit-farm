@@ -59,6 +59,7 @@ export const ModelName = {
   Breed: 'Breed',
   CrossBreed: 'CrossBreed',
   Rabbit: 'Rabbit',
+  RabbitPhoto: 'RabbitPhoto',
   RabbitIdentification: 'RabbitIdentification',
   RabbitCageMovement: 'RabbitCageMovement',
   Breeding: 'Breeding',
@@ -197,6 +198,7 @@ export const RabbitScalarFieldEnum = {
   code: 'code',
   sex: 'sex',
   status: 'status',
+  purpose: 'purpose',
   breedId: 'breedId',
   crossBreedId: 'crossBreedId',
   fatherId: 'fatherId',
@@ -211,6 +213,19 @@ export const RabbitScalarFieldEnum = {
 } as const
 
 export type RabbitScalarFieldEnum = (typeof RabbitScalarFieldEnum)[keyof typeof RabbitScalarFieldEnum]
+
+
+export const RabbitPhotoScalarFieldEnum = {
+  id: 'id',
+  rabbitId: 'rabbitId',
+  url: 'url',
+  filename: 'filename',
+  mimeType: 'mimeType',
+  isPrimary: 'isPrimary',
+  createdAt: 'createdAt'
+} as const
+
+export type RabbitPhotoScalarFieldEnum = (typeof RabbitPhotoScalarFieldEnum)[keyof typeof RabbitPhotoScalarFieldEnum]
 
 
 export const RabbitIdentificationScalarFieldEnum = {

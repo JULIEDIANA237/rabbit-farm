@@ -5,6 +5,7 @@ import {
 } from '@nestjs/graphql';
 
 import { RabbitSex } from '../graphql/rabbit-sex.enum';
+import { RabbitPurpose } from '../graphql/rabbit-purpose.enum';
 
 @InputType()
 export class CreateRabbitInput {
@@ -13,6 +14,11 @@ export class CreateRabbitInput {
 
   @Field(() => RabbitSex)
   sex: RabbitSex;
+
+  @Field(() => RabbitPurpose, {
+    nullable: true,
+  })
+  purpose?: RabbitPurpose;
 
   @Field(() => ID, {
     nullable: true,
@@ -38,11 +44,6 @@ export class CreateRabbitInput {
     nullable: true,
   })
   birthDate?: Date;
-
-  @Field({
-    nullable: true,
-  })
-  geneticType?: string;
 
   @Field({
     nullable: true,

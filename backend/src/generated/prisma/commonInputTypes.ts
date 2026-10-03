@@ -215,6 +215,13 @@ export type EnumRabbitStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumRabbitStatusFilter<$PrismaModel> | $Enums.RabbitStatus
 }
 
+export type EnumRabbitPurposeFilter<$PrismaModel = never> = {
+  equals?: $Enums.RabbitPurpose | Prisma.EnumRabbitPurposeFieldRefInput<$PrismaModel>
+  in?: $Enums.RabbitPurpose[] | Prisma.ListEnumRabbitPurposeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RabbitPurpose[] | Prisma.ListEnumRabbitPurposeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRabbitPurposeFilter<$PrismaModel> | $Enums.RabbitPurpose
+}
+
 export type DateTimeNullableFilter<$PrismaModel = never> = {
   equals?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | null
   in?: Date[] | string[] | Prisma.ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -255,6 +262,16 @@ export type EnumRabbitStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumRabbitStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumRabbitStatusFilter<$PrismaModel>
+}
+
+export type EnumRabbitPurposeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.RabbitPurpose | Prisma.EnumRabbitPurposeFieldRefInput<$PrismaModel>
+  in?: $Enums.RabbitPurpose[] | Prisma.ListEnumRabbitPurposeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RabbitPurpose[] | Prisma.ListEnumRabbitPurposeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRabbitPurposeWithAggregatesFilter<$PrismaModel> | $Enums.RabbitPurpose
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumRabbitPurposeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumRabbitPurposeFilter<$PrismaModel>
 }
 
 export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -830,6 +847,13 @@ export type NestedEnumRabbitStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumRabbitStatusFilter<$PrismaModel> | $Enums.RabbitStatus
 }
 
+export type NestedEnumRabbitPurposeFilter<$PrismaModel = never> = {
+  equals?: $Enums.RabbitPurpose | Prisma.EnumRabbitPurposeFieldRefInput<$PrismaModel>
+  in?: $Enums.RabbitPurpose[] | Prisma.ListEnumRabbitPurposeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RabbitPurpose[] | Prisma.ListEnumRabbitPurposeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRabbitPurposeFilter<$PrismaModel> | $Enums.RabbitPurpose
+}
+
 export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
   equals?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | null
   in?: Date[] | string[] | Prisma.ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -870,6 +894,16 @@ export type NestedEnumRabbitStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumRabbitStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumRabbitStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumRabbitPurposeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.RabbitPurpose | Prisma.EnumRabbitPurposeFieldRefInput<$PrismaModel>
+  in?: $Enums.RabbitPurpose[] | Prisma.ListEnumRabbitPurposeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RabbitPurpose[] | Prisma.ListEnumRabbitPurposeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRabbitPurposeWithAggregatesFilter<$PrismaModel> | $Enums.RabbitPurpose
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumRabbitPurposeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumRabbitPurposeFilter<$PrismaModel>
 }
 
 export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {

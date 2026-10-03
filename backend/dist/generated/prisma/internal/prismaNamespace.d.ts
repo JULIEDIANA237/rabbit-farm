@@ -168,6 +168,7 @@ export declare const ModelName: {
     readonly Breed: "Breed";
     readonly CrossBreed: "CrossBreed";
     readonly Rabbit: "Rabbit";
+    readonly RabbitPhoto: "RabbitPhoto";
     readonly RabbitIdentification: "RabbitIdentification";
     readonly RabbitCageMovement: "RabbitCageMovement";
     readonly Breeding: "Breeding";
@@ -202,7 +203,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "user" | "farm" | "farmMembership" | "section" | "cage" | "breed" | "crossBreed" | "rabbit" | "rabbitIdentification" | "rabbitCageMovement" | "breeding" | "pregnancy" | "birth" | "litter" | "litterAdoption" | "adoptionRabbit" | "weaning" | "weaningRabbit" | "fatteningLot" | "lotMembership" | "weighing" | "healthRecord" | "customer" | "sale" | "saleItem" | "payment" | "expense" | "inventoryItem" | "stockMovement" | "task";
+        modelProps: "user" | "farm" | "farmMembership" | "section" | "cage" | "breed" | "crossBreed" | "rabbit" | "rabbitPhoto" | "rabbitIdentification" | "rabbitCageMovement" | "breeding" | "pregnancy" | "birth" | "litter" | "litterAdoption" | "adoptionRabbit" | "weaning" | "weaningRabbit" | "fatteningLot" | "lotMembership" | "weighing" | "healthRecord" | "customer" | "sale" | "saleItem" | "payment" | "expense" | "inventoryItem" | "stockMovement" | "task";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -795,6 +796,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 count: {
                     args: Prisma.RabbitCountArgs<ExtArgs>;
                     result: runtime.Types.Utils.Optional<Prisma.RabbitCountAggregateOutputType> | number;
+                };
+            };
+        };
+        RabbitPhoto: {
+            payload: Prisma.$RabbitPhotoPayload<ExtArgs>;
+            fields: Prisma.RabbitPhotoFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.RabbitPhotoFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RabbitPhotoPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.RabbitPhotoFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RabbitPhotoPayload>;
+                };
+                findFirst: {
+                    args: Prisma.RabbitPhotoFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RabbitPhotoPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.RabbitPhotoFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RabbitPhotoPayload>;
+                };
+                findMany: {
+                    args: Prisma.RabbitPhotoFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RabbitPhotoPayload>[];
+                };
+                create: {
+                    args: Prisma.RabbitPhotoCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RabbitPhotoPayload>;
+                };
+                createMany: {
+                    args: Prisma.RabbitPhotoCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.RabbitPhotoCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RabbitPhotoPayload>[];
+                };
+                delete: {
+                    args: Prisma.RabbitPhotoDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RabbitPhotoPayload>;
+                };
+                update: {
+                    args: Prisma.RabbitPhotoUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RabbitPhotoPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.RabbitPhotoDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.RabbitPhotoUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.RabbitPhotoUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RabbitPhotoPayload>[];
+                };
+                upsert: {
+                    args: Prisma.RabbitPhotoUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RabbitPhotoPayload>;
+                };
+                aggregate: {
+                    args: Prisma.RabbitPhotoAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateRabbitPhoto>;
+                };
+                groupBy: {
+                    args: Prisma.RabbitPhotoGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.RabbitPhotoGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.RabbitPhotoCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.RabbitPhotoCountAggregateOutputType> | number;
                 };
             };
         };
@@ -2534,6 +2609,7 @@ export declare const RabbitScalarFieldEnum: {
     readonly code: "code";
     readonly sex: "sex";
     readonly status: "status";
+    readonly purpose: "purpose";
     readonly breedId: "breedId";
     readonly crossBreedId: "crossBreedId";
     readonly fatherId: "fatherId";
@@ -2547,6 +2623,16 @@ export declare const RabbitScalarFieldEnum: {
     readonly updatedAt: "updatedAt";
 };
 export type RabbitScalarFieldEnum = (typeof RabbitScalarFieldEnum)[keyof typeof RabbitScalarFieldEnum];
+export declare const RabbitPhotoScalarFieldEnum: {
+    readonly id: "id";
+    readonly rabbitId: "rabbitId";
+    readonly url: "url";
+    readonly filename: "filename";
+    readonly mimeType: "mimeType";
+    readonly isPrimary: "isPrimary";
+    readonly createdAt: "createdAt";
+};
+export type RabbitPhotoScalarFieldEnum = (typeof RabbitPhotoScalarFieldEnum)[keyof typeof RabbitPhotoScalarFieldEnum];
 export declare const RabbitIdentificationScalarFieldEnum: {
     readonly id: "id";
     readonly rabbitId: "rabbitId";
@@ -2852,6 +2938,8 @@ export type EnumRabbitSexFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 export type ListEnumRabbitSexFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RabbitSex[]'>;
 export type EnumRabbitStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RabbitStatus'>;
 export type ListEnumRabbitStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RabbitStatus[]'>;
+export type EnumRabbitPurposeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RabbitPurpose'>;
+export type ListEnumRabbitPurposeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RabbitPurpose[]'>;
 export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>;
 export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>;
 export type EnumRabbitIdentificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RabbitIdentificationType'>;
@@ -2918,6 +3006,7 @@ export type GlobalOmitConfig = {
     breed?: Prisma.BreedOmit;
     crossBreed?: Prisma.CrossBreedOmit;
     rabbit?: Prisma.RabbitOmit;
+    rabbitPhoto?: Prisma.RabbitPhotoOmit;
     rabbitIdentification?: Prisma.RabbitIdentificationOmit;
     rabbitCageMovement?: Prisma.RabbitCageMovementOmit;
     breeding?: Prisma.BreedingOmit;

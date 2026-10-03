@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.NullsOrder = exports.QueryMode = exports.SortOrder = exports.TaskScalarFieldEnum = exports.StockMovementScalarFieldEnum = exports.InventoryItemScalarFieldEnum = exports.ExpenseScalarFieldEnum = exports.PaymentScalarFieldEnum = exports.SaleItemScalarFieldEnum = exports.SaleScalarFieldEnum = exports.CustomerScalarFieldEnum = exports.HealthRecordScalarFieldEnum = exports.WeighingScalarFieldEnum = exports.LotMembershipScalarFieldEnum = exports.FatteningLotScalarFieldEnum = exports.WeaningRabbitScalarFieldEnum = exports.WeaningScalarFieldEnum = exports.AdoptionRabbitScalarFieldEnum = exports.LitterAdoptionScalarFieldEnum = exports.LitterScalarFieldEnum = exports.BirthScalarFieldEnum = exports.PregnancyScalarFieldEnum = exports.BreedingScalarFieldEnum = exports.RabbitCageMovementScalarFieldEnum = exports.RabbitIdentificationScalarFieldEnum = exports.RabbitScalarFieldEnum = exports.CrossBreedScalarFieldEnum = exports.BreedScalarFieldEnum = exports.CageScalarFieldEnum = exports.SectionScalarFieldEnum = exports.FarmMembershipScalarFieldEnum = exports.FarmScalarFieldEnum = exports.UserScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
+exports.NullsOrder = exports.QueryMode = exports.SortOrder = exports.TaskScalarFieldEnum = exports.StockMovementScalarFieldEnum = exports.InventoryItemScalarFieldEnum = exports.ExpenseScalarFieldEnum = exports.PaymentScalarFieldEnum = exports.SaleItemScalarFieldEnum = exports.SaleScalarFieldEnum = exports.CustomerScalarFieldEnum = exports.HealthRecordScalarFieldEnum = exports.WeighingScalarFieldEnum = exports.LotMembershipScalarFieldEnum = exports.FatteningLotScalarFieldEnum = exports.WeaningRabbitScalarFieldEnum = exports.WeaningScalarFieldEnum = exports.AdoptionRabbitScalarFieldEnum = exports.LitterAdoptionScalarFieldEnum = exports.LitterScalarFieldEnum = exports.BirthScalarFieldEnum = exports.PregnancyScalarFieldEnum = exports.BreedingScalarFieldEnum = exports.RabbitCageMovementScalarFieldEnum = exports.RabbitIdentificationScalarFieldEnum = exports.RabbitPhotoScalarFieldEnum = exports.RabbitScalarFieldEnum = exports.CrossBreedScalarFieldEnum = exports.BreedScalarFieldEnum = exports.CageScalarFieldEnum = exports.SectionScalarFieldEnum = exports.FarmMembershipScalarFieldEnum = exports.FarmScalarFieldEnum = exports.UserScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/index-browser"));
 exports.Decimal = runtime.Decimal;
 exports.NullTypes = {
@@ -53,6 +53,7 @@ exports.ModelName = {
     Breed: 'Breed',
     CrossBreed: 'CrossBreed',
     Rabbit: 'Rabbit',
+    RabbitPhoto: 'RabbitPhoto',
     RabbitIdentification: 'RabbitIdentification',
     RabbitCageMovement: 'RabbitCageMovement',
     Breeding: 'Breeding',
@@ -152,6 +153,7 @@ exports.RabbitScalarFieldEnum = {
     code: 'code',
     sex: 'sex',
     status: 'status',
+    purpose: 'purpose',
     breedId: 'breedId',
     crossBreedId: 'crossBreedId',
     fatherId: 'fatherId',
@@ -163,6 +165,15 @@ exports.RabbitScalarFieldEnum = {
     birthLitterId: 'birthLitterId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
+};
+exports.RabbitPhotoScalarFieldEnum = {
+    id: 'id',
+    rabbitId: 'rabbitId',
+    url: 'url',
+    filename: 'filename',
+    mimeType: 'mimeType',
+    isPrimary: 'isPrimary',
+    createdAt: 'createdAt'
 };
 exports.RabbitIdentificationScalarFieldEnum = {
     id: 'id',

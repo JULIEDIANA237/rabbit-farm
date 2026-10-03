@@ -5,6 +5,8 @@ import {
 } from '@nestjs/graphql';
 
 import { RabbitStatus } from '../graphql/rabbit-status.enum';
+import { RabbitPurpose } from '../graphql/rabbit-purpose.enum';
+import { RabbitSex } from '../graphql/rabbit-sex.enum';
 
 @InputType()
 export class UpdateRabbitInput {
@@ -16,10 +18,20 @@ export class UpdateRabbitInput {
   })
   code?: string;
 
+  @Field(() => RabbitSex, {
+    nullable: true,
+  })
+  sex?: RabbitSex;
+
   @Field(() => RabbitStatus, {
     nullable: true,
   })
   status?: RabbitStatus;
+
+  @Field(() => RabbitPurpose, {
+    nullable: true,
+  })
+  purpose?: RabbitPurpose;
 
   @Field(() => ID, {
     nullable: true,
