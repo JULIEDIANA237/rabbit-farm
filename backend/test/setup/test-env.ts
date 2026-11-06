@@ -13,7 +13,10 @@ if (!/test/i.test(new URL(url).pathname)) {
 }
 
 process.env.DATABASE_URL = url;
-delete process.env.DATABASE_URL_UNPOOLED;
+// PrismaService et prisma.config.ts préfèrent DATABASE_URL_UNPOOLED, et
+// dotenv recharge .env : on le fixe (au lieu de le supprimer) pour que
+// les tests ne visent jamais la vraie base.
+process.env.DATABASE_URL_UNPOOLED = url;
 process.env.JWT_SECRET = process.env.JWT_SECRET ?? 'test-secret';
 
 // Le stockage des photos (Supabase) n'est pas sollicité par ces tests.

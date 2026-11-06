@@ -13,6 +13,12 @@ export class PrismaService
       connectionString:
         process.env.DATABASE_URL_UNPOOLED ??
         process.env.DATABASE_URL,
+      // Laisse à Neon le temps de sortir de veille et garde les connexions
+      // actives pour limiter les reconnexions depuis une liaison lente.
+      connectionTimeoutMillis: Number(
+        process.env.DB_CONNECT_TIMEOUT_MS ?? 30000,
+      ),
+      keepAlive: true,
     });
 
     // Neon (us-east-2) est loin et peut sortir de veille : les délais
