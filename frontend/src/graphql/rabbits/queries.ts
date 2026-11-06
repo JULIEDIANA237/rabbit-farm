@@ -4,8 +4,6 @@ const RABBIT_PHOTO_FIELDS = `
   id
   rabbitId
   url
-  filename
-  mimeType
   isPrimary
   createdAt
 `;
@@ -27,11 +25,12 @@ export const GET_RABBITS_PAGINATED = gql`
         fatherId
         motherId
 
-        photos {
-          id
-          url
-          isPrimary
-        }
+      photos {
+        id
+        url
+        isPrimary
+        createdAt
+      }
       }
 
       total
@@ -72,6 +71,13 @@ export const GET_RABBIT = gql`
       observations
       createdAt
       updatedAt
+
+      photos {
+        id
+        url
+        isPrimary
+        createdAt
+      }
 
       identifications {
         id

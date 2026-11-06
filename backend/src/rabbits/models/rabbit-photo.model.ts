@@ -16,14 +16,11 @@ export class RabbitPhotoModel {
   url: string;
 
   @Field()
-  filename: string;
-
-  @Field()
-  mimeType: string;
-
-  @Field()
   isPrimary: boolean;
 
   @Field()
   createdAt: Date;
+
+  @Field()
+  updatedAt: Date;
 }

@@ -1,122 +1,209 @@
 'use client';
 
-import { useRef, useState } from 'react';
-
+import Image from 'next/image';
 import {
   Camera,
-  Check,
   ImagePlus,
-  Loader2,
   Star,
   Trash2,
+  X,
 } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { useMutation } from '@apollo/client/react';
 
 import type { RabbitPhoto } from '@/types/rabbit';
 
-import { RabbitPhoto as RabbitPhotoDisplay } from './RabbitPhoto';
+import {
+  ADD_RABBIT_PHOTO,
+  DELETE_RABBIT_PHOTO,
+  SET_PRIMARY_RABBIT_PHOTO,
+} from '@/graphql/rabbits/photo-mutations';
 
 interface RabbitPhotoManagerProps {
   rabbitId: string;
   photos: RabbitPhoto[];
-  uploading?: boolean;
-  deleting?: boolean;
-  settingPrimary?: boolean;
-
-  onUpload: (file: File) => Promise<void>;
-  onDelete: (photoId: string) => Promise<void>;
-  onSetPrimary: (photoId: string) => Promise<void>;
+  onChanged?: () => void;
 }
 
 export function RabbitPhotoManager({
   rabbitId,
   photos,
-  uploading = false,
-  deleting = false,
-  settingPrimary = false,
-  onUpload,
-  onDelete,
-  onSetPrimary,
+  onChanged,
 }: RabbitPhotoManagerProps) {
-  const galleryInputRef =
-    useRef<HTMLInputElement>(null);
+  const galleryInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
-  const cameraInputRef =
-    useRef<HTMLInputElement>(null);
+  const [preview, setPreview] =
+    useState<RabbitPhoto | null>(null);
 
-  const [error, setError] = useState<string | null>(
-    null,
+  const [addPhoto] = useMutation(ADD_RABBIT_PHOTO);
+  const [setPrimary] = useMutation(
+    SET_PRIMARY_RABBIT_PHOTO,
+  );
+  const [deletePhoto] = useMutation(
+    DELETE_RABBIT_PHOTO,
   );
 
-  const handleFile = async (
-    file?: File,
-  ) => {
-    if (!file) return;
+  const primaryPhoto =
+    photos.find((photo) => photo.isPrimary) ??
+    photos[0] ??
+    null;
 
-    setError(null);
+  async function handleFile(file: File) {
+    /*
+     * Cette étape suppose que ton backend dispose
+     * d'un endpoint/service d'upload.
+     *
+     * Ici on utilise temporairement une URL locale
+     * pour garder le composant indépendant du stockage.
+     *
+     * Dès que ton upload réel est branché :
+     * 1. upload du File
+     * 2. récupération de l'URL
+     * 3. addRabbitPhoto()
+     */
 
-    if (!file.type.startsWith('image/')) {
-      setError(
-        'Veuillez sélectionner une image.',
-      );
-      return;
-    }
-
-    if (file.size > 5 * 1024 * 1024) {
-      setError(
-        'La photo ne doit pas dépasser 5 Mo.',
-      );
-      return;
-    }
+    const localUrl = URL.createObjectURL(file);
 
     try {
-      await onUpload(file);
-    } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : 'Impossible de charger la photo.',
+      await addPhoto({
+        variables: {
+          rabbitId,
+          url: localUrl,
+          isPrimary: photos.length === 0,
+        },
+      });
+
+      onChanged?.();
+    } catch (error) {
+      console.error(
+        '[RABBIT PHOTO] Erreur upload:',
+        error,
       );
     }
-  };
+  }
+
+  async function handleSetPrimary(
+    photoId: string,
+  ) {
+    try {
+      await setPrimary({
+        variables: {
+          rabbitId,
+          photoId,
+        },
+      });
+
+      onChanged?.();
+    } catch (error) {
+      console.error(
+        '[RABBIT PHOTO] Erreur photo principale:',
+        error,
+      );
+    }
+  }
+
+  async function handleDelete(photoId: string) {
+    try {
+      await deletePhoto({
+        variables: {
+          rabbitId,
+          photoId,
+        },
+      });
+
+      setPreview(null);
+      onChanged?.();
+    } catch (error) {
+      console.error(
+        '[RABBIT PHOTO] Erreur suppression:',
+        error,
+      );
+    }
+  }
+
+  function handleInputChange(
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    void handleFile(file);
+
+    event.target.value = '';
+  }
 
   return (
-    <section className="space-y-5">
-      <div>
-        <h2 className="text-lg font-semibold text-slate-900">
-          Photos du lapin
-        </h2>
+    <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="mb-4 flex items-center justify-between">
+        <div>
+          <h2 className="font-semibold text-slate-900">
+            Photos
+          </h2>
 
-        <p className="mt-1 text-sm text-slate-500">
-          Ajoutez une photo pour faciliter
-          l&apos;identification et le suivi.
-        </p>
+          <p className="text-sm text-slate-500">
+            Photo principale et galerie du lapin
+          </p>
+        </div>
+
+        <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+          {photos.length} photo
+          {photos.length > 1 ? 's' : ''}
+        </span>
       </div>
 
-      {error && (
-        <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-          {error}
+      {primaryPhoto ? (
+        <button
+          type="button"
+          onClick={() => setPreview(primaryPhoto)}
+          className="group relative mb-4 aspect-[4/3] w-full overflow-hidden rounded-2xl bg-slate-100"
+        >
+          <Image
+            src={primaryPhoto.url}
+            alt="Photo principale du lapin"
+            fill
+            className="object-cover transition duration-300 group-hover:scale-105"
+            unoptimized
+          />
+
+          <div className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-700 shadow">
+            <span className="inline-flex items-center gap-1">
+              <Star size={13} className="fill-current" />
+              Principale
+            </span>
+          </div>
+        </button>
+      ) : (
+        <div className="mb-4 flex aspect-[4/3] items-center justify-center rounded-2xl bg-slate-100 text-center">
+          <div>
+            <Camera
+              size={40}
+              className="mx-auto text-slate-400"
+            />
+
+            <p className="mt-2 text-sm text-slate-500">
+              Aucune photo
+            </p>
+          </div>
         </div>
       )}
 
-      <div className="flex flex-col gap-3 sm:flex-row">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         <button
           type="button"
           onClick={() =>
             cameraInputRef.current?.click()
           }
-          disabled={uploading}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-50"
+          className="flex min-h-28 flex-col items-center justify-center rounded-xl border-2 border-dashed border-emerald-300 bg-emerald-50 text-emerald-700 transition hover:bg-emerald-100"
         >
-          {uploading ? (
-            <Loader2
-              size={18}
-              className="animate-spin"
-            />
-          ) : (
-            <Camera size={18} />
-          )}
+          <Camera size={24} />
 
-          Prendre une photo
+          <span className="mt-2 text-sm font-semibold">
+            Prendre une photo
+          </span>
         </button>
 
         <button
@@ -124,12 +211,64 @@ export function RabbitPhotoManager({
           onClick={() =>
             galleryInputRef.current?.click()
           }
-          disabled={uploading}
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 font-semibold text-slate-700 transition hover:bg-slate-50 disabled:opacity-50"
+          className="flex min-h-28 flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 text-slate-600 transition hover:bg-slate-100"
         >
-          <ImagePlus size={18} />
-          Choisir dans la galerie
+          <ImagePlus size={24} />
+
+          <span className="mt-2 text-sm font-semibold">
+            Galerie
+          </span>
         </button>
+
+        {photos
+          .filter(
+            (photo) =>
+              photo.id !== primaryPhoto?.id,
+          )
+          .map((photo) => (
+            <div
+              key={photo.id}
+              className="group relative aspect-square overflow-hidden rounded-xl bg-slate-100"
+            >
+              <button
+                type="button"
+                onClick={() => setPreview(photo)}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={photo.url}
+                  alt="Photo du lapin"
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
+              </button>
+
+              <div className="absolute inset-x-2 bottom-2 flex justify-between opacity-100 sm:opacity-0 sm:transition sm:group-hover:opacity-100">
+                <button
+                  type="button"
+                  onClick={() =>
+                    void handleSetPrimary(photo.id)
+                  }
+                  className="rounded-full bg-white p-2 shadow"
+                  title="Définir comme principale"
+                >
+                  <Star size={15} />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    void handleDelete(photo.id)
+                  }
+                  className="rounded-full bg-white p-2 text-red-600 shadow"
+                  title="Supprimer"
+                >
+                  <Trash2 size={15} />
+                </button>
+              </div>
+            </div>
+          ))}
       </div>
 
       <input
@@ -138,13 +277,7 @@ export function RabbitPhotoManager({
         accept="image/*"
         capture="environment"
         className="hidden"
-        onChange={(event) => {
-          void handleFile(
-            event.target.files?.[0],
-          );
-
-          event.target.value = '';
-        }}
+        onChange={handleInputChange}
       />
 
       <input
@@ -152,85 +285,36 @@ export function RabbitPhotoManager({
         type="file"
         accept="image/*"
         className="hidden"
-        onChange={(event) => {
-          void handleFile(
-            event.target.files?.[0],
-          );
-
-          event.target.value = '';
-        }}
+        onChange={handleInputChange}
       />
 
-      {photos.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
-          <ImagePlus
-            className="mx-auto text-slate-400"
-            size={32}
-          />
+      {preview && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4"
+          onClick={() => setPreview(null)}
+        >
+          <div
+            className="relative h-[80vh] w-full max-w-3xl"
+            onClick={(event) =>
+              event.stopPropagation()
+            }
+          >
+            <Image
+              src={preview.url}
+              alt="Photo du lapin"
+              fill
+              className="object-contain"
+              unoptimized
+            />
 
-          <p className="mt-3 text-sm text-slate-500">
-            Aucune photo enregistrée.
-          </p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {photos.map((photo) => (
-            <div
-              key={photo.id}
-              className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+            <button
+              type="button"
+              onClick={() => setPreview(null)}
+              className="absolute right-3 top-3 rounded-full bg-white/90 p-2 text-slate-700 shadow"
             >
-              <RabbitPhotoDisplay
-                photo={photo}
-                alt={`Photo du lapin ${rabbitId}`}
-                size={220}
-                className="!h-auto !w-full aspect-square rounded-none"
-              />
-
-              {photo.isPrimary && (
-                <div className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-emerald-600 px-2 py-1 text-xs font-semibold text-white shadow">
-                  <Check size={12} />
-                  Principale
-                </div>
-              )}
-
-              <div className="flex gap-2 p-2">
-                {!photo.isPrimary && (
-                  <button
-                    type="button"
-                    disabled={settingPrimary}
-                    onClick={() =>
-                      void onSetPrimary(
-                        photo.id,
-                      )
-                    }
-                    className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-slate-100 px-2 py-2 text-xs font-medium text-slate-700 hover:bg-slate-200 disabled:opacity-50"
-                  >
-                    <Star size={14} />
-                    Principale
-                  </button>
-                )}
-
-                <button
-                  type="button"
-                  disabled={deleting}
-                  onClick={() =>
-                    void onDelete(photo.id)
-                  }
-                  className="flex items-center justify-center rounded-lg bg-red-50 px-3 py-2 text-red-600 hover:bg-red-100 disabled:opacity-50"
-                  aria-label="Supprimer la photo"
-                >
-                  {deleting ? (
-                    <Loader2
-                      size={15}
-                      className="animate-spin"
-                    />
-                  ) : (
-                    <Trash2 size={15} />
-                  )}
-                </button>
-              </div>
-            </div>
-          ))}
+              <X size={20} />
+            </button>
+          </div>
         </div>
       )}
     </section>

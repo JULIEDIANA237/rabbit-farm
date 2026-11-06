@@ -1171,11 +1171,10 @@ type RabbitPageModel {
 
 type RabbitPhotoModel {
   createdAt: DateTime!
-  filename: String!
   id: ID!
   isPrimary: Boolean!
-  mimeType: String!
   rabbitId: ID!
+  updatedAt: DateTime!
   url: String!
 }
 

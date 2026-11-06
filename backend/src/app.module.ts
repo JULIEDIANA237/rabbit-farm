@@ -5,7 +5,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 
 import type { Request, Response } from 'express';
 
-import { join } from 'path';
+
 
 import {
   ApolloDriver,
@@ -34,15 +34,22 @@ import { HealthModule } from './health/health.module';
 import { SalesModule } from './sales/sales.module';
 import { OperationsModule } from './operations/operations.module';
 import { DashboardModule } from './dashboard/dashboard.module';
-import { RabbitPhotosModule } from './rabbit-photos/rabbit-photos.module';
 import { MortalityModule } from './mortality/mortality.module';
 import { StatisticsModule } from './statistics/statistics.module';
+import { StorageModule } from './storage/storage.module';
 
 import { GqlThrottlerGuard } from './auth/guards/gql-throttler.guard';
 import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor';
 
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'uploads'),
+      serveRoot: '/uploads',
+    }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
 
@@ -92,9 +99,9 @@ import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor
     SalesModule,
     OperationsModule,
     DashboardModule,
-    RabbitPhotosModule,
     MortalityModule,
     StatisticsModule,
+    StorageModule,
   ],
 
   providers: [
