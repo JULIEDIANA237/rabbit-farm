@@ -15,7 +15,16 @@ export class PrismaService
         process.env.DATABASE_URL,
     });
 
-    super({ adapter });
+    // Neon (us-east-2) est loin et peut sortir de veille : les délais
+    // par défaut de Prisma (2 s pour démarrer, 5 s pour exécuter une
+    // transaction) déclenchent l'erreur P2028.
+    super({
+      adapter,
+      transactionOptions: {
+        maxWait: Number(process.env.PRISMA_TX_MAX_WAIT_MS ?? 15000),
+        timeout: Number(process.env.PRISMA_TX_TIMEOUT_MS ?? 30000),
+      },
+    });
   }
 
   async onModuleInit(): Promise<void> {
