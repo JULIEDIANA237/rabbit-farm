@@ -216,10 +216,10 @@ export type PregnancyOrderByWithRelationInput = {
 
 export type PregnancyWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  breedingId?: string
   AND?: Prisma.PregnancyWhereInput | Prisma.PregnancyWhereInput[]
   OR?: Prisma.PregnancyWhereInput[]
   NOT?: Prisma.PregnancyWhereInput | Prisma.PregnancyWhereInput[]
+  breedingId?: Prisma.StringFilter<"Pregnancy"> | string
   checkDate?: Prisma.DateTimeFilter<"Pregnancy"> | Date | string
   result?: Prisma.EnumPregnancyResultFilter<"Pregnancy"> | $Enums.PregnancyResult
   observation?: Prisma.StringNullableFilter<"Pregnancy"> | string | null
@@ -227,7 +227,7 @@ export type PregnancyWhereUniqueInput = Prisma.AtLeast<{
   farmId?: Prisma.StringFilter<"Pregnancy"> | string
   breeding?: Prisma.XOR<Prisma.BreedingScalarRelationFilter, Prisma.BreedingWhereInput>
   farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
-}, "id" | "breedingId">
+}, "id">
 
 export type PregnancyOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

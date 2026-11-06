@@ -1,9 +1,14 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 
+import { HealthRecordType } from '../graphql/health-record-type.enum';
+
 @InputType()
 export class CreateHealthRecordInput {
   @Field(() => ID)
   rabbitId: string;
+
+  @Field(() => HealthRecordType, { nullable: true, defaultValue: 'OBSERVATION' })
+  type?: HealthRecordType;
 
   @Field()
   date: Date;

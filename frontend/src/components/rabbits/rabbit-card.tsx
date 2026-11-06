@@ -5,7 +5,6 @@ import Link from 'next/link';
 import {
   CalendarDays,
   Scale,
-  VenusAndMars,
 } from 'lucide-react';
 
 import type { Rabbit } from '@/types/rabbit';

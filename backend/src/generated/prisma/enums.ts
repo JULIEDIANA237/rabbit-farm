@@ -143,6 +143,7 @@ export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]
 export const ExpenseCategory = {
   FEED: 'FEED',
   MEDICATION: 'MEDICATION',
+  ENERGY: 'ENERGY',
   EQUIPMENT: 'EQUIPMENT',
   MAINTENANCE: 'MAINTENANCE',
   TRANSPORT: 'TRANSPORT',
@@ -208,6 +209,34 @@ export const TaskSourceType = {
 } as const
 
 export type TaskSourceType = (typeof TaskSourceType)[keyof typeof TaskSourceType]
+
+
+export const HealthRecordType = {
+  OBSERVATION: 'OBSERVATION',
+  TREATMENT: 'TREATMENT',
+  VACCINATION: 'VACCINATION',
+  ANALYSIS: 'ANALYSIS',
+  CONTROL: 'CONTROL'
+} as const
+
+export type HealthRecordType = (typeof HealthRecordType)[keyof typeof HealthRecordType]
+
+
+export const InbreedingPolicy = {
+  WARN: 'WARN',
+  BLOCK: 'BLOCK'
+} as const
+
+export type InbreedingPolicy = (typeof InbreedingPolicy)[keyof typeof InbreedingPolicy]
+
+
+export const MortalityScope = {
+  RABBIT: 'RABBIT',
+  LITTER: 'LITTER',
+  LOT: 'LOT'
+} as const
+
+export type MortalityScope = (typeof MortalityScope)[keyof typeof MortalityScope]
 
 
 export const RabbitPurpose = {

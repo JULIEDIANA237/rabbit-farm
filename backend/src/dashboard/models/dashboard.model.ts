@@ -5,6 +5,7 @@ import { DashboardBreedingActionModel } from './dashboard-breeding-action.model'
 import { DashboardBirthModel } from './dashboard-birth.model';
 import { DashboardWeaningModel } from './dashboard-weaning.model';
 import { DashboardStockAlertModel } from './dashboard-stock-alert.model';
+import { DashboardHealthActionModel } from './dashboard-health-action.model';
 
 @ObjectType()
 export class DashboardModel {
@@ -61,6 +62,19 @@ export class DashboardModel {
   @Field(() => Int)
   lowStockItems: number;
 
+  @Field(() => Int)
+  healthActions: number;
+
+  // =========================
+  // CAGES
+  // =========================
+
+  @Field(() => Int)
+  totalCages: number;
+
+  @Field(() => Int)
+  occupiedCages: number;
+
   // =========================
   // INDICATEURS TECHNIQUES
   // =========================
@@ -84,6 +98,9 @@ export class DashboardModel {
   @Field(() => Float)
   monthlyExpenses: number;
 
+  @Field(() => Float)
+  monthlyRevenue: number;
+
   // =========================
   // DETAILS
   // =========================
@@ -97,8 +114,8 @@ export class DashboardModel {
   @Field(() => [DashboardBreedingActionModel])
   nestInstallationList: DashboardBreedingActionModel[];
 
-  @Field(() => [DashboardBirthModel])
-  expectedBirthList: DashboardBirthModel[];
+  @Field(() => [DashboardBreedingActionModel])
+  expectedBirthList: DashboardBreedingActionModel[];
 
   @Field(() => [DashboardBirthModel])
   recentBirthList: DashboardBirthModel[];
@@ -108,4 +125,7 @@ export class DashboardModel {
 
   @Field(() => [DashboardStockAlertModel])
   lowStockList: DashboardStockAlertModel[];
+
+  @Field(() => [DashboardHealthActionModel])
+  healthActionList: DashboardHealthActionModel[];
 }

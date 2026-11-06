@@ -251,6 +251,7 @@ export type CageWhereInput = {
   farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
   section?: Prisma.XOR<Prisma.SectionScalarRelationFilter, Prisma.SectionWhereInput>
   rabbitMovements?: Prisma.RabbitCageMovementListRelationFilter
+  lotMovements?: Prisma.LotCageMovementListRelationFilter
 }
 
 export type CageOrderByWithRelationInput = {
@@ -266,6 +267,7 @@ export type CageOrderByWithRelationInput = {
   farm?: Prisma.FarmOrderByWithRelationInput
   section?: Prisma.SectionOrderByWithRelationInput
   rabbitMovements?: Prisma.RabbitCageMovementOrderByRelationAggregateInput
+  lotMovements?: Prisma.LotCageMovementOrderByRelationAggregateInput
 }
 
 export type CageWhereUniqueInput = Prisma.AtLeast<{
@@ -285,6 +287,7 @@ export type CageWhereUniqueInput = Prisma.AtLeast<{
   farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
   section?: Prisma.XOR<Prisma.SectionScalarRelationFilter, Prisma.SectionWhereInput>
   rabbitMovements?: Prisma.RabbitCageMovementListRelationFilter
+  lotMovements?: Prisma.LotCageMovementListRelationFilter
 }, "id" | "farmId_code">
 
 export type CageOrderByWithAggregationInput = {
@@ -330,6 +333,7 @@ export type CageCreateInput = {
   farm: Prisma.FarmCreateNestedOneWithoutCagesInput
   section: Prisma.SectionCreateNestedOneWithoutCagesInput
   rabbitMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutCageInput
+  lotMovements?: Prisma.LotCageMovementCreateNestedManyWithoutCageInput
 }
 
 export type CageUncheckedCreateInput = {
@@ -343,6 +347,7 @@ export type CageUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   rabbitMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutCageInput
+  lotMovements?: Prisma.LotCageMovementUncheckedCreateNestedManyWithoutCageInput
 }
 
 export type CageUpdateInput = {
@@ -356,6 +361,7 @@ export type CageUpdateInput = {
   farm?: Prisma.FarmUpdateOneRequiredWithoutCagesNestedInput
   section?: Prisma.SectionUpdateOneRequiredWithoutCagesNestedInput
   rabbitMovements?: Prisma.RabbitCageMovementUpdateManyWithoutCageNestedInput
+  lotMovements?: Prisma.LotCageMovementUpdateManyWithoutCageNestedInput
 }
 
 export type CageUncheckedUpdateInput = {
@@ -369,6 +375,7 @@ export type CageUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rabbitMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutCageNestedInput
+  lotMovements?: Prisma.LotCageMovementUncheckedUpdateManyWithoutCageNestedInput
 }
 
 export type CageCreateManyInput = {
@@ -579,6 +586,20 @@ export type CageUpdateOneRequiredWithoutRabbitMovementsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CageUpdateToOneWithWhereWithoutRabbitMovementsInput, Prisma.CageUpdateWithoutRabbitMovementsInput>, Prisma.CageUncheckedUpdateWithoutRabbitMovementsInput>
 }
 
+export type CageCreateNestedOneWithoutLotMovementsInput = {
+  create?: Prisma.XOR<Prisma.CageCreateWithoutLotMovementsInput, Prisma.CageUncheckedCreateWithoutLotMovementsInput>
+  connectOrCreate?: Prisma.CageCreateOrConnectWithoutLotMovementsInput
+  connect?: Prisma.CageWhereUniqueInput
+}
+
+export type CageUpdateOneRequiredWithoutLotMovementsNestedInput = {
+  create?: Prisma.XOR<Prisma.CageCreateWithoutLotMovementsInput, Prisma.CageUncheckedCreateWithoutLotMovementsInput>
+  connectOrCreate?: Prisma.CageCreateOrConnectWithoutLotMovementsInput
+  upsert?: Prisma.CageUpsertWithoutLotMovementsInput
+  connect?: Prisma.CageWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CageUpdateToOneWithWhereWithoutLotMovementsInput, Prisma.CageUpdateWithoutLotMovementsInput>, Prisma.CageUncheckedUpdateWithoutLotMovementsInput>
+}
+
 export type CageCreateWithoutFarmInput = {
   id?: string
   code: string
@@ -589,6 +610,7 @@ export type CageCreateWithoutFarmInput = {
   updatedAt?: Date | string
   section: Prisma.SectionCreateNestedOneWithoutCagesInput
   rabbitMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutCageInput
+  lotMovements?: Prisma.LotCageMovementCreateNestedManyWithoutCageInput
 }
 
 export type CageUncheckedCreateWithoutFarmInput = {
@@ -601,6 +623,7 @@ export type CageUncheckedCreateWithoutFarmInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   rabbitMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutCageInput
+  lotMovements?: Prisma.LotCageMovementUncheckedCreateNestedManyWithoutCageInput
 }
 
 export type CageCreateOrConnectWithoutFarmInput = {
@@ -654,6 +677,7 @@ export type CageCreateWithoutSectionInput = {
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutCagesInput
   rabbitMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutCageInput
+  lotMovements?: Prisma.LotCageMovementCreateNestedManyWithoutCageInput
 }
 
 export type CageUncheckedCreateWithoutSectionInput = {
@@ -666,6 +690,7 @@ export type CageUncheckedCreateWithoutSectionInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   rabbitMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutCageInput
+  lotMovements?: Prisma.LotCageMovementUncheckedCreateNestedManyWithoutCageInput
 }
 
 export type CageCreateOrConnectWithoutSectionInput = {
@@ -704,6 +729,7 @@ export type CageCreateWithoutRabbitMovementsInput = {
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutCagesInput
   section: Prisma.SectionCreateNestedOneWithoutCagesInput
+  lotMovements?: Prisma.LotCageMovementCreateNestedManyWithoutCageInput
 }
 
 export type CageUncheckedCreateWithoutRabbitMovementsInput = {
@@ -716,6 +742,7 @@ export type CageUncheckedCreateWithoutRabbitMovementsInput = {
   status?: $Enums.CageStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  lotMovements?: Prisma.LotCageMovementUncheckedCreateNestedManyWithoutCageInput
 }
 
 export type CageCreateOrConnectWithoutRabbitMovementsInput = {
@@ -744,6 +771,7 @@ export type CageUpdateWithoutRabbitMovementsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutCagesNestedInput
   section?: Prisma.SectionUpdateOneRequiredWithoutCagesNestedInput
+  lotMovements?: Prisma.LotCageMovementUpdateManyWithoutCageNestedInput
 }
 
 export type CageUncheckedUpdateWithoutRabbitMovementsInput = {
@@ -756,6 +784,75 @@ export type CageUncheckedUpdateWithoutRabbitMovementsInput = {
   status?: Prisma.EnumCageStatusFieldUpdateOperationsInput | $Enums.CageStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lotMovements?: Prisma.LotCageMovementUncheckedUpdateManyWithoutCageNestedInput
+}
+
+export type CageCreateWithoutLotMovementsInput = {
+  id?: string
+  code: string
+  type?: string | null
+  capacity: number
+  status?: $Enums.CageStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  farm: Prisma.FarmCreateNestedOneWithoutCagesInput
+  section: Prisma.SectionCreateNestedOneWithoutCagesInput
+  rabbitMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutCageInput
+}
+
+export type CageUncheckedCreateWithoutLotMovementsInput = {
+  id?: string
+  farmId: string
+  sectionId: string
+  code: string
+  type?: string | null
+  capacity: number
+  status?: $Enums.CageStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  rabbitMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutCageInput
+}
+
+export type CageCreateOrConnectWithoutLotMovementsInput = {
+  where: Prisma.CageWhereUniqueInput
+  create: Prisma.XOR<Prisma.CageCreateWithoutLotMovementsInput, Prisma.CageUncheckedCreateWithoutLotMovementsInput>
+}
+
+export type CageUpsertWithoutLotMovementsInput = {
+  update: Prisma.XOR<Prisma.CageUpdateWithoutLotMovementsInput, Prisma.CageUncheckedUpdateWithoutLotMovementsInput>
+  create: Prisma.XOR<Prisma.CageCreateWithoutLotMovementsInput, Prisma.CageUncheckedCreateWithoutLotMovementsInput>
+  where?: Prisma.CageWhereInput
+}
+
+export type CageUpdateToOneWithWhereWithoutLotMovementsInput = {
+  where?: Prisma.CageWhereInput
+  data: Prisma.XOR<Prisma.CageUpdateWithoutLotMovementsInput, Prisma.CageUncheckedUpdateWithoutLotMovementsInput>
+}
+
+export type CageUpdateWithoutLotMovementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  capacity?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumCageStatusFieldUpdateOperationsInput | $Enums.CageStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  farm?: Prisma.FarmUpdateOneRequiredWithoutCagesNestedInput
+  section?: Prisma.SectionUpdateOneRequiredWithoutCagesNestedInput
+  rabbitMovements?: Prisma.RabbitCageMovementUpdateManyWithoutCageNestedInput
+}
+
+export type CageUncheckedUpdateWithoutLotMovementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  sectionId?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  capacity?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumCageStatusFieldUpdateOperationsInput | $Enums.CageStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rabbitMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutCageNestedInput
 }
 
 export type CageCreateManyFarmInput = {
@@ -779,6 +876,7 @@ export type CageUpdateWithoutFarmInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   section?: Prisma.SectionUpdateOneRequiredWithoutCagesNestedInput
   rabbitMovements?: Prisma.RabbitCageMovementUpdateManyWithoutCageNestedInput
+  lotMovements?: Prisma.LotCageMovementUpdateManyWithoutCageNestedInput
 }
 
 export type CageUncheckedUpdateWithoutFarmInput = {
@@ -791,6 +889,7 @@ export type CageUncheckedUpdateWithoutFarmInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rabbitMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutCageNestedInput
+  lotMovements?: Prisma.LotCageMovementUncheckedUpdateManyWithoutCageNestedInput
 }
 
 export type CageUncheckedUpdateManyWithoutFarmInput = {
@@ -825,6 +924,7 @@ export type CageUpdateWithoutSectionInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutCagesNestedInput
   rabbitMovements?: Prisma.RabbitCageMovementUpdateManyWithoutCageNestedInput
+  lotMovements?: Prisma.LotCageMovementUpdateManyWithoutCageNestedInput
 }
 
 export type CageUncheckedUpdateWithoutSectionInput = {
@@ -837,6 +937,7 @@ export type CageUncheckedUpdateWithoutSectionInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rabbitMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutCageNestedInput
+  lotMovements?: Prisma.LotCageMovementUncheckedUpdateManyWithoutCageNestedInput
 }
 
 export type CageUncheckedUpdateManyWithoutSectionInput = {
@@ -857,10 +958,12 @@ export type CageUncheckedUpdateManyWithoutSectionInput = {
 
 export type CageCountOutputType = {
   rabbitMovements: number
+  lotMovements: number
 }
 
 export type CageCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   rabbitMovements?: boolean | CageCountOutputTypeCountRabbitMovementsArgs
+  lotMovements?: boolean | CageCountOutputTypeCountLotMovementsArgs
 }
 
 /**
@@ -880,6 +983,13 @@ export type CageCountOutputTypeCountRabbitMovementsArgs<ExtArgs extends runtime.
   where?: Prisma.RabbitCageMovementWhereInput
 }
 
+/**
+ * CageCountOutputType without action
+ */
+export type CageCountOutputTypeCountLotMovementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LotCageMovementWhereInput
+}
+
 
 export type CageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -894,6 +1004,7 @@ export type CageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   section?: boolean | Prisma.SectionDefaultArgs<ExtArgs>
   rabbitMovements?: boolean | Prisma.Cage$rabbitMovementsArgs<ExtArgs>
+  lotMovements?: boolean | Prisma.Cage$lotMovementsArgs<ExtArgs>
   _count?: boolean | Prisma.CageCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["cage"]>
 
@@ -942,6 +1053,7 @@ export type CageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   section?: boolean | Prisma.SectionDefaultArgs<ExtArgs>
   rabbitMovements?: boolean | Prisma.Cage$rabbitMovementsArgs<ExtArgs>
+  lotMovements?: boolean | Prisma.Cage$lotMovementsArgs<ExtArgs>
   _count?: boolean | Prisma.CageCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CageIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -959,6 +1071,7 @@ export type $CagePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     farm: Prisma.$FarmPayload<ExtArgs>
     section: Prisma.$SectionPayload<ExtArgs>
     rabbitMovements: Prisma.$RabbitCageMovementPayload<ExtArgs>[]
+    lotMovements: Prisma.$LotCageMovementPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1367,6 +1480,7 @@ export interface Prisma__CageClient<T, Null = never, ExtArgs extends runtime.Typ
   farm<T extends Prisma.FarmDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FarmDefaultArgs<ExtArgs>>): Prisma.Prisma__FarmClient<runtime.Types.Result.GetResult<Prisma.$FarmPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   section<T extends Prisma.SectionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SectionDefaultArgs<ExtArgs>>): Prisma.Prisma__SectionClient<runtime.Types.Result.GetResult<Prisma.$SectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   rabbitMovements<T extends Prisma.Cage$rabbitMovementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Cage$rabbitMovementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RabbitCageMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  lotMovements<T extends Prisma.Cage$lotMovementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Cage$lotMovementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LotCageMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1827,6 +1941,30 @@ export type Cage$rabbitMovementsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.RabbitCageMovementScalarFieldEnum | Prisma.RabbitCageMovementScalarFieldEnum[]
+}
+
+/**
+ * Cage.lotMovements
+ */
+export type Cage$lotMovementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LotCageMovement
+   */
+  select?: Prisma.LotCageMovementSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LotCageMovement
+   */
+  omit?: Prisma.LotCageMovementOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LotCageMovementInclude<ExtArgs> | null
+  where?: Prisma.LotCageMovementWhereInput
+  orderBy?: Prisma.LotCageMovementOrderByWithRelationInput | Prisma.LotCageMovementOrderByWithRelationInput[]
+  cursor?: Prisma.LotCageMovementWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LotCageMovementScalarFieldEnum | Prisma.LotCageMovementScalarFieldEnum[]
 }
 
 /**

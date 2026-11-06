@@ -427,7 +427,10 @@ export const ModelName = {
   Expense: 'Expense',
   InventoryItem: 'InventoryItem',
   StockMovement: 'StockMovement',
-  Task: 'Task'
+  Task: 'Task',
+  NestInstallation: 'NestInstallation',
+  MortalityRecord: 'MortalityRecord',
+  LotCageMovement: 'LotCageMovement'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -443,7 +446,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "farm" | "farmMembership" | "section" | "cage" | "breed" | "crossBreed" | "rabbit" | "rabbitPhoto" | "rabbitIdentification" | "rabbitCageMovement" | "breeding" | "pregnancy" | "birth" | "litter" | "litterAdoption" | "adoptionRabbit" | "weaning" | "weaningRabbit" | "fatteningLot" | "lotMembership" | "weighing" | "healthRecord" | "customer" | "sale" | "saleItem" | "payment" | "expense" | "inventoryItem" | "stockMovement" | "task"
+    modelProps: "user" | "farm" | "farmMembership" | "section" | "cage" | "breed" | "crossBreed" | "rabbit" | "rabbitPhoto" | "rabbitIdentification" | "rabbitCageMovement" | "breeding" | "pregnancy" | "birth" | "litter" | "litterAdoption" | "adoptionRabbit" | "weaning" | "weaningRabbit" | "fatteningLot" | "lotMembership" | "weighing" | "healthRecord" | "customer" | "sale" | "saleItem" | "payment" | "expense" | "inventoryItem" | "stockMovement" | "task" | "nestInstallation" | "mortalityRecord" | "lotCageMovement"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2741,6 +2744,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    NestInstallation: {
+      payload: Prisma.$NestInstallationPayload<ExtArgs>
+      fields: Prisma.NestInstallationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.NestInstallationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NestInstallationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.NestInstallationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NestInstallationPayload>
+        }
+        findFirst: {
+          args: Prisma.NestInstallationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NestInstallationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.NestInstallationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NestInstallationPayload>
+        }
+        findMany: {
+          args: Prisma.NestInstallationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NestInstallationPayload>[]
+        }
+        create: {
+          args: Prisma.NestInstallationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NestInstallationPayload>
+        }
+        createMany: {
+          args: Prisma.NestInstallationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.NestInstallationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NestInstallationPayload>[]
+        }
+        delete: {
+          args: Prisma.NestInstallationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NestInstallationPayload>
+        }
+        update: {
+          args: Prisma.NestInstallationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NestInstallationPayload>
+        }
+        deleteMany: {
+          args: Prisma.NestInstallationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.NestInstallationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.NestInstallationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NestInstallationPayload>[]
+        }
+        upsert: {
+          args: Prisma.NestInstallationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NestInstallationPayload>
+        }
+        aggregate: {
+          args: Prisma.NestInstallationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateNestInstallation>
+        }
+        groupBy: {
+          args: Prisma.NestInstallationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NestInstallationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.NestInstallationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NestInstallationCountAggregateOutputType> | number
+        }
+      }
+    }
+    MortalityRecord: {
+      payload: Prisma.$MortalityRecordPayload<ExtArgs>
+      fields: Prisma.MortalityRecordFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MortalityRecordFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MortalityRecordPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MortalityRecordFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MortalityRecordPayload>
+        }
+        findFirst: {
+          args: Prisma.MortalityRecordFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MortalityRecordPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MortalityRecordFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MortalityRecordPayload>
+        }
+        findMany: {
+          args: Prisma.MortalityRecordFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MortalityRecordPayload>[]
+        }
+        create: {
+          args: Prisma.MortalityRecordCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MortalityRecordPayload>
+        }
+        createMany: {
+          args: Prisma.MortalityRecordCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MortalityRecordCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MortalityRecordPayload>[]
+        }
+        delete: {
+          args: Prisma.MortalityRecordDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MortalityRecordPayload>
+        }
+        update: {
+          args: Prisma.MortalityRecordUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MortalityRecordPayload>
+        }
+        deleteMany: {
+          args: Prisma.MortalityRecordDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MortalityRecordUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MortalityRecordUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MortalityRecordPayload>[]
+        }
+        upsert: {
+          args: Prisma.MortalityRecordUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MortalityRecordPayload>
+        }
+        aggregate: {
+          args: Prisma.MortalityRecordAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMortalityRecord>
+        }
+        groupBy: {
+          args: Prisma.MortalityRecordGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MortalityRecordGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MortalityRecordCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MortalityRecordCountAggregateOutputType> | number
+        }
+      }
+    }
+    LotCageMovement: {
+      payload: Prisma.$LotCageMovementPayload<ExtArgs>
+      fields: Prisma.LotCageMovementFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LotCageMovementFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LotCageMovementPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LotCageMovementFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LotCageMovementPayload>
+        }
+        findFirst: {
+          args: Prisma.LotCageMovementFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LotCageMovementPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LotCageMovementFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LotCageMovementPayload>
+        }
+        findMany: {
+          args: Prisma.LotCageMovementFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LotCageMovementPayload>[]
+        }
+        create: {
+          args: Prisma.LotCageMovementCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LotCageMovementPayload>
+        }
+        createMany: {
+          args: Prisma.LotCageMovementCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LotCageMovementCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LotCageMovementPayload>[]
+        }
+        delete: {
+          args: Prisma.LotCageMovementDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LotCageMovementPayload>
+        }
+        update: {
+          args: Prisma.LotCageMovementUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LotCageMovementPayload>
+        }
+        deleteMany: {
+          args: Prisma.LotCageMovementDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LotCageMovementUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LotCageMovementUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LotCageMovementPayload>[]
+        }
+        upsert: {
+          args: Prisma.LotCageMovementUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LotCageMovementPayload>
+        }
+        aggregate: {
+          args: Prisma.LotCageMovementAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLotCageMovement>
+        }
+        groupBy: {
+          args: Prisma.LotCageMovementGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LotCageMovementGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LotCageMovementCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LotCageMovementCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2799,6 +3024,7 @@ export const FarmScalarFieldEnum = {
   name: 'name',
   description: 'description',
   location: 'location',
+  inbreedingPolicy: 'inbreedingPolicy',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -2887,6 +3113,9 @@ export const RabbitScalarFieldEnum = {
   color: 'color',
   weight: 'weight',
   observations: 'observations',
+  originalCode: 'originalCode',
+  exitDate: 'exitDate',
+  exitCause: 'exitCause',
   birthLitterId: 'birthLitterId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -2899,10 +3128,10 @@ export const RabbitPhotoScalarFieldEnum = {
   id: 'id',
   rabbitId: 'rabbitId',
   url: 'url',
-  filename: 'filename',
-  mimeType: 'mimeType',
+  path: 'path',
   isPrimary: 'isPrimary',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type RabbitPhotoScalarFieldEnum = (typeof RabbitPhotoScalarFieldEnum)[keyof typeof RabbitPhotoScalarFieldEnum]
@@ -3106,6 +3335,7 @@ export const HealthRecordScalarFieldEnum = {
   id: 'id',
   farmId: 'farmId',
   rabbitId: 'rabbitId',
+  type: 'type',
   date: 'date',
   symptoms: 'symptoms',
   observation: 'observation',
@@ -3160,6 +3390,9 @@ export const SaleItemScalarFieldEnum = {
   quantity: 'quantity',
   unitPrice: 'unitPrice',
   totalPrice: 'totalPrice',
+  weightKg: 'weightKg',
+  pricePerKg: 'pricePerKg',
+  lotId: 'lotId',
   createdAt: 'createdAt'
 } as const
 
@@ -3189,6 +3422,8 @@ export const ExpenseScalarFieldEnum = {
   description: 'description',
   reference: 'reference',
   supplier: 'supplier',
+  paymentMethod: 'paymentMethod',
+  observation: 'observation',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -3239,12 +3474,59 @@ export const TaskScalarFieldEnum = {
   assignedToId: 'assignedToId',
   sourceType: 'sourceType',
   sourceId: 'sourceId',
+  automationKey: 'automationKey',
   completedAt: 'completedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type TaskScalarFieldEnum = (typeof TaskScalarFieldEnum)[keyof typeof TaskScalarFieldEnum]
+
+
+export const NestInstallationScalarFieldEnum = {
+  id: 'id',
+  farmId: 'farmId',
+  breedingId: 'breedingId',
+  installedAt: 'installedAt',
+  nestType: 'nestType',
+  material: 'material',
+  observation: 'observation',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type NestInstallationScalarFieldEnum = (typeof NestInstallationScalarFieldEnum)[keyof typeof NestInstallationScalarFieldEnum]
+
+
+export const MortalityRecordScalarFieldEnum = {
+  id: 'id',
+  farmId: 'farmId',
+  scope: 'scope',
+  rabbitId: 'rabbitId',
+  litterId: 'litterId',
+  lotId: 'lotId',
+  date: 'date',
+  count: 'count',
+  cause: 'cause',
+  observation: 'observation',
+  createdAt: 'createdAt'
+} as const
+
+export type MortalityRecordScalarFieldEnum = (typeof MortalityRecordScalarFieldEnum)[keyof typeof MortalityRecordScalarFieldEnum]
+
+
+export const LotCageMovementScalarFieldEnum = {
+  id: 'id',
+  lotId: 'lotId',
+  cageId: 'cageId',
+  startedAt: 'startedAt',
+  endedAt: 'endedAt',
+  reason: 'reason',
+  observation: 'observation',
+  createdAt: 'createdAt'
+} as const
+
+export type LotCageMovementScalarFieldEnum = (typeof LotCageMovementScalarFieldEnum)[keyof typeof LotCageMovementScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -3309,6 +3591,20 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'InbreedingPolicy'
+ */
+export type EnumInbreedingPolicyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InbreedingPolicy'>
+    
+
+
+/**
+ * Reference to a field of type 'InbreedingPolicy[]'
+ */
+export type ListEnumInbreedingPolicyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InbreedingPolicy[]'>
     
 
 
@@ -3509,6 +3805,20 @@ export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMode
 
 
 /**
+ * Reference to a field of type 'HealthRecordType'
+ */
+export type EnumHealthRecordTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'HealthRecordType'>
+    
+
+
+/**
+ * Reference to a field of type 'HealthRecordType[]'
+ */
+export type ListEnumHealthRecordTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'HealthRecordType[]'>
+    
+
+
+/**
  * Reference to a field of type 'SaleStatus'
  */
 export type EnumSaleStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SaleStatus'>
@@ -3617,6 +3927,20 @@ export type EnumTaskSourceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$P
  * Reference to a field of type 'TaskSourceType[]'
  */
 export type ListEnumTaskSourceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaskSourceType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'MortalityScope'
+ */
+export type EnumMortalityScopeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MortalityScope'>
+    
+
+
+/**
+ * Reference to a field of type 'MortalityScope[]'
+ */
+export type ListEnumMortalityScopeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MortalityScope[]'>
     
 
 /**
@@ -3801,6 +4125,9 @@ export type GlobalOmitConfig = {
   inventoryItem?: Prisma.InventoryItemOmit
   stockMovement?: Prisma.StockMovementOmit
   task?: Prisma.TaskOmit
+  nestInstallation?: Prisma.NestInstallationOmit
+  mortalityRecord?: Prisma.MortalityRecordOmit
+  lotCageMovement?: Prisma.LotCageMovementOmit
 }
 
 /* Types for Logging */

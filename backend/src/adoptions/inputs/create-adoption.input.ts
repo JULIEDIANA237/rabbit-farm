@@ -1,4 +1,4 @@
-import { Field, ID, InputType } from '@nestjs/graphql';
+import { Field, ID, InputType, Int } from '@nestjs/graphql';
 import { AdoptionReason } from '../graphql/adoption-reason.enum';
 
 @InputType()
@@ -9,7 +9,7 @@ export class CreateAdoptionInput {
   @Field(() => ID)
   destinationLitterId: string;
 
-  @Field()
+  @Field(() => Int)
   quantity: number;
 
   @Field(() => AdoptionReason)
@@ -20,4 +20,11 @@ export class CreateAdoptionInput {
 
   @Field({ nullable: true })
   observation?: string;
+
+  @Field(() => [ID], {
+    nullable: true,
+    description:
+      'Lapereaux identifiés transférés (la quantité doit alors correspondre).',
+  })
+  rabbitIds?: string[];
 }

@@ -74,6 +74,15 @@ export function StockAlerts({ items }: Props) {
                   </span>
                 </div>
               )}
+
+              {item.autonomyDays != null && (
+                <div className="mt-1 flex justify-between text-xs">
+                  <span className="text-slate-500">Autonomie</span>
+                  <strong className={item.autonomyDays <= 7 ? 'text-red-600' : 'text-slate-700'}>
+                    {item.autonomyDays.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} j
+                  </strong>
+                </div>
+              )}
             </div>
           ))}
         </div>

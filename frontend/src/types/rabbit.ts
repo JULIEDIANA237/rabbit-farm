@@ -2,12 +2,9 @@ export type RabbitSex = 'MALE' | 'FEMALE' | 'UNKNOWN';
 
 export interface RabbitPhoto {
   id: string;
-  rabbitId: string;
   url: string;
-  filename: string;
-  mimeType: string;
   isPrimary: boolean;
-  createdAt: string;
+  createdAt?: string | null;
 }
 
 export type RabbitStatus =
@@ -22,6 +19,13 @@ export interface Rabbit {
   code: string;
   sex: RabbitSex;
   status?: RabbitStatus | null;
+  purpose?: string | null;
+  originalCode?: string | null;
+  breedName?: string | null;
+  currentCageId?: string | null;
+  currentCageCode?: string | null;
+  exitDate?: string | null;
+  exitCause?: string | null;
 
   birthDate?: string | null;
   birthLitterId?: string | null;

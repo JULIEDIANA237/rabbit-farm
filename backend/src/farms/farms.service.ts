@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
 
 import { CreateFarmInput } from './dto/create-farm.input';
+import { UpdateFarmInput } from './dto/update-farm.input';
 
 import { CurrentUserType } from '../auth/types/current-user.type';
 
@@ -69,5 +70,53 @@ export class FarmsService {
         },
       },
     });
+  }
+
+  /**
+   * Mise à jour de la ferme courante (nom, localisation,
+   * politique de consanguinité).
+   */
+  async updateCurrent(input: UpdateFarmInput, user: CurrentUserType) {
+    const farm = await this.prisma.farm.findUnique({ where: { id: user.farmId } });
+
+    if (!farm) {
+      throw new NotFoundException('Ferme introuvable.');
+    }
+
+    if (input.name !== undefined && !input.name.trim()) {
+      throw new BadRequestException('Le nom de la ferme est obligatoire.');
+    }
+
+    return this.prisma.farm.update({
+      where: { id: farm.id },
+      data: {
+        name: input.name?.trim(),
+        description:
+          input.description !== undefined ? input.description.trim() || null : undefined,
+        location:
+          input.location !== undefined ? input.location.trim() || null : undefined,
+        inbreedingPolicy: input.inbreedingPolicy,
+      },
+    });
+  }
+
+  async me(user: CurrentUserType) {
+    const membership = await this.prisma.farmMembership.findFirst({
+      where: { userId: user.userId, farmId: user.farmId },
+      include: { user: true, farm: true },
+    });
+
+    if (!membership) {
+      throw new NotFoundException('Utilisateur introuvable dans cette ferme.');
+    }
+
+    return {
+      userId: membership.user.id,
+      email: membership.user.email,
+      firstName: membership.user.firstName,
+      lastName: membership.user.lastName,
+      role: membership.role,
+      farm: membership.farm,
+    };
   }
 }

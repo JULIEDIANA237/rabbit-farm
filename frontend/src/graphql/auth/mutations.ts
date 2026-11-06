@@ -1,4 +1,3 @@
-
 import { gql } from '@apollo/client';
 
 export const LOGIN_MUTATION = gql`
@@ -11,3 +10,46 @@ export const LOGIN_MUTATION = gql`
   }
 `;
 
+export const REGISTER_MUTATION = gql`
+  mutation Register($input: RegisterInput!) {
+    register(input: $input) {
+      accessToken
+      userId
+      email
+    }
+  }
+`;
+
+export const ME_QUERY = gql`
+  query Me {
+    me {
+      userId
+      email
+      firstName
+      lastName
+      role
+      farm {
+        id
+        name
+        location
+        description
+        inbreedingPolicy
+      }
+    }
+  }
+`;
+
+export interface Me {
+  userId: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+  farm: {
+    id: string;
+    name: string;
+    location?: string | null;
+    description?: string | null;
+    inbreedingPolicy: 'WARN' | 'BLOCK';
+  };
+}

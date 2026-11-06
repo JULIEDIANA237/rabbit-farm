@@ -172,3 +172,18 @@ export type StockMovement = Prisma.StockMovementModel
  * 
  */
 export type Task = Prisma.TaskModel
+/**
+ * Model NestInstallation
+ * 
+ */
+export type NestInstallation = Prisma.NestInstallationModel
+/**
+ * Model MortalityRecord
+ * 
+ */
+export type MortalityRecord = Prisma.MortalityRecordModel
+/**
+ * Model LotCageMovement
+ * 
+ */
+export type LotCageMovement = Prisma.LotCageMovementModel

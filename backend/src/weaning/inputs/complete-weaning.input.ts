@@ -19,4 +19,14 @@ export class CompleteWeaningInput {
 
   @Field({ nullable: true })
   averageWeight?: number;
+
+  @Field(() => ID, {
+    nullable: true,
+    description:
+      "Lot d'engraissement dans lequel placer les lapereaux sevrés (§34 : sevrage → engraissement).",
+  })
+  fatteningLotId?: string;
+
+  @Field({ nullable: true })
+  observation?: string;
 }

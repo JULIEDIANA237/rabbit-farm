@@ -16,4 +16,7 @@ export class DashboardStockAlertModel {
 
   @Field(() => Float, { nullable: true })
   minimumStock?: number;
+
+  @Field(() => Float, { nullable: true })
+  autonomyDays?: number | null;
 }

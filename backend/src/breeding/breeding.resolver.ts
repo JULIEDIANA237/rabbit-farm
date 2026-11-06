@@ -9,7 +9,11 @@ import { UseGuards } from '@nestjs/common';
 
 import { BreedingService } from './breeding.service';
 import { BreedingModel } from './models/breeding.model';
+import { NestInstallationModel } from './models/nest-installation.model';
 import { CreateBreedingInput } from './inputs/create-breeding.input';
+import { RecordNestInstallationInput } from './inputs/record-nest-installation.input';
+import { CancelBreedingInput } from './inputs/cancel-breeding.input';
+import { BreedingStatus } from './graphql/breeding-status.enum';
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -28,9 +32,11 @@ export class BreedingResolver {
 
   @Query(() => [BreedingModel])
   async breedings(
+    @Args('status', { type: () => BreedingStatus, nullable: true })
+    status: BreedingStatus | undefined,
     @CurrentUser() currentUser: CurrentUserType,
   ) {
-    return this.breedingService.findAll(currentUser);
+    return this.breedingService.findAll(currentUser, status);
   }
 
   @Query(() => BreedingModel)
@@ -38,24 +44,33 @@ export class BreedingResolver {
     @Args('id', { type: () => ID }) id: string,
     @CurrentUser() currentUser: CurrentUserType,
   ) {
-    return this.breedingService.findOne(
-      id,
-      currentUser,
-    );
+    return this.breedingService.findOne(id, currentUser);
   }
 
   @Mutation(() => BreedingModel)
-  @Roles(
-    FarmRole.ADMIN,
-    FarmRole.BREEDING_MANAGER,
-  )
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
   async createBreeding(
     @Args('input') input: CreateBreedingInput,
     @CurrentUser() currentUser: CurrentUserType,
   ) {
-    return this.breedingService.create(
-      input,
-      currentUser,
-    );
+    return this.breedingService.create(input, currentUser);
+  }
+
+  @Mutation(() => BreedingModel)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  async cancelBreeding(
+    @Args('input') input: CancelBreedingInput,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.breedingService.cancel(input, currentUser);
+  }
+
+  @Mutation(() => NestInstallationModel)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER, FarmRole.EMPLOYEE)
+  async recordNestInstallation(
+    @Args('input') input: RecordNestInstallationInput,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.breedingService.recordNestInstallation(input, currentUser);
   }
 }

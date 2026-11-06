@@ -27,7 +27,7 @@ export function RabbitInfoCard({
         </h2>
 
         <p className="mt-1 text-sm text-slate-500">
-          Informations d'identification et caractéristiques du lapin.
+          Informations d&apos;identification et caractéristiques du lapin.
         </p>
       </div>
 

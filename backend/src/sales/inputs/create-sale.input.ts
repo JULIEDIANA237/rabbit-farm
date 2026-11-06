@@ -8,11 +8,23 @@ export class CreateSaleItemInput {
   @Field(() => ID, { nullable: true })
   rabbitId?: string;
 
-  @Field(() => Int)
-  quantity: number;
+  @Field(() => ID, {
+    nullable: true,
+    description: "Vend tous les lapins actifs d'un lot d'engraissement",
+  })
+  lotId?: string;
 
-  @Field(() => Float)
-  unitPrice: number;
+  @Field(() => Int, { nullable: true, defaultValue: 1 })
+  quantity?: number;
+
+  @Field(() => Float, { nullable: true, description: 'Vente à l’unité' })
+  unitPrice?: number;
+
+  @Field(() => Float, { nullable: true, description: 'Vente au poids : poids total (kg)' })
+  weightKg?: number;
+
+  @Field(() => Float, { nullable: true, description: 'Vente au poids : prix au kilo' })
+  pricePerKg?: number;
 }
 
 @InputType()

@@ -25,4 +25,11 @@ export class CreateWeaningInput {
 
 	@Field(() => [ID], { nullable: true })
 	rabbitIds?: string[];
+
+  @Field(() => ID, {
+    nullable: true,
+    description:
+      "Lot d'engraissement dans lequel placer les lapereaux sevrés (§34 : sevrage → engraissement).",
+  })
+  fatteningLotId?: string;
 }

@@ -23,3 +23,10 @@ backend/.env.*
 *.tmp
 *.temp
 .DS_Store
+# Fichiers générés / build
+backend/tsconfig.build.tsbuildinfo
+backend/generated/
+backend/uploads/
+frontend/.next/
+frontend/next-env.d.ts
+node_modules/

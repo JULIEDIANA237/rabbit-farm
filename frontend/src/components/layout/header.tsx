@@ -1,13 +1,50 @@
-
 'use client';
 
-import { Bell, Menu, Search } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { gql } from '@apollo/client';
+import { useQuery, useApolloClient } from '@apollo/client/react';
+import { Bell, LogOut, Menu } from 'lucide-react';
+
+import { ME_QUERY, type Me } from '@/graphql/auth/mutations';
+import { useAuthStore } from '@/stores/auth-store';
+import { FARM_ROLE, label } from '@/lib/labels';
 
 interface HeaderProps {
   onMenuClick: () => void;
 }
 
+const OPEN_TASKS_QUERY = gql`
+  query HeaderTasks {
+    tasks(openOnly: true) {
+      id
+      dueDate
+    }
+  }
+`;
+
 export function Header({ onMenuClick }: HeaderProps) {
+  const router = useRouter();
+  const client = useApolloClient();
+  const logout = useAuthStore((s) => s.logout);
+
+  const { data } = useQuery<{ me: Me }>(ME_QUERY);
+  const { data: tasks } = useQuery<{ tasks: Array<{ id: string; dueDate: string }> }>(OPEN_TASKS_QUERY, {
+    pollInterval: 5 * 60_000,
+  });
+
+  const me = data?.me;
+  const initials = me ? `${me.firstName[0] ?? ''}${me.lastName[0] ?? ''}`.toUpperCase() : '··';
+  const endOfToday = new Date();
+  endOfToday.setHours(23, 59, 59, 999);
+  const dueCount = (tasks?.tasks ?? []).filter((t) => new Date(t.dueDate) <= endOfToday).length;
+
+  async function handleLogout() {
+    logout();
+    await client.clearStore();
+    router.replace('/login');
+  }
+
   return (
     <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-slate-200 bg-white/95 px-4 backdrop-blur md:px-6">
       <div className="flex items-center gap-3">
@@ -20,46 +57,47 @@ export function Header({ onMenuClick }: HeaderProps) {
           <Menu size={22} />
         </button>
 
-        <div className="hidden md:block">
-          <p className="text-sm text-slate-500">
-            Bienvenue dans votre élevage
+        <div>
+          <p className="hidden text-sm text-slate-500 md:block">
+            {me ? `Bonjour ${me.firstName}` : 'Bienvenue dans votre élevage'}
           </p>
-          <h1 className="text-lg font-semibold text-slate-900">
-            Rabbit Farm
+          <h1 className="text-base font-semibold text-slate-900 md:text-lg">
+            {me?.farm.name ?? 'Rabbit Farm'}
           </h1>
-        </div>
-
-        <div className="md:hidden">
-          <p className="text-base font-bold text-slate-900">
-            Rabbit Farm
-          </p>
         </div>
       </div>
 
       <div className="flex items-center gap-2">
-        <button
-          type="button"
-          aria-label="Rechercher"
-          className="hidden rounded-xl p-2.5 text-slate-600 hover:bg-slate-100 sm:block"
-        >
-          <Search size={20} />
-        </button>
-
-        <button
-          type="button"
-          aria-label="Notifications"
+        <Link
+          href="/tasks"
+          aria-label={`${dueCount} tâche(s) à faire aujourd'hui`}
           className="relative rounded-xl p-2.5 text-slate-600 hover:bg-slate-100"
         >
           <Bell size={20} />
+          {dueCount > 0 && (
+            <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+              {dueCount}
+            </span>
+          )}
+        </Link>
 
-          <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500" />
+        <Link
+          href="/settings"
+          title={me ? `${me.firstName} ${me.lastName} · ${label(FARM_ROLE, me.role)}` : undefined}
+          className="ml-1 flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-sm font-bold text-emerald-700"
+        >
+          {initials}
+        </Link>
+
+        <button
+          type="button"
+          onClick={handleLogout}
+          aria-label="Se déconnecter"
+          className="rounded-xl p-2.5 text-slate-600 hover:bg-slate-100"
+        >
+          <LogOut size={20} />
         </button>
-
-        <div className="ml-1 flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-sm font-bold text-emerald-700">
-          AD
-        </div>
       </div>
     </header>
   );
 }
-

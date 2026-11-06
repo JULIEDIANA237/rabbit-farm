@@ -11,6 +11,21 @@ export class SaleItemModel {
   @Field(() => ID, { nullable: true })
   rabbitId?: string;
 
+  @Field(() => String, { nullable: true })
+  rabbitCode?: string | null;
+
+  @Field(() => ID, { nullable: true })
+  lotId?: string | null;
+
+  @Field(() => String, { nullable: true })
+  lotCode?: string | null;
+
+  @Field(() => Float, { nullable: true })
+  weightKg?: number | null;
+
+  @Field(() => Float, { nullable: true })
+  pricePerKg?: number | null;
+
   @Field()
   description: string;
 
@@ -53,11 +68,20 @@ export class SaleModel {
   @Field(() => ID, { nullable: true })
   customerId?: string;
 
+  @Field(() => String, { nullable: true })
+  customerName?: string | null;
+
   @Field()
   saleDate: Date;
 
   @Field(() => Float)
   totalAmount: number;
+
+  @Field(() => Float)
+  paidAmount: number;
+
+  @Field(() => Float)
+  remainingAmount: number;
 
   @Field(() => SaleStatus)
   status: SaleStatus;

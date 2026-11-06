@@ -10,7 +10,6 @@ import {
   CalendarHeart,
   CircleDollarSign,
   ClipboardList,
-  HeartPulse,
   Home,
   Rabbit,
   Settings,
@@ -18,6 +17,8 @@ import {
   Syringe,
   Users,
   X,
+  ListChecks,
+  Warehouse,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -82,6 +83,16 @@ const navigation = [
     icon: Boxes,
   },
   {
+    label: 'Tâches',
+    href: '/tasks',
+    icon: ListChecks,
+  },
+  {
+    label: 'Ferme et cages',
+    href: '/farm',
+    icon: Warehouse,
+  },
+  {
     label: 'Statistiques',
     href: '/statistics',
     icon: BarChart3,
@@ -129,7 +140,7 @@ export function Sidebar({
                 Rabbit Farm
               </p>
               <p className="text-xs text-slate-500">
-                Gestion d'élevage
+                Gestion d&apos;élevage
               </p>
             </div>
           </Link>
@@ -155,7 +166,8 @@ export function Sidebar({
 
               const active =
                 pathname === item.href ||
-                pathname.startsWith(`${item.href}/`);
+                (pathname.startsWith(`${item.href}/`) &&
+                  !navigation.some((other) => other.href !== item.href && other.href.startsWith(item.href) && pathname.startsWith(other.href)));
 
               return (
                 <Link

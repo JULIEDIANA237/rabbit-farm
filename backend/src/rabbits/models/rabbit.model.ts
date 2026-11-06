@@ -57,6 +57,27 @@ export class RabbitModel {
   @Field({ nullable: true })
   observations?: string;
 
+  @Field(() => String, {
+    nullable: true,
+    description: 'Code temporaire d’origine (ex. L001-07)',
+  })
+  originalCode?: string | null;
+
+  @Field(() => Date, { nullable: true })
+  exitDate?: Date | null;
+
+  @Field(() => String, { nullable: true })
+  exitCause?: string | null;
+
+  @Field(() => ID, { nullable: true })
+  currentCageId?: string | null;
+
+  @Field(() => String, { nullable: true })
+  currentCageCode?: string | null;
+
+  @Field(() => String, { nullable: true })
+  breedName?: string | null;
+
   @Field(() => [RabbitIdentificationModel])
   identifications: RabbitIdentificationModel[];
 

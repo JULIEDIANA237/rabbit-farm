@@ -40,7 +40,7 @@ export function WeaningCard({ weanings }: Props) {
             >
               <div>
                 <p className="text-sm font-semibold">
-                  Lot {weaning.litterId.slice(0, 8)}
+                  Portée {weaning.litterCode ?? weaning.litterId.slice(0, 8)}
                 </p>
 
                 <p className="text-xs text-slate-500">

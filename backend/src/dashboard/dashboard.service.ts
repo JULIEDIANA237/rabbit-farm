@@ -2,14 +2,19 @@ import { Injectable } from '@nestjs/common';
 
 import {
   BreedingStatus,
+  CageStatus,
+  SaleStatus,
+  StockMovementType,
   RabbitSex,
   RabbitStatus,
   TaskPriority,
+  TaskSourceType,
   TaskStatus,
   type Prisma,
 } from '../generated/prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
+import { computeAutonomy } from '../operations/automation/stock-autonomy';
 
 import type { CurrentUserType } from '../auth/types/current-user.type';
 
@@ -48,6 +53,9 @@ export class DashboardService {
     const next7Days = new Date(startOfToday);
     next7Days.setDate(next7Days.getDate() + 7);
     next7Days.setHours(23, 59, 59, 999);
+
+    const thirtyDaysAgo = new Date(startOfToday);
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
     const sevenDaysAgo = new Date(startOfToday);
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
@@ -94,6 +102,11 @@ export class DashboardService {
 
       breedingCompleted,
       breedingSuccessful,
+
+      healthActions,
+      totalCages,
+      occupiedCageRows,
+      monthlySalesData,
     ] = await Promise.all([
       // =========================
       // POPULATION
@@ -230,26 +243,23 @@ export class DashboardService {
       }),
 
       // =========================
-      // NAISSANCES À VENIR
+      // NAISSANCES À VENIR (femelles gestantes)
       // =========================
 
-      this.prisma.birth.findMany({
+      this.prisma.breeding.findMany({
         where: {
           farmId,
-          birthDate: {
-            gte: startOfToday,
+          status: BreedingStatus.PREGNANT,
+          birth: { is: null },
+          expectedBirthStartDate: {
             lte: next7Days,
           },
         },
         include: {
-          breeding: {
-            include: {
-              female: true,
-            },
-          },
+          female: true,
         },
         orderBy: {
-          birthDate: 'asc',
+          expectedBirthStartDate: 'asc',
         },
       }),
 
@@ -289,6 +299,9 @@ export class DashboardService {
             lte: next7Days,
           },
         },
+        include: {
+          litter: { select: { code: true } },
+        },
         orderBy: {
           plannedDate: 'asc',
         },
@@ -317,6 +330,10 @@ export class DashboardService {
           unit: true,
           currentStock: true,
           minimumStock: true,
+          movements: {
+            where: { type: StockMovementType.CONSUMPTION },
+            select: { type: true, quantity: true, date: true },
+          },
         },
 
         orderBy: {
@@ -392,6 +409,55 @@ export class DashboardService {
           },
         },
       }),
+
+      // =========================
+      // SOINS ET VACCINS À FAIRE
+      // =========================
+
+      this.prisma.healthRecord.findMany({
+        where: {
+          farmId,
+          nextDueDate: { gte: thirtyDaysAgo, lte: next7Days },
+          rabbit: { status: RabbitStatus.ACTIVE },
+        },
+        include: { rabbit: { select: { code: true } } },
+        orderBy: { nextDueDate: 'asc' },
+        take: 20,
+      }),
+
+      // =========================
+      // CAGES
+      // =========================
+
+      this.prisma.cage.count({
+        where: { farmId, status: CageStatus.ACTIVE },
+      }),
+
+      this.prisma.rabbitCageMovement.findMany({
+        where: {
+          endedAt: null,
+          cage: { farmId },
+          rabbit: { status: RabbitStatus.ACTIVE },
+        },
+        distinct: ['cageId'],
+        select: { cageId: true },
+      }),
+
+      // =========================
+      // VENTES DU MOIS
+      // =========================
+
+      this.prisma.sale.aggregate({
+        where: {
+          farmId,
+          status: { not: SaleStatus.CANCELLED },
+          saleDate: {
+            gte: startOfMonth,
+            lt: startOfNextMonth,
+          },
+        },
+        _sum: { totalAmount: true },
+      }),
     ]);
 
     // =========================
@@ -433,11 +499,18 @@ export class DashboardService {
     // STOCK FAIBLE
     // =========================
 
-    const filteredLowStock = lowStockList.filter(
-      (item) =>
-        item.minimumStock != null &&
-        item.currentStock <= item.minimumStock,
-    );
+    const filteredLowStock = lowStockList
+      .map((item) => ({
+        ...item,
+        autonomy: computeAutonomy(item.currentStock, item.movements, now),
+      }))
+      .filter(
+        (item) =>
+          (item.minimumStock != null &&
+            item.currentStock <= item.minimumStock) ||
+          (item.autonomy.autonomyDays != null &&
+            item.autonomy.autonomyDays <= 7),
+      );
 
     // =========================
     // NAISSANCES DU MOIS
@@ -513,12 +586,23 @@ export class DashboardService {
       totalBorn: birth.liveBorn + birth.stillBorn,
     });
 
-    const expectedBirths = expectedBirthList.map(mapBirth);
+    const expectedBirths = expectedBirthList.map((breeding) => ({
+      id: breeding.id,
+      femaleId: breeding.femaleId,
+      femaleCode: breeding.female.code,
+      breedingDate: breeding.breedingDate,
+      palpationStartDate: breeding.palpationStartDate,
+      palpationEndDate: breeding.palpationEndDate,
+      nestDate: breeding.nestDate,
+      expectedBirthStartDate: breeding.expectedBirthStartDate,
+      expectedBirthEndDate: breeding.expectedBirthEndDate,
+    }));
     const recentBirths = recentBirthList.map(mapBirth);
 
     const weanings = weaningList.map((weaning) => ({
       id: weaning.id,
       litterId: weaning.litterId,
+      litterCode: weaning.litter.code,
       plannedDate: weaning.plannedDate,
       quantity: weaning.quantity,
       averageWeight:
@@ -533,6 +617,34 @@ export class DashboardService {
       unit: item.unit,
       currentStock: item.currentStock,
       minimumStock: item.minimumStock,
+      autonomyDays: item.autonomy.autonomyDays,
+    }));
+
+    // Un soin dont la tâche de suivi est close n'est plus à faire.
+    const closedFollowUps = healthActions.length
+      ? await this.prisma.task.findMany({
+          where: {
+            farmId,
+            sourceType: TaskSourceType.HEALTH,
+            sourceId: { in: healthActions.map((record) => record.id) },
+            status: { in: [TaskStatus.COMPLETED, TaskStatus.CANCELLED] },
+          },
+          select: { sourceId: true },
+        })
+      : [];
+    const closedIds = new Set(closedFollowUps.map((task) => task.sourceId));
+
+    const healthActionList = healthActions
+      .filter((record) => !closedIds.has(record.id))
+      .map((record) => ({
+      id: record.id,
+      rabbitId: record.rabbitId,
+      rabbitCode: record.rabbit.code,
+      type: record.type,
+      dueDate: record.nextDueDate as Date,
+      label:
+        record.medication || record.treatment || record.diagnosis || record.type,
+      overdue: (record.nextDueDate as Date) < startOfToday,
     }));
 
     return {
@@ -555,6 +667,11 @@ export class DashboardService {
       recentBirths: recentBirths.length,
       plannedWeanings: weanings.length,
       lowStockItems: stockAlerts.length,
+      healthActions: healthActionList.length,
+
+      // Cages
+      totalCages,
+      occupiedCages: occupiedCageRows.length,
 
       // Technique
       birthsThisMonth,
@@ -567,6 +684,10 @@ export class DashboardService {
         monthlyExpensesData._sum.amount != null
           ? Number(monthlyExpensesData._sum.amount)
           : 0,
+      monthlyRevenue:
+        monthlySalesData._sum.totalAmount != null
+          ? Number(monthlySalesData._sum.totalAmount)
+          : 0,
 
       // Details
       urgentTaskList,
@@ -576,6 +697,7 @@ export class DashboardService {
       recentBirthList: recentBirths,
       weaningList: weanings,
       lowStockList: stockAlerts,
+      healthActionList,
     };
   }
 }

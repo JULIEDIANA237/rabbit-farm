@@ -15,6 +15,18 @@ export class TaskModel {
   @Field()
   title: string;
 
+  @Field(() => ID, { nullable: true })
+  rabbitId?: string | null;
+
+  @Field(() => String, { nullable: true })
+  rabbitCode?: string | null;
+
+  @Field(() => String, {
+    nullable: true,
+    description: 'Renseigné pour les tâches générées automatiquement',
+  })
+  automationKey?: string | null;
+
   @Field({ nullable: true })
   description?: string;
 

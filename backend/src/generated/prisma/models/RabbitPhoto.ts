@@ -28,30 +28,30 @@ export type RabbitPhotoMinAggregateOutputType = {
   id: string | null
   rabbitId: string | null
   url: string | null
-  filename: string | null
-  mimeType: string | null
+  path: string | null
   isPrimary: boolean | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type RabbitPhotoMaxAggregateOutputType = {
   id: string | null
   rabbitId: string | null
   url: string | null
-  filename: string | null
-  mimeType: string | null
+  path: string | null
   isPrimary: boolean | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type RabbitPhotoCountAggregateOutputType = {
   id: number
   rabbitId: number
   url: number
-  filename: number
-  mimeType: number
+  path: number
   isPrimary: number
   createdAt: number
+  updatedAt: number
   _all: number
 }
 
@@ -60,30 +60,30 @@ export type RabbitPhotoMinAggregateInputType = {
   id?: true
   rabbitId?: true
   url?: true
-  filename?: true
-  mimeType?: true
+  path?: true
   isPrimary?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type RabbitPhotoMaxAggregateInputType = {
   id?: true
   rabbitId?: true
   url?: true
-  filename?: true
-  mimeType?: true
+  path?: true
   isPrimary?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type RabbitPhotoCountAggregateInputType = {
   id?: true
   rabbitId?: true
   url?: true
-  filename?: true
-  mimeType?: true
+  path?: true
   isPrimary?: true
   createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -163,10 +163,10 @@ export type RabbitPhotoGroupByOutputType = {
   id: string
   rabbitId: string
   url: string
-  filename: string
-  mimeType: string
+  path: string
   isPrimary: boolean
   createdAt: Date
+  updatedAt: Date
   _count: RabbitPhotoCountAggregateOutputType | null
   _min: RabbitPhotoMinAggregateOutputType | null
   _max: RabbitPhotoMaxAggregateOutputType | null
@@ -194,10 +194,10 @@ export type RabbitPhotoWhereInput = {
   id?: Prisma.StringFilter<"RabbitPhoto"> | string
   rabbitId?: Prisma.StringFilter<"RabbitPhoto"> | string
   url?: Prisma.StringFilter<"RabbitPhoto"> | string
-  filename?: Prisma.StringFilter<"RabbitPhoto"> | string
-  mimeType?: Prisma.StringFilter<"RabbitPhoto"> | string
+  path?: Prisma.StringFilter<"RabbitPhoto"> | string
   isPrimary?: Prisma.BoolFilter<"RabbitPhoto"> | boolean
   createdAt?: Prisma.DateTimeFilter<"RabbitPhoto"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"RabbitPhoto"> | Date | string
   rabbit?: Prisma.XOR<Prisma.RabbitScalarRelationFilter, Prisma.RabbitWhereInput>
 }
 
@@ -205,10 +205,10 @@ export type RabbitPhotoOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   rabbitId?: Prisma.SortOrder
   url?: Prisma.SortOrder
-  filename?: Prisma.SortOrder
-  mimeType?: Prisma.SortOrder
+  path?: Prisma.SortOrder
   isPrimary?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   rabbit?: Prisma.RabbitOrderByWithRelationInput
 }
 
@@ -219,10 +219,10 @@ export type RabbitPhotoWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.RabbitPhotoWhereInput | Prisma.RabbitPhotoWhereInput[]
   rabbitId?: Prisma.StringFilter<"RabbitPhoto"> | string
   url?: Prisma.StringFilter<"RabbitPhoto"> | string
-  filename?: Prisma.StringFilter<"RabbitPhoto"> | string
-  mimeType?: Prisma.StringFilter<"RabbitPhoto"> | string
+  path?: Prisma.StringFilter<"RabbitPhoto"> | string
   isPrimary?: Prisma.BoolFilter<"RabbitPhoto"> | boolean
   createdAt?: Prisma.DateTimeFilter<"RabbitPhoto"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"RabbitPhoto"> | Date | string
   rabbit?: Prisma.XOR<Prisma.RabbitScalarRelationFilter, Prisma.RabbitWhereInput>
 }, "id">
 
@@ -230,10 +230,10 @@ export type RabbitPhotoOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   rabbitId?: Prisma.SortOrder
   url?: Prisma.SortOrder
-  filename?: Prisma.SortOrder
-  mimeType?: Prisma.SortOrder
+  path?: Prisma.SortOrder
   isPrimary?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.RabbitPhotoCountOrderByAggregateInput
   _max?: Prisma.RabbitPhotoMaxOrderByAggregateInput
   _min?: Prisma.RabbitPhotoMinOrderByAggregateInput
@@ -246,19 +246,19 @@ export type RabbitPhotoScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"RabbitPhoto"> | string
   rabbitId?: Prisma.StringWithAggregatesFilter<"RabbitPhoto"> | string
   url?: Prisma.StringWithAggregatesFilter<"RabbitPhoto"> | string
-  filename?: Prisma.StringWithAggregatesFilter<"RabbitPhoto"> | string
-  mimeType?: Prisma.StringWithAggregatesFilter<"RabbitPhoto"> | string
+  path?: Prisma.StringWithAggregatesFilter<"RabbitPhoto"> | string
   isPrimary?: Prisma.BoolWithAggregatesFilter<"RabbitPhoto"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"RabbitPhoto"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"RabbitPhoto"> | Date | string
 }
 
 export type RabbitPhotoCreateInput = {
   id?: string
   url: string
-  filename: string
-  mimeType: string
+  path: string
   isPrimary?: boolean
   createdAt?: Date | string
+  updatedAt?: Date | string
   rabbit: Prisma.RabbitCreateNestedOneWithoutPhotosInput
 }
 
@@ -266,19 +266,19 @@ export type RabbitPhotoUncheckedCreateInput = {
   id?: string
   rabbitId: string
   url: string
-  filename: string
-  mimeType: string
+  path: string
   isPrimary?: boolean
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type RabbitPhotoUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  path?: Prisma.StringFieldUpdateOperationsInput | string
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rabbit?: Prisma.RabbitUpdateOneRequiredWithoutPhotosNestedInput
 }
 
@@ -286,39 +286,39 @@ export type RabbitPhotoUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   rabbitId?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  path?: Prisma.StringFieldUpdateOperationsInput | string
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type RabbitPhotoCreateManyInput = {
   id?: string
   rabbitId: string
   url: string
-  filename: string
-  mimeType: string
+  path: string
   isPrimary?: boolean
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type RabbitPhotoUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  path?: Prisma.StringFieldUpdateOperationsInput | string
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type RabbitPhotoUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   rabbitId?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  path?: Prisma.StringFieldUpdateOperationsInput | string
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type RabbitPhotoListRelationFilter = {
@@ -335,30 +335,30 @@ export type RabbitPhotoCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   rabbitId?: Prisma.SortOrder
   url?: Prisma.SortOrder
-  filename?: Prisma.SortOrder
-  mimeType?: Prisma.SortOrder
+  path?: Prisma.SortOrder
   isPrimary?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type RabbitPhotoMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   rabbitId?: Prisma.SortOrder
   url?: Prisma.SortOrder
-  filename?: Prisma.SortOrder
-  mimeType?: Prisma.SortOrder
+  path?: Prisma.SortOrder
   isPrimary?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type RabbitPhotoMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   rabbitId?: Prisma.SortOrder
   url?: Prisma.SortOrder
-  filename?: Prisma.SortOrder
-  mimeType?: Prisma.SortOrder
+  path?: Prisma.SortOrder
   isPrimary?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type RabbitPhotoCreateNestedManyWithoutRabbitInput = {
@@ -406,19 +406,19 @@ export type RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput = {
 export type RabbitPhotoCreateWithoutRabbitInput = {
   id?: string
   url: string
-  filename: string
-  mimeType: string
+  path: string
   isPrimary?: boolean
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type RabbitPhotoUncheckedCreateWithoutRabbitInput = {
   id?: string
   url: string
-  filename: string
-  mimeType: string
+  path: string
   isPrimary?: boolean
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type RabbitPhotoCreateOrConnectWithoutRabbitInput = {
@@ -454,46 +454,46 @@ export type RabbitPhotoScalarWhereInput = {
   id?: Prisma.StringFilter<"RabbitPhoto"> | string
   rabbitId?: Prisma.StringFilter<"RabbitPhoto"> | string
   url?: Prisma.StringFilter<"RabbitPhoto"> | string
-  filename?: Prisma.StringFilter<"RabbitPhoto"> | string
-  mimeType?: Prisma.StringFilter<"RabbitPhoto"> | string
+  path?: Prisma.StringFilter<"RabbitPhoto"> | string
   isPrimary?: Prisma.BoolFilter<"RabbitPhoto"> | boolean
   createdAt?: Prisma.DateTimeFilter<"RabbitPhoto"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"RabbitPhoto"> | Date | string
 }
 
 export type RabbitPhotoCreateManyRabbitInput = {
   id?: string
   url: string
-  filename: string
-  mimeType: string
+  path: string
   isPrimary?: boolean
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type RabbitPhotoUpdateWithoutRabbitInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  path?: Prisma.StringFieldUpdateOperationsInput | string
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type RabbitPhotoUncheckedUpdateWithoutRabbitInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  path?: Prisma.StringFieldUpdateOperationsInput | string
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type RabbitPhotoUncheckedUpdateManyWithoutRabbitInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  path?: Prisma.StringFieldUpdateOperationsInput | string
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -502,10 +502,10 @@ export type RabbitPhotoSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   id?: boolean
   rabbitId?: boolean
   url?: boolean
-  filename?: boolean
-  mimeType?: boolean
+  path?: boolean
   isPrimary?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   rabbit?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["rabbitPhoto"]>
 
@@ -513,10 +513,10 @@ export type RabbitPhotoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   id?: boolean
   rabbitId?: boolean
   url?: boolean
-  filename?: boolean
-  mimeType?: boolean
+  path?: boolean
   isPrimary?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   rabbit?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["rabbitPhoto"]>
 
@@ -524,10 +524,10 @@ export type RabbitPhotoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   id?: boolean
   rabbitId?: boolean
   url?: boolean
-  filename?: boolean
-  mimeType?: boolean
+  path?: boolean
   isPrimary?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   rabbit?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["rabbitPhoto"]>
 
@@ -535,13 +535,13 @@ export type RabbitPhotoSelectScalar = {
   id?: boolean
   rabbitId?: boolean
   url?: boolean
-  filename?: boolean
-  mimeType?: boolean
+  path?: boolean
   isPrimary?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type RabbitPhotoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "rabbitId" | "url" | "filename" | "mimeType" | "isPrimary" | "createdAt", ExtArgs["result"]["rabbitPhoto"]>
+export type RabbitPhotoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "rabbitId" | "url" | "path" | "isPrimary" | "createdAt" | "updatedAt", ExtArgs["result"]["rabbitPhoto"]>
 export type RabbitPhotoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   rabbit?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>
 }
@@ -561,10 +561,10 @@ export type $RabbitPhotoPayload<ExtArgs extends runtime.Types.Extensions.Interna
     id: string
     rabbitId: string
     url: string
-    filename: string
-    mimeType: string
+    path: string
     isPrimary: boolean
     createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["rabbitPhoto"]>
   composites: {}
 }
@@ -992,10 +992,10 @@ export interface RabbitPhotoFieldRefs {
   readonly id: Prisma.FieldRef<"RabbitPhoto", 'String'>
   readonly rabbitId: Prisma.FieldRef<"RabbitPhoto", 'String'>
   readonly url: Prisma.FieldRef<"RabbitPhoto", 'String'>
-  readonly filename: Prisma.FieldRef<"RabbitPhoto", 'String'>
-  readonly mimeType: Prisma.FieldRef<"RabbitPhoto", 'String'>
+  readonly path: Prisma.FieldRef<"RabbitPhoto", 'String'>
   readonly isPrimary: Prisma.FieldRef<"RabbitPhoto", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"RabbitPhoto", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"RabbitPhoto", 'DateTime'>
 }
     
 

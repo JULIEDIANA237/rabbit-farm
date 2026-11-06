@@ -29,6 +29,8 @@ import { RabbitModel } from './models/rabbit.model';
 import { RabbitIdentificationModel } from './models/rabbit-identification.model';
 
 import { RabbitsService } from './rabbits.service';
+import { TraceabilityService } from './traceability.service';
+import { RabbitTraceabilityModel } from './models/traceability.model';
 import { RabbitsPaginationInput } from './inputs/rabbits-pagination.input';
 import { RabbitPageModel } from './models/paginated-rabbits.model';
 //import { PaginatedRabbitsModel } from './models/paginated-rabbits.model';
@@ -41,7 +43,19 @@ import { RabbitPageModel } from './models/paginated-rabbits.model';
 export class RabbitsResolver {
   constructor(
     private readonly rabbitsService: RabbitsService,
+    private readonly traceability: TraceabilityService,
   ) {}
+
+  /**
+   * Traçabilité complète d'un lapin (§54).
+   */
+  @Query(() => RabbitTraceabilityModel)
+  async rabbitTraceability(
+    @Args('rabbitId', { type: () => ID }) rabbitId: string,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.traceability.rabbitTraceability(rabbitId, currentUser);
+  }
 
   /**
    * Liste des lapins.

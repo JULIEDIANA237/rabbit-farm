@@ -2,11 +2,11 @@
 
 import { Baby, CalendarDays } from 'lucide-react';
 
-import type { DashboardBirth } from '@/types/dashboard.types';
+import type { DashboardBirth, DashboardBreedingAction } from '@/types/dashboard.types';
 
 interface Props {
   recentBirths: DashboardBirth[];
-  expectedBirths: DashboardBirth[];
+  expectedBirths: DashboardBreedingAction[];
 }
 
 export function BirthsCard({
@@ -77,9 +77,9 @@ export function BirthsCard({
               </p>
 
               <p className="text-xs text-slate-500">
-                {new Date(
-                  birth.birthDate,
-                ).toLocaleDateString('fr-FR')}
+                {birth.expectedBirthStartDate
+                  ? new Date(birth.expectedBirthStartDate).toLocaleDateString('fr-FR')
+                  : '—'}
               </p>
             </div>
           </div>

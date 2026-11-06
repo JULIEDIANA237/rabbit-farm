@@ -1,6 +1,7 @@
 import {
   Args,
   ID,
+  Int,
   Mutation,
   Query,
   Resolver,
@@ -8,6 +9,7 @@ import {
 import { UseGuards } from '@nestjs/common';
 
 import { HealthService } from './health.service';
+import { HealthRecordType } from './graphql/health-record-type.enum';
 import { HealthRecordModel } from './models/health-record.model';
 import { CreateHealthRecordInput } from './inputs/create-health-record.input';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -23,8 +25,22 @@ export class HealthResolver {
   constructor(private readonly healthService: HealthService) {}
 
   @Query(() => [HealthRecordModel])
-  healthRecords(@CurrentUser() currentUser: CurrentUserType) {
-    return this.healthService.findAll(currentUser);
+  healthRecords(
+    @Args('type', { type: () => HealthRecordType, nullable: true })
+    type: HealthRecordType | undefined,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.healthService.findAll(currentUser, type);
+  }
+
+  @Query(() => [HealthRecordModel], {
+    description: 'Traitements, vaccinations et contrôles dont l’échéance arrive (ou est dépassée).',
+  })
+  upcomingHealthActions(
+    @Args('days', { type: () => Int, defaultValue: 7 }) days: number,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.healthService.upcoming(currentUser, days);
   }
 
   @Query(() => HealthRecordModel)

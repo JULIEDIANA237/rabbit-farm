@@ -106,6 +106,7 @@ enum PaymentMethod {
 enum ExpenseCategory {
   FEED
   MEDICATION
+  ENERGY
   EQUIPMENT
   MAINTENANCE
   TRANSPORT
@@ -155,6 +156,25 @@ enum TaskSourceType {
   OTHER
 }
 
+enum HealthRecordType {
+  OBSERVATION
+  TREATMENT
+  VACCINATION
+  ANALYSIS
+  CONTROL
+}
+
+enum InbreedingPolicy {
+  WARN
+  BLOCK
+}
+
+enum MortalityScope {
+  RABBIT
+  LITTER
+  LOT
+}
+
 enum RabbitPurpose {
   BREEDER
   FATTENING
@@ -196,6 +216,10 @@ model Farm {
   description String?
   location    String?
 
+  /// Politique appliquée aux demi-frères/demi-sœurs
+  /// et aux ancêtres communs éloignés (§18).
+  inbreedingPolicy InbreedingPolicy @default(WARN)
+
   memberships FarmMembership[]
   sections    Section[]
   cages       Cage[]
@@ -222,6 +246,9 @@ model Farm {
 
   adoptions LitterAdoption[]
   weanings  Weaning[]
+
+  nestInstallations NestInstallation[]
+  mortalities       MortalityRecord[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -290,6 +317,7 @@ model Cage {
   section Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
 
   rabbitMovements RabbitCageMovement[]
+  lotMovements    LotCageMovement[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -376,6 +404,14 @@ model Rabbit {
   weight       Decimal?
   observations String?
 
+  /// Code temporaire d'origine (ex. L001-07) conservé
+  /// lorsque le lapin reçoit son identité définitive (§12).
+  originalCode String?
+
+  /// Sortie de l'élevage (décès, réforme...)
+  exitDate  DateTime?
+  exitCause String?
+
   farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)
 
   breed      Breed?      @relation(fields: [breedId], references: [id])
@@ -412,6 +448,7 @@ model Rabbit {
   weighings      Weighing[]
   healthRecords  HealthRecord[]
   saleItems      SaleItem[]
+  mortalities    MortalityRecord[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -426,20 +463,17 @@ model Rabbit {
 }
 
 model RabbitPhoto {
-  id String @id @default(uuid())
-
-  rabbitId String
-  rabbit   Rabbit @relation(fields: [rabbitId], references: [id], onDelete: Cascade)
-
+  id        String   @id @default(uuid())
+  rabbitId  String
   url       String
-  filename  String
-  mimeType  String
-  isPrimary Boolean @default(false)
-
+  path      String
+  isPrimary Boolean  @default(false)
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  rabbit Rabbit @relation(fields: [rabbitId],references: [id],onDelete: Cascade)
 
   @@index([rabbitId])
-  @@index([rabbitId, isPrimary])
 }
 
 // ============================================================
@@ -514,9 +548,10 @@ model Breeding {
   female Rabbit @relation("FemaleBreedings", fields: [femaleId], references: [id])
   male   Rabbit @relation("MaleBreedings", fields: [maleId], references: [id])
 
-  pregnancies Pregnancy[]
-  birth       Birth?
-  litters     Litter[]
+  pregnancies      Pregnancy[]
+  birth            Birth?
+  litters          Litter[]
+  nestInstallation NestInstallation?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -543,7 +578,6 @@ model Pregnancy {
   farm      Farm     @relation(fields: [farmId], references: [id], onDelete: Cascade)
   farmId    String
 
-  @@unique([breedingId])
   @@index([farmId])
   @@index([breedingId])
   @@index([checkDate])
@@ -609,9 +643,10 @@ model Litter {
 
   rabbits Rabbit[]
 
-  sourceAdoptions      LitterAdoption[] @relation("SourceLitterAdoptions")
-  destinationAdoptions LitterAdoption[] @relation("DestinationLitterAdoptions")
+  sourceAdoptions      LitterAdoption[]  @relation("SourceLitterAdoptions")
+  destinationAdoptions LitterAdoption[]  @relation("DestinationLitterAdoptions")
   weanings             Weaning[]
+  mortalities          MortalityRecord[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -732,7 +767,10 @@ model FatteningLot {
 
   memberships LotMembership[]
 
-  weighings Weighing[]
+  weighings     Weighing[]
+  cageMovements LotCageMovement[]
+  mortalities   MortalityRecord[]
+  saleItems     SaleItem[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -797,6 +835,8 @@ model HealthRecord {
 
   farmId   String
   rabbitId String
+
+  type HealthRecordType @default(OBSERVATION)
 
   date DateTime
 
@@ -887,13 +927,22 @@ model SaleItem {
   unitPrice  Decimal
   totalPrice Decimal
 
-  sale   Sale    @relation(fields: [saleId], references: [id], onDelete: Cascade)
-  rabbit Rabbit? @relation(fields: [rabbitId], references: [id], onDelete: SetNull)
+  /// Vente au poids (§41) : poids total vendu et prix au kilo.
+  weightKg   Float?
+  pricePerKg Decimal?
+
+  /// Vente d'un lot d'engraissement complet.
+  lotId String?
+
+  sale   Sale          @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  rabbit Rabbit?       @relation(fields: [rabbitId], references: [id], onDelete: SetNull)
+  lot    FatteningLot? @relation(fields: [lotId], references: [id], onDelete: SetNull)
 
   createdAt DateTime @default(now())
 
   @@index([saleId])
   @@index([rabbitId])
+  @@index([lotId])
 }
 
 model Payment {
@@ -930,6 +979,9 @@ model Expense {
   description String?
   reference   String?
   supplier    String?
+
+  paymentMethod PaymentMethod?
+  observation   String?
 
   farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)
 
@@ -1012,6 +1064,10 @@ model Task {
   sourceType TaskSourceType?
   sourceId   String?
 
+  /// Clé des tâches générées automatiquement (ex. BREEDING_PALPATION),
+  /// utilisée pour les retrouver et les clôturer.
+  automationKey String?
+
   completedAt DateTime?
 
   farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)
@@ -1030,4 +1086,91 @@ model Task {
   @@index([assignedToId])
   @@index([rabbitId])
   @@index([sourceType, sourceId])
+  @@index([automationKey])
+}
+
+// ============================================================
+// INSTALLATION DU NID (§25)
+// ============================================================
+
+model NestInstallation {
+  id String @id @default(uuid())
+
+  farmId     String
+  breedingId String @unique
+
+  installedAt DateTime
+  nestType    String?
+  material    String?
+  observation String?
+
+  farm     Farm     @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  breeding Breeding @relation(fields: [breedingId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([farmId])
+  @@index([installedAt])
+}
+
+// ============================================================
+// MORTALITÉ (§37)
+// ============================================================
+
+model MortalityRecord {
+  id String @id @default(uuid())
+
+  farmId String
+  scope  MortalityScope
+
+  rabbitId String?
+  litterId String?
+  lotId    String?
+
+  date  DateTime
+  count Int      @default(1)
+
+  cause       String?
+  observation String?
+
+  farm   Farm          @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  rabbit Rabbit?       @relation(fields: [rabbitId], references: [id], onDelete: SetNull)
+  litter Litter?       @relation(fields: [litterId], references: [id], onDelete: SetNull)
+  lot    FatteningLot? @relation(fields: [lotId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+
+  @@index([farmId])
+  @@index([date])
+  @@index([rabbitId])
+  @@index([litterId])
+  @@index([lotId])
+}
+
+// ============================================================
+// LOT CAGE MOVEMENT (§57)
+// ============================================================
+
+model LotCageMovement {
+  id String @id @default(uuid())
+
+  lotId  String
+  cageId String
+
+  startedAt DateTime
+  endedAt   DateTime?
+
+  reason      String?
+  observation String?
+
+  lot  FatteningLot @relation(fields: [lotId], references: [id], onDelete: Cascade)
+  cage Cage         @relation(fields: [cageId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([lotId])
+  @@index([cageId])
+  @@index([startedAt])
+  @@index([endedAt])
 }

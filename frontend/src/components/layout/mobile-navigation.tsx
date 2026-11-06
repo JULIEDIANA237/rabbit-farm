@@ -39,22 +39,22 @@ const actionItems = [
   },
   {
     label: 'Nouvelle saillie',
-    href: '/breeding/new',
+    href: '/breeding?new=1',
     icon: HeartPulse,
   },
   {
     label: 'Nouvelle naissance',
-    href: '/births/new',
+    href: '/births?new=1',
     icon: Baby,
   },
   {
     label: 'Nouveau sevrage',
-    href: '/weaning/new',
+    href: '/weaning?new=1',
     icon: Sprout,
   },
   {
     label: 'Nouvelle vente',
-    href: '/sales/new',
+    href: '/sales?new=1',
     icon: DollarSign,
   },
 ];
@@ -114,10 +114,12 @@ export function MobileNavigation() {
   /*
    * Ferme les menus lorsqu'on change de page.
    */
-  useEffect(() => {
+  const [lastPathname, setLastPathname] = useState(pathname);
+  if (lastPathname !== pathname) {
+    setLastPathname(pathname);
     setActionsOpen(false);
     setMenuOpen(false);
-  }, [pathname]);
+  }
 
   /*
    * Ferme les menus lorsqu'on clique à l'extérieur.
@@ -319,7 +321,7 @@ export function MobileNavigation() {
             </p>
 
             <p className="text-xs text-slate-500">
-              Accéder aux modules de l'élevage
+              Accéder aux modules de l&apos;élevage
             </p>
           </div>
 

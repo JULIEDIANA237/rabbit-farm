@@ -4,30 +4,8 @@ const RABBIT_PHOTO_FIELDS = `
   id
   rabbitId
   url
-  filename
-  mimeType
   isPrimary
   createdAt
-`;
-
-const RABBIT_FIELDS = `
-  id
-  code
-  sex
-  status
-  birthDate
-  color
-  weight
-  observations
-  breedId
-  crossBreedId
-  fatherId
-  motherId
-  birthLitterId
-
-  photos {
-    ${RABBIT_PHOTO_FIELDS}
-  }
 `;
 
 export const GET_RABBITS_PAGINATED = gql`
@@ -47,11 +25,12 @@ export const GET_RABBITS_PAGINATED = gql`
         fatherId
         motherId
 
-        photos {
-          id
-          url
-          isPrimary
-        }
+      photos {
+        id
+        url
+        isPrimary
+        createdAt
+      }
       }
 
       total
@@ -69,8 +48,18 @@ export const GET_RABBIT = gql`
     rabbit(id: $id) {
       id
       code
+      originalCode
       sex
       status
+      purpose
+      breedName
+      currentCageId
+      currentCageCode
+      exitDate
+      exitCause
+      photos {
+        ${RABBIT_PHOTO_FIELDS}
+      }
       breedId
       crossBreedId
       fatherId
@@ -83,6 +72,13 @@ export const GET_RABBIT = gql`
       createdAt
       updatedAt
 
+      photos {
+        id
+        url
+        isPrimary
+        createdAt
+      }
+
       identifications {
         id
         type
@@ -91,14 +87,3 @@ export const GET_RABBIT = gql`
     }
   }
 `;
-
-export const GET_RABBIT_OPTIONS = gql`
-  query RabbitOptions {
-    rabbits {
-      id
-      code
-      sex
-    }
-  }
-`;
-

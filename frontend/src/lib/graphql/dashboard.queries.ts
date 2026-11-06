@@ -21,6 +21,10 @@ export const DASHBOARD_QUERY = gql`
       recentBirths
       plannedWeanings
       lowStockItems
+      healthActions
+
+      totalCages
+      occupiedCages
 
       birthsThisMonth
       kitsBornThisMonth
@@ -28,6 +32,7 @@ export const DASHBOARD_QUERY = gql`
       breedingSuccessRate
 
       monthlyExpenses
+      monthlyRevenue
 
       urgentTaskList {
         id
@@ -69,13 +74,11 @@ export const DASHBOARD_QUERY = gql`
 
       expectedBirthList {
         id
-        breedingId
         femaleId
         femaleCode
-        birthDate
-        liveBorn
-        stillBorn
-        totalBorn
+        breedingDate
+        expectedBirthStartDate
+        expectedBirthEndDate
       }
 
       recentBirthList {
@@ -92,6 +95,7 @@ export const DASHBOARD_QUERY = gql`
       weaningList {
         id
         litterId
+        litterCode
         plannedDate
         quantity
         averageWeight
@@ -103,6 +107,17 @@ export const DASHBOARD_QUERY = gql`
         unit
         currentStock
         minimumStock
+        autonomyDays
+      }
+
+      healthActionList {
+        id
+        rabbitId
+        rabbitCode
+        type
+        dueDate
+        label
+        overdue
       }
     }
   }

@@ -1,28 +1,34 @@
-
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 
 import './globals.css';
 
 import ApolloProviderWrapper from '@/providers/apollo-provider';
+import { RegisterServiceWorker } from '@/components/pwa/register-sw';
 
 export const metadata: Metadata = {
-  title: 'Rabbit Farm',
+  title: { default: 'Rabbit Farm', template: '%s · Rabbit Farm' },
   description: 'Application de gestion d’élevage cunicole',
+  applicationName: 'Rabbit Farm',
+  appleWebApp: { capable: true, title: 'Rabbit Farm', statusBarStyle: 'default' },
+  icons: {
+    icon: [{ url: '/icons/icon.svg', type: 'image/svg+xml' }, { url: '/icons/icon-192.png', sizes: '192x192' }],
+    apple: '/icons/apple-touch-icon.png',
+  },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export const viewport: Viewport = {
+  themeColor: '#059669',
+  width: 'device-width',
+  initialScale: 1,
+};
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="fr">
       <body>
-        <ApolloProviderWrapper>
-          {children}
-        </ApolloProviderWrapper>
+        <ApolloProviderWrapper>{children}</ApolloProviderWrapper>
+        <RegisterServiceWorker />
       </body>
     </html>
   );
 }
-

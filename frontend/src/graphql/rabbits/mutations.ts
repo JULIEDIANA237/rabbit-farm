@@ -21,8 +21,6 @@ export const CREATE_RABBIT = gql`
         id
         rabbitId
         url
-        filename
-        mimeType
         isPrimary
         createdAt
       }
@@ -51,8 +49,6 @@ export const UPDATE_RABBIT = gql`
         id
         rabbitId
         url
-        filename
-        mimeType
         isPrimary
         createdAt
       }
