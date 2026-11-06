@@ -133,7 +133,7 @@ describe('Cycle complet d’élevage (e2e)', () => {
     expect(birth.createBirth.litterCode).toBe('L001');
 
     const detail = await run(
-      `query ($id: ID!) { litterDetail(id: $id) { litter { code currentCount status } kits { id code } } }`,
+      `query ($id: ID!) { litterDetail(id: $id) { litter { code currentCount status mother { code } father { code } } kits { id code } } }`,
       { id: ids.litter },
     );
     kitIds = detail.litterDetail.kits.map((k: any) => k.id);
@@ -141,6 +141,8 @@ describe('Cycle complet d’élevage (e2e)', () => {
       'L001-01', 'L001-02', 'L001-03', 'L001-04', 'L001-05', 'L001-06',
     ]);
     expect(detail.litterDetail.litter.currentCount).toBe(6);
+    expect(detail.litterDetail.litter.mother.code).toBe('F001');
+    expect(detail.litterDetail.litter.father.code).toBe('M001');
 
     // Les tâches de reproduction sont closes, une tâche de sevrage est créée.
     const after = await run(`{ tasks(openOnly: true) { automationKey } }`);

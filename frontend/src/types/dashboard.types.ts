@@ -50,6 +50,7 @@ export interface DashboardBirth {
 export interface DashboardWeaning {
   id: string;
   litterId: string;
+  litterCode?: string | null;
   plannedDate: string;
   quantity: number;
   averageWeight?: number | null;
@@ -61,6 +62,17 @@ export interface DashboardStockAlert {
   unit: string;
   currentStock: number;
   minimumStock?: number | null;
+  autonomyDays?: number | null;
+}
+
+export interface DashboardHealthAction {
+  id: string;
+  rabbitId: string;
+  rabbitCode: string;
+  type: string;
+  dueDate: string;
+  label: string;
+  overdue: boolean;
 }
 
 export interface DashboardData {
@@ -82,6 +94,10 @@ export interface DashboardData {
   recentBirths: number;
   plannedWeanings: number;
   lowStockItems: number;
+  healthActions: number;
+
+  totalCages: number;
+  occupiedCages: number;
 
   birthsThisMonth: number;
   kitsBornThisMonth: number;
@@ -89,12 +105,14 @@ export interface DashboardData {
   breedingSuccessRate?: number | null;
 
   monthlyExpenses: number;
+  monthlyRevenue: number;
 
   urgentTaskList: DashboardTask[];
   palpationList: DashboardBreedingAction[];
   nestInstallationList: DashboardBreedingAction[];
-  expectedBirthList: DashboardBirth[];
+  expectedBirthList: DashboardBreedingAction[];
   recentBirthList: DashboardBirth[];
   weaningList: DashboardWeaning[];
   lowStockList: DashboardStockAlert[];
+  healthActionList: DashboardHealthAction[];
 }

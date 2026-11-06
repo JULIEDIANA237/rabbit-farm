@@ -22,6 +22,13 @@ export interface Rabbit {
   code: string;
   sex: RabbitSex;
   status?: RabbitStatus | null;
+  purpose?: string | null;
+  originalCode?: string | null;
+  breedName?: string | null;
+  currentCageId?: string | null;
+  currentCageCode?: string | null;
+  exitDate?: string | null;
+  exitCause?: string | null;
 
   birthDate?: string | null;
   birthLitterId?: string | null;

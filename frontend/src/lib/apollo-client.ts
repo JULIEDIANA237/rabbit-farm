@@ -1,89 +1,57 @@
-
 import {
   ApolloClient,
   ApolloLink,
+  CombinedGraphQLErrors,
   HttpLink,
   InMemoryCache,
-  Observable,
 } from '@apollo/client';
+import { ErrorLink } from '@apollo/client/link/error';
 
-import { getAccessToken } from './auth-storage';
+import { getAccessToken, removeAccessToken } from './auth-storage';
 
 const graphqlUrl =
-  process.env.NEXT_PUBLIC_GRAPHQL_URL ??
-  'http://localhost:3001/graphql';
+  process.env.NEXT_PUBLIC_GRAPHQL_URL ?? 'http://localhost:3001/graphql';
 
 /**
- * Link d'authentification.
- *
- * Ajoute automatiquement le JWT dans le header Authorization
- * pour les requêtes GraphQL nécessitant une authentification.
+ * Ajoute le JWT dans le header Authorization.
  */
 const authLink = new ApolloLink((operation, forward) => {
   const token = getAccessToken();
 
-  console.log('[APOLLO] Requête GraphQL:', operation.operationName);
-
-  if (token) {
-    console.log('[APOLLO] Token JWT présent');
-  } else {
-    console.log('[APOLLO] Aucun token JWT');
-  }
-
   operation.setContext(({ headers = {} }) => ({
     headers: {
       ...headers,
-      ...(token
-        ? {
-            Authorization: `Bearer ${token}`,
-          }
-        : {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
   }));
 
-  const observable = forward(operation);
-
-  return new Observable((observer) => {
-    const subscription = observable.subscribe({
-      next: (result) => {
-        observer.next(result);
-      },
-
-      error: (error) => {
-        console.error(
-          '[APOLLO] Erreur GraphQL:',
-          error,
-        );
-
-        observer.error(error);
-      },
-
-      complete: () => {
-        observer.complete();
-      },
-    });
-
-    return () => subscription.unsubscribe();
-  });
+  return forward(operation);
 });
 
 /**
- * Transport HTTP vers NestJS / GraphQL.
+ * Session expirée ou jeton invalide : retour à la connexion.
  */
-const httpLink = new HttpLink({
-  uri: graphqlUrl,
+const errorLink = new ErrorLink(({ error }) => {
+  if (!CombinedGraphQLErrors.is(error)) return;
+
+  const unauthenticated = error.errors.some(
+    (e) =>
+      e.extensions?.code === 'UNAUTHENTICATED' ||
+      /unauthorized/i.test(e.message),
+  );
+
+  if (unauthenticated && typeof window !== 'undefined') {
+    removeAccessToken();
+    if (!window.location.pathname.startsWith('/login')) {
+      window.location.replace(`/login?next=${encodeURIComponent(window.location.pathname)}`);
+    }
+  }
 });
 
-/**
- * Client Apollo global.
- */
+const httpLink = new HttpLink({ uri: graphqlUrl });
+
 export const apolloClient = new ApolloClient({
-  link: authLink.concat(httpLink),
-
+  link: ApolloLink.from([errorLink, authLink, httpLink]),
   cache: new InMemoryCache(),
-
-  devtools: {
-    enabled: process.env.NODE_ENV !== 'production',
-  },
+  devtools: { enabled: process.env.NODE_ENV !== 'production' },
 });
-

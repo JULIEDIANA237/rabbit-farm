@@ -59,7 +59,7 @@ export function DetermineSexAction({
             </h2>
 
             <p className="mt-1 text-sm text-amber-700">
-              Le sexe de ce lapin n'a pas encore été identifié.
+              Le sexe de ce lapin n&apos;a pas encore été identifié.
             </p>
           </div>
 

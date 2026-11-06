@@ -17,7 +17,7 @@ export function RabbitIdentificationCard({
         </h2>
 
         <p className="mt-1 text-sm text-slate-500">
-          Numéros et moyens d'identification physique.
+          Numéros et moyens d&apos;identification physique.
         </p>
       </div>
 

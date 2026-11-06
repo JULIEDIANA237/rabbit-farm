@@ -9,7 +9,11 @@ import {
   Rabbit,
   Syringe,
   Wheat,
+  Home,
 } from 'lucide-react';
+
+import { formatMoney } from '@/lib/format';
+import { HealthActionsCard } from './health-actions-card';
 
 import { useDashboard } from '@/hooks/use-dashboard';
 import { KpiCard } from './kpi-card';
@@ -179,7 +183,7 @@ export function DashboardPage() {
       <section>
         <div className="mb-4">
           <h2 className="text-lg font-semibold text-slate-900">
-            Actions d'élevage
+            Actions d&apos;élevage
           </h2>
 
           <p className="text-sm text-slate-500">
@@ -256,36 +260,45 @@ export function DashboardPage() {
         />
       </section>
 
-      {/* FINANCE */}
+      {/* SANTÉ + CAGES */}
 
       <section className="grid gap-6 lg:grid-cols-2">
-        <ExpenseChart
-          monthlyExpenses={dashboard.monthlyExpenses}
-        />
+        <HealthActionsCard actions={dashboard.healthActionList} />
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
-              <DollarSign size={20} />
-            </div>
-
-            <div>
-              <h2 className="font-semibold text-slate-900">
-                Dépenses du mois
-              </h2>
-
-              <p className="text-sm text-slate-500">
-                Total enregistré
-              </p>
-            </div>
-          </div>
-
-          <p className="mt-6 text-3xl font-bold text-slate-900">
-            {dashboard.monthlyExpenses.toLocaleString(
-              'fr-FR',
-            )}
-          </p>
+        <div className="grid grid-cols-2 gap-3">
+          <KpiCard
+            title="Cages occupées"
+            value={`${dashboard.occupiedCages}/${dashboard.totalCages}`}
+            description={
+              dashboard.totalCages > 0
+                ? `${Math.round((dashboard.occupiedCages / dashboard.totalCages) * 100)} % d'occupation`
+                : 'Aucune cage'
+            }
+            icon={<Home size={20} />}
+          />
+          <KpiCard
+            title="Soins à faire"
+            value={dashboard.healthActions}
+            icon={<Syringe size={20} />}
+            variant={dashboard.healthActions > 0 ? 'warning' : 'default'}
+          />
+          <KpiCard
+            title="Ventes du mois"
+            value={formatMoney(dashboard.monthlyRevenue)}
+            icon={<DollarSign size={20} />}
+            variant="success"
+          />
+          <KpiCard
+            title="Dépenses du mois"
+            value={formatMoney(dashboard.monthlyExpenses)}
+            description={`Marge : ${formatMoney(dashboard.monthlyRevenue - dashboard.monthlyExpenses)}`}
+            icon={<DollarSign size={20} />}
+          />
         </div>
+      </section>
+
+      <section>
+        <ExpenseChart monthlyExpenses={dashboard.monthlyExpenses} />
       </section>
     </div>
   );

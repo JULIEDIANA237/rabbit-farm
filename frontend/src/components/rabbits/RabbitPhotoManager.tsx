@@ -88,7 +88,7 @@ export function RabbitPhotoManager({
 
         <p className="mt-1 text-sm text-slate-500">
           Ajoutez une photo pour faciliter
-          l'identification et le suivi.
+          l&apos;identification et le suivi.
         </p>
       </div>
 

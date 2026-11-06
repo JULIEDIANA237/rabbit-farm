@@ -8,7 +8,6 @@ import {
 } from 'lucide-react';
 
 import type {
-  DashboardBirth,
   DashboardBreedingAction,
   DashboardWeaning,
 } from '@/types/dashboard.types';
@@ -16,7 +15,7 @@ import type {
 interface Props {
   palpations: DashboardBreedingAction[];
   nests: DashboardBreedingAction[];
-  births: DashboardBirth[];
+  births: DashboardBreedingAction[];
   weanings: DashboardWeaning[];
 }
 
@@ -88,9 +87,9 @@ export function ActionCalendar({
 
     ...births.map((item) => ({
       id: `birth-${item.id}`,
-      title: `Naissance ${item.femaleCode}`,
-      subtitle: `${item.totalBorn} lapereaux`,
-      date: item.birthDate,
+      title: `Mise bas ${item.femaleCode}`,
+      subtitle: 'Mise bas attendue',
+      date: item.expectedBirthStartDate ?? item.breedingDate,
       icon: <Baby size={18} />,
     })),
 

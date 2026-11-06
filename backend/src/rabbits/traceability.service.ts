@@ -14,6 +14,40 @@ type TraceEvent = {
   referenceId?: string | null;
 };
 
+const BREEDING_LABELS: Record<string, string> = {
+  PLANNED: 'Planifié',
+  AWAITING_PALPATION: 'Palpation à faire',
+  PREGNANT: 'Gestante',
+  NON_PREGNANT: 'Vide',
+  INCONCLUSIVE: 'À repalper',
+  BIRTH_RECORDED: 'Mise bas enregistrée',
+  CANCELLED: 'Annulé',
+};
+
+const HEALTH_LABELS: Record<string, string> = {
+  OBSERVATION: 'Observation',
+  TREATMENT: 'Traitement',
+  VACCINATION: 'Vaccination',
+  ANALYSIS: 'Analyse',
+  CONTROL: 'Contrôle',
+};
+
+const REASON_LABELS: Record<string, string> = {
+  INITIAL_ASSIGNMENT: 'Première affectation',
+  BREEDING: 'Reproduction',
+  MATERNITY: 'Maternité',
+  FATTENING: 'Engraissement',
+  QUARANTINE: 'Quarantaine',
+  CLEANING: 'Nettoyage',
+  HEALTH: 'Santé',
+  SALE: 'Vente',
+  AGGRESSION: 'Agressivité',
+  OVERCROWDING: 'Surpopulation',
+  SEX_SEPARATION: 'Séparation des sexes',
+  SIZE_DIFFERENCE: 'Différence de taille',
+  OTHER: 'Autre',
+};
+
 const summary = { select: { id: true, code: true, sex: true, status: true, birthDate: true } } as const;
 
 const EXIT_LABELS: Record<string, string> = {
@@ -92,7 +126,7 @@ export class TraceabilityService {
         date: m.startedAt,
         type: 'CAGE',
         title: `Entrée en cage ${m.cage.code}`,
-        detail: [m.reason, m.endedAt && `jusqu'au ${m.endedAt.toISOString().slice(0, 10)}`]
+        detail: [m.reason && (REASON_LABELS[m.reason] ?? m.reason), m.endedAt && `jusqu'au ${m.endedAt.toISOString().slice(0, 10)}`]
           .filter(Boolean)
           .join(' · ') || null,
         referenceId: m.cageId,
@@ -152,7 +186,7 @@ export class TraceabilityService {
       events.push({
         date: h.date,
         type: 'HEALTH',
-        title: `Santé (${h.type})`,
+        title: HEALTH_LABELS[h.type] ?? h.type,
         detail: [h.diagnosis, h.treatment, h.medication].filter(Boolean).join(' · ') || h.observation,
         referenceId: h.id,
       });
@@ -163,7 +197,7 @@ export class TraceabilityService {
         date: b.breedingDate,
         type: 'BREEDING',
         title: `Saillie avec ${b.male.code}`,
-        detail: b.status,
+        detail: BREEDING_LABELS[b.status] ?? b.status,
         referenceId: b.id,
       });
     }
@@ -172,7 +206,7 @@ export class TraceabilityService {
         date: b.breedingDate,
         type: 'BREEDING',
         title: `Saillie de ${b.female.code}`,
-        detail: b.status,
+        detail: BREEDING_LABELS[b.status] ?? b.status,
         referenceId: b.id,
       });
     }

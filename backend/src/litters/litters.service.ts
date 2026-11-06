@@ -141,6 +141,7 @@ export class LittersService {
         id,
         farmId: currentUser.farmId,
       },
+      include: litterInclude,
     });
 
     if (!litter) {
@@ -149,7 +150,7 @@ export class LittersService {
       );
     }
 
-    return litter;
+    return this.toModel(litter);
   }
 
   async findByBirth(
