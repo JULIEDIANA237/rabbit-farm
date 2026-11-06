@@ -28,6 +28,7 @@ export type HealthRecordMinAggregateOutputType = {
   id: string | null
   farmId: string | null
   rabbitId: string | null
+  type: $Enums.HealthRecordType | null
   date: Date | null
   symptoms: string | null
   observation: string | null
@@ -45,6 +46,7 @@ export type HealthRecordMaxAggregateOutputType = {
   id: string | null
   farmId: string | null
   rabbitId: string | null
+  type: $Enums.HealthRecordType | null
   date: Date | null
   symptoms: string | null
   observation: string | null
@@ -62,6 +64,7 @@ export type HealthRecordCountAggregateOutputType = {
   id: number
   farmId: number
   rabbitId: number
+  type: number
   date: number
   symptoms: number
   observation: number
@@ -81,6 +84,7 @@ export type HealthRecordMinAggregateInputType = {
   id?: true
   farmId?: true
   rabbitId?: true
+  type?: true
   date?: true
   symptoms?: true
   observation?: true
@@ -98,6 +102,7 @@ export type HealthRecordMaxAggregateInputType = {
   id?: true
   farmId?: true
   rabbitId?: true
+  type?: true
   date?: true
   symptoms?: true
   observation?: true
@@ -115,6 +120,7 @@ export type HealthRecordCountAggregateInputType = {
   id?: true
   farmId?: true
   rabbitId?: true
+  type?: true
   date?: true
   symptoms?: true
   observation?: true
@@ -205,6 +211,7 @@ export type HealthRecordGroupByOutputType = {
   id: string
   farmId: string
   rabbitId: string
+  type: $Enums.HealthRecordType
   date: Date
   symptoms: string | null
   observation: string | null
@@ -243,6 +250,7 @@ export type HealthRecordWhereInput = {
   id?: Prisma.StringFilter<"HealthRecord"> | string
   farmId?: Prisma.StringFilter<"HealthRecord"> | string
   rabbitId?: Prisma.StringFilter<"HealthRecord"> | string
+  type?: Prisma.EnumHealthRecordTypeFilter<"HealthRecord"> | $Enums.HealthRecordType
   date?: Prisma.DateTimeFilter<"HealthRecord"> | Date | string
   symptoms?: Prisma.StringNullableFilter<"HealthRecord"> | string | null
   observation?: Prisma.StringNullableFilter<"HealthRecord"> | string | null
@@ -263,6 +271,7 @@ export type HealthRecordOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   farmId?: Prisma.SortOrder
   rabbitId?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   date?: Prisma.SortOrder
   symptoms?: Prisma.SortOrderInput | Prisma.SortOrder
   observation?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -286,6 +295,7 @@ export type HealthRecordWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.HealthRecordWhereInput | Prisma.HealthRecordWhereInput[]
   farmId?: Prisma.StringFilter<"HealthRecord"> | string
   rabbitId?: Prisma.StringFilter<"HealthRecord"> | string
+  type?: Prisma.EnumHealthRecordTypeFilter<"HealthRecord"> | $Enums.HealthRecordType
   date?: Prisma.DateTimeFilter<"HealthRecord"> | Date | string
   symptoms?: Prisma.StringNullableFilter<"HealthRecord"> | string | null
   observation?: Prisma.StringNullableFilter<"HealthRecord"> | string | null
@@ -306,6 +316,7 @@ export type HealthRecordOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   farmId?: Prisma.SortOrder
   rabbitId?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   date?: Prisma.SortOrder
   symptoms?: Prisma.SortOrderInput | Prisma.SortOrder
   observation?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -329,6 +340,7 @@ export type HealthRecordScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"HealthRecord"> | string
   farmId?: Prisma.StringWithAggregatesFilter<"HealthRecord"> | string
   rabbitId?: Prisma.StringWithAggregatesFilter<"HealthRecord"> | string
+  type?: Prisma.EnumHealthRecordTypeWithAggregatesFilter<"HealthRecord"> | $Enums.HealthRecordType
   date?: Prisma.DateTimeWithAggregatesFilter<"HealthRecord"> | Date | string
   symptoms?: Prisma.StringNullableWithAggregatesFilter<"HealthRecord"> | string | null
   observation?: Prisma.StringNullableWithAggregatesFilter<"HealthRecord"> | string | null
@@ -344,6 +356,7 @@ export type HealthRecordScalarWhereWithAggregatesInput = {
 
 export type HealthRecordCreateInput = {
   id?: string
+  type?: $Enums.HealthRecordType
   date: Date | string
   symptoms?: string | null
   observation?: string | null
@@ -363,6 +376,7 @@ export type HealthRecordUncheckedCreateInput = {
   id?: string
   farmId: string
   rabbitId: string
+  type?: $Enums.HealthRecordType
   date: Date | string
   symptoms?: string | null
   observation?: string | null
@@ -378,6 +392,7 @@ export type HealthRecordUncheckedCreateInput = {
 
 export type HealthRecordUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumHealthRecordTypeFieldUpdateOperationsInput | $Enums.HealthRecordType
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -397,6 +412,7 @@ export type HealthRecordUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   farmId?: Prisma.StringFieldUpdateOperationsInput | string
   rabbitId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumHealthRecordTypeFieldUpdateOperationsInput | $Enums.HealthRecordType
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -414,6 +430,7 @@ export type HealthRecordCreateManyInput = {
   id?: string
   farmId: string
   rabbitId: string
+  type?: $Enums.HealthRecordType
   date: Date | string
   symptoms?: string | null
   observation?: string | null
@@ -429,6 +446,7 @@ export type HealthRecordCreateManyInput = {
 
 export type HealthRecordUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumHealthRecordTypeFieldUpdateOperationsInput | $Enums.HealthRecordType
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -445,6 +463,7 @@ export type HealthRecordUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   farmId?: Prisma.StringFieldUpdateOperationsInput | string
   rabbitId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumHealthRecordTypeFieldUpdateOperationsInput | $Enums.HealthRecordType
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -472,6 +491,7 @@ export type HealthRecordCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   farmId?: Prisma.SortOrder
   rabbitId?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   date?: Prisma.SortOrder
   symptoms?: Prisma.SortOrder
   observation?: Prisma.SortOrder
@@ -489,6 +509,7 @@ export type HealthRecordMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   farmId?: Prisma.SortOrder
   rabbitId?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   date?: Prisma.SortOrder
   symptoms?: Prisma.SortOrder
   observation?: Prisma.SortOrder
@@ -506,6 +527,7 @@ export type HealthRecordMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   farmId?: Prisma.SortOrder
   rabbitId?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   date?: Prisma.SortOrder
   symptoms?: Prisma.SortOrder
   observation?: Prisma.SortOrder
@@ -645,8 +667,13 @@ export type HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput = {
   deleteMany?: Prisma.HealthRecordScalarWhereInput | Prisma.HealthRecordScalarWhereInput[]
 }
 
+export type EnumHealthRecordTypeFieldUpdateOperationsInput = {
+  set?: $Enums.HealthRecordType
+}
+
 export type HealthRecordCreateWithoutCreatedByInput = {
   id?: string
+  type?: $Enums.HealthRecordType
   date: Date | string
   symptoms?: string | null
   observation?: string | null
@@ -665,6 +692,7 @@ export type HealthRecordUncheckedCreateWithoutCreatedByInput = {
   id?: string
   farmId: string
   rabbitId: string
+  type?: $Enums.HealthRecordType
   date: Date | string
   symptoms?: string | null
   observation?: string | null
@@ -710,6 +738,7 @@ export type HealthRecordScalarWhereInput = {
   id?: Prisma.StringFilter<"HealthRecord"> | string
   farmId?: Prisma.StringFilter<"HealthRecord"> | string
   rabbitId?: Prisma.StringFilter<"HealthRecord"> | string
+  type?: Prisma.EnumHealthRecordTypeFilter<"HealthRecord"> | $Enums.HealthRecordType
   date?: Prisma.DateTimeFilter<"HealthRecord"> | Date | string
   symptoms?: Prisma.StringNullableFilter<"HealthRecord"> | string | null
   observation?: Prisma.StringNullableFilter<"HealthRecord"> | string | null
@@ -725,6 +754,7 @@ export type HealthRecordScalarWhereInput = {
 
 export type HealthRecordCreateWithoutFarmInput = {
   id?: string
+  type?: $Enums.HealthRecordType
   date: Date | string
   symptoms?: string | null
   observation?: string | null
@@ -742,6 +772,7 @@ export type HealthRecordCreateWithoutFarmInput = {
 export type HealthRecordUncheckedCreateWithoutFarmInput = {
   id?: string
   rabbitId: string
+  type?: $Enums.HealthRecordType
   date: Date | string
   symptoms?: string | null
   observation?: string | null
@@ -783,6 +814,7 @@ export type HealthRecordUpdateManyWithWhereWithoutFarmInput = {
 
 export type HealthRecordCreateWithoutRabbitInput = {
   id?: string
+  type?: $Enums.HealthRecordType
   date: Date | string
   symptoms?: string | null
   observation?: string | null
@@ -800,6 +832,7 @@ export type HealthRecordCreateWithoutRabbitInput = {
 export type HealthRecordUncheckedCreateWithoutRabbitInput = {
   id?: string
   farmId: string
+  type?: $Enums.HealthRecordType
   date: Date | string
   symptoms?: string | null
   observation?: string | null
@@ -843,6 +876,7 @@ export type HealthRecordCreateManyCreatedByInput = {
   id?: string
   farmId: string
   rabbitId: string
+  type?: $Enums.HealthRecordType
   date: Date | string
   symptoms?: string | null
   observation?: string | null
@@ -857,6 +891,7 @@ export type HealthRecordCreateManyCreatedByInput = {
 
 export type HealthRecordUpdateWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumHealthRecordTypeFieldUpdateOperationsInput | $Enums.HealthRecordType
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -875,6 +910,7 @@ export type HealthRecordUncheckedUpdateWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   farmId?: Prisma.StringFieldUpdateOperationsInput | string
   rabbitId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumHealthRecordTypeFieldUpdateOperationsInput | $Enums.HealthRecordType
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -891,6 +927,7 @@ export type HealthRecordUncheckedUpdateManyWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   farmId?: Prisma.StringFieldUpdateOperationsInput | string
   rabbitId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumHealthRecordTypeFieldUpdateOperationsInput | $Enums.HealthRecordType
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -906,6 +943,7 @@ export type HealthRecordUncheckedUpdateManyWithoutCreatedByInput = {
 export type HealthRecordCreateManyFarmInput = {
   id?: string
   rabbitId: string
+  type?: $Enums.HealthRecordType
   date: Date | string
   symptoms?: string | null
   observation?: string | null
@@ -921,6 +959,7 @@ export type HealthRecordCreateManyFarmInput = {
 
 export type HealthRecordUpdateWithoutFarmInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumHealthRecordTypeFieldUpdateOperationsInput | $Enums.HealthRecordType
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -938,6 +977,7 @@ export type HealthRecordUpdateWithoutFarmInput = {
 export type HealthRecordUncheckedUpdateWithoutFarmInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   rabbitId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumHealthRecordTypeFieldUpdateOperationsInput | $Enums.HealthRecordType
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -954,6 +994,7 @@ export type HealthRecordUncheckedUpdateWithoutFarmInput = {
 export type HealthRecordUncheckedUpdateManyWithoutFarmInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   rabbitId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumHealthRecordTypeFieldUpdateOperationsInput | $Enums.HealthRecordType
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -970,6 +1011,7 @@ export type HealthRecordUncheckedUpdateManyWithoutFarmInput = {
 export type HealthRecordCreateManyRabbitInput = {
   id?: string
   farmId: string
+  type?: $Enums.HealthRecordType
   date: Date | string
   symptoms?: string | null
   observation?: string | null
@@ -985,6 +1027,7 @@ export type HealthRecordCreateManyRabbitInput = {
 
 export type HealthRecordUpdateWithoutRabbitInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumHealthRecordTypeFieldUpdateOperationsInput | $Enums.HealthRecordType
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1002,6 +1045,7 @@ export type HealthRecordUpdateWithoutRabbitInput = {
 export type HealthRecordUncheckedUpdateWithoutRabbitInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumHealthRecordTypeFieldUpdateOperationsInput | $Enums.HealthRecordType
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1018,6 +1062,7 @@ export type HealthRecordUncheckedUpdateWithoutRabbitInput = {
 export type HealthRecordUncheckedUpdateManyWithoutRabbitInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumHealthRecordTypeFieldUpdateOperationsInput | $Enums.HealthRecordType
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1037,6 +1082,7 @@ export type HealthRecordSelect<ExtArgs extends runtime.Types.Extensions.Internal
   id?: boolean
   farmId?: boolean
   rabbitId?: boolean
+  type?: boolean
   date?: boolean
   symptoms?: boolean
   observation?: boolean
@@ -1057,6 +1103,7 @@ export type HealthRecordSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   farmId?: boolean
   rabbitId?: boolean
+  type?: boolean
   date?: boolean
   symptoms?: boolean
   observation?: boolean
@@ -1077,6 +1124,7 @@ export type HealthRecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   farmId?: boolean
   rabbitId?: boolean
+  type?: boolean
   date?: boolean
   symptoms?: boolean
   observation?: boolean
@@ -1097,6 +1145,7 @@ export type HealthRecordSelectScalar = {
   id?: boolean
   farmId?: boolean
   rabbitId?: boolean
+  type?: boolean
   date?: boolean
   symptoms?: boolean
   observation?: boolean
@@ -1110,7 +1159,7 @@ export type HealthRecordSelectScalar = {
   createdAt?: boolean
 }
 
-export type HealthRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "rabbitId" | "date" | "symptoms" | "observation" | "suspicion" | "diagnosis" | "treatment" | "medication" | "dosage" | "nextDueDate" | "createdById" | "createdAt", ExtArgs["result"]["healthRecord"]>
+export type HealthRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "rabbitId" | "type" | "date" | "symptoms" | "observation" | "suspicion" | "diagnosis" | "treatment" | "medication" | "dosage" | "nextDueDate" | "createdById" | "createdAt", ExtArgs["result"]["healthRecord"]>
 export type HealthRecordInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   rabbit?: boolean | Prisma.RabbitDefaultArgs<ExtArgs>
@@ -1138,6 +1187,7 @@ export type $HealthRecordPayload<ExtArgs extends runtime.Types.Extensions.Intern
     id: string
     farmId: string
     rabbitId: string
+    type: $Enums.HealthRecordType
     date: Date
     symptoms: string | null
     observation: string | null
@@ -1578,6 +1628,7 @@ export interface HealthRecordFieldRefs {
   readonly id: Prisma.FieldRef<"HealthRecord", 'String'>
   readonly farmId: Prisma.FieldRef<"HealthRecord", 'String'>
   readonly rabbitId: Prisma.FieldRef<"HealthRecord", 'String'>
+  readonly type: Prisma.FieldRef<"HealthRecord", 'HealthRecordType'>
   readonly date: Prisma.FieldRef<"HealthRecord", 'DateTime'>
   readonly symptoms: Prisma.FieldRef<"HealthRecord", 'String'>
   readonly observation: Prisma.FieldRef<"HealthRecord", 'String'>

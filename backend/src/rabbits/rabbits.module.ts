@@ -4,6 +4,7 @@ import { AuthModule } from '../auth/auth.module';
 
 import { RabbitsService } from './rabbits.service';
 import { RabbitsResolver } from './rabbits.resolver';
+import { TraceabilityService } from './traceability.service';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { RabbitsResolver } from './rabbits.resolver';
   providers: [
     RabbitsService,
     RabbitsResolver,
+    TraceabilityService,
   ],
 
   exports: [

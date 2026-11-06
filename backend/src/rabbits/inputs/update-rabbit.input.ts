@@ -57,4 +57,13 @@ export class UpdateRabbitInput {
     nullable: true,
   })
   observations?: string;
+
+  @Field(() => ID, { nullable: true })
+  fatherId?: string;
+
+  @Field(() => ID, { nullable: true })
+  motherId?: string;
+
+  @Field({ nullable: true })
+  birthDate?: Date;
 }

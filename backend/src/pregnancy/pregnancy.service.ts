@@ -13,12 +13,16 @@ import {
 } from '../generated/prisma/client';
 
 import { CreatePregnancyCheckInput } from './inputs/create-pregnancy-check.input';
+import { TaskAutomationService } from '../operations/automation/task-automation.service';
 
 @Injectable()
 export class PregnancyService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly tasks: TaskAutomationService,
+  ) {}
 
-  private toPregnancyModel<T extends { checkDate: Date }>(
+  private toPregnancyModel<T extends { checkDate: Date; createdAt: Date }>(
     pregnancy: T,
   ) {
     const { checkDate, ...pregnancyData } = pregnancy;
@@ -26,6 +30,8 @@ export class PregnancyService {
     return {
       ...pregnancyData,
       checkedDate: checkDate,
+      // Une palpation n'est jamais modifiée : updatedAt = createdAt.
+      updatedAt: pregnancy.createdAt,
     };
   }
 
@@ -38,11 +44,18 @@ export class PregnancyService {
         id: input.breedingId,
         farmId: currentUser.farmId,
       },
+      include: { female: { select: { code: true } } },
     });
 
     if (!breeding) {
       throw new NotFoundException(
         'Accouplement introuvable.',
+      );
+    }
+
+    if (breeding.status === BreedingStatus.NON_PREGNANT) {
+      throw new BadRequestException(
+        'La femelle a déjà été déclarée vide : cet accouplement est terminé.',
       );
     }
 
@@ -59,6 +72,10 @@ export class PregnancyService {
     }
 
     const checkedDate = new Date(input.checkedDate);
+
+    if (Number.isNaN(checkedDate.getTime())) {
+      throw new BadRequestException('La date de palpation est invalide.');
+    }
 
     if (checkedDate < breeding.breedingDate) {
       throw new BadRequestException(
@@ -107,6 +124,18 @@ export class PregnancyService {
             status: newStatus,
           },
         });
+
+        await this.tasks.onPregnancyChecked(
+          currentUser.farmId,
+          {
+            id: breeding.id,
+            femaleId: breeding.femaleId,
+            femaleCode: breeding.female.code,
+          },
+          input.result,
+          checkedDate,
+          tx,
+        );
 
         return created;
       },

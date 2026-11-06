@@ -11,6 +11,9 @@ export class LotMembershipModel {
   @Field(() => ID)
   rabbitId: string;
 
+  @Field(() => String, { nullable: true })
+  rabbitCode?: string | null;
+
   @Field()
   joinedAt: Date;
 

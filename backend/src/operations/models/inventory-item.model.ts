@@ -1,6 +1,7 @@
 import { Field, Float, ID, ObjectType } from '@nestjs/graphql';
 
 import { InventoryItemType } from '../graphql/inventory-item-type.enum';
+import { StockMovementModel } from './stock-movement.model';
 
 @ObjectType()
 export class InventoryItemModel {
@@ -27,6 +28,24 @@ export class InventoryItemModel {
 
   @Field({ nullable: true })
   description?: string;
+
+  @Field(() => Boolean)
+  isBelowMinimum: boolean;
+
+  @Field(() => Float, {
+    nullable: true,
+    description: 'Consommation quotidienne moyenne sur 30 jours (§46)',
+  })
+  averageDailyConsumption?: number | null;
+
+  @Field(() => Float, {
+    nullable: true,
+    description: 'Nombre de jours d’autonomie estimé (§46)',
+  })
+  autonomyDays?: number | null;
+
+  @Field(() => [StockMovementModel])
+  movements: StockMovementModel[];
 
   @Field()
   createdAt: Date;

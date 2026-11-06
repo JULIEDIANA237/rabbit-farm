@@ -14,6 +14,9 @@ export class DashboardWeaningModel {
   @Field(() => ID)
   litterId: string;
 
+  @Field(() => String, { nullable: true })
+  litterCode?: string | null;
+
   @Field()
   plannedDate: Date;
 

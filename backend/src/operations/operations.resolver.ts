@@ -8,6 +8,7 @@ import {
 import { UseGuards } from '@nestjs/common';
 
 import { OperationsService } from './operations.service';
+import { TaskStatus } from './graphql/task-status.enum';
 import { ExpenseModel } from './models/expense.model';
 import { InventoryItemModel } from './models/inventory-item.model';
 import { StockMovementModel } from './models/stock-movement.model';
@@ -48,8 +49,24 @@ export class OperationsResolver {
   }
 
   @Query(() => [TaskModel])
-  tasks(@CurrentUser() currentUser: CurrentUserType) {
-    return this.operationsService.tasks(currentUser);
+  tasks(
+    @Args('status', { type: () => TaskStatus, nullable: true })
+    status: TaskStatus | undefined,
+    @Args('from', { type: () => Date, nullable: true }) from: Date | undefined,
+    @Args('to', { type: () => Date, nullable: true }) to: Date | undefined,
+    @Args('rabbitId', { type: () => ID, nullable: true })
+    rabbitId: string | undefined,
+    @Args('openOnly', { type: () => Boolean, nullable: true, defaultValue: false })
+    openOnly: boolean,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.operationsService.tasks(currentUser, {
+      status,
+      from,
+      to,
+      rabbitId,
+      openOnly,
+    });
   }
 
   @Query(() => TaskModel)

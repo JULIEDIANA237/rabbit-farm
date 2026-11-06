@@ -43,6 +43,8 @@ export type ExpenseMinAggregateOutputType = {
   description: string | null
   reference: string | null
   supplier: string | null
+  paymentMethod: $Enums.PaymentMethod | null
+  observation: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -56,6 +58,8 @@ export type ExpenseMaxAggregateOutputType = {
   description: string | null
   reference: string | null
   supplier: string | null
+  paymentMethod: $Enums.PaymentMethod | null
+  observation: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -69,6 +73,8 @@ export type ExpenseCountAggregateOutputType = {
   description: number
   reference: number
   supplier: number
+  paymentMethod: number
+  observation: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -92,6 +98,8 @@ export type ExpenseMinAggregateInputType = {
   description?: true
   reference?: true
   supplier?: true
+  paymentMethod?: true
+  observation?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -105,6 +113,8 @@ export type ExpenseMaxAggregateInputType = {
   description?: true
   reference?: true
   supplier?: true
+  paymentMethod?: true
+  observation?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -118,6 +128,8 @@ export type ExpenseCountAggregateInputType = {
   description?: true
   reference?: true
   supplier?: true
+  paymentMethod?: true
+  observation?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -218,6 +230,8 @@ export type ExpenseGroupByOutputType = {
   description: string | null
   reference: string | null
   supplier: string | null
+  paymentMethod: $Enums.PaymentMethod | null
+  observation: string | null
   createdAt: Date
   updatedAt: Date
   _count: ExpenseCountAggregateOutputType | null
@@ -254,6 +268,8 @@ export type ExpenseWhereInput = {
   description?: Prisma.StringNullableFilter<"Expense"> | string | null
   reference?: Prisma.StringNullableFilter<"Expense"> | string | null
   supplier?: Prisma.StringNullableFilter<"Expense"> | string | null
+  paymentMethod?: Prisma.EnumPaymentMethodNullableFilter<"Expense"> | $Enums.PaymentMethod | null
+  observation?: Prisma.StringNullableFilter<"Expense"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Expense"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Expense"> | Date | string
   farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
@@ -268,6 +284,8 @@ export type ExpenseOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   reference?: Prisma.SortOrderInput | Prisma.SortOrder
   supplier?: Prisma.SortOrderInput | Prisma.SortOrder
+  paymentMethod?: Prisma.SortOrderInput | Prisma.SortOrder
+  observation?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   farm?: Prisma.FarmOrderByWithRelationInput
@@ -285,6 +303,8 @@ export type ExpenseWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Expense"> | string | null
   reference?: Prisma.StringNullableFilter<"Expense"> | string | null
   supplier?: Prisma.StringNullableFilter<"Expense"> | string | null
+  paymentMethod?: Prisma.EnumPaymentMethodNullableFilter<"Expense"> | $Enums.PaymentMethod | null
+  observation?: Prisma.StringNullableFilter<"Expense"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Expense"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Expense"> | Date | string
   farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
@@ -299,6 +319,8 @@ export type ExpenseOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   reference?: Prisma.SortOrderInput | Prisma.SortOrder
   supplier?: Prisma.SortOrderInput | Prisma.SortOrder
+  paymentMethod?: Prisma.SortOrderInput | Prisma.SortOrder
+  observation?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ExpenseCountOrderByAggregateInput
@@ -320,6 +342,8 @@ export type ExpenseScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"Expense"> | string | null
   reference?: Prisma.StringNullableWithAggregatesFilter<"Expense"> | string | null
   supplier?: Prisma.StringNullableWithAggregatesFilter<"Expense"> | string | null
+  paymentMethod?: Prisma.EnumPaymentMethodNullableWithAggregatesFilter<"Expense"> | $Enums.PaymentMethod | null
+  observation?: Prisma.StringNullableWithAggregatesFilter<"Expense"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Expense"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Expense"> | Date | string
 }
@@ -332,6 +356,8 @@ export type ExpenseCreateInput = {
   description?: string | null
   reference?: string | null
   supplier?: string | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  observation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutExpensesInput
@@ -346,6 +372,8 @@ export type ExpenseUncheckedCreateInput = {
   description?: string | null
   reference?: string | null
   supplier?: string | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  observation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -358,6 +386,8 @@ export type ExpenseUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supplier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutExpensesNestedInput
@@ -372,6 +402,8 @@ export type ExpenseUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supplier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -385,6 +417,8 @@ export type ExpenseCreateManyInput = {
   description?: string | null
   reference?: string | null
   supplier?: string | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  observation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -397,6 +431,8 @@ export type ExpenseUpdateManyMutationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supplier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -410,6 +446,8 @@ export type ExpenseUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supplier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -433,6 +471,8 @@ export type ExpenseCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   reference?: Prisma.SortOrder
   supplier?: Prisma.SortOrder
+  paymentMethod?: Prisma.SortOrder
+  observation?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -450,6 +490,8 @@ export type ExpenseMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   reference?: Prisma.SortOrder
   supplier?: Prisma.SortOrder
+  paymentMethod?: Prisma.SortOrder
+  observation?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -463,6 +505,8 @@ export type ExpenseMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   reference?: Prisma.SortOrder
   supplier?: Prisma.SortOrder
+  paymentMethod?: Prisma.SortOrder
+  observation?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -517,6 +561,10 @@ export type EnumExpenseCategoryFieldUpdateOperationsInput = {
   set?: $Enums.ExpenseCategory
 }
 
+export type NullableEnumPaymentMethodFieldUpdateOperationsInput = {
+  set?: $Enums.PaymentMethod | null
+}
+
 export type ExpenseCreateWithoutFarmInput = {
   id?: string
   category: $Enums.ExpenseCategory
@@ -525,6 +573,8 @@ export type ExpenseCreateWithoutFarmInput = {
   description?: string | null
   reference?: string | null
   supplier?: string | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  observation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -537,6 +587,8 @@ export type ExpenseUncheckedCreateWithoutFarmInput = {
   description?: string | null
   reference?: string | null
   supplier?: string | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  observation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -579,6 +631,8 @@ export type ExpenseScalarWhereInput = {
   description?: Prisma.StringNullableFilter<"Expense"> | string | null
   reference?: Prisma.StringNullableFilter<"Expense"> | string | null
   supplier?: Prisma.StringNullableFilter<"Expense"> | string | null
+  paymentMethod?: Prisma.EnumPaymentMethodNullableFilter<"Expense"> | $Enums.PaymentMethod | null
+  observation?: Prisma.StringNullableFilter<"Expense"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Expense"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Expense"> | Date | string
 }
@@ -591,6 +645,8 @@ export type ExpenseCreateManyFarmInput = {
   description?: string | null
   reference?: string | null
   supplier?: string | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  observation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -603,6 +659,8 @@ export type ExpenseUpdateWithoutFarmInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supplier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -615,6 +673,8 @@ export type ExpenseUncheckedUpdateWithoutFarmInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supplier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -627,6 +687,8 @@ export type ExpenseUncheckedUpdateManyWithoutFarmInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supplier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -642,6 +704,8 @@ export type ExpenseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   description?: boolean
   reference?: boolean
   supplier?: boolean
+  paymentMethod?: boolean
+  observation?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
@@ -656,6 +720,8 @@ export type ExpenseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   description?: boolean
   reference?: boolean
   supplier?: boolean
+  paymentMethod?: boolean
+  observation?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
@@ -670,6 +736,8 @@ export type ExpenseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   description?: boolean
   reference?: boolean
   supplier?: boolean
+  paymentMethod?: boolean
+  observation?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
@@ -684,11 +752,13 @@ export type ExpenseSelectScalar = {
   description?: boolean
   reference?: boolean
   supplier?: boolean
+  paymentMethod?: boolean
+  observation?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ExpenseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "category" | "amount" | "date" | "description" | "reference" | "supplier" | "createdAt" | "updatedAt", ExtArgs["result"]["expense"]>
+export type ExpenseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "category" | "amount" | "date" | "description" | "reference" | "supplier" | "paymentMethod" | "observation" | "createdAt" | "updatedAt", ExtArgs["result"]["expense"]>
 export type ExpenseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
 }
@@ -713,6 +783,8 @@ export type $ExpensePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     description: string | null
     reference: string | null
     supplier: string | null
+    paymentMethod: $Enums.PaymentMethod | null
+    observation: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["expense"]>
@@ -1147,6 +1219,8 @@ export interface ExpenseFieldRefs {
   readonly description: Prisma.FieldRef<"Expense", 'String'>
   readonly reference: Prisma.FieldRef<"Expense", 'String'>
   readonly supplier: Prisma.FieldRef<"Expense", 'String'>
+  readonly paymentMethod: Prisma.FieldRef<"Expense", 'PaymentMethod'>
+  readonly observation: Prisma.FieldRef<"Expense", 'String'>
   readonly createdAt: Prisma.FieldRef<"Expense", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Expense", 'DateTime'>
 }

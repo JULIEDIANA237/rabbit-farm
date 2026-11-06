@@ -12,6 +12,8 @@ import { FarmRole } from '../generated/prisma/client';
 
 import { FarmModel } from './models/farm.model';
 import { CreateFarmInput } from './dto/create-farm.input';
+import { UpdateFarmInput } from './dto/update-farm.input';
+import { MeModel } from '../auth/models/me.model';
 
 import { FarmsService } from './farms.service';
 
@@ -86,5 +88,29 @@ export class FarmsResolver {
       id,
       user,
     );
+  }
+
+  /**
+   * Utilisateur connecté, rôle et ferme courante.
+   */
+  @Query(() => MeModel)
+  @UseGuards(JwtAuthGuard)
+  async me(
+    @CurrentUser()
+    user: CurrentUserType,
+  ) {
+    return this.farmsService.me(user);
+  }
+
+  @Mutation(() => FarmModel)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(FarmRole.ADMIN)
+  async updateFarm(
+    @Args('input')
+    input: UpdateFarmInput,
+    @CurrentUser()
+    user: CurrentUserType,
+  ) {
+    return this.farmsService.updateCurrent(input, user);
   }
 }

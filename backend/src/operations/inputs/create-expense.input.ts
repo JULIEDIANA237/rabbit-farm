@@ -1,6 +1,7 @@
 import { Field, Float, InputType } from '@nestjs/graphql';
 
 import { ExpenseCategory } from '../graphql/expense-category.enum';
+import { PaymentMethod } from '../../sales/graphql/payment-method.enum';
 
 @InputType()
 export class CreateExpenseInput {
@@ -21,4 +22,10 @@ export class CreateExpenseInput {
 
   @Field({ nullable: true })
   supplier?: string;
+
+  @Field(() => PaymentMethod, { nullable: true })
+  paymentMethod?: PaymentMethod;
+
+  @Field({ nullable: true })
+  observation?: string;
 }

@@ -1,5 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
+import { HealthRecordType } from '../graphql/health-record-type.enum';
+
 @ObjectType()
 export class HealthRecordModel {
   @Field(() => ID)
@@ -10,6 +12,12 @@ export class HealthRecordModel {
 
   @Field(() => ID)
   rabbitId: string;
+
+  @Field(() => String, { nullable: true })
+  rabbitCode?: string | null;
+
+  @Field(() => HealthRecordType)
+  type: HealthRecordType;
 
   @Field()
   date: Date;

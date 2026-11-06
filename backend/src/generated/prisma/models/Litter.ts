@@ -313,6 +313,7 @@ export type LitterWhereInput = {
   sourceAdoptions?: Prisma.LitterAdoptionListRelationFilter
   destinationAdoptions?: Prisma.LitterAdoptionListRelationFilter
   weanings?: Prisma.WeaningListRelationFilter
+  mortalities?: Prisma.MortalityRecordListRelationFilter
 }
 
 export type LitterOrderByWithRelationInput = {
@@ -340,6 +341,7 @@ export type LitterOrderByWithRelationInput = {
   sourceAdoptions?: Prisma.LitterAdoptionOrderByRelationAggregateInput
   destinationAdoptions?: Prisma.LitterAdoptionOrderByRelationAggregateInput
   weanings?: Prisma.WeaningOrderByRelationAggregateInput
+  mortalities?: Prisma.MortalityRecordOrderByRelationAggregateInput
 }
 
 export type LitterWhereUniqueInput = Prisma.AtLeast<{
@@ -371,6 +373,7 @@ export type LitterWhereUniqueInput = Prisma.AtLeast<{
   sourceAdoptions?: Prisma.LitterAdoptionListRelationFilter
   destinationAdoptions?: Prisma.LitterAdoptionListRelationFilter
   weanings?: Prisma.WeaningListRelationFilter
+  mortalities?: Prisma.MortalityRecordListRelationFilter
 }, "id" | "birthId" | "farmId_code">
 
 export type LitterOrderByWithAggregationInput = {
@@ -437,6 +440,7 @@ export type LitterCreateInput = {
   sourceAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutSourceLitterInput
   destinationAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutDestinationLitterInput
   weanings?: Prisma.WeaningCreateNestedManyWithoutLitterInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutLitterInput
 }
 
 export type LitterUncheckedCreateInput = {
@@ -459,6 +463,7 @@ export type LitterUncheckedCreateInput = {
   sourceAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutSourceLitterInput
   destinationAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutDestinationLitterInput
   weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutLitterInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutLitterInput
 }
 
 export type LitterUpdateInput = {
@@ -481,6 +486,7 @@ export type LitterUpdateInput = {
   sourceAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutSourceLitterNestedInput
   destinationAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutDestinationLitterNestedInput
   weanings?: Prisma.WeaningUpdateManyWithoutLitterNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutLitterNestedInput
 }
 
 export type LitterUncheckedUpdateInput = {
@@ -503,6 +509,7 @@ export type LitterUncheckedUpdateInput = {
   sourceAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutSourceLitterNestedInput
   destinationAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutDestinationLitterNestedInput
   weanings?: Prisma.WeaningUncheckedUpdateManyWithoutLitterNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutLitterNestedInput
 }
 
 export type LitterCreateManyInput = {
@@ -907,6 +914,22 @@ export type LitterUpdateOneRequiredWithoutWeaningsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.LitterUpdateToOneWithWhereWithoutWeaningsInput, Prisma.LitterUpdateWithoutWeaningsInput>, Prisma.LitterUncheckedUpdateWithoutWeaningsInput>
 }
 
+export type LitterCreateNestedOneWithoutMortalitiesInput = {
+  create?: Prisma.XOR<Prisma.LitterCreateWithoutMortalitiesInput, Prisma.LitterUncheckedCreateWithoutMortalitiesInput>
+  connectOrCreate?: Prisma.LitterCreateOrConnectWithoutMortalitiesInput
+  connect?: Prisma.LitterWhereUniqueInput
+}
+
+export type LitterUpdateOneWithoutMortalitiesNestedInput = {
+  create?: Prisma.XOR<Prisma.LitterCreateWithoutMortalitiesInput, Prisma.LitterUncheckedCreateWithoutMortalitiesInput>
+  connectOrCreate?: Prisma.LitterCreateOrConnectWithoutMortalitiesInput
+  upsert?: Prisma.LitterUpsertWithoutMortalitiesInput
+  disconnect?: Prisma.LitterWhereInput | boolean
+  delete?: Prisma.LitterWhereInput | boolean
+  connect?: Prisma.LitterWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LitterUpdateToOneWithWhereWithoutMortalitiesInput, Prisma.LitterUpdateWithoutMortalitiesInput>, Prisma.LitterUncheckedUpdateWithoutMortalitiesInput>
+}
+
 export type LitterCreateWithoutFarmInput = {
   id?: string
   code: string
@@ -926,6 +949,7 @@ export type LitterCreateWithoutFarmInput = {
   sourceAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutSourceLitterInput
   destinationAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutDestinationLitterInput
   weanings?: Prisma.WeaningCreateNestedManyWithoutLitterInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutLitterInput
 }
 
 export type LitterUncheckedCreateWithoutFarmInput = {
@@ -947,6 +971,7 @@ export type LitterUncheckedCreateWithoutFarmInput = {
   sourceAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutSourceLitterInput
   destinationAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutDestinationLitterInput
   weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutLitterInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutLitterInput
 }
 
 export type LitterCreateOrConnectWithoutFarmInput = {
@@ -1015,6 +1040,7 @@ export type LitterCreateWithoutMotherInput = {
   sourceAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutSourceLitterInput
   destinationAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutDestinationLitterInput
   weanings?: Prisma.WeaningCreateNestedManyWithoutLitterInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutLitterInput
 }
 
 export type LitterUncheckedCreateWithoutMotherInput = {
@@ -1036,6 +1062,7 @@ export type LitterUncheckedCreateWithoutMotherInput = {
   sourceAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutSourceLitterInput
   destinationAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutDestinationLitterInput
   weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutLitterInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutLitterInput
 }
 
 export type LitterCreateOrConnectWithoutMotherInput = {
@@ -1067,6 +1094,7 @@ export type LitterCreateWithoutFatherInput = {
   sourceAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutSourceLitterInput
   destinationAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutDestinationLitterInput
   weanings?: Prisma.WeaningCreateNestedManyWithoutLitterInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutLitterInput
 }
 
 export type LitterUncheckedCreateWithoutFatherInput = {
@@ -1088,6 +1116,7 @@ export type LitterUncheckedCreateWithoutFatherInput = {
   sourceAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutSourceLitterInput
   destinationAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutDestinationLitterInput
   weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutLitterInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutLitterInput
 }
 
 export type LitterCreateOrConnectWithoutFatherInput = {
@@ -1119,6 +1148,7 @@ export type LitterCreateWithoutRabbitsInput = {
   sourceAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutSourceLitterInput
   destinationAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutDestinationLitterInput
   weanings?: Prisma.WeaningCreateNestedManyWithoutLitterInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutLitterInput
 }
 
 export type LitterUncheckedCreateWithoutRabbitsInput = {
@@ -1140,6 +1170,7 @@ export type LitterUncheckedCreateWithoutRabbitsInput = {
   sourceAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutSourceLitterInput
   destinationAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutDestinationLitterInput
   weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutLitterInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutLitterInput
 }
 
 export type LitterCreateOrConnectWithoutRabbitsInput = {
@@ -1209,6 +1240,7 @@ export type LitterUpdateWithoutRabbitsInput = {
   sourceAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutSourceLitterNestedInput
   destinationAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutDestinationLitterNestedInput
   weanings?: Prisma.WeaningUpdateManyWithoutLitterNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutLitterNestedInput
 }
 
 export type LitterUncheckedUpdateWithoutRabbitsInput = {
@@ -1230,6 +1262,7 @@ export type LitterUncheckedUpdateWithoutRabbitsInput = {
   sourceAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutSourceLitterNestedInput
   destinationAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutDestinationLitterNestedInput
   weanings?: Prisma.WeaningUncheckedUpdateManyWithoutLitterNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutLitterNestedInput
 }
 
 export type LitterCreateWithoutBreedingInput = {
@@ -1251,6 +1284,7 @@ export type LitterCreateWithoutBreedingInput = {
   sourceAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutSourceLitterInput
   destinationAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutDestinationLitterInput
   weanings?: Prisma.WeaningCreateNestedManyWithoutLitterInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutLitterInput
 }
 
 export type LitterUncheckedCreateWithoutBreedingInput = {
@@ -1272,6 +1306,7 @@ export type LitterUncheckedCreateWithoutBreedingInput = {
   sourceAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutSourceLitterInput
   destinationAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutDestinationLitterInput
   weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutLitterInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutLitterInput
 }
 
 export type LitterCreateOrConnectWithoutBreedingInput = {
@@ -1319,6 +1354,7 @@ export type LitterCreateWithoutBirthInput = {
   sourceAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutSourceLitterInput
   destinationAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutDestinationLitterInput
   weanings?: Prisma.WeaningCreateNestedManyWithoutLitterInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutLitterInput
 }
 
 export type LitterUncheckedCreateWithoutBirthInput = {
@@ -1340,6 +1376,7 @@ export type LitterUncheckedCreateWithoutBirthInput = {
   sourceAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutSourceLitterInput
   destinationAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutDestinationLitterInput
   weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutLitterInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutLitterInput
 }
 
 export type LitterCreateOrConnectWithoutBirthInput = {
@@ -1377,6 +1414,7 @@ export type LitterUpdateWithoutBirthInput = {
   sourceAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutSourceLitterNestedInput
   destinationAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutDestinationLitterNestedInput
   weanings?: Prisma.WeaningUpdateManyWithoutLitterNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutLitterNestedInput
 }
 
 export type LitterUncheckedUpdateWithoutBirthInput = {
@@ -1398,6 +1436,7 @@ export type LitterUncheckedUpdateWithoutBirthInput = {
   sourceAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutSourceLitterNestedInput
   destinationAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutDestinationLitterNestedInput
   weanings?: Prisma.WeaningUncheckedUpdateManyWithoutLitterNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutLitterNestedInput
 }
 
 export type LitterCreateWithoutSourceAdoptionsInput = {
@@ -1419,6 +1458,7 @@ export type LitterCreateWithoutSourceAdoptionsInput = {
   rabbits?: Prisma.RabbitCreateNestedManyWithoutBirthLitterInput
   destinationAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutDestinationLitterInput
   weanings?: Prisma.WeaningCreateNestedManyWithoutLitterInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutLitterInput
 }
 
 export type LitterUncheckedCreateWithoutSourceAdoptionsInput = {
@@ -1440,6 +1480,7 @@ export type LitterUncheckedCreateWithoutSourceAdoptionsInput = {
   rabbits?: Prisma.RabbitUncheckedCreateNestedManyWithoutBirthLitterInput
   destinationAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutDestinationLitterInput
   weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutLitterInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutLitterInput
 }
 
 export type LitterCreateOrConnectWithoutSourceAdoptionsInput = {
@@ -1466,6 +1507,7 @@ export type LitterCreateWithoutDestinationAdoptionsInput = {
   rabbits?: Prisma.RabbitCreateNestedManyWithoutBirthLitterInput
   sourceAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutSourceLitterInput
   weanings?: Prisma.WeaningCreateNestedManyWithoutLitterInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutLitterInput
 }
 
 export type LitterUncheckedCreateWithoutDestinationAdoptionsInput = {
@@ -1487,6 +1529,7 @@ export type LitterUncheckedCreateWithoutDestinationAdoptionsInput = {
   rabbits?: Prisma.RabbitUncheckedCreateNestedManyWithoutBirthLitterInput
   sourceAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutSourceLitterInput
   weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutLitterInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutLitterInput
 }
 
 export type LitterCreateOrConnectWithoutDestinationAdoptionsInput = {
@@ -1524,6 +1567,7 @@ export type LitterUpdateWithoutSourceAdoptionsInput = {
   rabbits?: Prisma.RabbitUpdateManyWithoutBirthLitterNestedInput
   destinationAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutDestinationLitterNestedInput
   weanings?: Prisma.WeaningUpdateManyWithoutLitterNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutLitterNestedInput
 }
 
 export type LitterUncheckedUpdateWithoutSourceAdoptionsInput = {
@@ -1545,6 +1589,7 @@ export type LitterUncheckedUpdateWithoutSourceAdoptionsInput = {
   rabbits?: Prisma.RabbitUncheckedUpdateManyWithoutBirthLitterNestedInput
   destinationAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutDestinationLitterNestedInput
   weanings?: Prisma.WeaningUncheckedUpdateManyWithoutLitterNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutLitterNestedInput
 }
 
 export type LitterUpsertWithoutDestinationAdoptionsInput = {
@@ -1577,6 +1622,7 @@ export type LitterUpdateWithoutDestinationAdoptionsInput = {
   rabbits?: Prisma.RabbitUpdateManyWithoutBirthLitterNestedInput
   sourceAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutSourceLitterNestedInput
   weanings?: Prisma.WeaningUpdateManyWithoutLitterNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutLitterNestedInput
 }
 
 export type LitterUncheckedUpdateWithoutDestinationAdoptionsInput = {
@@ -1598,6 +1644,7 @@ export type LitterUncheckedUpdateWithoutDestinationAdoptionsInput = {
   rabbits?: Prisma.RabbitUncheckedUpdateManyWithoutBirthLitterNestedInput
   sourceAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutSourceLitterNestedInput
   weanings?: Prisma.WeaningUncheckedUpdateManyWithoutLitterNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutLitterNestedInput
 }
 
 export type LitterCreateWithoutWeaningsInput = {
@@ -1619,6 +1666,7 @@ export type LitterCreateWithoutWeaningsInput = {
   rabbits?: Prisma.RabbitCreateNestedManyWithoutBirthLitterInput
   sourceAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutSourceLitterInput
   destinationAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutDestinationLitterInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutLitterInput
 }
 
 export type LitterUncheckedCreateWithoutWeaningsInput = {
@@ -1640,6 +1688,7 @@ export type LitterUncheckedCreateWithoutWeaningsInput = {
   rabbits?: Prisma.RabbitUncheckedCreateNestedManyWithoutBirthLitterInput
   sourceAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutSourceLitterInput
   destinationAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutDestinationLitterInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutLitterInput
 }
 
 export type LitterCreateOrConnectWithoutWeaningsInput = {
@@ -1677,6 +1726,7 @@ export type LitterUpdateWithoutWeaningsInput = {
   rabbits?: Prisma.RabbitUpdateManyWithoutBirthLitterNestedInput
   sourceAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutSourceLitterNestedInput
   destinationAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutDestinationLitterNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutLitterNestedInput
 }
 
 export type LitterUncheckedUpdateWithoutWeaningsInput = {
@@ -1698,6 +1748,111 @@ export type LitterUncheckedUpdateWithoutWeaningsInput = {
   rabbits?: Prisma.RabbitUncheckedUpdateManyWithoutBirthLitterNestedInput
   sourceAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutSourceLitterNestedInput
   destinationAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutDestinationLitterNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutLitterNestedInput
+}
+
+export type LitterCreateWithoutMortalitiesInput = {
+  id?: string
+  code: string
+  birthDate: Date | string
+  liveBorn: number
+  stillBorn: number
+  currentCount: number
+  observation?: string | null
+  status?: $Enums.LitterStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  mother: Prisma.RabbitCreateNestedOneWithoutMotherLittersInput
+  father?: Prisma.RabbitCreateNestedOneWithoutFatherLittersInput
+  farm: Prisma.FarmCreateNestedOneWithoutLittersInput
+  breeding?: Prisma.BreedingCreateNestedOneWithoutLittersInput
+  birth?: Prisma.BirthCreateNestedOneWithoutLitterInput
+  rabbits?: Prisma.RabbitCreateNestedManyWithoutBirthLitterInput
+  sourceAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutSourceLitterInput
+  destinationAdoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutDestinationLitterInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutLitterInput
+}
+
+export type LitterUncheckedCreateWithoutMortalitiesInput = {
+  id?: string
+  farmId: string
+  code: string
+  breedingId?: string | null
+  birthId?: string | null
+  motherId: string
+  fatherId?: string | null
+  birthDate: Date | string
+  liveBorn: number
+  stillBorn: number
+  currentCount: number
+  observation?: string | null
+  status?: $Enums.LitterStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  rabbits?: Prisma.RabbitUncheckedCreateNestedManyWithoutBirthLitterInput
+  sourceAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutSourceLitterInput
+  destinationAdoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutDestinationLitterInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutLitterInput
+}
+
+export type LitterCreateOrConnectWithoutMortalitiesInput = {
+  where: Prisma.LitterWhereUniqueInput
+  create: Prisma.XOR<Prisma.LitterCreateWithoutMortalitiesInput, Prisma.LitterUncheckedCreateWithoutMortalitiesInput>
+}
+
+export type LitterUpsertWithoutMortalitiesInput = {
+  update: Prisma.XOR<Prisma.LitterUpdateWithoutMortalitiesInput, Prisma.LitterUncheckedUpdateWithoutMortalitiesInput>
+  create: Prisma.XOR<Prisma.LitterCreateWithoutMortalitiesInput, Prisma.LitterUncheckedCreateWithoutMortalitiesInput>
+  where?: Prisma.LitterWhereInput
+}
+
+export type LitterUpdateToOneWithWhereWithoutMortalitiesInput = {
+  where?: Prisma.LitterWhereInput
+  data: Prisma.XOR<Prisma.LitterUpdateWithoutMortalitiesInput, Prisma.LitterUncheckedUpdateWithoutMortalitiesInput>
+}
+
+export type LitterUpdateWithoutMortalitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  birthDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
+  stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
+  currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mother?: Prisma.RabbitUpdateOneRequiredWithoutMotherLittersNestedInput
+  father?: Prisma.RabbitUpdateOneWithoutFatherLittersNestedInput
+  farm?: Prisma.FarmUpdateOneRequiredWithoutLittersNestedInput
+  breeding?: Prisma.BreedingUpdateOneWithoutLittersNestedInput
+  birth?: Prisma.BirthUpdateOneWithoutLitterNestedInput
+  rabbits?: Prisma.RabbitUpdateManyWithoutBirthLitterNestedInput
+  sourceAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutSourceLitterNestedInput
+  destinationAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutDestinationLitterNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutLitterNestedInput
+}
+
+export type LitterUncheckedUpdateWithoutMortalitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  breedingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  motherId?: Prisma.StringFieldUpdateOperationsInput | string
+  fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  liveBorn?: Prisma.IntFieldUpdateOperationsInput | number
+  stillBorn?: Prisma.IntFieldUpdateOperationsInput | number
+  currentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumLitterStatusFieldUpdateOperationsInput | $Enums.LitterStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rabbits?: Prisma.RabbitUncheckedUpdateManyWithoutBirthLitterNestedInput
+  sourceAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutSourceLitterNestedInput
+  destinationAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutDestinationLitterNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutLitterNestedInput
 }
 
 export type LitterCreateManyFarmInput = {
@@ -1736,6 +1891,7 @@ export type LitterUpdateWithoutFarmInput = {
   sourceAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutSourceLitterNestedInput
   destinationAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutDestinationLitterNestedInput
   weanings?: Prisma.WeaningUpdateManyWithoutLitterNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutLitterNestedInput
 }
 
 export type LitterUncheckedUpdateWithoutFarmInput = {
@@ -1757,6 +1913,7 @@ export type LitterUncheckedUpdateWithoutFarmInput = {
   sourceAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutSourceLitterNestedInput
   destinationAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutDestinationLitterNestedInput
   weanings?: Prisma.WeaningUncheckedUpdateManyWithoutLitterNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutLitterNestedInput
 }
 
 export type LitterUncheckedUpdateManyWithoutFarmInput = {
@@ -1829,6 +1986,7 @@ export type LitterUpdateWithoutMotherInput = {
   sourceAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutSourceLitterNestedInput
   destinationAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutDestinationLitterNestedInput
   weanings?: Prisma.WeaningUpdateManyWithoutLitterNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutLitterNestedInput
 }
 
 export type LitterUncheckedUpdateWithoutMotherInput = {
@@ -1850,6 +2008,7 @@ export type LitterUncheckedUpdateWithoutMotherInput = {
   sourceAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutSourceLitterNestedInput
   destinationAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutDestinationLitterNestedInput
   weanings?: Prisma.WeaningUncheckedUpdateManyWithoutLitterNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutLitterNestedInput
 }
 
 export type LitterUncheckedUpdateManyWithoutMotherInput = {
@@ -1888,6 +2047,7 @@ export type LitterUpdateWithoutFatherInput = {
   sourceAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutSourceLitterNestedInput
   destinationAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutDestinationLitterNestedInput
   weanings?: Prisma.WeaningUpdateManyWithoutLitterNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutLitterNestedInput
 }
 
 export type LitterUncheckedUpdateWithoutFatherInput = {
@@ -1909,6 +2069,7 @@ export type LitterUncheckedUpdateWithoutFatherInput = {
   sourceAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutSourceLitterNestedInput
   destinationAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutDestinationLitterNestedInput
   weanings?: Prisma.WeaningUncheckedUpdateManyWithoutLitterNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutLitterNestedInput
 }
 
 export type LitterUncheckedUpdateManyWithoutFatherInput = {
@@ -1964,6 +2125,7 @@ export type LitterUpdateWithoutBreedingInput = {
   sourceAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutSourceLitterNestedInput
   destinationAdoptions?: Prisma.LitterAdoptionUpdateManyWithoutDestinationLitterNestedInput
   weanings?: Prisma.WeaningUpdateManyWithoutLitterNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutLitterNestedInput
 }
 
 export type LitterUncheckedUpdateWithoutBreedingInput = {
@@ -1985,6 +2147,7 @@ export type LitterUncheckedUpdateWithoutBreedingInput = {
   sourceAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutSourceLitterNestedInput
   destinationAdoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutDestinationLitterNestedInput
   weanings?: Prisma.WeaningUncheckedUpdateManyWithoutLitterNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutLitterNestedInput
 }
 
 export type LitterUncheckedUpdateManyWithoutBreedingInput = {
@@ -2014,6 +2177,7 @@ export type LitterCountOutputType = {
   sourceAdoptions: number
   destinationAdoptions: number
   weanings: number
+  mortalities: number
 }
 
 export type LitterCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2021,6 +2185,7 @@ export type LitterCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   sourceAdoptions?: boolean | LitterCountOutputTypeCountSourceAdoptionsArgs
   destinationAdoptions?: boolean | LitterCountOutputTypeCountDestinationAdoptionsArgs
   weanings?: boolean | LitterCountOutputTypeCountWeaningsArgs
+  mortalities?: boolean | LitterCountOutputTypeCountMortalitiesArgs
 }
 
 /**
@@ -2061,6 +2226,13 @@ export type LitterCountOutputTypeCountWeaningsArgs<ExtArgs extends runtime.Types
   where?: Prisma.WeaningWhereInput
 }
 
+/**
+ * LitterCountOutputType without action
+ */
+export type LitterCountOutputTypeCountMortalitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MortalityRecordWhereInput
+}
+
 
 export type LitterSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2087,6 +2259,7 @@ export type LitterSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   sourceAdoptions?: boolean | Prisma.Litter$sourceAdoptionsArgs<ExtArgs>
   destinationAdoptions?: boolean | Prisma.Litter$destinationAdoptionsArgs<ExtArgs>
   weanings?: boolean | Prisma.Litter$weaningsArgs<ExtArgs>
+  mortalities?: boolean | Prisma.Litter$mortalitiesArgs<ExtArgs>
   _count?: boolean | Prisma.LitterCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["litter"]>
 
@@ -2165,6 +2338,7 @@ export type LitterInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   sourceAdoptions?: boolean | Prisma.Litter$sourceAdoptionsArgs<ExtArgs>
   destinationAdoptions?: boolean | Prisma.Litter$destinationAdoptionsArgs<ExtArgs>
   weanings?: boolean | Prisma.Litter$weaningsArgs<ExtArgs>
+  mortalities?: boolean | Prisma.Litter$mortalitiesArgs<ExtArgs>
   _count?: boolean | Prisma.LitterCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type LitterIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2194,6 +2368,7 @@ export type $LitterPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     sourceAdoptions: Prisma.$LitterAdoptionPayload<ExtArgs>[]
     destinationAdoptions: Prisma.$LitterAdoptionPayload<ExtArgs>[]
     weanings: Prisma.$WeaningPayload<ExtArgs>[]
+    mortalities: Prisma.$MortalityRecordPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2614,6 +2789,7 @@ export interface Prisma__LitterClient<T, Null = never, ExtArgs extends runtime.T
   sourceAdoptions<T extends Prisma.Litter$sourceAdoptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Litter$sourceAdoptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LitterAdoptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   destinationAdoptions<T extends Prisma.Litter$destinationAdoptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Litter$destinationAdoptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LitterAdoptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   weanings<T extends Prisma.Litter$weaningsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Litter$weaningsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WeaningPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  mortalities<T extends Prisma.Litter$mortalitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Litter$mortalitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MortalityRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3209,6 +3385,30 @@ export type Litter$weaningsArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.WeaningScalarFieldEnum | Prisma.WeaningScalarFieldEnum[]
+}
+
+/**
+ * Litter.mortalities
+ */
+export type Litter$mortalitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MortalityRecord
+   */
+  select?: Prisma.MortalityRecordSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MortalityRecord
+   */
+  omit?: Prisma.MortalityRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MortalityRecordInclude<ExtArgs> | null
+  where?: Prisma.MortalityRecordWhereInput
+  orderBy?: Prisma.MortalityRecordOrderByWithRelationInput | Prisma.MortalityRecordOrderByWithRelationInput[]
+  cursor?: Prisma.MortalityRecordWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MortalityRecordScalarFieldEnum | Prisma.MortalityRecordScalarFieldEnum[]
 }
 
 /**

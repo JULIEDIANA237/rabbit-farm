@@ -5,10 +5,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import {
-  RabbitStatus,
-} from '../generated/prisma/client';
-
 import { PrismaService } from '../prisma/prisma.service';
 
 import type { CurrentUserType } from '../auth/types/current-user.type';
@@ -18,6 +14,36 @@ import { CreateRabbitInput } from './inputs/create-rabbit.input';
 import { MoveRabbitInput } from './inputs/move-rabbit.input';
 import { UpdateRabbitInput } from './inputs/update-rabbit.input';
 import { RabbitsPaginationInput } from './inputs/rabbits-pagination.input';
+import { normalizeMovementReason } from '../common/constants/movement-reasons';
+
+type RabbitWithRelations = {
+  photos?: unknown[] | null;
+  identifications?: unknown[] | null;
+  cageMovements?: Array<{ cage: { id: string; code: string } }>;
+  breed?: { name: string } | null;
+  crossBreed?: { name: string } | null;
+  weight?: { toString(): string } | number | null;
+  [key: string]: unknown;
+};
+
+/**
+ * Convertit un lapin Prisma en RabbitModel GraphQL
+ * (localisation actuelle, race lisible, poids numérique).
+ */
+export function mapRabbit<T extends RabbitWithRelations>(rabbit: T) {
+  const { cageMovements, breed, crossBreed, ...rest } = rabbit;
+  const currentCage = cageMovements?.[0]?.cage ?? null;
+
+  return {
+    ...rest,
+    weight: rabbit.weight != null ? Number(rabbit.weight) : null,
+    photos: rabbit.photos ?? [],
+    identifications: rabbit.identifications ?? [],
+    currentCageId: currentCage?.id ?? null,
+    currentCageCode: currentCage?.code ?? null,
+    breedName: crossBreed?.name ?? breed?.name ?? null,
+  };
+}
 
 @Injectable()
 export class RabbitsService {
@@ -40,7 +66,14 @@ export class RabbitsService {
   private readonly rabbitInclude = {
     identifications: true,
     photos: true,
-  };
+    breed: { select: { name: true } },
+    crossBreed: { select: { name: true } },
+    cageMovements: {
+      where: { endedAt: null },
+      include: { cage: { select: { id: true, code: true } } },
+      take: 1,
+    },
+  } as const;
 
   /**
    * Recherche un lapin appartenant à la ferme de l'utilisateur.
@@ -63,11 +96,7 @@ export class RabbitsService {
       );
     }
 
-    return {
-      ...rabbit,
-      photos: rabbit.photos ?? [],
-      identifications: rabbit.identifications ?? [],
-    };
+    return mapRabbit(rabbit);
   }
 
   /**
@@ -325,14 +354,8 @@ export class RabbitsService {
       );
     }
 
-    if (
-      father.status !== 'ACTIVE' ||
-      mother.status !== 'ACTIVE'
-    ) {
-      throw new BadRequestException(
-        'Les deux parents doivent être actifs.',
-      );
-    }
+    // Un parent décédé ou vendu reste un parent : on ne bloque pas
+    // l'enregistrement d'une filiation historique.
   }
 
   /**
@@ -438,15 +461,7 @@ export class RabbitsService {
 
     return {
       items: rabbits.map(
-        (rabbit) => ({
-          ...rabbit,
-
-          photos:
-            rabbit.photos ?? [],
-
-          identifications:
-            rabbit.identifications ?? [],
-        }),
+        (rabbit) => (mapRabbit(rabbit)),
       ),
 
       total,
@@ -561,15 +576,7 @@ export class RabbitsService {
           this.rabbitInclude,
       });
 
-    return {
-      ...rabbit,
-
-      photos:
-        rabbit.photos ?? [],
-
-      identifications:
-        rabbit.identifications ?? [],
-    };
+    return mapRabbit(rabbit);
   }
 
   /**
@@ -579,7 +586,7 @@ export class RabbitsService {
     input: UpdateRabbitInput,
     currentUser: CurrentUserType,
   ) {
-    await this.findRabbitOrFail(
+    const current = await this.findRabbitOrFail(
       input.id,
       currentUser.farmId,
     );
@@ -621,19 +628,42 @@ export class RabbitsService {
      */
     
 
+    const genealogyChanged =
+      (input.fatherId !== undefined &&
+        input.fatherId !== current.fatherId) ||
+      (input.motherId !== undefined &&
+        input.motherId !== current.motherId);
+
+    if (genealogyChanged) {
+      await this.validateGenealogy(
+        input.id,
+        input.fatherId ?? current.fatherId ?? undefined,
+        input.motherId ?? current.motherId ?? undefined,
+        currentUser,
+      );
+    }
+
+    const newCode = input.code?.trim();
+    const codeChanged =
+      newCode !== undefined && newCode !== current.code;
+
     const rabbit =
       await this.prisma.rabbit.update({
         where: {
           id: input.id,
         },
-
         data: {
-          code:
-            input.code?.trim(),
-
-          status:
-            input.status ??
-            RabbitStatus.ACTIVE,
+          code: newCode,
+          // L001-07 → R034 : on conserve le code d'origine (§12).
+          ...(codeChanged && !current.originalCode
+            ? { originalCode: current.code }
+            : {}),
+          fatherId: input.fatherId,
+          motherId: input.motherId,
+          birthDate: input.birthDate,
+          // Le statut n'est modifié que s'il est fourni
+          // (auparavant toute modification réactivait le lapin).
+          status: input.status,
 
           breedId:
             input.breedId,
@@ -661,15 +691,7 @@ export class RabbitsService {
           this.rabbitInclude,
       });
 
-    return {
-      ...rabbit,
-
-      photos:
-        rabbit.photos ?? [],
-
-      identifications:
-        rabbit.identifications ?? [],
-    };
+    return mapRabbit(rabbit);
   }
 
   /**
@@ -753,7 +775,18 @@ export class RabbitsService {
     input: MoveRabbitInput,
     currentUser: CurrentUserType,
   ) {
-    const now = new Date();
+    const now = input.movedAt ? new Date(input.movedAt) : new Date();
+
+    if (Number.isNaN(now.getTime())) {
+      throw new BadRequestException('La date de déplacement est invalide.');
+    }
+
+    let reason: string | null;
+    try {
+      reason = normalizeMovementReason(input.reason);
+    } catch (error) {
+      throw new BadRequestException((error as Error).message);
+    }
 
     return this.prisma.$transaction(
       async (tx) => {
@@ -832,6 +865,12 @@ export class RabbitsService {
           );
         }
 
+        if (currentMovement && now < currentMovement.startedAt) {
+          throw new BadRequestException(
+            'La date du déplacement est antérieure au dernier emplacement connu.',
+          );
+        }
+
         // 5. Capacité
         const rabbitCount =
           await tx.rabbitCageMovement.count(
@@ -871,21 +910,18 @@ export class RabbitsService {
         }
 
         // 7. Nouveau mouvement
-        return tx.rabbitCageMovement.create(
+        const movement = await tx.rabbitCageMovement.create(
           {
             data: {
               rabbitId:
                 rabbit.id,
-
               cageId:
                 cage.id,
-
               startedAt:
                 now,
-
               reason:
-                input.reason?.trim() ||
-                null,
+                reason ??
+                (currentMovement ? 'OTHER' : 'INITIAL_ASSIGNMENT'),
 
               observation:
                 input.observation?.trim() ||
@@ -893,6 +929,8 @@ export class RabbitsService {
             },
           },
         );
+
+        return { ...movement, cageCode: cage.code };
       },
       {
         maxWait: 10_000,
@@ -929,17 +967,24 @@ export class RabbitsService {
       );
     }
 
-    return this.prisma.rabbitCageMovement.findMany(
+    const movements = await this.prisma.rabbitCageMovement.findMany(
       {
         where: {
           rabbitId,
         },
-
+        include: {
+          cage: { select: { code: true } },
+        },
         orderBy: {
           startedAt: 'desc',
         },
       },
     );
+
+    return movements.map(({ cage, ...movement }) => ({
+      ...movement,
+      cageCode: cage.code,
+    }));
   }
 
   /**
@@ -957,7 +1002,7 @@ export class RabbitsService {
 
     const pageSize =
       Math.min(
-        50,
+        200,
         Math.max(
           1,
           input.pageSize ?? 10,
@@ -966,10 +1011,20 @@ export class RabbitsService {
 
     const search =
       input.search?.trim();
-
     const where = {
       farmId:
         currentUser.farmId,
+      ...(input.sex ? { sex: input.sex } : {}),
+      ...(input.status ? { status: input.status } : {}),
+      ...(input.purpose ? { purpose: input.purpose } : {}),
+      ...(input.litterId ? { birthLitterId: input.litterId } : {}),
+      ...(input.cageId
+        ? {
+            cageMovements: {
+              some: { cageId: input.cageId, endedAt: null },
+            },
+          }
+        : {}),
 
       ...(search
         ? {
@@ -1034,15 +1089,7 @@ export class RabbitsService {
 
     return {
       items: items.map(
-        (rabbit) => ({
-          ...rabbit,
-
-          photos:
-            rabbit.photos ?? [],
-
-          identifications:
-            rabbit.identifications ?? [],
-        }),
+        (rabbit) => (mapRabbit(rabbit)),
       ),
 
       total,

@@ -11,6 +11,9 @@ export class RabbitCageMovementModel {
   @Field(() => ID)
   cageId: string;
 
+  @Field(() => String, { nullable: true })
+  cageCode?: string | null;
+
   @Field()
   startedAt: Date;
 

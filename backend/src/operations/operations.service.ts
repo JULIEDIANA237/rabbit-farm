@@ -20,6 +20,18 @@ import { CreateInventoryItemInput } from './inputs/create-inventory-item.input';
 import { CreateStockMovementInput } from './inputs/create-stock-movement.input';
 import { CreateTaskInput } from './inputs/create-task.input';
 import { UpdateTaskInput } from './inputs/update-task.input';
+import { TaskAutomationService } from './automation/task-automation.service';
+import { computeAutonomy } from './automation/stock-autonomy';
+
+const taskInclude = { rabbit: { select: { code: true } } } as const;
+
+export interface TaskFilters {
+  status?: TaskStatus;
+  from?: Date;
+  to?: Date;
+  rabbitId?: string;
+  openOnly?: boolean;
+}
 
 const INBOUND_MOVEMENTS = new Set<StockMovementType>([
   StockMovementType.INITIAL,
@@ -34,7 +46,15 @@ const OUTBOUND_MOVEMENTS = new Set<StockMovementType>([
 
 @Injectable()
 export class OperationsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly automation: TaskAutomationService,
+  ) {}
+
+  private mapTask<T extends { rabbit?: { code: string } | null }>(task: T) {
+    const { rabbit, ...rest } = task;
+    return { ...rest, rabbitCode: rabbit?.code ?? null };
+  }
 
   // ============================================================
   // UTILITAIRES
@@ -132,15 +152,23 @@ export class OperationsService {
 
   private mapInventoryItem(item: {
     currentStock: number;
+    minimumStock: number | null;
     movements?: Array<{
       type: StockMovementType;
       quantity: number;
+      date: Date;
       unitCost: { toString(): string } | number | null;
     }>;
   }) {
+    const autonomy = computeAutonomy(item.currentStock, item.movements ?? []);
+
     return {
       ...item,
       currentStock: item.currentStock,
+      isBelowMinimum:
+        item.minimumStock != null && item.currentStock <= item.minimumStock,
+      averageDailyConsumption: autonomy.averageDailyConsumption,
+      autonomyDays: autonomy.autonomyDays,
       movements:
         item.movements?.map((movement) =>
           this.mapMovement(movement),
@@ -182,6 +210,9 @@ export class OperationsService {
 
         supplier:
           input.supplier?.trim() || null,
+        paymentMethod: input.paymentMethod ?? null,
+        observation:
+          input.observation?.trim() || null,
       },
     });
 
@@ -437,11 +468,13 @@ export class OperationsService {
         where: {
           id: item.id,
         },
-
         data: {
           currentStock: nextStock,
         },
       });
+
+      // Alerte / tâche de réapprovisionnement si besoin.
+      await this.automation.onStockChanged(currentUser.farmId, item.id, tx);
 
       return this.mapMovement(movement);
     });
@@ -522,7 +555,8 @@ export class OperationsService {
       );
     }
 
-    return this.prisma.task.create({
+    const created = await this.prisma.task.create({
+      include: taskInclude,
       data: {
         farmId: currentUser.farmId,
 
@@ -550,15 +584,32 @@ export class OperationsService {
           input.rabbitId || null,
       },
     });
+
+    return this.mapTask(created);
   }
 
   async tasks(
     currentUser: CurrentUserType,
+    filters: TaskFilters = {},
   ) {
-    return this.prisma.task.findMany({
+    const tasks = await this.prisma.task.findMany({
       where: {
         farmId: currentUser.farmId,
+        ...(filters.status ? { status: filters.status } : {}),
+        ...(filters.openOnly
+          ? { status: { in: [TaskStatus.TODO, TaskStatus.IN_PROGRESS] } }
+          : {}),
+        ...(filters.rabbitId ? { rabbitId: filters.rabbitId } : {}),
+        ...(filters.from || filters.to
+          ? {
+              dueDate: {
+                ...(filters.from ? { gte: filters.from } : {}),
+                ...(filters.to ? { lte: filters.to } : {}),
+              },
+            }
+          : {}),
       },
+      include: taskInclude,
 
       orderBy: [
         {
@@ -569,6 +620,8 @@ export class OperationsService {
         },
       ],
     });
+
+    return tasks.map((task) => this.mapTask(task));
   }
 
   async findTask(
@@ -581,6 +634,7 @@ export class OperationsService {
           id,
           farmId: currentUser.farmId,
         },
+        include: taskInclude,
       });
 
     if (!task) {
@@ -589,7 +643,7 @@ export class OperationsService {
       );
     }
 
-    return task;
+    return this.mapTask(task);
   }
 
   async updateTask(
@@ -701,7 +755,8 @@ export class OperationsService {
       );
     }
 
-    return this.prisma.task.update({
+    const updated = await this.prisma.task.update({
+      include: taskInclude,
       where: {
         id: task.id,
       },
@@ -735,8 +790,10 @@ export class OperationsService {
         rabbitId:
           input.rabbitId,
 
-        completedAt,
+                completedAt,
       },
     });
+
+    return this.mapTask(updated);
   }
 }

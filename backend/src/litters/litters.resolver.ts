@@ -25,6 +25,7 @@ import { RabbitModel } from '../rabbits/models/rabbit.model';
 import { RabbitCageMovementModel } from '../rabbits/models/rabbit-cage-movement.model';
 
 import { AssignLitterRabbitsToCageInput } from './inputs/assign-litter-rabbits-to-cage.input';
+import { LitterDetailModel } from './models/litter-detail.model';
 
 @Resolver(() => LitterModel)
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -125,4 +126,14 @@ async assignLitterRabbitsToCage(
     currentUser,
   );
 }
+
+  @Query(() => LitterDetailModel)
+  async litterDetail(
+    @Args('id', { type: () => ID })
+    id: string,
+    @CurrentUser()
+    currentUser: CurrentUserType,
+  ) {
+    return this.littersService.detail(id, currentUser);
+  }
 }

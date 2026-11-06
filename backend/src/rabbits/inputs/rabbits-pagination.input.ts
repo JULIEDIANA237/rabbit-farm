@@ -1,4 +1,8 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field, ID, InputType, Int } from '@nestjs/graphql';
+
+import { RabbitSex } from '../graphql/rabbit-sex.enum';
+import { RabbitStatus } from '../graphql/rabbit-status.enum';
+import { RabbitPurpose } from '../graphql/rabbit-purpose.enum';
 
 @InputType()
 export class RabbitsPaginationInput {
@@ -10,4 +14,19 @@ export class RabbitsPaginationInput {
 
   @Field({ nullable: true })
   search?: string;
+
+  @Field(() => RabbitSex, { nullable: true })
+  sex?: RabbitSex;
+
+  @Field(() => RabbitStatus, { nullable: true })
+  status?: RabbitStatus;
+
+  @Field(() => RabbitPurpose, { nullable: true })
+  purpose?: RabbitPurpose;
+
+  @Field(() => ID, { nullable: true })
+  litterId?: string;
+
+  @Field(() => ID, { nullable: true })
+  cageId?: string;
 }

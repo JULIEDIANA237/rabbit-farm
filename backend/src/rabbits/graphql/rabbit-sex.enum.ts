@@ -1,11 +1,8 @@
 import { registerEnumType } from '@nestjs/graphql';
-
-export enum RabbitSex {
-  UNKNOWN = 'UNKNOWN',
-  MALE = 'MALE',
-  FEMALE = 'FEMALE',
-}
+import { RabbitSex } from '../../generated/prisma/client';
 
 registerEnumType(RabbitSex, {
   name: 'RabbitSex',
 });
+
+export { RabbitSex };

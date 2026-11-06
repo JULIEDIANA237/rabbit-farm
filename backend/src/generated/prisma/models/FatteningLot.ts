@@ -217,6 +217,9 @@ export type FatteningLotWhereInput = {
   farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
   memberships?: Prisma.LotMembershipListRelationFilter
   weighings?: Prisma.WeighingListRelationFilter
+  cageMovements?: Prisma.LotCageMovementListRelationFilter
+  mortalities?: Prisma.MortalityRecordListRelationFilter
+  saleItems?: Prisma.SaleItemListRelationFilter
 }
 
 export type FatteningLotOrderByWithRelationInput = {
@@ -232,6 +235,9 @@ export type FatteningLotOrderByWithRelationInput = {
   farm?: Prisma.FarmOrderByWithRelationInput
   memberships?: Prisma.LotMembershipOrderByRelationAggregateInput
   weighings?: Prisma.WeighingOrderByRelationAggregateInput
+  cageMovements?: Prisma.LotCageMovementOrderByRelationAggregateInput
+  mortalities?: Prisma.MortalityRecordOrderByRelationAggregateInput
+  saleItems?: Prisma.SaleItemOrderByRelationAggregateInput
 }
 
 export type FatteningLotWhereUniqueInput = Prisma.AtLeast<{
@@ -251,6 +257,9 @@ export type FatteningLotWhereUniqueInput = Prisma.AtLeast<{
   farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
   memberships?: Prisma.LotMembershipListRelationFilter
   weighings?: Prisma.WeighingListRelationFilter
+  cageMovements?: Prisma.LotCageMovementListRelationFilter
+  mortalities?: Prisma.MortalityRecordListRelationFilter
+  saleItems?: Prisma.SaleItemListRelationFilter
 }, "id" | "farmId_code">
 
 export type FatteningLotOrderByWithAggregationInput = {
@@ -295,6 +304,9 @@ export type FatteningLotCreateInput = {
   farm: Prisma.FarmCreateNestedOneWithoutFatteningLotsInput
   memberships?: Prisma.LotMembershipCreateNestedManyWithoutLotInput
   weighings?: Prisma.WeighingCreateNestedManyWithoutLotInput
+  cageMovements?: Prisma.LotCageMovementCreateNestedManyWithoutLotInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutLotInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutLotInput
 }
 
 export type FatteningLotUncheckedCreateInput = {
@@ -309,6 +321,9 @@ export type FatteningLotUncheckedCreateInput = {
   updatedAt?: Date | string
   memberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutLotInput
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutLotInput
+  cageMovements?: Prisma.LotCageMovementUncheckedCreateNestedManyWithoutLotInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutLotInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutLotInput
 }
 
 export type FatteningLotUpdateInput = {
@@ -323,6 +338,9 @@ export type FatteningLotUpdateInput = {
   farm?: Prisma.FarmUpdateOneRequiredWithoutFatteningLotsNestedInput
   memberships?: Prisma.LotMembershipUpdateManyWithoutLotNestedInput
   weighings?: Prisma.WeighingUpdateManyWithoutLotNestedInput
+  cageMovements?: Prisma.LotCageMovementUpdateManyWithoutLotNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutLotNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutLotNestedInput
 }
 
 export type FatteningLotUncheckedUpdateInput = {
@@ -337,6 +355,9 @@ export type FatteningLotUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutLotNestedInput
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutLotNestedInput
+  cageMovements?: Prisma.LotCageMovementUncheckedUpdateManyWithoutLotNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutLotNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutLotNestedInput
 }
 
 export type FatteningLotCreateManyInput = {
@@ -511,6 +532,52 @@ export type FatteningLotUpdateOneWithoutWeighingsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.FatteningLotUpdateToOneWithWhereWithoutWeighingsInput, Prisma.FatteningLotUpdateWithoutWeighingsInput>, Prisma.FatteningLotUncheckedUpdateWithoutWeighingsInput>
 }
 
+export type FatteningLotCreateNestedOneWithoutSaleItemsInput = {
+  create?: Prisma.XOR<Prisma.FatteningLotCreateWithoutSaleItemsInput, Prisma.FatteningLotUncheckedCreateWithoutSaleItemsInput>
+  connectOrCreate?: Prisma.FatteningLotCreateOrConnectWithoutSaleItemsInput
+  connect?: Prisma.FatteningLotWhereUniqueInput
+}
+
+export type FatteningLotUpdateOneWithoutSaleItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.FatteningLotCreateWithoutSaleItemsInput, Prisma.FatteningLotUncheckedCreateWithoutSaleItemsInput>
+  connectOrCreate?: Prisma.FatteningLotCreateOrConnectWithoutSaleItemsInput
+  upsert?: Prisma.FatteningLotUpsertWithoutSaleItemsInput
+  disconnect?: Prisma.FatteningLotWhereInput | boolean
+  delete?: Prisma.FatteningLotWhereInput | boolean
+  connect?: Prisma.FatteningLotWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FatteningLotUpdateToOneWithWhereWithoutSaleItemsInput, Prisma.FatteningLotUpdateWithoutSaleItemsInput>, Prisma.FatteningLotUncheckedUpdateWithoutSaleItemsInput>
+}
+
+export type FatteningLotCreateNestedOneWithoutMortalitiesInput = {
+  create?: Prisma.XOR<Prisma.FatteningLotCreateWithoutMortalitiesInput, Prisma.FatteningLotUncheckedCreateWithoutMortalitiesInput>
+  connectOrCreate?: Prisma.FatteningLotCreateOrConnectWithoutMortalitiesInput
+  connect?: Prisma.FatteningLotWhereUniqueInput
+}
+
+export type FatteningLotUpdateOneWithoutMortalitiesNestedInput = {
+  create?: Prisma.XOR<Prisma.FatteningLotCreateWithoutMortalitiesInput, Prisma.FatteningLotUncheckedCreateWithoutMortalitiesInput>
+  connectOrCreate?: Prisma.FatteningLotCreateOrConnectWithoutMortalitiesInput
+  upsert?: Prisma.FatteningLotUpsertWithoutMortalitiesInput
+  disconnect?: Prisma.FatteningLotWhereInput | boolean
+  delete?: Prisma.FatteningLotWhereInput | boolean
+  connect?: Prisma.FatteningLotWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FatteningLotUpdateToOneWithWhereWithoutMortalitiesInput, Prisma.FatteningLotUpdateWithoutMortalitiesInput>, Prisma.FatteningLotUncheckedUpdateWithoutMortalitiesInput>
+}
+
+export type FatteningLotCreateNestedOneWithoutCageMovementsInput = {
+  create?: Prisma.XOR<Prisma.FatteningLotCreateWithoutCageMovementsInput, Prisma.FatteningLotUncheckedCreateWithoutCageMovementsInput>
+  connectOrCreate?: Prisma.FatteningLotCreateOrConnectWithoutCageMovementsInput
+  connect?: Prisma.FatteningLotWhereUniqueInput
+}
+
+export type FatteningLotUpdateOneRequiredWithoutCageMovementsNestedInput = {
+  create?: Prisma.XOR<Prisma.FatteningLotCreateWithoutCageMovementsInput, Prisma.FatteningLotUncheckedCreateWithoutCageMovementsInput>
+  connectOrCreate?: Prisma.FatteningLotCreateOrConnectWithoutCageMovementsInput
+  upsert?: Prisma.FatteningLotUpsertWithoutCageMovementsInput
+  connect?: Prisma.FatteningLotWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FatteningLotUpdateToOneWithWhereWithoutCageMovementsInput, Prisma.FatteningLotUpdateWithoutCageMovementsInput>, Prisma.FatteningLotUncheckedUpdateWithoutCageMovementsInput>
+}
+
 export type FatteningLotCreateWithoutFarmInput = {
   id?: string
   code: string
@@ -522,6 +589,9 @@ export type FatteningLotCreateWithoutFarmInput = {
   updatedAt?: Date | string
   memberships?: Prisma.LotMembershipCreateNestedManyWithoutLotInput
   weighings?: Prisma.WeighingCreateNestedManyWithoutLotInput
+  cageMovements?: Prisma.LotCageMovementCreateNestedManyWithoutLotInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutLotInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutLotInput
 }
 
 export type FatteningLotUncheckedCreateWithoutFarmInput = {
@@ -535,6 +605,9 @@ export type FatteningLotUncheckedCreateWithoutFarmInput = {
   updatedAt?: Date | string
   memberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutLotInput
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutLotInput
+  cageMovements?: Prisma.LotCageMovementUncheckedCreateNestedManyWithoutLotInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutLotInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutLotInput
 }
 
 export type FatteningLotCreateOrConnectWithoutFarmInput = {
@@ -589,6 +662,9 @@ export type FatteningLotCreateWithoutMembershipsInput = {
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutFatteningLotsInput
   weighings?: Prisma.WeighingCreateNestedManyWithoutLotInput
+  cageMovements?: Prisma.LotCageMovementCreateNestedManyWithoutLotInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutLotInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutLotInput
 }
 
 export type FatteningLotUncheckedCreateWithoutMembershipsInput = {
@@ -602,6 +678,9 @@ export type FatteningLotUncheckedCreateWithoutMembershipsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutLotInput
+  cageMovements?: Prisma.LotCageMovementUncheckedCreateNestedManyWithoutLotInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutLotInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutLotInput
 }
 
 export type FatteningLotCreateOrConnectWithoutMembershipsInput = {
@@ -631,6 +710,9 @@ export type FatteningLotUpdateWithoutMembershipsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutFatteningLotsNestedInput
   weighings?: Prisma.WeighingUpdateManyWithoutLotNestedInput
+  cageMovements?: Prisma.LotCageMovementUpdateManyWithoutLotNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutLotNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutLotNestedInput
 }
 
 export type FatteningLotUncheckedUpdateWithoutMembershipsInput = {
@@ -644,6 +726,9 @@ export type FatteningLotUncheckedUpdateWithoutMembershipsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutLotNestedInput
+  cageMovements?: Prisma.LotCageMovementUncheckedUpdateManyWithoutLotNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutLotNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutLotNestedInput
 }
 
 export type FatteningLotCreateWithoutWeighingsInput = {
@@ -657,6 +742,9 @@ export type FatteningLotCreateWithoutWeighingsInput = {
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutFatteningLotsInput
   memberships?: Prisma.LotMembershipCreateNestedManyWithoutLotInput
+  cageMovements?: Prisma.LotCageMovementCreateNestedManyWithoutLotInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutLotInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutLotInput
 }
 
 export type FatteningLotUncheckedCreateWithoutWeighingsInput = {
@@ -670,6 +758,9 @@ export type FatteningLotUncheckedCreateWithoutWeighingsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   memberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutLotInput
+  cageMovements?: Prisma.LotCageMovementUncheckedCreateNestedManyWithoutLotInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutLotInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutLotInput
 }
 
 export type FatteningLotCreateOrConnectWithoutWeighingsInput = {
@@ -699,6 +790,9 @@ export type FatteningLotUpdateWithoutWeighingsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutFatteningLotsNestedInput
   memberships?: Prisma.LotMembershipUpdateManyWithoutLotNestedInput
+  cageMovements?: Prisma.LotCageMovementUpdateManyWithoutLotNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutLotNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutLotNestedInput
 }
 
 export type FatteningLotUncheckedUpdateWithoutWeighingsInput = {
@@ -712,6 +806,249 @@ export type FatteningLotUncheckedUpdateWithoutWeighingsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutLotNestedInput
+  cageMovements?: Prisma.LotCageMovementUncheckedUpdateManyWithoutLotNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutLotNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutLotNestedInput
+}
+
+export type FatteningLotCreateWithoutSaleItemsInput = {
+  id?: string
+  code: string
+  entryDate: Date | string
+  exitDate?: Date | string | null
+  status?: $Enums.FatteningLotStatus
+  observation?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  farm: Prisma.FarmCreateNestedOneWithoutFatteningLotsInput
+  memberships?: Prisma.LotMembershipCreateNestedManyWithoutLotInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutLotInput
+  cageMovements?: Prisma.LotCageMovementCreateNestedManyWithoutLotInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutLotInput
+}
+
+export type FatteningLotUncheckedCreateWithoutSaleItemsInput = {
+  id?: string
+  farmId: string
+  code: string
+  entryDate: Date | string
+  exitDate?: Date | string | null
+  status?: $Enums.FatteningLotStatus
+  observation?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutLotInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutLotInput
+  cageMovements?: Prisma.LotCageMovementUncheckedCreateNestedManyWithoutLotInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutLotInput
+}
+
+export type FatteningLotCreateOrConnectWithoutSaleItemsInput = {
+  where: Prisma.FatteningLotWhereUniqueInput
+  create: Prisma.XOR<Prisma.FatteningLotCreateWithoutSaleItemsInput, Prisma.FatteningLotUncheckedCreateWithoutSaleItemsInput>
+}
+
+export type FatteningLotUpsertWithoutSaleItemsInput = {
+  update: Prisma.XOR<Prisma.FatteningLotUpdateWithoutSaleItemsInput, Prisma.FatteningLotUncheckedUpdateWithoutSaleItemsInput>
+  create: Prisma.XOR<Prisma.FatteningLotCreateWithoutSaleItemsInput, Prisma.FatteningLotUncheckedCreateWithoutSaleItemsInput>
+  where?: Prisma.FatteningLotWhereInput
+}
+
+export type FatteningLotUpdateToOneWithWhereWithoutSaleItemsInput = {
+  where?: Prisma.FatteningLotWhereInput
+  data: Prisma.XOR<Prisma.FatteningLotUpdateWithoutSaleItemsInput, Prisma.FatteningLotUncheckedUpdateWithoutSaleItemsInput>
+}
+
+export type FatteningLotUpdateWithoutSaleItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumFatteningLotStatusFieldUpdateOperationsInput | $Enums.FatteningLotStatus
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  farm?: Prisma.FarmUpdateOneRequiredWithoutFatteningLotsNestedInput
+  memberships?: Prisma.LotMembershipUpdateManyWithoutLotNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutLotNestedInput
+  cageMovements?: Prisma.LotCageMovementUpdateManyWithoutLotNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutLotNestedInput
+}
+
+export type FatteningLotUncheckedUpdateWithoutSaleItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumFatteningLotStatusFieldUpdateOperationsInput | $Enums.FatteningLotStatus
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutLotNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutLotNestedInput
+  cageMovements?: Prisma.LotCageMovementUncheckedUpdateManyWithoutLotNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutLotNestedInput
+}
+
+export type FatteningLotCreateWithoutMortalitiesInput = {
+  id?: string
+  code: string
+  entryDate: Date | string
+  exitDate?: Date | string | null
+  status?: $Enums.FatteningLotStatus
+  observation?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  farm: Prisma.FarmCreateNestedOneWithoutFatteningLotsInput
+  memberships?: Prisma.LotMembershipCreateNestedManyWithoutLotInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutLotInput
+  cageMovements?: Prisma.LotCageMovementCreateNestedManyWithoutLotInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutLotInput
+}
+
+export type FatteningLotUncheckedCreateWithoutMortalitiesInput = {
+  id?: string
+  farmId: string
+  code: string
+  entryDate: Date | string
+  exitDate?: Date | string | null
+  status?: $Enums.FatteningLotStatus
+  observation?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutLotInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutLotInput
+  cageMovements?: Prisma.LotCageMovementUncheckedCreateNestedManyWithoutLotInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutLotInput
+}
+
+export type FatteningLotCreateOrConnectWithoutMortalitiesInput = {
+  where: Prisma.FatteningLotWhereUniqueInput
+  create: Prisma.XOR<Prisma.FatteningLotCreateWithoutMortalitiesInput, Prisma.FatteningLotUncheckedCreateWithoutMortalitiesInput>
+}
+
+export type FatteningLotUpsertWithoutMortalitiesInput = {
+  update: Prisma.XOR<Prisma.FatteningLotUpdateWithoutMortalitiesInput, Prisma.FatteningLotUncheckedUpdateWithoutMortalitiesInput>
+  create: Prisma.XOR<Prisma.FatteningLotCreateWithoutMortalitiesInput, Prisma.FatteningLotUncheckedCreateWithoutMortalitiesInput>
+  where?: Prisma.FatteningLotWhereInput
+}
+
+export type FatteningLotUpdateToOneWithWhereWithoutMortalitiesInput = {
+  where?: Prisma.FatteningLotWhereInput
+  data: Prisma.XOR<Prisma.FatteningLotUpdateWithoutMortalitiesInput, Prisma.FatteningLotUncheckedUpdateWithoutMortalitiesInput>
+}
+
+export type FatteningLotUpdateWithoutMortalitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumFatteningLotStatusFieldUpdateOperationsInput | $Enums.FatteningLotStatus
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  farm?: Prisma.FarmUpdateOneRequiredWithoutFatteningLotsNestedInput
+  memberships?: Prisma.LotMembershipUpdateManyWithoutLotNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutLotNestedInput
+  cageMovements?: Prisma.LotCageMovementUpdateManyWithoutLotNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutLotNestedInput
+}
+
+export type FatteningLotUncheckedUpdateWithoutMortalitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumFatteningLotStatusFieldUpdateOperationsInput | $Enums.FatteningLotStatus
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutLotNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutLotNestedInput
+  cageMovements?: Prisma.LotCageMovementUncheckedUpdateManyWithoutLotNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutLotNestedInput
+}
+
+export type FatteningLotCreateWithoutCageMovementsInput = {
+  id?: string
+  code: string
+  entryDate: Date | string
+  exitDate?: Date | string | null
+  status?: $Enums.FatteningLotStatus
+  observation?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  farm: Prisma.FarmCreateNestedOneWithoutFatteningLotsInput
+  memberships?: Prisma.LotMembershipCreateNestedManyWithoutLotInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutLotInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutLotInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutLotInput
+}
+
+export type FatteningLotUncheckedCreateWithoutCageMovementsInput = {
+  id?: string
+  farmId: string
+  code: string
+  entryDate: Date | string
+  exitDate?: Date | string | null
+  status?: $Enums.FatteningLotStatus
+  observation?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutLotInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutLotInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutLotInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutLotInput
+}
+
+export type FatteningLotCreateOrConnectWithoutCageMovementsInput = {
+  where: Prisma.FatteningLotWhereUniqueInput
+  create: Prisma.XOR<Prisma.FatteningLotCreateWithoutCageMovementsInput, Prisma.FatteningLotUncheckedCreateWithoutCageMovementsInput>
+}
+
+export type FatteningLotUpsertWithoutCageMovementsInput = {
+  update: Prisma.XOR<Prisma.FatteningLotUpdateWithoutCageMovementsInput, Prisma.FatteningLotUncheckedUpdateWithoutCageMovementsInput>
+  create: Prisma.XOR<Prisma.FatteningLotCreateWithoutCageMovementsInput, Prisma.FatteningLotUncheckedCreateWithoutCageMovementsInput>
+  where?: Prisma.FatteningLotWhereInput
+}
+
+export type FatteningLotUpdateToOneWithWhereWithoutCageMovementsInput = {
+  where?: Prisma.FatteningLotWhereInput
+  data: Prisma.XOR<Prisma.FatteningLotUpdateWithoutCageMovementsInput, Prisma.FatteningLotUncheckedUpdateWithoutCageMovementsInput>
+}
+
+export type FatteningLotUpdateWithoutCageMovementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumFatteningLotStatusFieldUpdateOperationsInput | $Enums.FatteningLotStatus
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  farm?: Prisma.FarmUpdateOneRequiredWithoutFatteningLotsNestedInput
+  memberships?: Prisma.LotMembershipUpdateManyWithoutLotNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutLotNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutLotNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutLotNestedInput
+}
+
+export type FatteningLotUncheckedUpdateWithoutCageMovementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumFatteningLotStatusFieldUpdateOperationsInput | $Enums.FatteningLotStatus
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutLotNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutLotNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutLotNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutLotNestedInput
 }
 
 export type FatteningLotCreateManyFarmInput = {
@@ -736,6 +1073,9 @@ export type FatteningLotUpdateWithoutFarmInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.LotMembershipUpdateManyWithoutLotNestedInput
   weighings?: Prisma.WeighingUpdateManyWithoutLotNestedInput
+  cageMovements?: Prisma.LotCageMovementUpdateManyWithoutLotNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutLotNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutLotNestedInput
 }
 
 export type FatteningLotUncheckedUpdateWithoutFarmInput = {
@@ -749,6 +1089,9 @@ export type FatteningLotUncheckedUpdateWithoutFarmInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutLotNestedInput
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutLotNestedInput
+  cageMovements?: Prisma.LotCageMovementUncheckedUpdateManyWithoutLotNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutLotNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutLotNestedInput
 }
 
 export type FatteningLotUncheckedUpdateManyWithoutFarmInput = {
@@ -770,11 +1113,17 @@ export type FatteningLotUncheckedUpdateManyWithoutFarmInput = {
 export type FatteningLotCountOutputType = {
   memberships: number
   weighings: number
+  cageMovements: number
+  mortalities: number
+  saleItems: number
 }
 
 export type FatteningLotCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   memberships?: boolean | FatteningLotCountOutputTypeCountMembershipsArgs
   weighings?: boolean | FatteningLotCountOutputTypeCountWeighingsArgs
+  cageMovements?: boolean | FatteningLotCountOutputTypeCountCageMovementsArgs
+  mortalities?: boolean | FatteningLotCountOutputTypeCountMortalitiesArgs
+  saleItems?: boolean | FatteningLotCountOutputTypeCountSaleItemsArgs
 }
 
 /**
@@ -801,6 +1150,27 @@ export type FatteningLotCountOutputTypeCountWeighingsArgs<ExtArgs extends runtim
   where?: Prisma.WeighingWhereInput
 }
 
+/**
+ * FatteningLotCountOutputType without action
+ */
+export type FatteningLotCountOutputTypeCountCageMovementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LotCageMovementWhereInput
+}
+
+/**
+ * FatteningLotCountOutputType without action
+ */
+export type FatteningLotCountOutputTypeCountMortalitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MortalityRecordWhereInput
+}
+
+/**
+ * FatteningLotCountOutputType without action
+ */
+export type FatteningLotCountOutputTypeCountSaleItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SaleItemWhereInput
+}
+
 
 export type FatteningLotSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -815,6 +1185,9 @@ export type FatteningLotSelect<ExtArgs extends runtime.Types.Extensions.Internal
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   memberships?: boolean | Prisma.FatteningLot$membershipsArgs<ExtArgs>
   weighings?: boolean | Prisma.FatteningLot$weighingsArgs<ExtArgs>
+  cageMovements?: boolean | Prisma.FatteningLot$cageMovementsArgs<ExtArgs>
+  mortalities?: boolean | Prisma.FatteningLot$mortalitiesArgs<ExtArgs>
+  saleItems?: boolean | Prisma.FatteningLot$saleItemsArgs<ExtArgs>
   _count?: boolean | Prisma.FatteningLotCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["fatteningLot"]>
 
@@ -861,6 +1234,9 @@ export type FatteningLotInclude<ExtArgs extends runtime.Types.Extensions.Interna
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   memberships?: boolean | Prisma.FatteningLot$membershipsArgs<ExtArgs>
   weighings?: boolean | Prisma.FatteningLot$weighingsArgs<ExtArgs>
+  cageMovements?: boolean | Prisma.FatteningLot$cageMovementsArgs<ExtArgs>
+  mortalities?: boolean | Prisma.FatteningLot$mortalitiesArgs<ExtArgs>
+  saleItems?: boolean | Prisma.FatteningLot$saleItemsArgs<ExtArgs>
   _count?: boolean | Prisma.FatteningLotCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type FatteningLotIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -876,6 +1252,9 @@ export type $FatteningLotPayload<ExtArgs extends runtime.Types.Extensions.Intern
     farm: Prisma.$FarmPayload<ExtArgs>
     memberships: Prisma.$LotMembershipPayload<ExtArgs>[]
     weighings: Prisma.$WeighingPayload<ExtArgs>[]
+    cageMovements: Prisma.$LotCageMovementPayload<ExtArgs>[]
+    mortalities: Prisma.$MortalityRecordPayload<ExtArgs>[]
+    saleItems: Prisma.$SaleItemPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1284,6 +1663,9 @@ export interface Prisma__FatteningLotClient<T, Null = never, ExtArgs extends run
   farm<T extends Prisma.FarmDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FarmDefaultArgs<ExtArgs>>): Prisma.Prisma__FarmClient<runtime.Types.Result.GetResult<Prisma.$FarmPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   memberships<T extends Prisma.FatteningLot$membershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FatteningLot$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LotMembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   weighings<T extends Prisma.FatteningLot$weighingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FatteningLot$weighingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WeighingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  cageMovements<T extends Prisma.FatteningLot$cageMovementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FatteningLot$cageMovementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LotCageMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  mortalities<T extends Prisma.FatteningLot$mortalitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FatteningLot$mortalitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MortalityRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  saleItems<T extends Prisma.FatteningLot$saleItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FatteningLot$saleItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SaleItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1768,6 +2150,78 @@ export type FatteningLot$weighingsArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.WeighingScalarFieldEnum | Prisma.WeighingScalarFieldEnum[]
+}
+
+/**
+ * FatteningLot.cageMovements
+ */
+export type FatteningLot$cageMovementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LotCageMovement
+   */
+  select?: Prisma.LotCageMovementSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LotCageMovement
+   */
+  omit?: Prisma.LotCageMovementOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LotCageMovementInclude<ExtArgs> | null
+  where?: Prisma.LotCageMovementWhereInput
+  orderBy?: Prisma.LotCageMovementOrderByWithRelationInput | Prisma.LotCageMovementOrderByWithRelationInput[]
+  cursor?: Prisma.LotCageMovementWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LotCageMovementScalarFieldEnum | Prisma.LotCageMovementScalarFieldEnum[]
+}
+
+/**
+ * FatteningLot.mortalities
+ */
+export type FatteningLot$mortalitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MortalityRecord
+   */
+  select?: Prisma.MortalityRecordSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MortalityRecord
+   */
+  omit?: Prisma.MortalityRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MortalityRecordInclude<ExtArgs> | null
+  where?: Prisma.MortalityRecordWhereInput
+  orderBy?: Prisma.MortalityRecordOrderByWithRelationInput | Prisma.MortalityRecordOrderByWithRelationInput[]
+  cursor?: Prisma.MortalityRecordWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MortalityRecordScalarFieldEnum | Prisma.MortalityRecordScalarFieldEnum[]
+}
+
+/**
+ * FatteningLot.saleItems
+ */
+export type FatteningLot$saleItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SaleItem
+   */
+  select?: Prisma.SaleItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SaleItem
+   */
+  omit?: Prisma.SaleItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SaleItemInclude<ExtArgs> | null
+  where?: Prisma.SaleItemWhereInput
+  orderBy?: Prisma.SaleItemOrderByWithRelationInput | Prisma.SaleItemOrderByWithRelationInput[]
+  cursor?: Prisma.SaleItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SaleItemScalarFieldEnum | Prisma.SaleItemScalarFieldEnum[]
 }
 
 /**

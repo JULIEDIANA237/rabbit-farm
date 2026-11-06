@@ -8,6 +8,7 @@ import {
 import { UseGuards } from '@nestjs/common';
 
 import { SalesService } from './sales.service';
+import { CancelSaleInput } from './inputs/cancel-sale.input';
 import { CustomerModel } from './models/customer.model';
 import { PaymentModel, SaleModel } from './models/sale.model';
 import { CreateCustomerInput } from './inputs/create-customer.input';
@@ -39,8 +40,12 @@ export class SalesResolver {
   }
 
   @Query(() => [SaleModel])
-  sales(@CurrentUser() currentUser: CurrentUserType) {
-    return this.salesService.sales(currentUser);
+  sales(
+    @Args('customerId', { type: () => ID, nullable: true })
+    customerId: string | undefined,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.salesService.sales(currentUser, customerId);
   }
 
   @Query(() => SaleModel)
@@ -76,5 +81,14 @@ export class SalesResolver {
     @CurrentUser() currentUser: CurrentUserType,
   ) {
     return this.salesService.addPayment(input, currentUser);
+  }
+
+  @Mutation(() => SaleModel)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  cancelSale(
+    @Args('input') input: CancelSaleInput,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.salesService.cancelSale(input, currentUser);
   }
 }

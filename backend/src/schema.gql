@@ -21,11 +21,14 @@ input AddRabbitIdentificationInput {
 type AdoptionModel {
   adoptedAt: DateTime!
   createdAt: DateTime!
+  destinationLitterCode: String
   destinationLitterId: ID!
   id: ID!
   observation: String
-  quantity: Float!
-  reason: String
+  quantity: Int!
+  rabbitIds: [ID!]!
+  reason: AdoptionReason
+  sourceLitterCode: String
   sourceLitterId: ID!
   updatedAt: DateTime!
 }
@@ -59,8 +62,12 @@ type BirthModel {
   birthDate: DateTime!
   breedingId: ID!
   createdAt: DateTime!
+  father: RabbitSummaryModel
   id: ID!
+  litterCode: String
+  litterId: ID
   liveBorn: Int!
+  mother: RabbitSummaryModel
   motherId: ID!
   observation: String
   stillBorn: Int!
@@ -74,15 +81,48 @@ type BreedModel {
   updatedAt: DateTime!
 }
 
+type BreederPerformanceModel {
+  averageLitterSize: Float
+  bornAlive: Int!
+  deaths: Int!
+  litters: Int!
+  rabbitCode: String!
+  rabbitId: ID!
+  stillBorn: Int!
+  survivalRate: Float
+  weaned: Int!
+  weaningRate: Float
+}
+
+type BreedingCompatibilityModel {
+  commonAncestors: [RabbitSummaryModel!]!
+  femaleCode: String!
+  femaleId: ID!
+
+  """
+  Coefficient de consanguinité estimé du produit (0 à 1), basé sur la généalogie connue.
+  """
+  inbreedingCoefficient: Float!
+  level: CompatibilityLevel!
+  maleCode: String!
+  maleId: ID!
+  reasons: [CompatibilityReasonModel!]!
+}
+
 type BreedingModel {
+  """Naissance enregistrée"""
+  birthId: ID
   breedingDate: DateTime!
   createdAt: DateTime!
   expectedBirthEndDate: DateTime!
   expectedBirthStartDate: DateTime!
+  female: RabbitSummaryModel
   femaleId: ID!
   id: ID!
+  male: RabbitSummaryModel
   maleId: ID!
   nestDate: DateTime!
+  nestInstallation: NestInstallationModel
   observation: String
   palpationEndDate: DateTime!
   palpationStartDate: DateTime!
@@ -98,6 +138,12 @@ enum BreedingStatus {
   NON_PREGNANT
   PLANNED
   PREGNANT
+}
+
+type CageDistributionModel {
+  cageCode: String!
+  cageId: ID!
+  count: Int!
 }
 
 type CageModel {
@@ -118,6 +164,29 @@ enum CageStatus {
   MAINTENANCE
 }
 
+input CancelBreedingInput {
+  id: ID!
+  observation: String
+}
+
+input CancelSaleInput {
+  id: ID!
+  reason: String
+}
+
+"""Résultat du contrôle généalogique avant accouplement."""
+enum CompatibilityLevel {
+  BLOCKED
+  COMPATIBLE
+  WARNING
+}
+
+type CompatibilityReasonModel {
+  code: String!
+  level: CompatibilityLevel!
+  message: String!
+}
+
 input CompleteFatteningLotInput {
   exitDate: DateTime
   id: ID!
@@ -127,7 +196,13 @@ input CompleteFatteningLotInput {
 input CompleteWeaningInput {
   actualDate: DateTime!
   averageWeight: Float
+
+  """
+  Lot d'engraissement dans lequel placer les lapereaux sevrés (§34 : sevrage → engraissement).
+  """
+  fatteningLotId: ID
   id: ID!
+  observation: String
   quantity: Int
   rabbitIds: [ID!]
   totalWeight: Float
@@ -137,7 +212,10 @@ input CreateAdoptionInput {
   date: DateTime!
   destinationLitterId: ID!
   observation: String
-  quantity: Float!
+  quantity: Int!
+
+  """Lapereaux identifiés transférés (la quantité doit alors correspondre)."""
+  rabbitIds: [ID!]
   reason: AdoptionReason!
   sourceLitterId: ID!
 }
@@ -145,6 +223,12 @@ input CreateAdoptionInput {
 input CreateBirthInput {
   birthDate: DateTime!
   breedingId: ID!
+
+  """Crée immédiatement les lapereaux individuels L001-01, L001-02… (§12)."""
+  createKits: Boolean = true
+
+  """Code de la portée (ex. L001). Généré automatiquement si absent."""
+  litterCode: String
   liveBorn: Int!
   observation: String
   stillBorn: Int!
@@ -156,6 +240,10 @@ input CreateBreedInput {
 }
 
 input CreateBreedingInput {
+  """
+  Confirme l'accouplement malgré un avertissement généalogique (jamais un blocage).
+  """
+  acknowledgeWarnings: Boolean = false
   breedingDate: DateTime!
   femaleId: ID!
   maleId: ID!
@@ -190,6 +278,8 @@ input CreateExpenseInput {
   category: ExpenseCategory!
   date: DateTime!
   description: String
+  observation: String
+  paymentMethod: PaymentMethod
   reference: String
   supplier: String
 }
@@ -217,6 +307,7 @@ input CreateHealthRecordInput {
   suspicion: String
   symptoms: String
   treatment: String
+  type: HealthRecordType = OBSERVATION
 }
 
 input CreateInventoryItemInput {
@@ -278,9 +369,20 @@ input CreateSaleInput {
 
 input CreateSaleItemInput {
   description: String
-  quantity: Int!
+
+  """Vend tous les lapins actifs d'un lot d'engraissement"""
+  lotId: ID
+
+  """Vente au poids : prix au kilo"""
+  pricePerKg: Float
+  quantity: Int = 1
   rabbitId: ID
-  unitPrice: Float!
+
+  """Vente à l’unité"""
+  unitPrice: Float
+
+  """Vente au poids : poids total (kg)"""
+  weightKg: Float
 }
 
 input CreateSectionInput {
@@ -313,6 +415,11 @@ input CreateTaskInput {
 input CreateWeaningInput {
   actualDate: DateTime
   averageWeight: Float
+
+  """
+  Lot d'engraissement dans lequel placer les lapereaux sevrés (§34 : sevrage → engraissement).
+  """
+  fatteningLotId: ID
   litterId: ID!
   observation: String
   plannedDate: DateTime!
@@ -351,7 +458,13 @@ type CustomerModel {
   id: ID!
   name: String!
   notes: String
+
+  """Crédit restant dû par le client"""
+  outstandingBalance: Float!
   phone: String
+  saleCount: Int!
+  totalPaid: Float!
+  totalPurchases: Float!
   updatedAt: DateTime!
 }
 
@@ -378,6 +491,16 @@ type DashboardBreedingActionModel {
   palpationStartDate: DateTime
 }
 
+type DashboardHealthActionModel {
+  dueDate: DateTime!
+  id: ID!
+  label: String!
+  overdue: Boolean!
+  rabbitCode: String!
+  rabbitId: ID!
+  type: HealthRecordType!
+}
+
 type DashboardModel {
   activeRabbits: Int!
   averageLitterSize: Float
@@ -386,21 +509,26 @@ type DashboardModel {
   breedingMales: Int!
   breedingSuccessRate: Float
   date: DateTime!
-  expectedBirthList: [DashboardBirthModel!]!
+  expectedBirthList: [DashboardBreedingActionModel!]!
   expectedBirths: Int!
   femalesToPalpate: Int!
+  healthActionList: [DashboardHealthActionModel!]!
+  healthActions: Int!
   kitsBornThisMonth: Int!
   lowStockItems: Int!
   lowStockList: [DashboardStockAlertModel!]!
   monthlyExpenses: Float!
+  monthlyRevenue: Float!
   nestInstallationList: [DashboardBreedingActionModel!]!
   nestsToInstall: Int!
+  occupiedCages: Int!
   overdueTasks: Int!
   palpationList: [DashboardBreedingActionModel!]!
   plannedWeanings: Int!
   recentBirthList: [DashboardBirthModel!]!
   recentBirths: Int!
   tasksToday: Int!
+  totalCages: Int!
   totalRabbits: Int!
   urgentTaskList: [DashboardTaskModel!]!
   urgentTasks: Int!
@@ -409,6 +537,7 @@ type DashboardModel {
 }
 
 type DashboardStockAlertModel {
+  autonomyDays: Float
   currentStock: Float!
   id: ID!
   minimumStock: Float
@@ -433,6 +562,7 @@ type DashboardTaskModel {
 type DashboardWeaningModel {
   averageWeight: Float
   id: ID!
+  litterCode: String
   litterId: ID!
   plannedDate: DateTime!
   quantity: Int!
@@ -443,7 +573,19 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type DescendantModel {
+  birthDate: DateTime
+  code: String!
+  fatherId: ID
+  generation: Int!
+  id: ID!
+  motherId: ID
+  sex: RabbitSex!
+  status: RabbitStatus!
+}
+
 enum ExpenseCategory {
+  ENERGY
   EQUIPMENT
   FEED
   MAINTENANCE
@@ -461,6 +603,8 @@ type ExpenseModel {
   description: String
   farmId: ID!
   id: ID!
+  observation: String
+  paymentMethod: PaymentMethod
   reference: String
   supplier: String
   updatedAt: DateTime!
@@ -478,6 +622,9 @@ type FarmModel {
   createdAt: DateTime!
   description: String
   id: ID!
+
+  """Politique de consanguinité appliquée aux accouplements (§18)"""
+  inbreedingPolicy: InbreedingPolicy!
   location: String
   name: String!
   updatedAt: DateTime!
@@ -490,12 +637,29 @@ enum FarmRole {
   VETERINARIAN
 }
 
+type FarmStatisticsModel {
+  finance: FinanceStatisticsModel!
+  from: DateTime!
+  genetic: GeneticStatisticsModel!
+  population: PopulationStatisticsModel!
+  technical: TechnicalStatisticsModel!
+  to: DateTime!
+}
+
 type FatteningLotModel {
+  """Lapins actuellement dans le lot"""
+  activeMemberCount: Int!
   code: String!
   createdAt: DateTime!
+  currentCageCode: String
+  currentCageId: ID
   entryDate: DateTime!
   exitDate: DateTime
   id: ID!
+
+  """Poids moyen de la dernière pesée (kg)"""
+  latestAverageWeight: Float
+  latestWeighingDate: DateTime
   observation: String
   status: FatteningLotStatus!
   updatedAt: DateTime!
@@ -505,6 +669,27 @@ enum FatteningLotStatus {
   ACTIVE
   CANCELLED
   COMPLETED
+}
+
+type FinanceStatisticsModel {
+  collected: Float!
+  estimatedCostPerKg: Float
+  expenses: Float!
+  expensesByCategory: [LabeledValueModel!]!
+  kgSold: Float!
+  margin: Float!
+  monthly: [MonthlyFinanceModel!]!
+  outstanding: Float!
+  rabbitsSold: Int!
+  revenue: Float!
+}
+
+type GeneticStatisticsModel {
+  bestFathers: [BreederPerformanceModel!]!
+  bestMothers: [BreederPerformanceModel!]!
+  blockedPairs: Int!
+  breedDistribution: [LabeledValueModel!]!
+  riskyPairs: Int!
 }
 
 type HealthRecordModel {
@@ -518,19 +703,47 @@ type HealthRecordModel {
   medication: String
   nextDueDate: DateTime
   observation: String
+  rabbitCode: String
   rabbitId: ID!
   suspicion: String
   symptoms: String
   treatment: String
+  type: HealthRecordType!
+}
+
+"""
+OBSERVATION (symptôme constaté), TREATMENT, VACCINATION, ANALYSIS, CONTROL (§38-40)
+"""
+enum HealthRecordType {
+  ANALYSIS
+  CONTROL
+  OBSERVATION
+  TREATMENT
+  VACCINATION
+}
+
+"""
+WARN : simple avertissement pour demi-frères/sœurs et ancêtres communs. BLOCK : blocage.
+"""
+enum InbreedingPolicy {
+  BLOCK
+  WARN
 }
 
 type InventoryItemModel {
+  """Nombre de jours d’autonomie estimé (§46)"""
+  autonomyDays: Float
+
+  """Consommation quotidienne moyenne sur 30 jours (§46)"""
+  averageDailyConsumption: Float
   createdAt: DateTime!
   currentStock: Float!
   description: String
   farmId: ID!
   id: ID!
+  isBelowMinimum: Boolean!
   minimumStock: Float
+  movements: [StockMovementModel!]!
   name: String!
   type: InventoryItemType!
   unit: String!
@@ -544,13 +757,77 @@ enum InventoryItemType {
   OTHER
 }
 
+type LabeledValueModel {
+  label: String!
+  value: Float!
+}
+
+type LitterDetailModel {
+  cageDistribution: [CageDistributionModel!]!
+  deaths: Int!
+
+  """
+  Adoptions, mortalités, sevrages et ventes, du plus récent au plus ancien
+  """
+  events: [LitterEventModel!]!
+  kits: [LitterKitModel!]!
+  litter: LitterModel!
+  sold: Int!
+  survivalRate: Float
+  weaned: Int!
+}
+
+type LitterEventModel {
+  date: DateTime!
+  id: ID!
+  label: String!
+  quantity: Int
+  type: String!
+  weight: Float
+}
+
+type LitterKitModel {
+  code: String!
+  currentCageCode: String
+  currentCageId: ID
+  currentLotCode: String
+  id: ID!
+  originalCode: String
+
+  """Portée d'élevage (mère nourricière) si le lapereau a été adopté"""
+  rearingLitterCode: String
+  sex: RabbitSex!
+  status: RabbitStatus!
+}
+
 type LitterModel {
-  birthId: ID!
+  birthDate: DateTime!
+  birthId: ID
+  breedingId: ID
   code: String!
   createdAt: DateTime!
+
+  """Lapereaux actuellement élevés dans la portée"""
+  currentCount: Int!
+  father: RabbitSummaryModel
+  fatherId: ID
   id: ID!
+
+  """Lapereaux suivis individuellement"""
+  kitCount: Int!
+  liveBorn: Int!
+  mother: RabbitSummaryModel
+  motherId: ID!
   observation: String
+  status: LitterStatus!
+  stillBorn: Int!
   updatedAt: DateTime!
+}
+
+enum LitterStatus {
+  ACTIVE
+  CLOSED
+  WEANED
 }
 
 input LoginInput {
@@ -559,20 +836,89 @@ input LoginInput {
   password: String!
 }
 
+type LotCageMovementModel {
+  cageCode: String
+  cageId: ID!
+  endedAt: DateTime
+  id: ID!
+  lotId: ID!
+  observation: String
+  reason: String
+  startedAt: DateTime!
+}
+
 type LotMembershipModel {
   createdAt: DateTime!
   id: ID!
   joinedAt: DateTime!
   leftAt: DateTime
   lotId: ID!
+  rabbitCode: String
   rabbitId: ID!
+  reason: String
+}
+
+type MeModel {
+  email: String!
+  farm: FarmModel!
+  firstName: String!
+  lastName: String!
+  role: FarmRole!
+  userId: ID!
+}
+
+type MonthlyFinanceModel {
+  expenses: Float!
+  margin: Float!
+  month: String!
+  revenue: Float!
+}
+
+type MortalityModel {
+  cause: String
+  count: Int!
+  createdAt: DateTime!
+  date: DateTime!
+  id: ID!
+  litterCode: String
+  litterId: ID
+  lotCode: String
+  lotId: ID
+  observation: String
+  rabbitCode: String
+  rabbitId: ID
+  scope: MortalityScope!
+}
+
+enum MortalityScope {
+  LITTER
+  LOT
+  RABBIT
+}
+
+input MoveFatteningLotInput {
+  cageId: ID!
+  lotId: ID!
+
+  """
+  Déplace aussi individuellement chaque lapin actif du lot (historique RabbitCageMovement).
+  """
+  moveMembers: Boolean = true
+  observation: String
   reason: String
 }
 
 input MoveRabbitInput {
   cageId: ID!
+
+  """Date du déplacement (maintenant par défaut)"""
+  movedAt: DateTime
   observation: String
   rabbitId: ID!
+
+  """
+  INITIAL_ASSIGNMENT, BREEDING, MATERNITY, FATTENING, QUARANTINE, CLEANING, HEALTH, SALE, AGGRESSION, OVERCROWDING, SEX_SEPARATION, SIZE_DIFFERENCE, OTHER
+  """
   reason: String
 }
 
@@ -582,6 +928,8 @@ type Mutation {
   addPayment(input: CreatePaymentInput!): PaymentModel!
   addRabbitIdentification(input: AddRabbitIdentificationInput!, rabbitId: ID!): RabbitIdentificationModel!
   assignLitterRabbitsToCage(input: AssignLitterRabbitsToCageInput!): [RabbitCageMovementModel!]!
+  cancelBreeding(input: CancelBreedingInput!): BreedingModel!
+  cancelSale(input: CancelSaleInput!): SaleModel!
   completeFatteningLot(input: CompleteFatteningLotInput!): FatteningLotModel!
   completeWeaning(input: CompleteWeaningInput!): WeaningModel!
   createAdoption(input: CreateAdoptionInput!): AdoptionModel!
@@ -611,17 +959,33 @@ type Mutation {
   deleteCrossBreed(id: ID!): Boolean!
   deleteSection(id: ID!): SectionModel!
   login(input: LoginInput!): AuthModel!
+  moveFatteningLot(input: MoveFatteningLotInput!): LotCageMovementModel!
   moveRabbit(input: MoveRabbitInput!): RabbitCageMovementModel!
+  recordLitterMortality(input: RecordLitterMortalityInput!): MortalityModel!
+  recordNestInstallation(input: RecordNestInstallationInput!): NestInstallationModel!
+
+  """Décès, réforme ou transfert d’un lapin (§37, §58)."""
+  recordRabbitExit(input: RecordRabbitExitInput!): RabbitModel!
   register(input: RegisterInput!): AuthModel!
   removeFarmMember(membershipId: ID!): FarmMembershipModel!
   removeLotMembers(input: RemoveLotMembersInput!): [LotMembershipModel!]!
   updateBreed(input: UpdateBreedInput!): BreedModel!
   updateCage(input: UpdateCageInput!): CageModel!
   updateCrossBreed(input: UpdateCrossBreedInput!): CrossBreedModel!
+  updateFarm(input: UpdateFarmInput!): FarmModel!
   updateFarmMemberRole(input: UpdateMemberRoleInput!): FarmMembershipModel!
   updateRabbit(input: UpdateRabbitInput!): RabbitModel!
   updateSection(input: UpdateSectionInput!): SectionModel!
   updateTask(input: UpdateTaskInput!): TaskModel!
+}
+
+type NestInstallationModel {
+  breedingId: ID!
+  id: ID!
+  installedAt: DateTime!
+  material: String
+  nestType: String
+  observation: String
 }
 
 enum PaymentMethod {
@@ -638,6 +1002,24 @@ type PaymentModel {
   observation: String
   paymentDate: DateTime!
   reference: String
+}
+
+type PedigreeNodeModel {
+  birthDate: DateTime
+  breedName: String
+  code: String!
+  father: PedigreeNodeModel
+  id: ID!
+  mother: PedigreeNodeModel
+  sex: RabbitSex!
+  status: RabbitStatus!
+}
+
+type PopulationStatisticsModel {
+  active: Int!
+  byPurpose: [LabeledValueModel!]!
+  bySex: [LabeledValueModel!]!
+  exits: [LabeledValueModel!]!
 }
 
 type PregnancyModel {
@@ -662,7 +1044,8 @@ type Query {
   births: [BirthModel!]!
   breed(id: ID!): BreedModel!
   breeding(id: ID!): BreedingModel!
-  breedings: [BreedingModel!]!
+  breedingCompatibility(femaleId: ID!, maleId: ID!): BreedingCompatibilityModel!
+  breedings(status: BreedingStatus): [BreedingModel!]!
   breeds: [BreedModel!]!
   cage(id: ID!): CageModel!
   cages: [CageModel!]!
@@ -674,39 +1057,54 @@ type Query {
   expenses: [ExpenseModel!]!
   farm(id: ID!): FarmModel
   farmMembers: [FarmMembershipModel!]!
+  farmStatistics(from: DateTime, to: DateTime): FarmStatisticsModel!
   farms: [FarmModel!]!
   fatteningLot(id: ID!): FatteningLotModel!
   fatteningLots: [FatteningLotModel!]!
   healthRecord(id: ID!): HealthRecordModel!
-  healthRecords: [HealthRecordModel!]!
+  healthRecords(type: HealthRecordType): [HealthRecordModel!]!
   healthRecordsByRabbit(rabbitId: ID!): [HealthRecordModel!]!
   inventoryItem(id: ID!): InventoryItemModel!
   inventoryItems: [InventoryItemModel!]!
   litter(id: ID!): LitterModel
   litterAdoptions(litterId: ID!): [AdoptionModel!]!
   litterByBirth(birthId: ID!): LitterModel
+  litterDetail(id: ID!): LitterDetailModel!
   litters: [LitterModel!]!
+  lotCageMovements(lotId: ID!): [LotCageMovementModel!]!
   lotMemberships(lotId: ID!): [LotMembershipModel!]!
+  me: MeModel!
+  mortalities(from: DateTime, to: DateTime): [MortalityModel!]!
   pregnancies: [PregnancyModel!]!
   pregnancyChecksByBreeding(breedingId: ID!): [PregnancyModel!]!
   rabbit(id: ID!): RabbitModel!
   rabbitCageMovements(rabbitId: ID!): [RabbitCageMovementModel!]!
+  rabbitDescendants(generations: Int! = 3, rabbitId: ID!): [DescendantModel!]!
   rabbitIdentifications(rabbitId: ID!): [RabbitIdentificationModel!]!
+  rabbitPedigree(generations: Int! = 3, rabbitId: ID!): PedigreeNodeModel!
+  rabbitTraceability(rabbitId: ID!): RabbitTraceabilityModel!
   rabbits(limit: Int = 10, page: Int = 1, search: String): RabbitPageModel!
   rabbitsPaginated(input: RabbitsPaginationInput): RabbitPageModel!
+  riskyBreedingPairs(limit: Int! = 50): [BreedingCompatibilityModel!]!
   sale(id: ID!): SaleModel!
-  sales: [SaleModel!]!
+  sales(customerId: ID): [SaleModel!]!
   section(id: ID!): SectionModel!
   sections: [SectionModel!]!
   task(id: ID!): TaskModel!
-  tasks: [TaskModel!]!
+  tasks(from: DateTime, openOnly: Boolean = false, rabbitId: ID, status: TaskStatus, to: DateTime): [TaskModel!]!
+
+  """
+  Traitements, vaccinations et contrôles dont l’échéance arrive (ou est dépassée).
+  """
+  upcomingHealthActions(days: Int! = 7): [HealthRecordModel!]!
   weaning(id: ID!): WeaningModel
   weanings: [WeaningModel!]!
   weaningsByLitter(litterId: ID!): [WeaningModel!]!
-  weighings: [WeighingModel!]!
+  weighings(lotId: ID, rabbitId: ID): [WeighingModel!]!
 }
 
 type RabbitCageMovementModel {
+  cageCode: String
   cageId: ID!
   createdAt: DateTime!
   endedAt: DateTime
@@ -736,15 +1134,23 @@ type RabbitModel {
   birthDate: DateTime
   birthLitterId: ID
   breedId: String
+  breedName: String
   code: String!
   color: String
   createdAt: DateTime!
   crossBreedId: String
+  currentCageCode: String
+  currentCageId: ID
+  exitCause: String
+  exitDate: DateTime
   fatherId: String
   id: ID!
   identifications: [RabbitIdentificationModel!]!
   motherId: String
   observations: String
+
+  """Code temporaire d’origine (ex. L001-07)"""
+  originalCode: String
   photos: [RabbitPhotoModel!]!
   purpose: RabbitPurpose!
   sex: RabbitSex!
@@ -795,10 +1201,59 @@ enum RabbitStatus {
   TRANSFERRED
 }
 
+type RabbitSummaryModel {
+  birthDate: DateTime
+  code: String!
+  id: ID!
+  sex: RabbitSex!
+  status: RabbitStatus!
+}
+
+type RabbitTraceabilityModel {
+  birthLitterCode: String
+  events: [TraceEventModel!]!
+  father: RabbitSummaryModel
+  mother: RabbitSummaryModel
+  rabbit: RabbitModel!
+}
+
 input RabbitsPaginationInput {
+  cageId: ID
+  litterId: ID
   page: Int = 1
   pageSize: Int = 10
+  purpose: RabbitPurpose
   search: String
+  sex: RabbitSex
+  status: RabbitStatus
+}
+
+input RecordLitterMortalityInput {
+  cause: String
+
+  """Nombre de lapereaux non identifiés morts"""
+  count: Int!
+  date: DateTime!
+  litterId: ID!
+  observation: String
+}
+
+input RecordNestInstallationInput {
+  breedingId: ID!
+  installedAt: DateTime!
+  material: String
+  nestType: String
+  observation: String
+}
+
+input RecordRabbitExitInput {
+  cause: String
+  date: DateTime!
+  observation: String
+  rabbitId: ID!
+
+  """DEAD (décès), CULLED (réforme) ou TRANSFERRED (transfert)"""
+  status: RabbitStatus!
 }
 
 input RegisterInput {
@@ -820,19 +1275,27 @@ input RemoveLotMembersInput {
 type SaleItemModel {
   description: String!
   id: ID!
+  lotCode: String
+  lotId: ID
+  pricePerKg: Float
   quantity: Int!
+  rabbitCode: String
   rabbitId: ID
   totalPrice: Float!
   unitPrice: Float!
+  weightKg: Float
 }
 
 type SaleModel {
   createdAt: DateTime!
   customerId: ID
+  customerName: String
   id: ID!
   items: [SaleItemModel!]!
   observation: String
+  paidAmount: Float!
   payments: [PaymentModel!]!
+  remainingAmount: Float!
   saleDate: DateTime!
   status: SaleStatus!
   totalAmount: Float!
@@ -887,6 +1350,9 @@ enum StockMovementType {
 
 type TaskModel {
   assignedToId: ID
+
+  """Renseigné pour les tâches générées automatiquement"""
+  automationKey: String
   completedAt: DateTime
   createdAt: DateTime!
   description: String
@@ -894,6 +1360,8 @@ type TaskModel {
   farmId: ID!
   id: ID!
   priority: TaskPriority!
+  rabbitCode: String
+  rabbitId: ID
   sourceId: ID
   sourceType: TaskSourceType
   status: TaskStatus!
@@ -927,6 +1395,45 @@ enum TaskStatus {
   TODO
 }
 
+type TechnicalStatisticsModel {
+  averageLitterSize: Float
+  averageWeaningWeight: Float
+  births: Int!
+  breedings: Int!
+  deathsByCause: [LabeledValueModel!]!
+  fatteningDeaths: Int!
+
+  """Palpations positives / palpations (%)"""
+  fertilityRate: Float
+  liveBorn: Int!
+  palpations: Int!
+  positivePalpations: Int!
+  preWeaningDeaths: Int!
+  preWeaningMortalityRate: Float
+
+  """Mort-nés / nés totaux (%)"""
+  stillBirthRate: Float
+  stillBorn: Int!
+  totalDeaths: Int!
+  weaned: Int!
+
+  """Sevrés / nés vivants (%)"""
+  weaningRate: Float
+  weightByAge: [WeightByAgeModel!]!
+}
+
+type TraceEventModel {
+  date: DateTime!
+  detail: String
+  referenceId: ID
+  title: String!
+
+  """
+  BIRTH, CAGE, LOT, WEANING, ADOPTION, WEIGHING, HEALTH, BREEDING, SALE, EXIT
+  """
+  type: String!
+}
+
 input UpdateBreedInput {
   description: String
   id: ID!
@@ -950,17 +1457,27 @@ input UpdateCrossBreedInput {
   parentBreedBId: ID
 }
 
+input UpdateFarmInput {
+  description: String
+  inbreedingPolicy: InbreedingPolicy
+  location: String
+  name: String
+}
+
 input UpdateMemberRoleInput {
   membershipId: ID!
   role: FarmRole!
 }
 
 input UpdateRabbitInput {
+  birthDate: DateTime
   breedId: ID
   code: String
   color: String
   crossBreedId: ID
+  fatherId: ID
   id: ID!
+  motherId: ID
   observations: String
   purpose: RabbitPurpose
   sex: RabbitSex
@@ -1004,6 +1521,7 @@ type WeaningModel {
   createdAt: DateTime!
   farmId: ID!
   id: ID!
+  litterCode: String
   litterId: ID!
   observation: String
   plannedDate: DateTime!
@@ -1032,4 +1550,10 @@ type WeighingModel {
   observation: String
   rabbitId: ID
   totalWeight: Float!
+}
+
+type WeightByAgeModel {
+  averageWeight: Float
+  label: String!
+  sampleCount: Int!
 }

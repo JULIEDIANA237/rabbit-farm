@@ -16,6 +16,8 @@ import { AddLotMembersInput } from './inputs/add-lot-members.input';
 import { RemoveLotMembersInput } from './inputs/remove-lot-members.input';
 import { CompleteFatteningLotInput } from './inputs/complete-fattening-lot.input';
 import { CreateWeighingInput } from './inputs/create-weighing.input';
+import { MoveFatteningLotInput } from './inputs/move-fattening-lot.input';
+import { LotCageMovementModel } from './models/lot-cage-movement.model';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -50,8 +52,29 @@ export class FatteningResolver {
   }
 
   @Query(() => [WeighingModel])
-  weighings(@CurrentUser() currentUser: CurrentUserType) {
-    return this.fatteningService.weighings(currentUser);
+  weighings(
+    @Args('lotId', { type: () => ID, nullable: true }) lotId: string | undefined,
+    @Args('rabbitId', { type: () => ID, nullable: true }) rabbitId: string | undefined,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.fatteningService.weighings(currentUser, { lotId, rabbitId });
+  }
+
+  @Query(() => [LotCageMovementModel])
+  lotCageMovements(
+    @Args('lotId', { type: () => ID }) lotId: string,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.fatteningService.lotCageMovements(lotId, currentUser);
+  }
+
+  @Mutation(() => LotCageMovementModel)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER, FarmRole.EMPLOYEE)
+  moveFatteningLot(
+    @Args('input') input: MoveFatteningLotInput,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.fatteningService.moveLot(input, currentUser);
   }
 
   @Mutation(() => FatteningLotModel)

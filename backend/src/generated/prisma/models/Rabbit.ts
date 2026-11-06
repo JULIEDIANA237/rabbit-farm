@@ -49,6 +49,9 @@ export type RabbitMinAggregateOutputType = {
   color: string | null
   weight: runtime.Decimal | null
   observations: string | null
+  originalCode: string | null
+  exitDate: Date | null
+  exitCause: string | null
   birthLitterId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -69,6 +72,9 @@ export type RabbitMaxAggregateOutputType = {
   color: string | null
   weight: runtime.Decimal | null
   observations: string | null
+  originalCode: string | null
+  exitDate: Date | null
+  exitCause: string | null
   birthLitterId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -89,6 +95,9 @@ export type RabbitCountAggregateOutputType = {
   color: number
   weight: number
   observations: number
+  originalCode: number
+  exitDate: number
+  exitCause: number
   birthLitterId: number
   createdAt: number
   updatedAt: number
@@ -119,6 +128,9 @@ export type RabbitMinAggregateInputType = {
   color?: true
   weight?: true
   observations?: true
+  originalCode?: true
+  exitDate?: true
+  exitCause?: true
   birthLitterId?: true
   createdAt?: true
   updatedAt?: true
@@ -139,6 +151,9 @@ export type RabbitMaxAggregateInputType = {
   color?: true
   weight?: true
   observations?: true
+  originalCode?: true
+  exitDate?: true
+  exitCause?: true
   birthLitterId?: true
   createdAt?: true
   updatedAt?: true
@@ -159,6 +174,9 @@ export type RabbitCountAggregateInputType = {
   color?: true
   weight?: true
   observations?: true
+  originalCode?: true
+  exitDate?: true
+  exitCause?: true
   birthLitterId?: true
   createdAt?: true
   updatedAt?: true
@@ -266,6 +284,9 @@ export type RabbitGroupByOutputType = {
   color: string | null
   weight: runtime.Decimal | null
   observations: string | null
+  originalCode: string | null
+  exitDate: Date | null
+  exitCause: string | null
   birthLitterId: string | null
   createdAt: Date
   updatedAt: Date
@@ -309,6 +330,9 @@ export type RabbitWhereInput = {
   color?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   weight?: Prisma.DecimalNullableFilter<"Rabbit"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  originalCode?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  exitDate?: Prisma.DateTimeNullableFilter<"Rabbit"> | Date | string | null
+  exitCause?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   birthLitterId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Rabbit"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Rabbit"> | Date | string
@@ -335,6 +359,7 @@ export type RabbitWhereInput = {
   weighings?: Prisma.WeighingListRelationFilter
   healthRecords?: Prisma.HealthRecordListRelationFilter
   saleItems?: Prisma.SaleItemListRelationFilter
+  mortalities?: Prisma.MortalityRecordListRelationFilter
 }
 
 export type RabbitOrderByWithRelationInput = {
@@ -352,6 +377,9 @@ export type RabbitOrderByWithRelationInput = {
   color?: Prisma.SortOrderInput | Prisma.SortOrder
   weight?: Prisma.SortOrderInput | Prisma.SortOrder
   observations?: Prisma.SortOrderInput | Prisma.SortOrder
+  originalCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  exitDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  exitCause?: Prisma.SortOrderInput | Prisma.SortOrder
   birthLitterId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -378,6 +406,7 @@ export type RabbitOrderByWithRelationInput = {
   weighings?: Prisma.WeighingOrderByRelationAggregateInput
   healthRecords?: Prisma.HealthRecordOrderByRelationAggregateInput
   saleItems?: Prisma.SaleItemOrderByRelationAggregateInput
+  mortalities?: Prisma.MortalityRecordOrderByRelationAggregateInput
 }
 
 export type RabbitWhereUniqueInput = Prisma.AtLeast<{
@@ -399,6 +428,9 @@ export type RabbitWhereUniqueInput = Prisma.AtLeast<{
   color?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   weight?: Prisma.DecimalNullableFilter<"Rabbit"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  originalCode?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  exitDate?: Prisma.DateTimeNullableFilter<"Rabbit"> | Date | string | null
+  exitCause?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   birthLitterId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Rabbit"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Rabbit"> | Date | string
@@ -425,6 +457,7 @@ export type RabbitWhereUniqueInput = Prisma.AtLeast<{
   weighings?: Prisma.WeighingListRelationFilter
   healthRecords?: Prisma.HealthRecordListRelationFilter
   saleItems?: Prisma.SaleItemListRelationFilter
+  mortalities?: Prisma.MortalityRecordListRelationFilter
 }, "id" | "farmId_code">
 
 export type RabbitOrderByWithAggregationInput = {
@@ -442,6 +475,9 @@ export type RabbitOrderByWithAggregationInput = {
   color?: Prisma.SortOrderInput | Prisma.SortOrder
   weight?: Prisma.SortOrderInput | Prisma.SortOrder
   observations?: Prisma.SortOrderInput | Prisma.SortOrder
+  originalCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  exitDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  exitCause?: Prisma.SortOrderInput | Prisma.SortOrder
   birthLitterId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -470,6 +506,9 @@ export type RabbitScalarWhereWithAggregatesInput = {
   color?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
   weight?: Prisma.DecimalNullableWithAggregatesFilter<"Rabbit"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
+  originalCode?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
+  exitDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Rabbit"> | Date | string | null
+  exitCause?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
   birthLitterId?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Rabbit"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Rabbit"> | Date | string
@@ -485,6 +524,9 @@ export type RabbitCreateInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -510,6 +552,7 @@ export type RabbitCreateInput = {
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateInput = {
@@ -527,6 +570,9 @@ export type RabbitUncheckedCreateInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -547,6 +593,7 @@ export type RabbitUncheckedCreateInput = {
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUpdateInput = {
@@ -559,6 +606,9 @@ export type RabbitUpdateInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -584,6 +634,7 @@ export type RabbitUpdateInput = {
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateInput = {
@@ -601,6 +652,9 @@ export type RabbitUncheckedUpdateInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -621,6 +675,7 @@ export type RabbitUncheckedUpdateInput = {
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateManyInput = {
@@ -638,6 +693,9 @@ export type RabbitCreateManyInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -653,6 +711,9 @@ export type RabbitUpdateManyMutationInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -672,6 +733,9 @@ export type RabbitUncheckedUpdateManyInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -712,6 +776,9 @@ export type RabbitCountOrderByAggregateInput = {
   color?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   observations?: Prisma.SortOrder
+  originalCode?: Prisma.SortOrder
+  exitDate?: Prisma.SortOrder
+  exitCause?: Prisma.SortOrder
   birthLitterId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -736,6 +803,9 @@ export type RabbitMaxOrderByAggregateInput = {
   color?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   observations?: Prisma.SortOrder
+  originalCode?: Prisma.SortOrder
+  exitDate?: Prisma.SortOrder
+  exitCause?: Prisma.SortOrder
   birthLitterId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -756,6 +826,9 @@ export type RabbitMinOrderByAggregateInput = {
   color?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   observations?: Prisma.SortOrder
+  originalCode?: Prisma.SortOrder
+  exitDate?: Prisma.SortOrder
+  exitCause?: Prisma.SortOrder
   birthLitterId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -1296,6 +1369,22 @@ export type RabbitUpdateOneWithoutTasksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.RabbitUpdateToOneWithWhereWithoutTasksInput, Prisma.RabbitUpdateWithoutTasksInput>, Prisma.RabbitUncheckedUpdateWithoutTasksInput>
 }
 
+export type RabbitCreateNestedOneWithoutMortalitiesInput = {
+  create?: Prisma.XOR<Prisma.RabbitCreateWithoutMortalitiesInput, Prisma.RabbitUncheckedCreateWithoutMortalitiesInput>
+  connectOrCreate?: Prisma.RabbitCreateOrConnectWithoutMortalitiesInput
+  connect?: Prisma.RabbitWhereUniqueInput
+}
+
+export type RabbitUpdateOneWithoutMortalitiesNestedInput = {
+  create?: Prisma.XOR<Prisma.RabbitCreateWithoutMortalitiesInput, Prisma.RabbitUncheckedCreateWithoutMortalitiesInput>
+  connectOrCreate?: Prisma.RabbitCreateOrConnectWithoutMortalitiesInput
+  upsert?: Prisma.RabbitUpsertWithoutMortalitiesInput
+  disconnect?: Prisma.RabbitWhereInput | boolean
+  delete?: Prisma.RabbitWhereInput | boolean
+  connect?: Prisma.RabbitWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.RabbitUpdateToOneWithWhereWithoutMortalitiesInput, Prisma.RabbitUpdateWithoutMortalitiesInput>, Prisma.RabbitUncheckedUpdateWithoutMortalitiesInput>
+}
+
 export type RabbitCreateWithoutFarmInput = {
   id?: string
   code: string
@@ -1306,6 +1395,9 @@ export type RabbitCreateWithoutFarmInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
@@ -1330,6 +1422,7 @@ export type RabbitCreateWithoutFarmInput = {
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutFarmInput = {
@@ -1346,6 +1439,9 @@ export type RabbitUncheckedCreateWithoutFarmInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1366,6 +1462,7 @@ export type RabbitUncheckedCreateWithoutFarmInput = {
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutFarmInput = {
@@ -1412,6 +1509,9 @@ export type RabbitScalarWhereInput = {
   color?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   weight?: Prisma.DecimalNullableFilter<"Rabbit"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  originalCode?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  exitDate?: Prisma.DateTimeNullableFilter<"Rabbit"> | Date | string | null
+  exitCause?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   birthLitterId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Rabbit"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Rabbit"> | Date | string
@@ -1427,6 +1527,9 @@ export type RabbitCreateWithoutBreedInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -1451,6 +1554,7 @@ export type RabbitCreateWithoutBreedInput = {
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutBreedInput = {
@@ -1467,6 +1571,9 @@ export type RabbitUncheckedCreateWithoutBreedInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1487,6 +1594,7 @@ export type RabbitUncheckedCreateWithoutBreedInput = {
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutBreedInput = {
@@ -1525,6 +1633,9 @@ export type RabbitCreateWithoutCrossBreedInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -1549,6 +1660,7 @@ export type RabbitCreateWithoutCrossBreedInput = {
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutCrossBreedInput = {
@@ -1565,6 +1677,9 @@ export type RabbitUncheckedCreateWithoutCrossBreedInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1585,6 +1700,7 @@ export type RabbitUncheckedCreateWithoutCrossBreedInput = {
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutCrossBreedInput = {
@@ -1623,6 +1739,9 @@ export type RabbitCreateWithoutChildrenAsFatherInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -1647,6 +1766,7 @@ export type RabbitCreateWithoutChildrenAsFatherInput = {
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutChildrenAsFatherInput = {
@@ -1664,6 +1784,9 @@ export type RabbitUncheckedCreateWithoutChildrenAsFatherInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1683,6 +1806,7 @@ export type RabbitUncheckedCreateWithoutChildrenAsFatherInput = {
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutChildrenAsFatherInput = {
@@ -1700,6 +1824,9 @@ export type RabbitCreateWithoutChildrenAsMotherInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -1724,6 +1851,7 @@ export type RabbitCreateWithoutChildrenAsMotherInput = {
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutChildrenAsMotherInput = {
@@ -1741,6 +1869,9 @@ export type RabbitUncheckedCreateWithoutChildrenAsMotherInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1760,6 +1891,7 @@ export type RabbitUncheckedCreateWithoutChildrenAsMotherInput = {
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutChildrenAsMotherInput = {
@@ -1777,6 +1909,9 @@ export type RabbitCreateWithoutFatherInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -1801,6 +1936,7 @@ export type RabbitCreateWithoutFatherInput = {
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutFatherInput = {
@@ -1817,6 +1953,9 @@ export type RabbitUncheckedCreateWithoutFatherInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1837,6 +1976,7 @@ export type RabbitUncheckedCreateWithoutFatherInput = {
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutFatherInput = {
@@ -1859,6 +1999,9 @@ export type RabbitCreateWithoutMotherInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -1883,6 +2026,7 @@ export type RabbitCreateWithoutMotherInput = {
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutMotherInput = {
@@ -1899,6 +2043,9 @@ export type RabbitUncheckedCreateWithoutMotherInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1919,6 +2066,7 @@ export type RabbitUncheckedCreateWithoutMotherInput = {
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutMotherInput = {
@@ -1952,6 +2100,9 @@ export type RabbitUpdateWithoutChildrenAsFatherInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -1976,6 +2127,7 @@ export type RabbitUpdateWithoutChildrenAsFatherInput = {
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutChildrenAsFatherInput = {
@@ -1993,6 +2145,9 @@ export type RabbitUncheckedUpdateWithoutChildrenAsFatherInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2012,6 +2167,7 @@ export type RabbitUncheckedUpdateWithoutChildrenAsFatherInput = {
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUpsertWithoutChildrenAsMotherInput = {
@@ -2035,6 +2191,9 @@ export type RabbitUpdateWithoutChildrenAsMotherInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -2059,6 +2218,7 @@ export type RabbitUpdateWithoutChildrenAsMotherInput = {
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutChildrenAsMotherInput = {
@@ -2076,6 +2236,9 @@ export type RabbitUncheckedUpdateWithoutChildrenAsMotherInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2095,6 +2258,7 @@ export type RabbitUncheckedUpdateWithoutChildrenAsMotherInput = {
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUpsertWithWhereUniqueWithoutFatherInput = {
@@ -2139,6 +2303,9 @@ export type RabbitCreateWithoutPhotosInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -2163,6 +2330,7 @@ export type RabbitCreateWithoutPhotosInput = {
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutPhotosInput = {
@@ -2180,6 +2348,9 @@ export type RabbitUncheckedCreateWithoutPhotosInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2199,6 +2370,7 @@ export type RabbitUncheckedCreateWithoutPhotosInput = {
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutPhotosInput = {
@@ -2227,6 +2399,9 @@ export type RabbitUpdateWithoutPhotosInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -2251,6 +2426,7 @@ export type RabbitUpdateWithoutPhotosInput = {
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutPhotosInput = {
@@ -2268,6 +2444,9 @@ export type RabbitUncheckedUpdateWithoutPhotosInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2287,6 +2466,7 @@ export type RabbitUncheckedUpdateWithoutPhotosInput = {
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateWithoutIdentificationsInput = {
@@ -2299,6 +2479,9 @@ export type RabbitCreateWithoutIdentificationsInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -2323,6 +2506,7 @@ export type RabbitCreateWithoutIdentificationsInput = {
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutIdentificationsInput = {
@@ -2340,6 +2524,9 @@ export type RabbitUncheckedCreateWithoutIdentificationsInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2359,6 +2546,7 @@ export type RabbitUncheckedCreateWithoutIdentificationsInput = {
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutIdentificationsInput = {
@@ -2387,6 +2575,9 @@ export type RabbitUpdateWithoutIdentificationsInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -2411,6 +2602,7 @@ export type RabbitUpdateWithoutIdentificationsInput = {
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutIdentificationsInput = {
@@ -2428,6 +2620,9 @@ export type RabbitUncheckedUpdateWithoutIdentificationsInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2447,6 +2642,7 @@ export type RabbitUncheckedUpdateWithoutIdentificationsInput = {
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateWithoutCageMovementsInput = {
@@ -2459,6 +2655,9 @@ export type RabbitCreateWithoutCageMovementsInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -2483,6 +2682,7 @@ export type RabbitCreateWithoutCageMovementsInput = {
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutCageMovementsInput = {
@@ -2500,6 +2700,9 @@ export type RabbitUncheckedCreateWithoutCageMovementsInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2519,6 +2722,7 @@ export type RabbitUncheckedCreateWithoutCageMovementsInput = {
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutCageMovementsInput = {
@@ -2547,6 +2751,9 @@ export type RabbitUpdateWithoutCageMovementsInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -2571,6 +2778,7 @@ export type RabbitUpdateWithoutCageMovementsInput = {
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutCageMovementsInput = {
@@ -2588,6 +2796,9 @@ export type RabbitUncheckedUpdateWithoutCageMovementsInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2607,6 +2818,7 @@ export type RabbitUncheckedUpdateWithoutCageMovementsInput = {
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateWithoutBreedingsAsFemaleInput = {
@@ -2619,6 +2831,9 @@ export type RabbitCreateWithoutBreedingsAsFemaleInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -2643,6 +2858,7 @@ export type RabbitCreateWithoutBreedingsAsFemaleInput = {
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutBreedingsAsFemaleInput = {
@@ -2660,6 +2876,9 @@ export type RabbitUncheckedCreateWithoutBreedingsAsFemaleInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2679,6 +2898,7 @@ export type RabbitUncheckedCreateWithoutBreedingsAsFemaleInput = {
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutBreedingsAsFemaleInput = {
@@ -2696,6 +2916,9 @@ export type RabbitCreateWithoutBreedingsAsMaleInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -2720,6 +2943,7 @@ export type RabbitCreateWithoutBreedingsAsMaleInput = {
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutBreedingsAsMaleInput = {
@@ -2737,6 +2961,9 @@ export type RabbitUncheckedCreateWithoutBreedingsAsMaleInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2756,6 +2983,7 @@ export type RabbitUncheckedCreateWithoutBreedingsAsMaleInput = {
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutBreedingsAsMaleInput = {
@@ -2784,6 +3012,9 @@ export type RabbitUpdateWithoutBreedingsAsFemaleInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -2808,6 +3039,7 @@ export type RabbitUpdateWithoutBreedingsAsFemaleInput = {
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutBreedingsAsFemaleInput = {
@@ -2825,6 +3057,9 @@ export type RabbitUncheckedUpdateWithoutBreedingsAsFemaleInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2844,6 +3079,7 @@ export type RabbitUncheckedUpdateWithoutBreedingsAsFemaleInput = {
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUpsertWithoutBreedingsAsMaleInput = {
@@ -2867,6 +3103,9 @@ export type RabbitUpdateWithoutBreedingsAsMaleInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -2891,6 +3130,7 @@ export type RabbitUpdateWithoutBreedingsAsMaleInput = {
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutBreedingsAsMaleInput = {
@@ -2908,6 +3148,9 @@ export type RabbitUncheckedUpdateWithoutBreedingsAsMaleInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2927,6 +3170,7 @@ export type RabbitUncheckedUpdateWithoutBreedingsAsMaleInput = {
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateWithoutMotherBirthsInput = {
@@ -2939,6 +3183,9 @@ export type RabbitCreateWithoutMotherBirthsInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -2963,6 +3210,7 @@ export type RabbitCreateWithoutMotherBirthsInput = {
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutMotherBirthsInput = {
@@ -2980,6 +3228,9 @@ export type RabbitUncheckedCreateWithoutMotherBirthsInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2999,6 +3250,7 @@ export type RabbitUncheckedCreateWithoutMotherBirthsInput = {
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutMotherBirthsInput = {
@@ -3027,6 +3279,9 @@ export type RabbitUpdateWithoutMotherBirthsInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -3051,6 +3306,7 @@ export type RabbitUpdateWithoutMotherBirthsInput = {
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutMotherBirthsInput = {
@@ -3068,6 +3324,9 @@ export type RabbitUncheckedUpdateWithoutMotherBirthsInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3087,6 +3346,7 @@ export type RabbitUncheckedUpdateWithoutMotherBirthsInput = {
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateWithoutMotherLittersInput = {
@@ -3099,6 +3359,9 @@ export type RabbitCreateWithoutMotherLittersInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -3123,6 +3386,7 @@ export type RabbitCreateWithoutMotherLittersInput = {
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutMotherLittersInput = {
@@ -3140,6 +3404,9 @@ export type RabbitUncheckedCreateWithoutMotherLittersInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3159,6 +3426,7 @@ export type RabbitUncheckedCreateWithoutMotherLittersInput = {
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutMotherLittersInput = {
@@ -3176,6 +3444,9 @@ export type RabbitCreateWithoutFatherLittersInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -3200,6 +3471,7 @@ export type RabbitCreateWithoutFatherLittersInput = {
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutFatherLittersInput = {
@@ -3217,6 +3489,9 @@ export type RabbitUncheckedCreateWithoutFatherLittersInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3236,6 +3511,7 @@ export type RabbitUncheckedCreateWithoutFatherLittersInput = {
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutFatherLittersInput = {
@@ -3253,6 +3529,9 @@ export type RabbitCreateWithoutBirthLitterInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -3277,6 +3556,7 @@ export type RabbitCreateWithoutBirthLitterInput = {
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutBirthLitterInput = {
@@ -3294,6 +3574,9 @@ export type RabbitUncheckedCreateWithoutBirthLitterInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
@@ -3313,6 +3596,7 @@ export type RabbitUncheckedCreateWithoutBirthLitterInput = {
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutBirthLitterInput = {
@@ -3346,6 +3630,9 @@ export type RabbitUpdateWithoutMotherLittersInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -3370,6 +3657,7 @@ export type RabbitUpdateWithoutMotherLittersInput = {
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutMotherLittersInput = {
@@ -3387,6 +3675,9 @@ export type RabbitUncheckedUpdateWithoutMotherLittersInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3406,6 +3697,7 @@ export type RabbitUncheckedUpdateWithoutMotherLittersInput = {
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUpsertWithoutFatherLittersInput = {
@@ -3429,6 +3721,9 @@ export type RabbitUpdateWithoutFatherLittersInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -3453,6 +3748,7 @@ export type RabbitUpdateWithoutFatherLittersInput = {
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutFatherLittersInput = {
@@ -3470,6 +3766,9 @@ export type RabbitUncheckedUpdateWithoutFatherLittersInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3489,6 +3788,7 @@ export type RabbitUncheckedUpdateWithoutFatherLittersInput = {
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUpsertWithWhereUniqueWithoutBirthLitterInput = {
@@ -3517,6 +3817,9 @@ export type RabbitCreateWithoutAdoptionHistoryInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -3541,6 +3844,7 @@ export type RabbitCreateWithoutAdoptionHistoryInput = {
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutAdoptionHistoryInput = {
@@ -3558,6 +3862,9 @@ export type RabbitUncheckedCreateWithoutAdoptionHistoryInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3577,6 +3884,7 @@ export type RabbitUncheckedCreateWithoutAdoptionHistoryInput = {
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutAdoptionHistoryInput = {
@@ -3605,6 +3913,9 @@ export type RabbitUpdateWithoutAdoptionHistoryInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -3629,6 +3940,7 @@ export type RabbitUpdateWithoutAdoptionHistoryInput = {
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutAdoptionHistoryInput = {
@@ -3646,6 +3958,9 @@ export type RabbitUncheckedUpdateWithoutAdoptionHistoryInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3665,6 +3980,7 @@ export type RabbitUncheckedUpdateWithoutAdoptionHistoryInput = {
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateWithoutWeaningHistoryInput = {
@@ -3677,6 +3993,9 @@ export type RabbitCreateWithoutWeaningHistoryInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -3701,6 +4020,7 @@ export type RabbitCreateWithoutWeaningHistoryInput = {
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutWeaningHistoryInput = {
@@ -3718,6 +4038,9 @@ export type RabbitUncheckedCreateWithoutWeaningHistoryInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3737,6 +4060,7 @@ export type RabbitUncheckedCreateWithoutWeaningHistoryInput = {
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutWeaningHistoryInput = {
@@ -3765,6 +4089,9 @@ export type RabbitUpdateWithoutWeaningHistoryInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -3789,6 +4116,7 @@ export type RabbitUpdateWithoutWeaningHistoryInput = {
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutWeaningHistoryInput = {
@@ -3806,6 +4134,9 @@ export type RabbitUncheckedUpdateWithoutWeaningHistoryInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3825,6 +4156,7 @@ export type RabbitUncheckedUpdateWithoutWeaningHistoryInput = {
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateWithoutLotMembershipsInput = {
@@ -3837,6 +4169,9 @@ export type RabbitCreateWithoutLotMembershipsInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -3861,6 +4196,7 @@ export type RabbitCreateWithoutLotMembershipsInput = {
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutLotMembershipsInput = {
@@ -3878,6 +4214,9 @@ export type RabbitUncheckedCreateWithoutLotMembershipsInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3897,6 +4236,7 @@ export type RabbitUncheckedCreateWithoutLotMembershipsInput = {
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutLotMembershipsInput = {
@@ -3925,6 +4265,9 @@ export type RabbitUpdateWithoutLotMembershipsInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -3949,6 +4292,7 @@ export type RabbitUpdateWithoutLotMembershipsInput = {
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutLotMembershipsInput = {
@@ -3966,6 +4310,9 @@ export type RabbitUncheckedUpdateWithoutLotMembershipsInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3985,6 +4332,7 @@ export type RabbitUncheckedUpdateWithoutLotMembershipsInput = {
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateWithoutWeighingsInput = {
@@ -3997,6 +4345,9 @@ export type RabbitCreateWithoutWeighingsInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -4021,6 +4372,7 @@ export type RabbitCreateWithoutWeighingsInput = {
   lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutWeighingsInput = {
@@ -4038,6 +4390,9 @@ export type RabbitUncheckedCreateWithoutWeighingsInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -4057,6 +4412,7 @@ export type RabbitUncheckedCreateWithoutWeighingsInput = {
   lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutWeighingsInput = {
@@ -4085,6 +4441,9 @@ export type RabbitUpdateWithoutWeighingsInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -4109,6 +4468,7 @@ export type RabbitUpdateWithoutWeighingsInput = {
   lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutWeighingsInput = {
@@ -4126,6 +4486,9 @@ export type RabbitUncheckedUpdateWithoutWeighingsInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4145,6 +4508,7 @@ export type RabbitUncheckedUpdateWithoutWeighingsInput = {
   lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateWithoutHealthRecordsInput = {
@@ -4157,6 +4521,9 @@ export type RabbitCreateWithoutHealthRecordsInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -4181,6 +4548,7 @@ export type RabbitCreateWithoutHealthRecordsInput = {
   lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutHealthRecordsInput = {
@@ -4198,6 +4566,9 @@ export type RabbitUncheckedCreateWithoutHealthRecordsInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -4217,6 +4588,7 @@ export type RabbitUncheckedCreateWithoutHealthRecordsInput = {
   lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutHealthRecordsInput = {
@@ -4245,6 +4617,9 @@ export type RabbitUpdateWithoutHealthRecordsInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -4269,6 +4644,7 @@ export type RabbitUpdateWithoutHealthRecordsInput = {
   lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutHealthRecordsInput = {
@@ -4286,6 +4662,9 @@ export type RabbitUncheckedUpdateWithoutHealthRecordsInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4305,6 +4684,7 @@ export type RabbitUncheckedUpdateWithoutHealthRecordsInput = {
   lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateWithoutSaleItemsInput = {
@@ -4317,6 +4697,9 @@ export type RabbitCreateWithoutSaleItemsInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -4341,6 +4724,7 @@ export type RabbitCreateWithoutSaleItemsInput = {
   lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutSaleItemsInput = {
@@ -4358,6 +4742,9 @@ export type RabbitUncheckedCreateWithoutSaleItemsInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -4377,6 +4764,7 @@ export type RabbitUncheckedCreateWithoutSaleItemsInput = {
   lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutSaleItemsInput = {
@@ -4405,6 +4793,9 @@ export type RabbitUpdateWithoutSaleItemsInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -4429,6 +4820,7 @@ export type RabbitUpdateWithoutSaleItemsInput = {
   lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutSaleItemsInput = {
@@ -4446,6 +4838,9 @@ export type RabbitUncheckedUpdateWithoutSaleItemsInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4465,6 +4860,7 @@ export type RabbitUncheckedUpdateWithoutSaleItemsInput = {
   lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateWithoutTasksInput = {
@@ -4477,6 +4873,9 @@ export type RabbitCreateWithoutTasksInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
@@ -4501,6 +4900,7 @@ export type RabbitCreateWithoutTasksInput = {
   weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitUncheckedCreateWithoutTasksInput = {
@@ -4518,6 +4918,9 @@ export type RabbitUncheckedCreateWithoutTasksInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -4537,6 +4940,7 @@ export type RabbitUncheckedCreateWithoutTasksInput = {
   weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
   healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
   saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
 }
 
 export type RabbitCreateOrConnectWithoutTasksInput = {
@@ -4565,6 +4969,9 @@ export type RabbitUpdateWithoutTasksInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -4589,6 +4996,7 @@ export type RabbitUpdateWithoutTasksInput = {
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutTasksInput = {
@@ -4606,6 +5014,9 @@ export type RabbitUncheckedUpdateWithoutTasksInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4616,6 +5027,183 @@ export type RabbitUncheckedUpdateWithoutTasksInput = {
   cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
   adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
   weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
+  breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
+  motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
+  motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
+  fatherLitters?: Prisma.LitterUncheckedUpdateManyWithoutFatherNestedInput
+  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
+}
+
+export type RabbitCreateWithoutMortalitiesInput = {
+  id?: string
+  code: string
+  sex: $Enums.RabbitSex
+  status?: $Enums.RabbitStatus
+  purpose?: $Enums.RabbitPurpose
+  birthDate?: Date | string | null
+  color?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
+  breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
+  crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
+  father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
+  mother?: Prisma.RabbitCreateNestedOneWithoutChildrenAsMotherInput
+  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
+  childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
+  photos?: Prisma.RabbitPhotoCreateNestedManyWithoutRabbitInput
+  identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
+  cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
+  adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
+  weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
+  breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
+  breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
+  motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
+  motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
+  fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
+  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
+  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+}
+
+export type RabbitUncheckedCreateWithoutMortalitiesInput = {
+  id?: string
+  farmId: string
+  code: string
+  sex: $Enums.RabbitSex
+  status?: $Enums.RabbitStatus
+  purpose?: $Enums.RabbitPurpose
+  breedId?: string | null
+  crossBreedId?: string | null
+  fatherId?: string | null
+  motherId?: string | null
+  birthDate?: Date | string | null
+  color?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
+  birthLitterId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
+  childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
+  photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
+  identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
+  cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
+  adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
+  breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
+  breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
+  motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
+  motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
+  fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
+  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+}
+
+export type RabbitCreateOrConnectWithoutMortalitiesInput = {
+  where: Prisma.RabbitWhereUniqueInput
+  create: Prisma.XOR<Prisma.RabbitCreateWithoutMortalitiesInput, Prisma.RabbitUncheckedCreateWithoutMortalitiesInput>
+}
+
+export type RabbitUpsertWithoutMortalitiesInput = {
+  update: Prisma.XOR<Prisma.RabbitUpdateWithoutMortalitiesInput, Prisma.RabbitUncheckedUpdateWithoutMortalitiesInput>
+  create: Prisma.XOR<Prisma.RabbitCreateWithoutMortalitiesInput, Prisma.RabbitUncheckedCreateWithoutMortalitiesInput>
+  where?: Prisma.RabbitWhereInput
+}
+
+export type RabbitUpdateToOneWithWhereWithoutMortalitiesInput = {
+  where?: Prisma.RabbitWhereInput
+  data: Prisma.XOR<Prisma.RabbitUpdateWithoutMortalitiesInput, Prisma.RabbitUncheckedUpdateWithoutMortalitiesInput>
+}
+
+export type RabbitUpdateWithoutMortalitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
+  status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
+  purpose?: Prisma.EnumRabbitPurposeFieldUpdateOperationsInput | $Enums.RabbitPurpose
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
+  breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
+  crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
+  father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
+  mother?: Prisma.RabbitUpdateOneWithoutChildrenAsMotherNestedInput
+  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
+  childrenAsMother?: Prisma.RabbitUpdateManyWithoutMotherNestedInput
+  photos?: Prisma.RabbitPhotoUpdateManyWithoutRabbitNestedInput
+  identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
+  cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
+  adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
+  weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
+  breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
+  breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
+  motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
+  motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
+  fatherLitters?: Prisma.LitterUpdateManyWithoutFatherNestedInput
+  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
+  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+}
+
+export type RabbitUncheckedUpdateWithoutMortalitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
+  status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
+  purpose?: Prisma.EnumRabbitPurposeFieldUpdateOperationsInput | $Enums.RabbitPurpose
+  breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
+  childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
+  photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
+  identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
+  cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
+  adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
   breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
   breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
   motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
@@ -4641,6 +5229,9 @@ export type RabbitCreateManyFarmInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -4656,6 +5247,9 @@ export type RabbitUpdateWithoutFarmInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
@@ -4680,6 +5274,7 @@ export type RabbitUpdateWithoutFarmInput = {
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutFarmInput = {
@@ -4696,6 +5291,9 @@ export type RabbitUncheckedUpdateWithoutFarmInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4716,6 +5314,7 @@ export type RabbitUncheckedUpdateWithoutFarmInput = {
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateManyWithoutFarmInput = {
@@ -4732,6 +5331,9 @@ export type RabbitUncheckedUpdateManyWithoutFarmInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4751,6 +5353,9 @@ export type RabbitCreateManyBreedInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -4766,6 +5371,9 @@ export type RabbitUpdateWithoutBreedInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -4790,6 +5398,7 @@ export type RabbitUpdateWithoutBreedInput = {
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutBreedInput = {
@@ -4806,6 +5415,9 @@ export type RabbitUncheckedUpdateWithoutBreedInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4826,6 +5438,7 @@ export type RabbitUncheckedUpdateWithoutBreedInput = {
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateManyWithoutBreedInput = {
@@ -4842,6 +5455,9 @@ export type RabbitUncheckedUpdateManyWithoutBreedInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4861,6 +5477,9 @@ export type RabbitCreateManyCrossBreedInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -4876,6 +5495,9 @@ export type RabbitUpdateWithoutCrossBreedInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -4900,6 +5522,7 @@ export type RabbitUpdateWithoutCrossBreedInput = {
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutCrossBreedInput = {
@@ -4916,6 +5539,9 @@ export type RabbitUncheckedUpdateWithoutCrossBreedInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4936,6 +5562,7 @@ export type RabbitUncheckedUpdateWithoutCrossBreedInput = {
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateManyWithoutCrossBreedInput = {
@@ -4952,6 +5579,9 @@ export type RabbitUncheckedUpdateManyWithoutCrossBreedInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4971,6 +5601,9 @@ export type RabbitCreateManyFatherInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -4990,6 +5623,9 @@ export type RabbitCreateManyMotherInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -5005,6 +5641,9 @@ export type RabbitUpdateWithoutFatherInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -5029,6 +5668,7 @@ export type RabbitUpdateWithoutFatherInput = {
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutFatherInput = {
@@ -5045,6 +5685,9 @@ export type RabbitUncheckedUpdateWithoutFatherInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -5065,6 +5708,7 @@ export type RabbitUncheckedUpdateWithoutFatherInput = {
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateManyWithoutFatherInput = {
@@ -5081,6 +5725,9 @@ export type RabbitUncheckedUpdateManyWithoutFatherInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -5096,6 +5743,9 @@ export type RabbitUpdateWithoutMotherInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -5120,6 +5770,7 @@ export type RabbitUpdateWithoutMotherInput = {
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutMotherInput = {
@@ -5136,6 +5787,9 @@ export type RabbitUncheckedUpdateWithoutMotherInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -5156,6 +5810,7 @@ export type RabbitUncheckedUpdateWithoutMotherInput = {
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateManyWithoutMotherInput = {
@@ -5172,6 +5827,9 @@ export type RabbitUncheckedUpdateManyWithoutMotherInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -5192,6 +5850,9 @@ export type RabbitCreateManyBirthLitterInput = {
   color?: string | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -5206,6 +5867,9 @@ export type RabbitUpdateWithoutBirthLitterInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
@@ -5230,6 +5894,7 @@ export type RabbitUpdateWithoutBirthLitterInput = {
   weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateWithoutBirthLitterInput = {
@@ -5247,6 +5912,9 @@ export type RabbitUncheckedUpdateWithoutBirthLitterInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
@@ -5266,6 +5934,7 @@ export type RabbitUncheckedUpdateWithoutBirthLitterInput = {
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitUncheckedUpdateManyWithoutBirthLitterInput = {
@@ -5283,6 +5952,9 @@ export type RabbitUncheckedUpdateManyWithoutBirthLitterInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -5310,6 +5982,7 @@ export type RabbitCountOutputType = {
   weighings: number
   healthRecords: number
   saleItems: number
+  mortalities: number
 }
 
 export type RabbitCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -5330,6 +6003,7 @@ export type RabbitCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   weighings?: boolean | RabbitCountOutputTypeCountWeighingsArgs
   healthRecords?: boolean | RabbitCountOutputTypeCountHealthRecordsArgs
   saleItems?: boolean | RabbitCountOutputTypeCountSaleItemsArgs
+  mortalities?: boolean | RabbitCountOutputTypeCountMortalitiesArgs
 }
 
 /**
@@ -5461,6 +6135,13 @@ export type RabbitCountOutputTypeCountSaleItemsArgs<ExtArgs extends runtime.Type
   where?: Prisma.SaleItemWhereInput
 }
 
+/**
+ * RabbitCountOutputType without action
+ */
+export type RabbitCountOutputTypeCountMortalitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MortalityRecordWhereInput
+}
+
 
 export type RabbitSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -5477,6 +6158,9 @@ export type RabbitSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   color?: boolean
   weight?: boolean
   observations?: boolean
+  originalCode?: boolean
+  exitDate?: boolean
+  exitCause?: boolean
   birthLitterId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -5503,6 +6187,7 @@ export type RabbitSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   weighings?: boolean | Prisma.Rabbit$weighingsArgs<ExtArgs>
   healthRecords?: boolean | Prisma.Rabbit$healthRecordsArgs<ExtArgs>
   saleItems?: boolean | Prisma.Rabbit$saleItemsArgs<ExtArgs>
+  mortalities?: boolean | Prisma.Rabbit$mortalitiesArgs<ExtArgs>
   _count?: boolean | Prisma.RabbitCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["rabbit"]>
 
@@ -5521,6 +6206,9 @@ export type RabbitSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   color?: boolean
   weight?: boolean
   observations?: boolean
+  originalCode?: boolean
+  exitDate?: boolean
+  exitCause?: boolean
   birthLitterId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -5547,6 +6235,9 @@ export type RabbitSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   color?: boolean
   weight?: boolean
   observations?: boolean
+  originalCode?: boolean
+  exitDate?: boolean
+  exitCause?: boolean
   birthLitterId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -5573,12 +6264,15 @@ export type RabbitSelectScalar = {
   color?: boolean
   weight?: boolean
   observations?: boolean
+  originalCode?: boolean
+  exitDate?: boolean
+  exitCause?: boolean
   birthLitterId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type RabbitOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "code" | "sex" | "status" | "purpose" | "breedId" | "crossBreedId" | "fatherId" | "motherId" | "birthDate" | "color" | "weight" | "observations" | "birthLitterId" | "createdAt" | "updatedAt", ExtArgs["result"]["rabbit"]>
+export type RabbitOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "code" | "sex" | "status" | "purpose" | "breedId" | "crossBreedId" | "fatherId" | "motherId" | "birthDate" | "color" | "weight" | "observations" | "originalCode" | "exitDate" | "exitCause" | "birthLitterId" | "createdAt" | "updatedAt", ExtArgs["result"]["rabbit"]>
 export type RabbitInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   breed?: boolean | Prisma.Rabbit$breedArgs<ExtArgs>
@@ -5603,6 +6297,7 @@ export type RabbitInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   weighings?: boolean | Prisma.Rabbit$weighingsArgs<ExtArgs>
   healthRecords?: boolean | Prisma.Rabbit$healthRecordsArgs<ExtArgs>
   saleItems?: boolean | Prisma.Rabbit$saleItemsArgs<ExtArgs>
+  mortalities?: boolean | Prisma.Rabbit$mortalitiesArgs<ExtArgs>
   _count?: boolean | Prisma.RabbitCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type RabbitIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -5648,6 +6343,7 @@ export type $RabbitPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     weighings: Prisma.$WeighingPayload<ExtArgs>[]
     healthRecords: Prisma.$HealthRecordPayload<ExtArgs>[]
     saleItems: Prisma.$SaleItemPayload<ExtArgs>[]
+    mortalities: Prisma.$MortalityRecordPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -5664,6 +6360,16 @@ export type $RabbitPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     color: string | null
     weight: runtime.Decimal | null
     observations: string | null
+    /**
+     * Code temporaire d'origine (ex. L001-07) conservé
+     * lorsque le lapin reçoit son identité définitive (§12).
+     */
+    originalCode: string | null
+    /**
+     * Sortie de l'élevage (décès, réforme...)
+     */
+    exitDate: Date | null
+    exitCause: string | null
     birthLitterId: string | null
     createdAt: Date
     updatedAt: Date
@@ -6084,6 +6790,7 @@ export interface Prisma__RabbitClient<T, Null = never, ExtArgs extends runtime.T
   weighings<T extends Prisma.Rabbit$weighingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$weighingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WeighingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   healthRecords<T extends Prisma.Rabbit$healthRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$healthRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HealthRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   saleItems<T extends Prisma.Rabbit$saleItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$saleItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SaleItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  mortalities<T extends Prisma.Rabbit$mortalitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$mortalitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MortalityRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6127,6 +6834,9 @@ export interface RabbitFieldRefs {
   readonly color: Prisma.FieldRef<"Rabbit", 'String'>
   readonly weight: Prisma.FieldRef<"Rabbit", 'Decimal'>
   readonly observations: Prisma.FieldRef<"Rabbit", 'String'>
+  readonly originalCode: Prisma.FieldRef<"Rabbit", 'String'>
+  readonly exitDate: Prisma.FieldRef<"Rabbit", 'DateTime'>
+  readonly exitCause: Prisma.FieldRef<"Rabbit", 'String'>
   readonly birthLitterId: Prisma.FieldRef<"Rabbit", 'String'>
   readonly createdAt: Prisma.FieldRef<"Rabbit", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Rabbit", 'DateTime'>
@@ -7031,6 +7741,30 @@ export type Rabbit$saleItemsArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.SaleItemScalarFieldEnum | Prisma.SaleItemScalarFieldEnum[]
+}
+
+/**
+ * Rabbit.mortalities
+ */
+export type Rabbit$mortalitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MortalityRecord
+   */
+  select?: Prisma.MortalityRecordSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MortalityRecord
+   */
+  omit?: Prisma.MortalityRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MortalityRecordInclude<ExtArgs> | null
+  where?: Prisma.MortalityRecordWhereInput
+  orderBy?: Prisma.MortalityRecordOrderByWithRelationInput | Prisma.MortalityRecordOrderByWithRelationInput[]
+  cursor?: Prisma.MortalityRecordWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MortalityRecordScalarFieldEnum | Prisma.MortalityRecordScalarFieldEnum[]
 }
 
 /**

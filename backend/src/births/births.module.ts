@@ -4,10 +4,11 @@ import { BirthsService } from './births.service';
 import { BirthsResolver } from './births.resolver';
 
 import { AuthModule } from '../auth/auth.module';
+import { OperationsModule } from '../operations/operations.module';
 
 @Module({
   imports: [
-    AuthModule,
+    AuthModule, OperationsModule,
   ],
   providers: [
     BirthsService,

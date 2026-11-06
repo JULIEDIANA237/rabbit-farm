@@ -260,6 +260,7 @@ export type BreedingWhereInput = {
   pregnancies?: Prisma.PregnancyListRelationFilter
   birth?: Prisma.XOR<Prisma.BirthNullableScalarRelationFilter, Prisma.BirthWhereInput> | null
   litters?: Prisma.LitterListRelationFilter
+  nestInstallation?: Prisma.XOR<Prisma.NestInstallationNullableScalarRelationFilter, Prisma.NestInstallationWhereInput> | null
 }
 
 export type BreedingOrderByWithRelationInput = {
@@ -283,6 +284,7 @@ export type BreedingOrderByWithRelationInput = {
   pregnancies?: Prisma.PregnancyOrderByRelationAggregateInput
   birth?: Prisma.BirthOrderByWithRelationInput
   litters?: Prisma.LitterOrderByRelationAggregateInput
+  nestInstallation?: Prisma.NestInstallationOrderByWithRelationInput
 }
 
 export type BreedingWhereUniqueInput = Prisma.AtLeast<{
@@ -309,6 +311,7 @@ export type BreedingWhereUniqueInput = Prisma.AtLeast<{
   pregnancies?: Prisma.PregnancyListRelationFilter
   birth?: Prisma.XOR<Prisma.BirthNullableScalarRelationFilter, Prisma.BirthWhereInput> | null
   litters?: Prisma.LitterListRelationFilter
+  nestInstallation?: Prisma.XOR<Prisma.NestInstallationNullableScalarRelationFilter, Prisma.NestInstallationWhereInput> | null
 }, "id">
 
 export type BreedingOrderByWithAggregationInput = {
@@ -369,6 +372,7 @@ export type BreedingCreateInput = {
   pregnancies?: Prisma.PregnancyCreateNestedManyWithoutBreedingInput
   birth?: Prisma.BirthCreateNestedOneWithoutBreedingInput
   litters?: Prisma.LitterCreateNestedManyWithoutBreedingInput
+  nestInstallation?: Prisma.NestInstallationCreateNestedOneWithoutBreedingInput
 }
 
 export type BreedingUncheckedCreateInput = {
@@ -389,6 +393,7 @@ export type BreedingUncheckedCreateInput = {
   pregnancies?: Prisma.PregnancyUncheckedCreateNestedManyWithoutBreedingInput
   birth?: Prisma.BirthUncheckedCreateNestedOneWithoutBreedingInput
   litters?: Prisma.LitterUncheckedCreateNestedManyWithoutBreedingInput
+  nestInstallation?: Prisma.NestInstallationUncheckedCreateNestedOneWithoutBreedingInput
 }
 
 export type BreedingUpdateInput = {
@@ -409,6 +414,7 @@ export type BreedingUpdateInput = {
   pregnancies?: Prisma.PregnancyUpdateManyWithoutBreedingNestedInput
   birth?: Prisma.BirthUpdateOneWithoutBreedingNestedInput
   litters?: Prisma.LitterUpdateManyWithoutBreedingNestedInput
+  nestInstallation?: Prisma.NestInstallationUpdateOneWithoutBreedingNestedInput
 }
 
 export type BreedingUncheckedUpdateInput = {
@@ -429,6 +435,7 @@ export type BreedingUncheckedUpdateInput = {
   pregnancies?: Prisma.PregnancyUncheckedUpdateManyWithoutBreedingNestedInput
   birth?: Prisma.BirthUncheckedUpdateOneWithoutBreedingNestedInput
   litters?: Prisma.LitterUncheckedUpdateManyWithoutBreedingNestedInput
+  nestInstallation?: Prisma.NestInstallationUncheckedUpdateOneWithoutBreedingNestedInput
 }
 
 export type BreedingCreateManyInput = {
@@ -724,6 +731,20 @@ export type BreedingUpdateOneWithoutLittersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.BreedingUpdateToOneWithWhereWithoutLittersInput, Prisma.BreedingUpdateWithoutLittersInput>, Prisma.BreedingUncheckedUpdateWithoutLittersInput>
 }
 
+export type BreedingCreateNestedOneWithoutNestInstallationInput = {
+  create?: Prisma.XOR<Prisma.BreedingCreateWithoutNestInstallationInput, Prisma.BreedingUncheckedCreateWithoutNestInstallationInput>
+  connectOrCreate?: Prisma.BreedingCreateOrConnectWithoutNestInstallationInput
+  connect?: Prisma.BreedingWhereUniqueInput
+}
+
+export type BreedingUpdateOneRequiredWithoutNestInstallationNestedInput = {
+  create?: Prisma.XOR<Prisma.BreedingCreateWithoutNestInstallationInput, Prisma.BreedingUncheckedCreateWithoutNestInstallationInput>
+  connectOrCreate?: Prisma.BreedingCreateOrConnectWithoutNestInstallationInput
+  upsert?: Prisma.BreedingUpsertWithoutNestInstallationInput
+  connect?: Prisma.BreedingWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BreedingUpdateToOneWithWhereWithoutNestInstallationInput, Prisma.BreedingUpdateWithoutNestInstallationInput>, Prisma.BreedingUncheckedUpdateWithoutNestInstallationInput>
+}
+
 export type BreedingCreateWithoutFarmInput = {
   id?: string
   breedingDate: Date | string
@@ -741,6 +762,7 @@ export type BreedingCreateWithoutFarmInput = {
   pregnancies?: Prisma.PregnancyCreateNestedManyWithoutBreedingInput
   birth?: Prisma.BirthCreateNestedOneWithoutBreedingInput
   litters?: Prisma.LitterCreateNestedManyWithoutBreedingInput
+  nestInstallation?: Prisma.NestInstallationCreateNestedOneWithoutBreedingInput
 }
 
 export type BreedingUncheckedCreateWithoutFarmInput = {
@@ -760,6 +782,7 @@ export type BreedingUncheckedCreateWithoutFarmInput = {
   pregnancies?: Prisma.PregnancyUncheckedCreateNestedManyWithoutBreedingInput
   birth?: Prisma.BirthUncheckedCreateNestedOneWithoutBreedingInput
   litters?: Prisma.LitterUncheckedCreateNestedManyWithoutBreedingInput
+  nestInstallation?: Prisma.NestInstallationUncheckedCreateNestedOneWithoutBreedingInput
 }
 
 export type BreedingCreateOrConnectWithoutFarmInput = {
@@ -825,6 +848,7 @@ export type BreedingCreateWithoutFemaleInput = {
   pregnancies?: Prisma.PregnancyCreateNestedManyWithoutBreedingInput
   birth?: Prisma.BirthCreateNestedOneWithoutBreedingInput
   litters?: Prisma.LitterCreateNestedManyWithoutBreedingInput
+  nestInstallation?: Prisma.NestInstallationCreateNestedOneWithoutBreedingInput
 }
 
 export type BreedingUncheckedCreateWithoutFemaleInput = {
@@ -844,6 +868,7 @@ export type BreedingUncheckedCreateWithoutFemaleInput = {
   pregnancies?: Prisma.PregnancyUncheckedCreateNestedManyWithoutBreedingInput
   birth?: Prisma.BirthUncheckedCreateNestedOneWithoutBreedingInput
   litters?: Prisma.LitterUncheckedCreateNestedManyWithoutBreedingInput
+  nestInstallation?: Prisma.NestInstallationUncheckedCreateNestedOneWithoutBreedingInput
 }
 
 export type BreedingCreateOrConnectWithoutFemaleInput = {
@@ -873,6 +898,7 @@ export type BreedingCreateWithoutMaleInput = {
   pregnancies?: Prisma.PregnancyCreateNestedManyWithoutBreedingInput
   birth?: Prisma.BirthCreateNestedOneWithoutBreedingInput
   litters?: Prisma.LitterCreateNestedManyWithoutBreedingInput
+  nestInstallation?: Prisma.NestInstallationCreateNestedOneWithoutBreedingInput
 }
 
 export type BreedingUncheckedCreateWithoutMaleInput = {
@@ -892,6 +918,7 @@ export type BreedingUncheckedCreateWithoutMaleInput = {
   pregnancies?: Prisma.PregnancyUncheckedCreateNestedManyWithoutBreedingInput
   birth?: Prisma.BirthUncheckedCreateNestedOneWithoutBreedingInput
   litters?: Prisma.LitterUncheckedCreateNestedManyWithoutBreedingInput
+  nestInstallation?: Prisma.NestInstallationUncheckedCreateNestedOneWithoutBreedingInput
 }
 
 export type BreedingCreateOrConnectWithoutMaleInput = {
@@ -953,6 +980,7 @@ export type BreedingCreateWithoutPregnanciesInput = {
   male: Prisma.RabbitCreateNestedOneWithoutBreedingsAsMaleInput
   birth?: Prisma.BirthCreateNestedOneWithoutBreedingInput
   litters?: Prisma.LitterCreateNestedManyWithoutBreedingInput
+  nestInstallation?: Prisma.NestInstallationCreateNestedOneWithoutBreedingInput
 }
 
 export type BreedingUncheckedCreateWithoutPregnanciesInput = {
@@ -972,6 +1000,7 @@ export type BreedingUncheckedCreateWithoutPregnanciesInput = {
   updatedAt?: Date | string
   birth?: Prisma.BirthUncheckedCreateNestedOneWithoutBreedingInput
   litters?: Prisma.LitterUncheckedCreateNestedManyWithoutBreedingInput
+  nestInstallation?: Prisma.NestInstallationUncheckedCreateNestedOneWithoutBreedingInput
 }
 
 export type BreedingCreateOrConnectWithoutPregnanciesInput = {
@@ -1007,6 +1036,7 @@ export type BreedingUpdateWithoutPregnanciesInput = {
   male?: Prisma.RabbitUpdateOneRequiredWithoutBreedingsAsMaleNestedInput
   birth?: Prisma.BirthUpdateOneWithoutBreedingNestedInput
   litters?: Prisma.LitterUpdateManyWithoutBreedingNestedInput
+  nestInstallation?: Prisma.NestInstallationUpdateOneWithoutBreedingNestedInput
 }
 
 export type BreedingUncheckedUpdateWithoutPregnanciesInput = {
@@ -1026,6 +1056,7 @@ export type BreedingUncheckedUpdateWithoutPregnanciesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   birth?: Prisma.BirthUncheckedUpdateOneWithoutBreedingNestedInput
   litters?: Prisma.LitterUncheckedUpdateManyWithoutBreedingNestedInput
+  nestInstallation?: Prisma.NestInstallationUncheckedUpdateOneWithoutBreedingNestedInput
 }
 
 export type BreedingCreateWithoutBirthInput = {
@@ -1045,6 +1076,7 @@ export type BreedingCreateWithoutBirthInput = {
   male: Prisma.RabbitCreateNestedOneWithoutBreedingsAsMaleInput
   pregnancies?: Prisma.PregnancyCreateNestedManyWithoutBreedingInput
   litters?: Prisma.LitterCreateNestedManyWithoutBreedingInput
+  nestInstallation?: Prisma.NestInstallationCreateNestedOneWithoutBreedingInput
 }
 
 export type BreedingUncheckedCreateWithoutBirthInput = {
@@ -1064,6 +1096,7 @@ export type BreedingUncheckedCreateWithoutBirthInput = {
   updatedAt?: Date | string
   pregnancies?: Prisma.PregnancyUncheckedCreateNestedManyWithoutBreedingInput
   litters?: Prisma.LitterUncheckedCreateNestedManyWithoutBreedingInput
+  nestInstallation?: Prisma.NestInstallationUncheckedCreateNestedOneWithoutBreedingInput
 }
 
 export type BreedingCreateOrConnectWithoutBirthInput = {
@@ -1099,6 +1132,7 @@ export type BreedingUpdateWithoutBirthInput = {
   male?: Prisma.RabbitUpdateOneRequiredWithoutBreedingsAsMaleNestedInput
   pregnancies?: Prisma.PregnancyUpdateManyWithoutBreedingNestedInput
   litters?: Prisma.LitterUpdateManyWithoutBreedingNestedInput
+  nestInstallation?: Prisma.NestInstallationUpdateOneWithoutBreedingNestedInput
 }
 
 export type BreedingUncheckedUpdateWithoutBirthInput = {
@@ -1118,6 +1152,7 @@ export type BreedingUncheckedUpdateWithoutBirthInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pregnancies?: Prisma.PregnancyUncheckedUpdateManyWithoutBreedingNestedInput
   litters?: Prisma.LitterUncheckedUpdateManyWithoutBreedingNestedInput
+  nestInstallation?: Prisma.NestInstallationUncheckedUpdateOneWithoutBreedingNestedInput
 }
 
 export type BreedingCreateWithoutLittersInput = {
@@ -1137,6 +1172,7 @@ export type BreedingCreateWithoutLittersInput = {
   male: Prisma.RabbitCreateNestedOneWithoutBreedingsAsMaleInput
   pregnancies?: Prisma.PregnancyCreateNestedManyWithoutBreedingInput
   birth?: Prisma.BirthCreateNestedOneWithoutBreedingInput
+  nestInstallation?: Prisma.NestInstallationCreateNestedOneWithoutBreedingInput
 }
 
 export type BreedingUncheckedCreateWithoutLittersInput = {
@@ -1156,6 +1192,7 @@ export type BreedingUncheckedCreateWithoutLittersInput = {
   updatedAt?: Date | string
   pregnancies?: Prisma.PregnancyUncheckedCreateNestedManyWithoutBreedingInput
   birth?: Prisma.BirthUncheckedCreateNestedOneWithoutBreedingInput
+  nestInstallation?: Prisma.NestInstallationUncheckedCreateNestedOneWithoutBreedingInput
 }
 
 export type BreedingCreateOrConnectWithoutLittersInput = {
@@ -1191,6 +1228,7 @@ export type BreedingUpdateWithoutLittersInput = {
   male?: Prisma.RabbitUpdateOneRequiredWithoutBreedingsAsMaleNestedInput
   pregnancies?: Prisma.PregnancyUpdateManyWithoutBreedingNestedInput
   birth?: Prisma.BirthUpdateOneWithoutBreedingNestedInput
+  nestInstallation?: Prisma.NestInstallationUpdateOneWithoutBreedingNestedInput
 }
 
 export type BreedingUncheckedUpdateWithoutLittersInput = {
@@ -1210,6 +1248,103 @@ export type BreedingUncheckedUpdateWithoutLittersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pregnancies?: Prisma.PregnancyUncheckedUpdateManyWithoutBreedingNestedInput
   birth?: Prisma.BirthUncheckedUpdateOneWithoutBreedingNestedInput
+  nestInstallation?: Prisma.NestInstallationUncheckedUpdateOneWithoutBreedingNestedInput
+}
+
+export type BreedingCreateWithoutNestInstallationInput = {
+  id?: string
+  breedingDate: Date | string
+  palpationStartDate?: Date | string | null
+  palpationEndDate?: Date | string | null
+  nestDate?: Date | string | null
+  expectedBirthStartDate?: Date | string | null
+  expectedBirthEndDate?: Date | string | null
+  status?: $Enums.BreedingStatus
+  observation?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  farm: Prisma.FarmCreateNestedOneWithoutBreedingsInput
+  female: Prisma.RabbitCreateNestedOneWithoutBreedingsAsFemaleInput
+  male: Prisma.RabbitCreateNestedOneWithoutBreedingsAsMaleInput
+  pregnancies?: Prisma.PregnancyCreateNestedManyWithoutBreedingInput
+  birth?: Prisma.BirthCreateNestedOneWithoutBreedingInput
+  litters?: Prisma.LitterCreateNestedManyWithoutBreedingInput
+}
+
+export type BreedingUncheckedCreateWithoutNestInstallationInput = {
+  id?: string
+  farmId: string
+  femaleId: string
+  maleId: string
+  breedingDate: Date | string
+  palpationStartDate?: Date | string | null
+  palpationEndDate?: Date | string | null
+  nestDate?: Date | string | null
+  expectedBirthStartDate?: Date | string | null
+  expectedBirthEndDate?: Date | string | null
+  status?: $Enums.BreedingStatus
+  observation?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pregnancies?: Prisma.PregnancyUncheckedCreateNestedManyWithoutBreedingInput
+  birth?: Prisma.BirthUncheckedCreateNestedOneWithoutBreedingInput
+  litters?: Prisma.LitterUncheckedCreateNestedManyWithoutBreedingInput
+}
+
+export type BreedingCreateOrConnectWithoutNestInstallationInput = {
+  where: Prisma.BreedingWhereUniqueInput
+  create: Prisma.XOR<Prisma.BreedingCreateWithoutNestInstallationInput, Prisma.BreedingUncheckedCreateWithoutNestInstallationInput>
+}
+
+export type BreedingUpsertWithoutNestInstallationInput = {
+  update: Prisma.XOR<Prisma.BreedingUpdateWithoutNestInstallationInput, Prisma.BreedingUncheckedUpdateWithoutNestInstallationInput>
+  create: Prisma.XOR<Prisma.BreedingCreateWithoutNestInstallationInput, Prisma.BreedingUncheckedCreateWithoutNestInstallationInput>
+  where?: Prisma.BreedingWhereInput
+}
+
+export type BreedingUpdateToOneWithWhereWithoutNestInstallationInput = {
+  where?: Prisma.BreedingWhereInput
+  data: Prisma.XOR<Prisma.BreedingUpdateWithoutNestInstallationInput, Prisma.BreedingUncheckedUpdateWithoutNestInstallationInput>
+}
+
+export type BreedingUpdateWithoutNestInstallationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  breedingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  palpationStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  palpationEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expectedBirthStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expectedBirthEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumBreedingStatusFieldUpdateOperationsInput | $Enums.BreedingStatus
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  farm?: Prisma.FarmUpdateOneRequiredWithoutBreedingsNestedInput
+  female?: Prisma.RabbitUpdateOneRequiredWithoutBreedingsAsFemaleNestedInput
+  male?: Prisma.RabbitUpdateOneRequiredWithoutBreedingsAsMaleNestedInput
+  pregnancies?: Prisma.PregnancyUpdateManyWithoutBreedingNestedInput
+  birth?: Prisma.BirthUpdateOneWithoutBreedingNestedInput
+  litters?: Prisma.LitterUpdateManyWithoutBreedingNestedInput
+}
+
+export type BreedingUncheckedUpdateWithoutNestInstallationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  femaleId?: Prisma.StringFieldUpdateOperationsInput | string
+  maleId?: Prisma.StringFieldUpdateOperationsInput | string
+  breedingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  palpationStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  palpationEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expectedBirthStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expectedBirthEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumBreedingStatusFieldUpdateOperationsInput | $Enums.BreedingStatus
+  observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pregnancies?: Prisma.PregnancyUncheckedUpdateManyWithoutBreedingNestedInput
+  birth?: Prisma.BirthUncheckedUpdateOneWithoutBreedingNestedInput
+  litters?: Prisma.LitterUncheckedUpdateManyWithoutBreedingNestedInput
 }
 
 export type BreedingCreateManyFarmInput = {
@@ -1245,6 +1380,7 @@ export type BreedingUpdateWithoutFarmInput = {
   pregnancies?: Prisma.PregnancyUpdateManyWithoutBreedingNestedInput
   birth?: Prisma.BirthUpdateOneWithoutBreedingNestedInput
   litters?: Prisma.LitterUpdateManyWithoutBreedingNestedInput
+  nestInstallation?: Prisma.NestInstallationUpdateOneWithoutBreedingNestedInput
 }
 
 export type BreedingUncheckedUpdateWithoutFarmInput = {
@@ -1264,6 +1400,7 @@ export type BreedingUncheckedUpdateWithoutFarmInput = {
   pregnancies?: Prisma.PregnancyUncheckedUpdateManyWithoutBreedingNestedInput
   birth?: Prisma.BirthUncheckedUpdateOneWithoutBreedingNestedInput
   litters?: Prisma.LitterUncheckedUpdateManyWithoutBreedingNestedInput
+  nestInstallation?: Prisma.NestInstallationUncheckedUpdateOneWithoutBreedingNestedInput
 }
 
 export type BreedingUncheckedUpdateManyWithoutFarmInput = {
@@ -1331,6 +1468,7 @@ export type BreedingUpdateWithoutFemaleInput = {
   pregnancies?: Prisma.PregnancyUpdateManyWithoutBreedingNestedInput
   birth?: Prisma.BirthUpdateOneWithoutBreedingNestedInput
   litters?: Prisma.LitterUpdateManyWithoutBreedingNestedInput
+  nestInstallation?: Prisma.NestInstallationUpdateOneWithoutBreedingNestedInput
 }
 
 export type BreedingUncheckedUpdateWithoutFemaleInput = {
@@ -1350,6 +1488,7 @@ export type BreedingUncheckedUpdateWithoutFemaleInput = {
   pregnancies?: Prisma.PregnancyUncheckedUpdateManyWithoutBreedingNestedInput
   birth?: Prisma.BirthUncheckedUpdateOneWithoutBreedingNestedInput
   litters?: Prisma.LitterUncheckedUpdateManyWithoutBreedingNestedInput
+  nestInstallation?: Prisma.NestInstallationUncheckedUpdateOneWithoutBreedingNestedInput
 }
 
 export type BreedingUncheckedUpdateManyWithoutFemaleInput = {
@@ -1385,6 +1524,7 @@ export type BreedingUpdateWithoutMaleInput = {
   pregnancies?: Prisma.PregnancyUpdateManyWithoutBreedingNestedInput
   birth?: Prisma.BirthUpdateOneWithoutBreedingNestedInput
   litters?: Prisma.LitterUpdateManyWithoutBreedingNestedInput
+  nestInstallation?: Prisma.NestInstallationUpdateOneWithoutBreedingNestedInput
 }
 
 export type BreedingUncheckedUpdateWithoutMaleInput = {
@@ -1404,6 +1544,7 @@ export type BreedingUncheckedUpdateWithoutMaleInput = {
   pregnancies?: Prisma.PregnancyUncheckedUpdateManyWithoutBreedingNestedInput
   birth?: Prisma.BirthUncheckedUpdateOneWithoutBreedingNestedInput
   litters?: Prisma.LitterUncheckedUpdateManyWithoutBreedingNestedInput
+  nestInstallation?: Prisma.NestInstallationUncheckedUpdateOneWithoutBreedingNestedInput
 }
 
 export type BreedingUncheckedUpdateManyWithoutMaleInput = {
@@ -1483,6 +1624,7 @@ export type BreedingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   pregnancies?: boolean | Prisma.Breeding$pregnanciesArgs<ExtArgs>
   birth?: boolean | Prisma.Breeding$birthArgs<ExtArgs>
   litters?: boolean | Prisma.Breeding$littersArgs<ExtArgs>
+  nestInstallation?: boolean | Prisma.Breeding$nestInstallationArgs<ExtArgs>
   _count?: boolean | Prisma.BreedingCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["breeding"]>
 
@@ -1551,6 +1693,7 @@ export type BreedingInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   pregnancies?: boolean | Prisma.Breeding$pregnanciesArgs<ExtArgs>
   birth?: boolean | Prisma.Breeding$birthArgs<ExtArgs>
   litters?: boolean | Prisma.Breeding$littersArgs<ExtArgs>
+  nestInstallation?: boolean | Prisma.Breeding$nestInstallationArgs<ExtArgs>
   _count?: boolean | Prisma.BreedingCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type BreedingIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1573,6 +1716,7 @@ export type $BreedingPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     pregnancies: Prisma.$PregnancyPayload<ExtArgs>[]
     birth: Prisma.$BirthPayload<ExtArgs> | null
     litters: Prisma.$LitterPayload<ExtArgs>[]
+    nestInstallation: Prisma.$NestInstallationPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1989,6 +2133,7 @@ export interface Prisma__BreedingClient<T, Null = never, ExtArgs extends runtime
   pregnancies<T extends Prisma.Breeding$pregnanciesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Breeding$pregnanciesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PregnancyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   birth<T extends Prisma.Breeding$birthArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Breeding$birthArgs<ExtArgs>>): Prisma.Prisma__BirthClient<runtime.Types.Result.GetResult<Prisma.$BirthPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   litters<T extends Prisma.Breeding$littersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Breeding$littersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LitterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  nestInstallation<T extends Prisma.Breeding$nestInstallationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Breeding$nestInstallationArgs<ExtArgs>>): Prisma.Prisma__NestInstallationClient<runtime.Types.Result.GetResult<Prisma.$NestInstallationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2497,6 +2642,25 @@ export type Breeding$littersArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.LitterScalarFieldEnum | Prisma.LitterScalarFieldEnum[]
+}
+
+/**
+ * Breeding.nestInstallation
+ */
+export type Breeding$nestInstallationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the NestInstallation
+   */
+  select?: Prisma.NestInstallationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the NestInstallation
+   */
+  omit?: Prisma.NestInstallationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NestInstallationInclude<ExtArgs> | null
+  where?: Prisma.NestInstallationWhereInput
 }
 
 /**

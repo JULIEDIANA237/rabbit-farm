@@ -81,7 +81,10 @@ export const ModelName = {
   Expense: 'Expense',
   InventoryItem: 'InventoryItem',
   StockMovement: 'StockMovement',
-  Task: 'Task'
+  Task: 'Task',
+  NestInstallation: 'NestInstallation',
+  MortalityRecord: 'MortalityRecord',
+  LotCageMovement: 'LotCageMovement'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -119,6 +122,7 @@ export const FarmScalarFieldEnum = {
   name: 'name',
   description: 'description',
   location: 'location',
+  inbreedingPolicy: 'inbreedingPolicy',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -207,6 +211,9 @@ export const RabbitScalarFieldEnum = {
   color: 'color',
   weight: 'weight',
   observations: 'observations',
+  originalCode: 'originalCode',
+  exitDate: 'exitDate',
+  exitCause: 'exitCause',
   birthLitterId: 'birthLitterId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -426,6 +433,7 @@ export const HealthRecordScalarFieldEnum = {
   id: 'id',
   farmId: 'farmId',
   rabbitId: 'rabbitId',
+  type: 'type',
   date: 'date',
   symptoms: 'symptoms',
   observation: 'observation',
@@ -480,6 +488,9 @@ export const SaleItemScalarFieldEnum = {
   quantity: 'quantity',
   unitPrice: 'unitPrice',
   totalPrice: 'totalPrice',
+  weightKg: 'weightKg',
+  pricePerKg: 'pricePerKg',
+  lotId: 'lotId',
   createdAt: 'createdAt'
 } as const
 
@@ -509,6 +520,8 @@ export const ExpenseScalarFieldEnum = {
   description: 'description',
   reference: 'reference',
   supplier: 'supplier',
+  paymentMethod: 'paymentMethod',
+  observation: 'observation',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -559,12 +572,59 @@ export const TaskScalarFieldEnum = {
   assignedToId: 'assignedToId',
   sourceType: 'sourceType',
   sourceId: 'sourceId',
+  automationKey: 'automationKey',
   completedAt: 'completedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type TaskScalarFieldEnum = (typeof TaskScalarFieldEnum)[keyof typeof TaskScalarFieldEnum]
+
+
+export const NestInstallationScalarFieldEnum = {
+  id: 'id',
+  farmId: 'farmId',
+  breedingId: 'breedingId',
+  installedAt: 'installedAt',
+  nestType: 'nestType',
+  material: 'material',
+  observation: 'observation',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type NestInstallationScalarFieldEnum = (typeof NestInstallationScalarFieldEnum)[keyof typeof NestInstallationScalarFieldEnum]
+
+
+export const MortalityRecordScalarFieldEnum = {
+  id: 'id',
+  farmId: 'farmId',
+  scope: 'scope',
+  rabbitId: 'rabbitId',
+  litterId: 'litterId',
+  lotId: 'lotId',
+  date: 'date',
+  count: 'count',
+  cause: 'cause',
+  observation: 'observation',
+  createdAt: 'createdAt'
+} as const
+
+export type MortalityRecordScalarFieldEnum = (typeof MortalityRecordScalarFieldEnum)[keyof typeof MortalityRecordScalarFieldEnum]
+
+
+export const LotCageMovementScalarFieldEnum = {
+  id: 'id',
+  lotId: 'lotId',
+  cageId: 'cageId',
+  startedAt: 'startedAt',
+  endedAt: 'endedAt',
+  reason: 'reason',
+  observation: 'observation',
+  createdAt: 'createdAt'
+} as const
+
+export type LotCageMovementScalarFieldEnum = (typeof LotCageMovementScalarFieldEnum)[keyof typeof LotCageMovementScalarFieldEnum]
 
 
 export const SortOrder = {

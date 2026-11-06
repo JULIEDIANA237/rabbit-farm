@@ -4,10 +4,11 @@ import { PregnancyService } from './pregnancy.service';
 import { PregnancyResolver } from './pregnancy.resolver';
 
 import { AuthModule } from '../auth/auth.module';
+import { OperationsModule } from '../operations/operations.module';
 
 @Module({
   imports: [
-    AuthModule,
+    AuthModule, OperationsModule,
   ],
   providers: [
     PregnancyService,

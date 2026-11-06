@@ -13,4 +13,12 @@ export class CreateBreedingInput {
 
   @Field({ nullable: true })
   observation?: string;
+
+  @Field({
+    nullable: true,
+    defaultValue: false,
+    description:
+      "Confirme l'accouplement malgré un avertissement généalogique (jamais un blocage).",
+  })
+  acknowledgeWarnings?: boolean;
 }

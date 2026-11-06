@@ -8,9 +8,37 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CurrentUserType } from '../auth/types/current-user.type';
 import { CreateAdoptionInput } from './inputs/create-adoption.input';
 
+const adoptionInclude = {
+  sourceLitter: { select: { code: true } },
+  destinationLitter: { select: { code: true } },
+  rabbits: { select: { rabbitId: true } },
+} as const;
+
+type AdoptionWithRelations = {
+  sourceLitter?: { code: string } | null;
+  destinationLitter?: { code: string } | null;
+  rabbits?: Array<{ rabbitId: string }>;
+  [key: string]: unknown;
+};
+
+/**
+ * Adoption / égalisation de portées (§32, §33).
+ * La généalogie des lapereaux n'est jamais modifiée :
+ * seule la portée d'élevage (mère nourricière) change.
+ */
 @Injectable()
 export class AdoptionsService {
   constructor(private readonly prisma: PrismaService) {}
+
+  private toModel<T extends AdoptionWithRelations>(adoption: T) {
+    const { sourceLitter, destinationLitter, rabbits, ...rest } = adoption;
+    return {
+      ...rest,
+      sourceLitterCode: sourceLitter?.code ?? null,
+      destinationLitterCode: destinationLitter?.code ?? null,
+      rabbitIds: rabbits?.map((rabbit) => rabbit.rabbitId) ?? [],
+    };
+  }
 
   async create(
     input: CreateAdoptionInput,
@@ -22,9 +50,17 @@ export class AdoptionsService {
       );
     }
 
-    if (input.quantity <= 0) {
+    if (!Number.isInteger(input.quantity) || input.quantity <= 0) {
       throw new BadRequestException(
-        'La quantité transférée doit être supérieure à zéro.',
+        'La quantité transférée doit être un entier supérieur à zéro.',
+      );
+    }
+
+    const rabbitIds = [...new Set(input.rabbitIds ?? [])];
+
+    if (rabbitIds.length > 0 && rabbitIds.length !== input.quantity) {
+      throw new BadRequestException(
+        'Le nombre de lapereaux sélectionnés doit correspondre à la quantité transférée.',
       );
     }
 
@@ -55,6 +91,31 @@ export class AdoptionsService {
         );
       }
 
+      if (rabbitIds.length > 0) {
+        const kits = await tx.rabbit.findMany({
+          where: {
+            id: { in: rabbitIds },
+            farmId: currentUser.farmId,
+            status: 'ACTIVE',
+            OR: [
+              { birthLitterId: sourceLitter.id },
+              {
+                adoptionHistory: {
+                  some: { adoption: { destinationLitterId: sourceLitter.id } },
+                },
+              },
+            ],
+          },
+          select: { id: true },
+        });
+
+        if (kits.length !== rabbitIds.length) {
+          throw new BadRequestException(
+            'Un ou plusieurs lapereaux ne sont pas élevés dans la portée source.',
+          );
+        }
+      }
+
       const adoption = await tx.litterAdoption.create({
         data: {
           sourceLitterId: sourceLitter.id,
@@ -64,7 +125,11 @@ export class AdoptionsService {
           reason: input.reason,
           farmId: currentUser.farmId,
           observation: input.observation?.trim() || null,
+          rabbits: rabbitIds.length
+            ? { create: rabbitIds.map((rabbitId) => ({ rabbitId })) }
+            : undefined,
         },
+        include: adoptionInclude,
       });
 
       await tx.litter.update({
@@ -77,19 +142,21 @@ export class AdoptionsService {
         data: { currentCount: { increment: input.quantity } },
       });
 
-      return adoption;
+      return this.toModel(adoption);
     });
   }
 
   async findAll(currentUser: CurrentUserType) {
-    return this.prisma.litterAdoption.findMany({
+    const adoptions = await this.prisma.litterAdoption.findMany({
       where: {
-        sourceLitter: { farmId: currentUser.farmId },
+        farmId: currentUser.farmId,
       },
+      include: adoptionInclude,
       orderBy: {
         adoptedAt: 'desc',
       },
     });
+    return adoptions.map((adoption) => this.toModel(adoption));
   }
 
   async findByLitter(
@@ -109,16 +176,19 @@ export class AdoptionsService {
       );
     }
 
-    return this.prisma.litterAdoption.findMany({
+    const adoptions = await this.prisma.litterAdoption.findMany({
       where: {
+        farmId: currentUser.farmId,
         OR: [
           { sourceLitterId: litterId },
           { destinationLitterId: litterId },
         ],
       },
+      include: adoptionInclude,
       orderBy: {
         adoptedAt: 'desc',
       },
     });
+    return adoptions.map((adoption) => this.toModel(adoption));
   }
 }

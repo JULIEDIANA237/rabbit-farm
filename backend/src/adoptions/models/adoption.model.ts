@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import { AdoptionReason } from '../graphql/adoption-reason.enum';
 
 @ObjectType()
@@ -12,11 +12,20 @@ export class AdoptionModel {
   @Field(() => ID)
   destinationLitterId: string;
 
-  @Field()
+  @Field(() => String, { nullable: true })
+  sourceLitterCode?: string | null;
+
+  @Field(() => String, { nullable: true })
+  destinationLitterCode?: string | null;
+
+  @Field(() => [ID])
+  rabbitIds: string[];
+
+  @Field(() => Int)
   quantity: number;
 
-  @Field({ nullable: true })
-  reason: AdoptionReason;
+  @Field(() => AdoptionReason, { nullable: true })
+  reason: AdoptionReason | null;
 
   @Field()
   adoptedAt: Date;

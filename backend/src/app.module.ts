@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 
 import { ThrottlerModule } from '@nestjs/throttler';
 
@@ -35,8 +35,11 @@ import { SalesModule } from './sales/sales.module';
 import { OperationsModule } from './operations/operations.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { RabbitPhotosModule } from './rabbit-photos/rabbit-photos.module';
+import { MortalityModule } from './mortality/mortality.module';
+import { StatisticsModule } from './statistics/statistics.module';
 
 import { GqlThrottlerGuard } from './auth/guards/gql-throttler.guard';
+import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor';
 
 @Module({
   imports: [
@@ -90,12 +93,18 @@ import { GqlThrottlerGuard } from './auth/guards/gql-throttler.guard';
     OperationsModule,
     DashboardModule,
     RabbitPhotosModule,
+    MortalityModule,
+    StatisticsModule,
   ],
 
   providers: [
     {
       provide: APP_GUARD,
       useClass: GqlThrottlerGuard,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: AuditLogInterceptor,
     },
   ],
 })

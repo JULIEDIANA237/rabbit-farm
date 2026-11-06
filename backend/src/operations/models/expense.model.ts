@@ -1,6 +1,7 @@
 import { Field, Float, ID, ObjectType } from '@nestjs/graphql';
 
 import { ExpenseCategory } from '../graphql/expense-category.enum';
+import { PaymentMethod } from '../../sales/graphql/payment-method.enum';
 
 @ObjectType()
 export class ExpenseModel {
@@ -27,6 +28,12 @@ export class ExpenseModel {
 
   @Field({ nullable: true })
   supplier?: string;
+
+  @Field(() => PaymentMethod, { nullable: true })
+  paymentMethod?: PaymentMethod | null;
+
+  @Field(() => String, { nullable: true })
+  observation?: string | null;
 
   @Field()
   createdAt: Date;

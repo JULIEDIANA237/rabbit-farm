@@ -9,10 +9,103 @@ import { PrismaService } from '../prisma/prisma.service';
 import type { CurrentUserType } from '../auth/types/current-user.type';
 import { CreateWeaningInput } from './inputs/create-weaning.input';
 import { CompleteWeaningInput } from './inputs/complete-weaning.input';
+import { TaskAutomationService } from '../operations/automation/task-automation.service';
+import {
+  FatteningLotStatus,
+  LitterStatus,
+  RabbitPurpose,
+  RabbitStatus,
+  type Prisma,
+} from '../generated/prisma/client';
+
+const weaningInclude = {
+  rabbits: true,
+  litter: { select: { code: true } },
+} as const;
 
 @Injectable()
 export class WeaningService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly tasks: TaskAutomationService,
+  ) {}
+
+  private toModel<T extends { litter?: { code: string } | null; totalWeight?: unknown; averageWeight?: unknown }>(
+    weaning: T,
+  ) {
+    const { litter, ...rest } = weaning;
+    return {
+      ...rest,
+      litterCode: litter?.code ?? null,
+      totalWeight: weaning.totalWeight != null ? Number(weaning.totalWeight) : null,
+      averageWeight: weaning.averageWeight != null ? Number(weaning.averageWeight) : null,
+    };
+  }
+
+  /**
+   * Effets d'un sevrage réalisé : effectif de la portée, statut,
+   * tâches et, si demandé, entrée en lot d'engraissement.
+   */
+  private async applyCompletedWeaning(
+    tx: Prisma.TransactionClient,
+    params: {
+      farmId: string;
+      litterId: string;
+      quantity: number;
+      date: Date;
+      rabbitIds: string[];
+      fatteningLotId?: string;
+    },
+  ) {
+    const litter = await tx.litter.update({
+      where: { id: params.litterId },
+      data: { currentCount: { decrement: params.quantity } },
+    });
+
+    if (litter.currentCount <= 0) {
+      await tx.litter.update({
+        where: { id: litter.id },
+        data: { currentCount: 0, status: LitterStatus.WEANED },
+      });
+    }
+
+    await this.tasks.onWeaningCompleted(params.farmId, litter.birthId, tx);
+
+    if (params.fatteningLotId) {
+      const lot = await tx.fatteningLot.findFirst({
+        where: { id: params.fatteningLotId, farmId: params.farmId },
+      });
+
+      if (!lot || lot.status !== FatteningLotStatus.ACTIVE) {
+        throw new BadRequestException(
+          "Le lot d'engraissement est introuvable ou n'est plus actif.",
+        );
+      }
+
+      const alreadyInLot = await tx.lotMembership.findMany({
+        where: { rabbitId: { in: params.rabbitIds }, leftAt: null },
+        select: { rabbitId: true },
+      });
+      const excluded = new Set(alreadyInLot.map((m) => m.rabbitId));
+      const toAdd = params.rabbitIds.filter((id) => !excluded.has(id));
+
+      if (toAdd.length) {
+        await tx.lotMembership.createMany({
+          data: toAdd.map((rabbitId) => ({
+            lotId: lot.id,
+            rabbitId,
+            joinedAt: params.date,
+            reason: 'Sevrage',
+          })),
+        });
+
+        await tx.rabbit.updateMany({
+          where: { id: { in: toAdd }, status: RabbitStatus.ACTIVE },
+          data: { purpose: RabbitPurpose.FATTENING },
+        });
+      }
+    }
+  }
 
   private validateQuantity(quantity: number) {
     if (!Number.isInteger(quantity) || quantity <= 0) {
@@ -88,17 +181,19 @@ export class WeaningService {
             ? { create: rabbitIds.map((rabbitId) => ({ rabbitId })) }
             : undefined,
         },
-        include: { rabbits: true },
+        include: weaningInclude,
       });
-
       if (input.actualDate) {
-        await tx.litter.update({
-          where: { id: input.litterId },
-          data: { currentCount: { decrement: input.quantity } },
+        await this.applyCompletedWeaning(tx, {
+          farmId: currentUser.farmId,
+          litterId: input.litterId,
+          quantity: input.quantity,
+          date: new Date(input.actualDate),
+          rabbitIds,
+          fatteningLotId: input.fatteningLotId,
         });
       }
-
-      return weaning;
+      return this.toModel(weaning);
     });
   }
 
@@ -158,42 +253,44 @@ export class WeaningService {
           quantity,
           totalWeight: input.totalWeight ?? undefined,
           averageWeight: input.averageWeight ?? undefined,
+          observation: input.observation?.trim() || undefined,
           rabbits: {
             deleteMany: {},
             create: rabbitIds.map((rabbitId) => ({ rabbitId })),
           },
         },
-        include: { rabbits: true },
+        include: weaningInclude,
       });
-
-      await tx.litter.update({
-        where: { id: weaning.litterId },
-        data: { currentCount: { decrement: quantity } },
+      await this.applyCompletedWeaning(tx, {
+        farmId: currentUser.farmId,
+        litterId: weaning.litterId,
+        quantity,
+        date: actualDate,
+        rabbitIds,
+        fatteningLotId: input.fatteningLotId,
       });
-
-      return updated;
+      return this.toModel(updated);
     });
   }
 
-  findAll(currentUser: CurrentUserType) {
-    return this.prisma.weaning.findMany({
+  async findAll(currentUser: CurrentUserType) {
+    const weanings = await this.prisma.weaning.findMany({
       where: { farmId: currentUser.farmId },
-      include: { rabbits: true },
+      include: weaningInclude,
       orderBy: { plannedDate: 'desc' },
     });
+    return weanings.map((weaning) => this.toModel(weaning));
   }
 
   async findOne(id: string, currentUser: CurrentUserType) {
     const weaning = await this.prisma.weaning.findFirst({
       where: { id, farmId: currentUser.farmId },
-      include: { rabbits: true },
+      include: weaningInclude,
     });
-
     if (!weaning) {
       throw new NotFoundException('Sevrage introuvable.');
     }
-
-    return weaning;
+    return this.toModel(weaning);
   }
 
   async findByLitter(litterId: string, currentUser: CurrentUserType) {
@@ -206,10 +303,11 @@ export class WeaningService {
       throw new NotFoundException('Portée introuvable.');
     }
 
-    return this.prisma.weaning.findMany({
+    const weanings = await this.prisma.weaning.findMany({
       where: { litterId, farmId: currentUser.farmId },
-      include: { rabbits: true },
+      include: weaningInclude,
       orderBy: { plannedDate: 'desc' },
     });
+    return weanings.map((weaning) => this.toModel(weaning));
   }
 }
