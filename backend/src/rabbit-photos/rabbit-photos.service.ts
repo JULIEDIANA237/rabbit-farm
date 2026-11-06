@@ -68,8 +68,7 @@ export class RabbitPhotosService {
       data: {
         rabbitId,
         url: photoUrl,
-        filename: file.originalname,
-        mimeType: file.mimetype,
+        path: file.filename,
         isPrimary,
       },
     });

@@ -14,9 +14,25 @@ async function bootstrap() {
   /**
    * Autorise le frontend (origin distincte)
    * à consommer l'API GraphQL.
-   */
-  app.enableCors();
+   */app.enableCors({
+  origin: [
+    'http://localhost:3000',
+  ],
 
+  methods: [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS',
+  ],
+
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+  ],
+});
   /**
    * Validation globale des inputs (class-validator).
    *

@@ -426,20 +426,17 @@ model Rabbit {
 }
 
 model RabbitPhoto {
-  id String @id @default(uuid())
-
-  rabbitId String
-  rabbit   Rabbit @relation(fields: [rabbitId], references: [id], onDelete: Cascade)
-
+  id        String   @id @default(uuid())
+  rabbitId  String
   url       String
-  filename  String
-  mimeType  String
-  isPrimary Boolean @default(false)
-
+  path      String
+  isPrimary Boolean  @default(false)
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  rabbit Rabbit @relation(fields: [rabbitId],references: [id],onDelete: Cascade)
 
   @@index([rabbitId])
-  @@index([rabbitId, isPrimary])
 }
 
 // ============================================================

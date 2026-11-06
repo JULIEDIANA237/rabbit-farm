@@ -2899,10 +2899,10 @@ export const RabbitPhotoScalarFieldEnum = {
   id: 'id',
   rabbitId: 'rabbitId',
   url: 'url',
-  filename: 'filename',
-  mimeType: 'mimeType',
+  path: 'path',
   isPrimary: 'isPrimary',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type RabbitPhotoScalarFieldEnum = (typeof RabbitPhotoScalarFieldEnum)[keyof typeof RabbitPhotoScalarFieldEnum]
