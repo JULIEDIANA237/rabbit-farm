@@ -36,6 +36,7 @@ import { OperationsModule } from './operations/operations.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { MortalityModule } from './mortality/mortality.module';
 import { StatisticsModule } from './statistics/statistics.module';
+import { AssistantModule } from './assistant/assistant.module';
 import { StorageModule } from './storage/storage.module';
 
 import { GqlThrottlerGuard } from './auth/guards/gql-throttler.guard';
@@ -101,6 +102,7 @@ import { join } from 'path';
     DashboardModule,
     MortalityModule,
     StatisticsModule,
+    AssistantModule,
     StorageModule,
   ],
 

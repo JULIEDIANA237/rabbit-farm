@@ -7,7 +7,8 @@ import { useMutation, useQuery } from '@apollo/client/react';
 import { Plus } from 'lucide-react';
 
 import { Button, Card, ErrorBox, Field, FormGrid, Grid, Input, Loading, Modal, PageHeader, Select, Stat, Table, Textarea } from '@/components/ui/kit';
-import { toFloat, useForm } from '@/hooks/use-form';
+import { toFloat, useCreateModal, useForm, type Prefill } from '@/hooks/use-form';
+import { AiFill } from '@/components/assistant/ai-fill';
 import { CURRENCY, clean, formatDate, formatMoney, fromDateInput, toDateInput } from '@/lib/format';
 import { EXPENSE_CATEGORY, PAYMENT_METHOD, label, options } from '@/lib/labels';
 
@@ -42,7 +43,7 @@ interface Expense {
 }
 
 export default function OperationsPage() {
-  const [creating, setCreating] = useState(false);
+  const creating = useCreateModal();
   const [category, setCategory] = useState('');
   const { data, loading, error, refetch } = useQuery<{ expenses: Expense[] }>(EXPENSES);
   const expenses = useMemo(
@@ -71,7 +72,7 @@ export default function OperationsPage() {
             <Link href="/operations/inventory">
               <Button variant="secondary">Stock</Button>
             </Link>
-            <Button onClick={() => setCreating(true)}>
+            <Button onClick={() => creating.openModal()}>
               <Plus size={16} /> Nouvelle dépense
             </Button>
           </>
@@ -124,13 +125,13 @@ export default function OperationsPage() {
         />
       )}
 
-      <ExpenseModal open={creating} onClose={() => setCreating(false)} />
+      <ExpenseModal key={creating.key} open={creating.open} prefill={creating.prefill} onClose={creating.close} />
     </div>
   );
 }
 
-function ExpenseModal({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { bind, values, reset } = useForm({
+function ExpenseModal({ open, onClose, prefill }: { open: boolean; onClose: () => void; prefill?: Prefill }) {
+  const { bind, values, reset, setValues } = useForm({
     date: toDateInput(),
     category: 'FEED',
     amount: '',
@@ -139,6 +140,7 @@ function ExpenseModal({ open, onClose }: { open: boolean; onClose: () => void })
     reference: '',
     paymentMethod: 'CASH',
     observation: '',
+    ...prefill,
   });
   const [create, { loading, error, reset: resetMutation }] = useMutation(CREATE, { refetchQueries: ['Expenses', 'Dashboard'] });
   const close = () => {
@@ -168,6 +170,7 @@ function ExpenseModal({ open, onClose }: { open: boolean; onClose: () => void })
         </>
       }
     >
+      <AiFill form="EXPENSE" onFill={(fields) => setValues((previous) => ({ ...previous, ...fields }))} />
       <FormGrid>
         <Field label="Date">
           <Input type="date" {...bind('date')} />

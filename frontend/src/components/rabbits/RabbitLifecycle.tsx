@@ -9,7 +9,8 @@ import { Badge, Button, Card, ErrorBox, Field, FormGrid, Input, Loading, Modal, 
 import { PedigreeTree } from '@/components/genetics/pedigree-tree';
 import { HealthRecordModal } from '@/components/health/health-record-modal';
 import { useCageOptions } from '@/graphql/options';
-import { useForm } from '@/hooks/use-form';
+import { parsePrefill, useForm, useUrlCommand, type Prefill } from '@/hooks/use-form';
+import { AiFill } from '@/components/assistant/ai-fill';
 import { clean, formatDate, fromDateInput, toDateInput } from '@/lib/format';
 import { EXIT_STATUS, HEALTH_TYPE, MOVEMENT_REASON, RABBIT_STATUS, SEX, label, options } from '@/lib/labels';
 
@@ -64,9 +65,17 @@ const EVENT_LABEL: Record<string, string> = {
 
 type Tab = 'trace' | 'genealogy' | 'health';
 
-export function RabbitLifecycle({ rabbitId, active }: { rabbitId: string; active: boolean }) {
+export function RabbitLifecycle({ rabbitId, rabbitCode, active }: { rabbitId: string; rabbitCode?: string; active: boolean }) {
   const [tab, setTab] = useState<Tab>('trace');
   const [modal, setModal] = useState<'move' | 'exit' | 'health' | null>(null);
+  const [exitPrefill, setExitPrefill] = useState<Prefill | undefined>();
+  // Brouillon de sortie préparé par l'assistant (?exit=1&prefill=…).
+  useUrlCommand((params) => {
+    if (params.get('exit') !== '1') return false;
+    setExitPrefill(parsePrefill(params.get('prefill')));
+    setModal('exit');
+    return true;
+  });
 
   return (
     <section className="mt-6 space-y-4">
@@ -91,8 +100,8 @@ export function RabbitLifecycle({ rabbitId, active }: { rabbitId: string; active
       {tab === 'health' && <HealthTab rabbitId={rabbitId} />}
 
       {modal === 'move' && <MoveModal rabbitId={rabbitId} onClose={() => setModal(null)} />}
-      {modal === 'exit' && <ExitModal rabbitId={rabbitId} onClose={() => setModal(null)} />}
-      <HealthRecordModal open={modal === 'health'} rabbitId={rabbitId} onClose={() => setModal(null)} />
+      {modal === 'exit' && active && <ExitModal rabbitId={rabbitId} rabbitCode={rabbitCode} prefill={exitPrefill} onClose={() => setModal(null)} />}
+      <HealthRecordModal open={modal === 'health'} rabbitId={rabbitId} rabbitCode={rabbitCode} onClose={() => setModal(null)} />
     </section>
   );
 }
@@ -231,8 +240,18 @@ function MoveModal({ rabbitId, onClose }: { rabbitId: string; onClose: () => voi
   );
 }
 
-function ExitModal({ rabbitId, onClose }: { rabbitId: string; onClose: () => void }) {
-  const { bind, values } = useForm({ status: 'DEAD', date: toDateInput(), cause: '', observation: '' });
+function ExitModal({
+  rabbitId,
+  rabbitCode,
+  prefill,
+  onClose,
+}: {
+  rabbitId: string;
+  rabbitCode?: string;
+  prefill?: Prefill;
+  onClose: () => void;
+}) {
+  const { bind, values, setValues } = useForm({ status: 'DEAD', date: toDateInput(), cause: '', observation: '', ...prefill });
   const [exit, { loading, error }] = useMutation(EXIT, { refetchQueries });
   return (
     <Modal
@@ -255,6 +274,11 @@ function ExitModal({ rabbitId, onClose }: { rabbitId: string; onClose: () => voi
       <p className="text-sm text-slate-600">
         Le lapin n&apos;est jamais supprimé : il garde son historique. Sa cage, son lot, ses accouplements en cours et ses tâches sont clôturés.
       </p>
+      <AiFill
+        form="RABBIT_EXIT"
+        context={rabbitCode ? `Lapin : ${rabbitCode}` : undefined}
+        onFill={(fields) => setValues((previous) => ({ ...previous, ...fields }))}
+      />
       <FormGrid>
         <Field label="Motif">
           <Select options={options(EXIT_STATUS)} {...bind('status')} />

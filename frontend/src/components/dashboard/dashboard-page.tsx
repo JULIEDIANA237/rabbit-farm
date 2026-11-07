@@ -23,6 +23,7 @@ import { BirthsCard } from './births-card';
 import { WeaningCard } from './weaning-card';
 import { StockAlerts } from './stock-alerts';
 import { ExpenseChart } from './expense-chart';
+import { BriefingCard } from '@/components/assistant/briefing-card';
 
 function DashboardSkeleton() {
   return (
@@ -115,6 +116,8 @@ export function DashboardPage() {
           Actualiser
         </button>
       </header>
+
+      <BriefingCard />
 
       {/* KPI */}
 
