@@ -41,12 +41,62 @@ enum AdoptionReason {
   SURPLUS
 }
 
+input AskAssistantInput {
+  """Échanges précédents (20 au plus)"""
+  history: [AssistantMessageInput!]
+  message: String!
+
+  """Page de l’app où se trouve l’utilisateur"""
+  page: String
+}
+
 input AssignLitterRabbitsToCageInput {
   cageId: ID!
   litterId: ID!
   observation: String
   rabbitIds: [ID!]!
   reason: String
+}
+
+"""Brouillon préparé par l’IA, à vérifier puis valider par l’éleveur"""
+type AssistantDraftModel {
+  """Champs du formulaire (JSON)"""
+  fields: String!
+  form: AssistantFormKind!
+
+  """Page où ouvrir le formulaire pré-rempli"""
+  href: String
+  summary: String!
+  warnings: [String!]!
+}
+
+"""Formulaires que l’IA sait pré-remplir"""
+enum AssistantFormKind {
+  BIRTH
+  BREEDING
+  EXPENSE
+  HEALTH
+  PALPATION
+  RABBIT_EXIT
+  TASK
+}
+
+input AssistantMessageInput {
+  content: String!
+
+  """user ou assistant"""
+  role: String!
+}
+
+type AssistantReplyModel {
+  drafts: [AssistantDraftModel!]!
+  text: String!
+}
+
+type AssistantStatusModel {
+  enabled: Boolean!
+  model: String!
+  provider: String!
 }
 
 type AuthModel {
@@ -138,6 +188,14 @@ enum BreedingStatus {
   NON_PREGNANT
   PLANNED
   PREGNANT
+}
+
+type BriefingItemModel {
+  count: Int!
+  href: String!
+  key: String!
+  label: String!
+  tone: String!
 }
 
 type CageDistributionModel {
@@ -468,6 +526,14 @@ type CustomerModel {
   updatedAt: DateTime!
 }
 
+type DailyBriefingModel {
+  date: String!
+  items: [BriefingItemModel!]!
+
+  """Résumé rédigé par l’IA (si activée)"""
+  summary: String
+}
+
 type DashboardBirthModel {
   birthDate: DateTime!
   breedingId: ID!
@@ -669,6 +735,15 @@ enum FatteningLotStatus {
   ACTIVE
   CANCELLED
   COMPLETED
+}
+
+input FillFormInput {
+  """Contexte déjà connu (ex. « Femelle : F12 »)"""
+  context: String
+  form: AssistantFormKind!
+
+  """Ce que dit l’éleveur, en langage courant"""
+  text: String!
 }
 
 type FinanceStatisticsModel {
@@ -927,6 +1002,9 @@ type Mutation {
   addLotMembers(input: AddLotMembersInput!): [LotMembershipModel!]!
   addPayment(input: CreatePaymentInput!): PaymentModel!
   addRabbitIdentification(input: AddRabbitIdentificationInput!, rabbitId: ID!): RabbitIdentificationModel!
+
+  """Pose une question à l’assistant (aucune donnée n’est modifiée)"""
+  askAssistant(input: AskAssistantInput!): AssistantReplyModel!
   assignLitterRabbitsToCage(input: AssignLitterRabbitsToCageInput!): [RabbitCageMovementModel!]!
   cancelBreeding(input: CancelBreedingInput!): BreedingModel!
   cancelSale(input: CancelSaleInput!): SaleModel!
@@ -958,6 +1036,11 @@ type Mutation {
   deleteCage(id: ID!): CageModel!
   deleteCrossBreed(id: ID!): Boolean!
   deleteSection(id: ID!): SectionModel!
+
+  """
+  Pré-remplit un formulaire à partir d’une phrase (rien n’est enregistré)
+  """
+  fillFormWithAi(input: FillFormInput!): AssistantDraftModel!
   login(input: LoginInput!): AuthModel!
   moveFatteningLot(input: MoveFatteningLotInput!): LotCageMovementModel!
   moveRabbit(input: MoveRabbitInput!): RabbitCageMovementModel!
@@ -1040,6 +1123,9 @@ enum PregnancyResult {
 
 type Query {
   adoptions: [AdoptionModel!]!
+
+  """L’assistant IA est-il disponible ?"""
+  assistantStatus: AssistantStatusModel!
   birth(id: ID!): BirthModel!
   births: [BirthModel!]!
   breed(id: ID!): BreedModel!
@@ -1053,6 +1139,9 @@ type Query {
   crossBreeds: [CrossBreedModel!]!
   customer(id: ID!): CustomerModel!
   customers: [CustomerModel!]!
+
+  """Point du jour (avec résumé IA si demandé et disponible)"""
+  dailyBriefing(withSummary: Boolean = false): DailyBriefingModel!
   dashboard: DashboardModel!
   expenses: [ExpenseModel!]!
   farm(id: ID!): FarmModel

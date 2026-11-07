@@ -10,7 +10,8 @@ import {
   Badge, Button, ErrorBox, Field, FormGrid, Input, Loading, Modal, PageHeader, Select, Table, Tabs, Textarea, type BadgeTone,
 } from '@/components/ui/kit';
 import { useRabbitOptions } from '@/graphql/options';
-import { useForm } from '@/hooks/use-form';
+import { useCreateModal, useForm, type Prefill } from '@/hooks/use-form';
+import { AiFill } from '@/components/assistant/ai-fill';
 import { clean, formatDate, fromDateInput, toDateInput } from '@/lib/format';
 import { TASK_PRIORITY, TASK_STATUS, label, options } from '@/lib/labels';
 
@@ -26,6 +27,7 @@ const TASKS = gql`
       rabbitId
       rabbitCode
       sourceType
+      sourceId
       automationKey
       completedAt
     }
@@ -48,6 +50,33 @@ interface Task {
   rabbitId?: string | null;
   rabbitCode?: string | null;
   automationKey?: string | null;
+  sourceId?: string | null;
+}
+
+/**
+ * Formulaire à ouvrir pour accomplir une tâche automatique,
+ * déjà rempli avec ce que l'app connaît (femelle, lapin, portée…).
+ */
+function taskActionHref(task: Task): string | null {
+  const id = task.sourceId;
+  switch (task.automationKey) {
+    case 'BREEDING_PALPATION':
+      return id ? `/breeding?action=palpation&breedingId=${id}` : null;
+    case 'BREEDING_NEST':
+      return id ? `/breeding?action=nest&breedingId=${id}` : null;
+    case 'BREEDING_BIRTH':
+      return id ? `/breeding?action=birth&breedingId=${id}` : null;
+    case 'LITTER_WEANING':
+      return '/weaning?new=1';
+    case 'HEALTH_FOLLOW_UP':
+      return task.rabbitId
+        ? `/health?new=1&prefill=${encodeURIComponent(JSON.stringify({ rabbitId: task.rabbitId, type: 'CONTROL' }))}`
+        : '/health?new=1';
+    case 'STOCK_REORDER':
+      return '/operations/inventory';
+    default:
+      return null;
+  }
 }
 
 const PRIORITY_TONE: Record<string, BadgeTone> = { LOW: 'slate', MEDIUM: 'blue', HIGH: 'amber', URGENT: 'red' };
@@ -55,7 +84,7 @@ const refetchQueries = ['Tasks', 'HeaderTasks', 'Dashboard'];
 
 export default function TasksPage() {
   const [tab, setTab] = useState<'open' | 'COMPLETED' | 'CANCELLED'>('open');
-  const [creating, setCreating] = useState(false);
+  const creating = useCreateModal();
   const { data, loading, error, refetch } = useQuery<{ tasks: Task[] }>(TASKS, {
     variables: tab === 'open' ? { openOnly: true } : { status: tab },
   });
@@ -72,7 +101,7 @@ export default function TasksPage() {
         title="Tâches"
         description="Les palpations, nids, mises bas, sevrages, soins et réapprovisionnements sont créés automatiquement."
         actions={
-          <Button onClick={() => setCreating(true)}>
+          <Button onClick={() => creating.openModal()}>
             <Plus size={16} /> Nouvelle tâche
           </Button>
         }
@@ -120,10 +149,15 @@ export default function TasksPage() {
               cell: (t) =>
                 tab === 'open' ? (
                   <div className="flex gap-1">
+                    {taskActionHref(t) && (
+                      <Link href={taskActionHref(t) as string}>
+                        <Button className="px-2 py-1 text-xs">Faire</Button>
+                      </Link>
+                    )}
                     {t.status === 'TODO' && (
                       <Button variant="secondary" className="px-2 py-1 text-xs" onClick={() => setStatus(t.id, 'IN_PROGRESS')}>Commencer</Button>
                     )}
-                    <Button className="px-2 py-1 text-xs" onClick={() => setStatus(t.id, 'COMPLETED')}>Terminer</Button>
+                    <Button variant={taskActionHref(t) ? 'secondary' : 'primary'} className="px-2 py-1 text-xs" onClick={() => setStatus(t.id, 'COMPLETED')}>Terminer</Button>
                     <Button variant="ghost" className="px-2 py-1 text-xs" onClick={() => setStatus(t.id, 'CANCELLED')}>Annuler</Button>
                   </div>
                 ) : (
@@ -133,14 +167,14 @@ export default function TasksPage() {
           ]}
         />
       )}
-      <TaskModal open={creating} onClose={() => setCreating(false)} />
+      <TaskModal key={creating.key} open={creating.open} prefill={creating.prefill} onClose={creating.close} />
     </div>
   );
 }
 
-function TaskModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+function TaskModal({ open, onClose, prefill }: { open: boolean; onClose: () => void; prefill?: Prefill }) {
   const rabbits = useRabbitOptions();
-  const { bind, values, reset } = useForm({ title: '', description: '', dueDate: toDateInput(), priority: 'MEDIUM', rabbitId: '' });
+  const { bind, values, reset, setValues } = useForm({ title: '', description: '', dueDate: toDateInput(), priority: 'MEDIUM', rabbitId: '', ...prefill });
   const [create, { loading, error, reset: r }] = useMutation(CREATE, { refetchQueries });
   const close = () => {
     reset();
@@ -165,6 +199,7 @@ function TaskModal({ open, onClose }: { open: boolean; onClose: () => void }) {
         </>
       }
     >
+      <AiFill form="TASK" onFill={(fields) => setValues((previous) => ({ ...previous, ...fields }))} />
       <Field label="Titre">
         <Input {...bind('title')} />
       </Field>
