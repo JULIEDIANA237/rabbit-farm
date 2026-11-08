@@ -13,9 +13,17 @@ export class PrismaService
       connectionString:
         process.env.DATABASE_URL_UNPOOLED ??
         process.env.DATABASE_URL,
+      // Neon (us-east-2) est loin et peut être en veille : laisser le temps de se connecter
+      connectionTimeoutMillis: 30_000,
+      idleTimeoutMillis: 60_000,
+      keepAlive: true,
     });
 
-    super({ adapter });
+    // Par défaut Prisma n'attend que 2 s pour démarrer une transaction (P2028)
+    super({
+      adapter,
+      transactionOptions: { maxWait: 20_000, timeout: 30_000 },
+    });
   }
 
   async onModuleInit(): Promise<void> {

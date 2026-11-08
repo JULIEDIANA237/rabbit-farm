@@ -3,12 +3,22 @@
 import "dotenv/config";
 import { defineConfig } from "prisma/config";
 
+function withConnectTimeout(url?: string): string | undefined {
+  if (!url) return url;
+  const u = new URL(url);
+  if (!u.searchParams.has("connect_timeout")) u.searchParams.set("connect_timeout", "30");
+  return u.toString();
+}
+
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    // Migrations : connexion directe Neon (sans pooler) + délai pour le réveil de la base
+    url: withConnectTimeout(
+      process.env["DATABASE_URL_UNPOOLED"] ?? process.env["DATABASE_URL"],
+    ),
   },
 });

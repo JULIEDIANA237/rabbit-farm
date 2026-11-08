@@ -83,5 +83,10 @@
   },
   "engines": {
     "node": ">=24.9.0"
+  },
+  "allowScripts": {
+    "bcrypt@6.0.0": true,
+    "prisma@7.10.0": true,
+    "@prisma/engines@7.10.0": true
   }
 }
