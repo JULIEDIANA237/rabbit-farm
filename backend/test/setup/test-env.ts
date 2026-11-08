@@ -13,9 +13,17 @@ if (!/test/i.test(new URL(url).pathname)) {
 }
 
 process.env.DATABASE_URL = url;
-delete process.env.DATABASE_URL_UNPOOLED;
+// PrismaService et prisma.config.ts préfèrent DATABASE_URL_UNPOOLED, et
+// dotenv recharge .env : on le fixe (au lieu de le supprimer) pour que
+// les tests ne visent jamais la vraie base.
+process.env.DATABASE_URL_UNPOOLED = url;
 process.env.JWT_SECRET = process.env.JWT_SECRET ?? 'test-secret';
 
 // Le stockage des photos (Supabase) n'est pas sollicité par ces tests.
 process.env.SUPABASE_URL = process.env.SUPABASE_URL ?? 'http://localhost:54321';
 process.env.SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ?? 'sb_secret_test_only';
+
+// L'assistant IA n'appelle jamais un vrai fournisseur pendant les tests :
+// les valeurs vides empêchent aussi dotenv de recharger celles du .env.
+process.env.GOOGLE_GENERATIVE_AI_API_KEY = '';
+process.env.ANTHROPIC_API_KEY = '';

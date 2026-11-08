@@ -14,6 +14,8 @@ export default function globalSetup() {
 
   execSync('npx prisma migrate deploy', {
     stdio: 'inherit',
-    env: { ...process.env, DATABASE_URL: url },
+    // prisma.config.ts préfère DATABASE_URL_UNPOOLED : on le force aussi
+    // pour que les migrations de test ne visent jamais la vraie base.
+    env: { ...process.env, DATABASE_URL: url, DATABASE_URL_UNPOOLED: url },
   });
 }

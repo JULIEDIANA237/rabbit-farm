@@ -5,7 +5,8 @@ import { useMutation } from '@apollo/client/react';
 
 import { Button, ErrorBox, Field, FormGrid, Input, Modal, Select, Textarea } from '@/components/ui/kit';
 import { useRabbitOptions } from '@/graphql/options';
-import { useForm } from '@/hooks/use-form';
+import { useForm, type Prefill } from '@/hooks/use-form';
+import { AiFill } from '@/components/assistant/ai-fill';
 import { clean, fromDateInput, toDateInput } from '@/lib/format';
 import { HEALTH_TYPE, options } from '@/lib/labels';
 
@@ -13,9 +14,21 @@ const CREATE = gql`
   mutation CreateHealthRecord($input: CreateHealthRecordInput!) { createHealthRecord(input: $input) { id } }
 `;
 
-export function HealthRecordModal({ open, onClose, rabbitId }: { open: boolean; onClose: () => void; rabbitId?: string }) {
+export function HealthRecordModal({
+  open,
+  onClose,
+  rabbitId,
+  rabbitCode,
+  prefill,
+}: {
+  open: boolean;
+  onClose: () => void;
+  rabbitId?: string;
+  rabbitCode?: string;
+  prefill?: Prefill;
+}) {
   const rabbits = useRabbitOptions();
-  const { bind, values, reset } = useForm({
+  const { bind, values, reset, setValues } = useForm({
     rabbitId: rabbitId ?? '',
     type: 'OBSERVATION',
     date: toDateInput(),
@@ -27,6 +40,8 @@ export function HealthRecordModal({ open, onClose, rabbitId }: { open: boolean; 
     dosage: '',
     nextDueDate: '',
     observation: '',
+    ...prefill,
+    ...(rabbitId ? { rabbitId } : {}),
   });
   const [create, { loading, error, reset: resetMutation }] = useMutation(CREATE, {
     refetchQueries: ['HealthRecords', 'Dashboard', 'RabbitHealth'],
@@ -67,6 +82,11 @@ export function HealthRecordModal({ open, onClose, rabbitId }: { open: boolean; 
         </>
       }
     >
+      <AiFill
+        form="HEALTH"
+        context={rabbitCode ? `Lapin concerné : ${rabbitCode}` : undefined}
+        onFill={(fields) => setValues((previous) => ({ ...previous, ...fields, ...(rabbitId ? { rabbitId } : {}) }))}
+      />
       <FormGrid>
         {!rabbitId && (
           <Field label="Lapin">

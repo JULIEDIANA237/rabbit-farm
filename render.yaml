@@ -1,0 +1,33 @@
+# Blueprint Render : déploie l'API NestJS (dossier backend/).
+# Sur render.com : New > Blueprint > choisir ce dépôt.
+# Les valeurs marquées `sync: false` sont demandées lors de la création.
+services:
+  - type: web
+    name: rabbitfarm-api
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm ci --include=dev && npx prisma migrate deploy && npm run build
+    startCommand: npm run start:prod
+    healthCheckPath: /
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_URL_UNPOOLED
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGINS
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: SUPABASE_RABBIT_PHOTOS_BUCKET
+        value: rabbit-photos
+      - key: AI_PROVIDER
+        value: google
+      - key: GOOGLE_GENERATIVE_AI_API_KEY
+        sync: false

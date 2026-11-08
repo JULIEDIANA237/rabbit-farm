@@ -6,6 +6,7 @@ import { ReactNode, useState } from 'react';
 import { Sidebar } from './sidebar';
 import { Header } from './header';
 import { MobileNavigation } from './mobile-navigation';
+import { AssistantPanel } from '@/components/assistant/assistant-panel';
 
 interface AppShellProps {
   children: ReactNode;
@@ -38,7 +39,7 @@ export function AppShell({
       </div>
 
       <MobileNavigation />
-      
+      <AssistantPanel />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { gql } from '@apollo/client';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client/react';
 import { Plus } from 'lucide-react';
@@ -10,7 +10,8 @@ import {
   type BadgeTone,
 } from '@/components/ui/kit';
 import { useRabbitOptions } from '@/graphql/options';
-import { useForm, useOpenFromQuery, toInt } from '@/hooks/use-form';
+import { parsePrefill, toInt, useCreateModal, useForm, useUrlCommand, type Prefill } from '@/hooks/use-form';
+import { AiFill } from '@/components/assistant/ai-fill';
 import { clean, formatDate, fromDateInput, toDateInput } from '@/lib/format';
 import { BREEDING_STATUS, COMPATIBILITY, PREGNANCY_RESULT, label, options } from '@/lib/labels';
 
@@ -89,18 +90,40 @@ const STATUS_TONE: Record<string, BadgeTone> = {
 
 const LEVEL_TONE: Record<string, BadgeTone> = { COMPATIBLE: 'green', WARNING: 'amber', BLOCKED: 'red' };
 
-type Action = { kind: 'palpation' | 'nest' | 'birth' | 'cancel'; breeding: Breeding } | null;
+type ActionKind = 'palpation' | 'nest' | 'birth' | 'cancel';
+type Action = { kind: ActionKind; breeding: Breeding; prefill?: Prefill } | null;
+type PendingAction = { kind: ActionKind; breedingId: string; prefill?: Prefill; stamp: number };
+
+const ACTION_KINDS: ActionKind[] = ['palpation', 'nest', 'birth'];
 
 const refetchQueries = ['Breedings', 'Dashboard'];
 
 export default function BreedingPage() {
   const [tab, setTab] = useState<'open' | 'all'>('open');
-  const [creating, setCreating] = useState(false);
-  const [action, setAction] = useState<Action>(null);
-  useOpenFromQuery(() => setCreating(true));
+  const creating = useCreateModal();
+  const [selected, setSelected] = useState<Action>(null);
+  // Action demandée par l'URL (tâche du jour ou brouillon de l'assistant),
+  // ouverte dès que l'accouplement concerné est chargé.
+  const [pending, setPending] = useState<PendingAction | null>(null);
+  useUrlCommand((params) => {
+    const kind = params.get('action') as ActionKind | null;
+    const breedingId = params.get('breedingId');
+    if (!kind || !breedingId || !ACTION_KINDS.includes(kind)) return false;
+    setSelected(null);
+    setPending({ kind, breedingId, prefill: parsePrefill(params.get('prefill')), stamp: Date.now() });
+    return true;
+  });
 
   const { data, loading, error, refetch } = useQuery<{ breedings: Breeding[] }>(BREEDINGS);
   const all = data?.breedings ?? [];
+  const pendingBreeding = pending ? all.find((b) => b.id === pending.breedingId) : undefined;
+  const action: Action =
+    selected ?? (pending && pendingBreeding ? { kind: pending.kind, breeding: pendingBreeding, prefill: pending.prefill } : null);
+  const setAction = (next: Action) => {
+    setPending(null);
+    setSelected(next);
+  };
+  const actionKey = action ? `${action.kind}-${action.breeding.id}-${pending?.stamp ?? 0}` : 'none';
   const rows =
     tab === 'open'
       ? all.filter((b) => ['PLANNED', 'AWAITING_PALPATION', 'PREGNANT', 'INCONCLUSIVE'].includes(b.status))
@@ -113,7 +136,7 @@ export default function BreedingPage() {
         title="Accouplements"
         description="Saillies, palpations, nids et mises bas (calendrier J+10, J+28, J+30)."
         actions={
-          <Button onClick={() => setCreating(true)}>
+          <Button onClick={() => creating.openModal()}>
             <Plus size={16} /> Nouvelle saillie
           </Button>
         }
@@ -160,8 +183,8 @@ export default function BreedingPage() {
         />
       )}
 
-      <CreateBreedingModal open={creating} onClose={() => setCreating(false)} />
-      <ActionModal action={action} onClose={() => setAction(null)} />
+      <CreateBreedingModal key={creating.key} open={creating.open} prefill={creating.prefill} onClose={creating.close} />
+      <ActionModal key={actionKey} action={action} onClose={() => setAction(null)} />
     </div>
   );
 }
@@ -183,10 +206,16 @@ function RowActions({ breeding, onAction }: { breeding: Breeding; onAction: (a: 
   );
 }
 
-function CreateBreedingModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+function CreateBreedingModal({ open, onClose, prefill }: { open: boolean; onClose: () => void; prefill?: Prefill }) {
   const females = useRabbitOptions({ sex: 'FEMALE' });
   const males = useRabbitOptions({ sex: 'MALE' });
-  const { bind, values, reset } = useForm({ femaleId: '', maleId: '', breedingDate: toDateInput(), observation: '' });
+  const { bind, values, reset, setValues } = useForm({
+    femaleId: '',
+    maleId: '',
+    breedingDate: toDateInput(),
+    observation: '',
+    ...prefill,
+  });
   const [acknowledge, setAcknowledge] = useState(false);
 
   const [check, { data: compat, loading: checking }] = useLazyQuery<{
@@ -201,6 +230,20 @@ function CreateBreedingModal({ open, onClose }: { open: boolean; onClose: () => 
   const [create, { loading, error, reset: resetMutation }] = useMutation(CREATE, { refetchQueries });
 
   const result = compat?.breedingCompatibility;
+
+  // Couple pré-rempli (assistant) : on vérifie tout de suite la compatibilité.
+  useEffect(() => {
+    if (prefill?.femaleId && prefill.maleId) void check({ variables: { femaleId: prefill.femaleId, maleId: prefill.maleId } });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const applyAi = (fields: Record<string, string>) => {
+    setValues((previous) => ({ ...previous, ...fields }));
+    const femaleId = fields.femaleId ?? values.femaleId;
+    const maleId = fields.maleId ?? values.maleId;
+    setAcknowledge(false);
+    if (femaleId && maleId) void check({ variables: { femaleId, maleId } });
+  };
 
   const onPairChange = (key: 'femaleId' | 'maleId', value: string) => {
     bind(key).onChange({ target: { value } });
@@ -253,6 +296,7 @@ function CreateBreedingModal({ open, onClose }: { open: boolean; onClose: () => 
         </>
       }
     >
+      <AiFill form="BREEDING" onFill={applyAi} />
       <FormGrid>
         <Field label="Femelle">
           <Select
@@ -322,7 +366,7 @@ function CreateBreedingModal({ open, onClose }: { open: boolean; onClose: () => 
 }
 
 function ActionModal({ action, onClose }: { action: Action; onClose: () => void }) {
-  const { bind, values, reset } = useForm({
+  const { bind, values, reset, setValues } = useForm({
     date: toDateInput(),
     result: 'PREGNANT',
     liveBorn: '',
@@ -331,6 +375,7 @@ function ActionModal({ action, onClose }: { action: Action; onClose: () => void 
     nestType: '',
     material: '',
     observation: '',
+    ...action?.prefill,
   });
   const [createKits, setCreateKits] = useState(true);
   const opts = { refetchQueries: [...refetchQueries, 'HeaderTasks'] };
@@ -403,6 +448,13 @@ function ActionModal({ action, onClose }: { action: Action; onClose: () => void 
         </>
       }
     >
+      {(kind === 'palpation' || kind === 'birth') && (
+        <AiFill
+          form={kind === 'birth' ? 'BIRTH' : 'PALPATION'}
+          context={`Femelle : ${breeding.female?.code ?? '?'}, mâle : ${breeding.male?.code ?? '?'}, saillie du ${formatDate(breeding.breedingDate)}`}
+          onFill={(fields) => setValues((previous) => ({ ...previous, ...fields }))}
+        />
+      )}
       {kind !== 'cancel' && (
         <FormGrid>
           <Field label="Date">
