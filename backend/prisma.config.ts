@@ -16,7 +16,8 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    // Migrations : connexion directe Neon (sans pooler) + délai pour le réveil de la base
+    // Les migrations passent par l'adresse directe de Neon (sans pooler),
+    // avec un délai pour laisser la base sortir de veille.
     url: withConnectTimeout(
       process.env["DATABASE_URL_UNPOOLED"] ?? process.env["DATABASE_URL"],
     ),

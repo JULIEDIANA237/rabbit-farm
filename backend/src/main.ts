@@ -14,10 +14,19 @@ async function bootstrap() {
   /**
    * Autorise le frontend (origin distincte)
    * à consommer l'API GraphQL.
-   */app.enableCors({
-  origin: [
+   * En production, CORS_ORIGINS liste les adresses autorisées
+   * séparées par des virgules (ex. https://rabbit-farm.vercel.app).
+   */
+  const corsOrigins = [
     'http://localhost:3000',
-  ],
+    ...(process.env.CORS_ORIGINS ?? '')
+      .split(',')
+      .map((origin) => origin.trim().replace(/\/$/, ''))
+      .filter(Boolean),
+  ];
+
+  app.enableCors({
+  origin: corsOrigins,
 
   methods: [
     'GET',

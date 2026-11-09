@@ -190,7 +190,7 @@ export default function RabbitDetailsPage() {
         </section>
       </div>
 
-      <RabbitLifecycle rabbitId={rabbit.id} active={rabbit.status === 'ACTIVE'} />
+      <RabbitLifecycle rabbitId={rabbit.id} rabbitCode={rabbit.code} active={rabbit.status === 'ACTIVE'} />
     </main>
   );
 }

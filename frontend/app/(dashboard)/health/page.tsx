@@ -10,6 +10,7 @@ import { Badge, Button, Card, ErrorBox, Loading, PageHeader, Table, Tabs } from 
 import { HealthRecordModal } from '@/components/health/health-record-modal';
 import { formatDate } from '@/lib/format';
 import { useNow } from '@/hooks/use-now';
+import { useCreateModal } from '@/hooks/use-form';
 import { HEALTH_TYPE, label, options } from '@/lib/labels';
 
 const RECORDS = gql`
@@ -58,7 +59,7 @@ const TYPE_TONE = { OBSERVATION: 'slate', TREATMENT: 'amber', VACCINATION: 'blue
 
 export default function HealthPage() {
   const [type, setType] = useState<string>('ALL');
-  const [creating, setCreating] = useState(false);
+  const creating = useCreateModal();
   const { data, loading, error, refetch } = useQuery<{
     healthRecords: HealthRecord[];
     upcomingHealthActions: HealthRecord[];
@@ -73,7 +74,7 @@ export default function HealthPage() {
         title="Suivi sanitaire"
         description="Symptômes, traitements, vaccinations, analyses et contrôles. Une échéance crée une tâche de suivi."
         actions={
-          <Button onClick={() => setCreating(true)}>
+          <Button onClick={() => creating.openModal()}>
             <Plus size={16} /> Nouvel enregistrement
           </Button>
         }
@@ -120,7 +121,7 @@ export default function HealthPage() {
         />
       )}
 
-      <HealthRecordModal open={creating} onClose={() => setCreating(false)} />
+      <HealthRecordModal key={creating.key} open={creating.open} prefill={creating.prefill} onClose={creating.close} />
     </div>
   );
 }
