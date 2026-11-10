@@ -5,6 +5,8 @@ import {
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
+import { describeNetworkError } from '../common/utils/network-error';
+
 @Injectable()
 export class SupabaseStorageService {
   private readonly supabase: SupabaseClient;
@@ -116,8 +118,14 @@ export class SupabaseStorageService {
         error,
       );
 
+      // « fetch failed » ne dit rien : on remonte la vraie cause réseau.
+      const reason =
+        error.message === 'fetch failed' || error.name === 'StorageUnknownError'
+          ? describeNetworkError(error)
+          : error.message;
+
       throw new InternalServerErrorException(
-        `Impossible d'uploader la photo : ${error.message}`,
+        `Impossible d'uploader la photo : ${reason}`,
       );
     }
 

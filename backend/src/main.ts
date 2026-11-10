@@ -7,8 +7,11 @@ import {
 import * as express from 'express';
 
 import { AppModule } from './app.module';
+import { trustSystemCertificates } from './common/utils/system-ca';
 
 async function bootstrap() {
+  trustSystemCertificates();
+
   const app = await NestFactory.create(AppModule);
 
   /**

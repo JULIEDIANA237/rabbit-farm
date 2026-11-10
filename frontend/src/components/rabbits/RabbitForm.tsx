@@ -19,6 +19,9 @@ import type {
   RabbitSex,
 } from '@/types/rabbit';
 
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
+
 export function RabbitForm() {
   const router = useRouter();
 
@@ -155,7 +158,7 @@ export function RabbitForm() {
       formData.append('file', photo);
 
       const response = await fetch(
-        `http://localhost:3001/rabbits/${rabbitId}/photos`,
+        `${API_URL}/rabbits/${rabbitId}/photos`,
         {
           method: 'POST',
           headers: {
@@ -242,23 +245,23 @@ export function RabbitForm() {
        * La photo doit être envoyée APRÈS
        * la création du lapin afin d'avoir son ID.
        */
+      let photoFailed = false;
+
       if (photo) {
-        console.log(
-          '[RABBIT PHOTO] Upload...',
-        );
-
-        await uploadRabbitPhoto(rabbitId);
-
-        console.log(
-          '[RABBIT PHOTO] Upload terminé.',
-        );
+        try {
+          await uploadRabbitPhoto(rabbitId);
+        } catch {
+          // Le lapin existe déjà : on ouvre quand même sa fiche,
+          // où l'éleveur peut réessayer d'ajouter la photo.
+          photoFailed = true;
+        }
       }
 
       /**
        * On va directement sur la fiche
        * du nouveau lapin.
        */
-      router.push(`/rabbits/${rabbitId}`);
+      router.push(`/rabbits/${rabbitId}${photoFailed ? '?photo=echec' : ''}`);
       router.refresh();
     } catch (submitError) {
       console.error(

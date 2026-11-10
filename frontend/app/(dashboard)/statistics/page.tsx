@@ -198,7 +198,7 @@ export default function StatisticsPage() {
           <Grid>
             <Stat label="Fertilité (palpations +)" value={formatPercent(s.technical.fertilityRate)} hint={`${s.technical.positivePalpations}/${s.technical.palpations} palpations · ${s.technical.breedings} saillies`} tone="success" />
             <Stat label="Taille moyenne de portée" value={formatNumber(s.technical.averageLitterSize)} hint={`${s.technical.births} mises bas · ${s.technical.liveBorn} nés vivants`} />
-            <Stat label="Mortinatalité" value={formatPercent(s.technical.stillBirthRate)} hint={`${s.technical.stillBorn} mort-nés`} />
+            <Stat label="Mortinatalité" value={formatPercent(s.technical.stillBirthRate)} hint={`${s.technical.stillBorn} mort-né${s.technical.stillBorn > 1 ? 's' : ''} sur ${s.technical.liveBorn + s.technical.stillBorn} naissances`} />
             <Stat label="Mortalité avant sevrage" value={formatPercent(s.technical.preWeaningMortalityRate)} hint={`${s.technical.preWeaningDeaths} morts`} tone={s.technical.preWeaningDeaths ? 'warning' : 'default'} />
             <Stat label="Taux de sevrage" value={formatPercent(s.technical.weaningRate)} hint={`${s.technical.weaned} sevrés`} tone="info" />
             <Stat label="Poids moyen au sevrage" value={s.technical.averageWeaningWeight != null ? `${formatNumber(s.technical.averageWeaningWeight, 3)} kg` : '—'} />
