@@ -20,7 +20,7 @@ export function describeNetworkError(error: unknown): string {
       return `certificat refusé (${code}) : un antivirus ou un proxy inspecte probablement les connexions sécurisées`;
     case 'ENOTFOUND':
     case 'EAI_AGAIN':
-      return `adresse introuvable (${code}) : vérifie SUPABASE_URL et la connexion internet`;
+      return `adresse introuvable (${code}) : vérifie l'adresse du service (SUPABASE_URL…) et la connexion internet`;
     case 'ECONNREFUSED':
     case 'ECONNRESET':
     case 'UND_ERR_CONNECT_TIMEOUT':

@@ -17,6 +17,8 @@ interface ChatMessage {
 }
 
 const STORAGE_KEY = 'rabbitfarm.assistant.chat';
+/** Au-delà, on abandonne côté navigateur (le serveur coupe déjà vers 45 s). */
+const CLIENT_TIMEOUT_MS = 90_000;
 
 const SUGGESTIONS = [
   'Que dois-je faire aujourd’hui ?',
@@ -55,6 +57,7 @@ export function AssistantPanel() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [text, setText] = useState('');
+  const [timedOut, setTimedOut] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
   const [ask, { loading, error, reset }] = useMutation<{ askAssistant: { text: string; drafts: AssistantDraft[] } }>(ASK_ASSISTANT);
   const speech = useSpeech((spoken) => setText((previous) => (previous ? `${previous} ${spoken}` : spoken)));
@@ -75,17 +78,23 @@ export function AssistantPanel() {
     const content = message.trim();
     if (!content || loading) return;
     reset();
+    setTimedOut(false);
     const history = messages.map(({ role, content: body }) => ({ role, content: body })).slice(-12);
     setMessages((previous) => [...previous, { role: 'user', content }]);
     setText('');
     try {
-      const response = await ask({ variables: { input: { message: content, history, page: pathname } } });
+      const response = await ask({
+        variables: { input: { message: content, history, page: pathname } },
+        context: { fetchOptions: { signal: AbortSignal.timeout(CLIENT_TIMEOUT_MS) } },
+      });
       const reply = response.data?.askAssistant;
       if (reply) {
         setMessages((previous) => [...previous, { role: 'assistant', content: reply.text, drafts: reply.drafts }]);
       }
-    } catch {
-      // L'erreur est affichée sous la discussion.
+    } catch (caught) {
+      // L'erreur est affichée sous la discussion ; un délai dépassé a son propre message.
+      const name = (caught as { name?: string; cause?: { name?: string } })?.cause?.name ?? (caught as { name?: string })?.name;
+      if (name === 'TimeoutError' || name === 'AbortError') setTimedOut(true);
     }
   }
 
@@ -188,7 +197,11 @@ export function AssistantPanel() {
             ))}
 
             {loading && <p className="text-sm text-slate-500">L’assistant réfléchit…</p>}
-            <ErrorBox error={error} />
+            {timedOut ? (
+              <ErrorBox error={new Error('Le serveur ne répond pas. Vérifie que le backend tourne et ta connexion internet, puis réessaie.')} />
+            ) : (
+              <ErrorBox error={error} />
+            )}
             <div ref={endRef} />
           </div>
 
