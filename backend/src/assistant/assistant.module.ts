@@ -4,7 +4,7 @@ import { AuthModule } from '../auth/auth.module';
 
 import { API_KEY_VARS, createModel, readAiConfig, type AiConfig } from './ai-config';
 import { AssistantResolver } from './assistant.resolver';
-import { ASSISTANT_CONFIG, ASSISTANT_MODEL, AssistantService } from './assistant.service';
+import { ASSISTANT_CONFIG, ASSISTANT_FALLBACK_MODEL, ASSISTANT_MODEL, AssistantService } from './assistant.service';
 
 @Module({
   imports: [AuthModule],
@@ -15,7 +15,9 @@ import { ASSISTANT_CONFIG, ASSISTANT_MODEL, AssistantService } from './assistant
       useFactory: (config: AiConfig) => {
         const logger = new Logger('Assistant IA');
         if (config.enabled) {
-          logger.log(`activé (${config.provider}, modèle ${config.model})`);
+          logger.log(
+            `activé (${config.provider}, modèle ${config.model}${config.fallbackModel ? `, secours ${config.fallbackModel}` : ''})`,
+          );
         } else {
           logger.warn(
             `désactivé : ${API_KEY_VARS[config.provider]} est absente du .env (fournisseur « ${config.provider} »). Ajoute-la puis redémarre le backend.`,
@@ -23,6 +25,11 @@ import { ASSISTANT_CONFIG, ASSISTANT_MODEL, AssistantService } from './assistant
         }
         return createModel(config);
       },
+      inject: [ASSISTANT_CONFIG],
+    },
+    {
+      provide: ASSISTANT_FALLBACK_MODEL,
+      useFactory: (config: AiConfig) => createModel(config, process.env, config.fallbackModel),
       inject: [ASSISTANT_CONFIG],
     },
     AssistantService,

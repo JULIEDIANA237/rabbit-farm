@@ -1,4 +1,4 @@
-import { describeAiError } from './ai-error';
+import { describeAiError, isOverloaded } from './ai-error';
 
 const apiError = (statusCode: number, responseBody = '') =>
   Object.assign(new Error('API call failed'), { name: 'AI_APICallError', statusCode, responseBody });
@@ -26,5 +26,17 @@ describe('describeAiError', () => {
 
   it('garde un message générique sinon', () => {
     expect(describeAiError(new Error('bizarre'), 'google')).toContain('ne répond pas');
+  });
+});
+
+describe('isOverloaded', () => {
+  it('reconnaît un modèle saturé, même derrière les nouvelles tentatives', () => {
+    expect(isOverloaded(apiError(503))).toBe(true);
+    expect(isOverloaded(Object.assign(new Error('retry'), { lastError: apiError(429) }))).toBe(true);
+  });
+
+  it('ignore les autres erreurs', () => {
+    expect(isOverloaded(apiError(400))).toBe(false);
+    expect(isOverloaded(new Error('fetch failed'))).toBe(false);
   });
 });

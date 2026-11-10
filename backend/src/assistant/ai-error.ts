@@ -5,6 +5,23 @@ import { API_KEY_VARS, type AiProvider } from './ai-config';
  * Explique pourquoi un appel au modèle a échoué, en français, pour
  * l'éleveur (message affiché) comme pour les logs du serveur.
  */
+/** Statut HTTP renvoyé par le fournisseur, s'il y en a un. */
+export function aiErrorStatus(error: unknown): number | undefined {
+  let current: unknown = error;
+  for (let depth = 0; current && typeof current === 'object' && depth < 6; depth += 1) {
+    const value = current as Record<string, unknown>;
+    if (typeof value.statusCode === 'number') return value.statusCode;
+    current = value.lastError ?? value.cause;
+  }
+  return undefined;
+}
+
+/** Le modèle est saturé ou en panne : un autre modèle peut réussir. */
+export function isOverloaded(error: unknown): boolean {
+  const status = aiErrorStatus(error);
+  return status === 429 || (status !== undefined && status >= 500);
+}
+
 export function describeAiError(error: unknown, provider: AiProvider): string {
   const chain: Array<Record<string, unknown>> = [];
   let current: unknown = error;
