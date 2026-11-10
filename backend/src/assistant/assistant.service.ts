@@ -13,6 +13,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import type { CurrentUserType } from '../auth/types/current-user.type';
 
 import type { AiConfig } from './ai-config';
+import { describeAiError } from './ai-error';
 import { FORM_LABELS, FORM_SCHEMAS, prepareForm, type AssistantForm, type PreparedForm } from './assistant-forms';
 import { buildAssistantTools } from './assistant-tools';
 import { buildBriefing, type BriefingItem } from './briefing';
@@ -84,6 +85,7 @@ export class AssistantService {
         tools: buildAssistantTools(reader, drafts),
         stopWhen: stepCountIs(8),
         maxOutputTokens: 1200,
+        ...this.limits(),
       }),
     );
 
@@ -111,6 +113,7 @@ Si l'éleveur donne un total et des morts (« 8 dont 1 mort »), les vivants son
         prompt: `${input.context ? `Contexte déjà connu : ${input.context}\n` : ''}Phrase de l'éleveur : ${input.text}`,
         output: Output.object({ schema: FORM_SCHEMAS[form] }),
         maxOutputTokens: 600,
+        ...this.limits(),
       }),
     );
 
@@ -201,6 +204,7 @@ Si l'éleveur donne un total et des morts (« 8 dont 1 mort »), les vivants son
         system: `${BASE_RULES}\nAujourd'hui : ${date}.`,
         prompt: `Voici le point du jour calculé par l'application :\n${items.map((item) => `- ${item.label}`).join('\n')}\n\nÉcris en 2 ou 3 phrases ce que l'éleveur doit faire en priorité aujourd'hui, dans l'ordre. Pas de liste, pas de titre.`,
         maxOutputTokens: 300,
+        ...this.limits(),
       }),
     );
     const summary = result.text.trim();
@@ -230,14 +234,21 @@ Si l'éleveur donne un total et des morts (« 8 dont 1 mort »), les vivants son
     return this.model;
   }
 
+  /** Délai maximum et nombre de nouvelles tentatives de chaque appel. */
+  private limits() {
+    return { timeout: { totalMs: this.config.timeoutMs }, maxRetries: 1 };
+  }
+
   private async call<T>(run: () => Promise<T>): Promise<T> {
+    const started = Date.now();
     try {
       return await run();
     } catch (error) {
-      this.logger.error(`Appel IA en échec : ${error instanceof Error ? error.message : String(error)}`);
-      throw new ServiceUnavailableException(
-        "L'assistant IA ne répond pas pour le moment. Vérifie la connexion ou réessaie dans un instant.",
+      const message = describeAiError(error, this.config.provider);
+      this.logger.error(
+        `Appel IA en échec après ${Math.round((Date.now() - started) / 1000)} s : ${error instanceof Error ? error.message : String(error)} → ${message}`,
       );
+      throw new ServiceUnavailableException(message);
     }
   }
 }

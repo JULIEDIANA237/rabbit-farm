@@ -77,6 +77,7 @@ Les réglages se font dans l'onglet **Environment** du service Render :
 - **Passer à Claude** : `AI_PROVIDER=anthropic` et `ANTHROPIC_API_KEY`, une clé à créer sur <https://console.anthropic.com>.
 - `AI_MODEL` (optionnel) : impose un modèle précis. Par défaut, c'est `gemini-flash-latest` ou `claude-haiku-5-5`.
 - `AI_DAILY_LIMIT` (optionnel, 150 par défaut) : nombre maximum de demandes IA par ferme et par jour. Ça plafonne le coût.
+- `AI_TIMEOUT_MS` (optionnel, 45000 par défaut) : au-delà de ce délai, l'assistant abandonne et affiche un message clair au lieu de rester sur « réfléchit… ».
 
 Sans clé, l'app marche normalement et les boutons d'IA sont simplement masqués.
 

@@ -8,6 +8,7 @@ import type { LanguageModel } from 'ai';
  *   AI_PROVIDER=google      (défaut) + GOOGLE_GENERATIVE_AI_API_KEY
  *   AI_PROVIDER=anthropic   + ANTHROPIC_API_KEY
  *   AI_MODEL=<identifiant>  (optionnel, sinon le modèle par défaut)
+ *   AI_TIMEOUT_MS=45000     (optionnel, délai maximum d'une réponse)
  *
  * Sans clé, l'assistant est simplement désactivé : le reste de l'app
  * fonctionne normalement.
@@ -20,6 +21,7 @@ export interface AiConfig {
   provider: AiProvider;
   model: string;
   dailyLimit: number;
+  timeoutMs: number;
 }
 
 export const DEFAULT_MODELS: Record<AiProvider, string> = {
@@ -36,12 +38,14 @@ export function readAiConfig(env: NodeJS.ProcessEnv = process.env): AiConfig {
   const provider: AiProvider =
     env.AI_PROVIDER?.toLowerCase() === 'anthropic' ? 'anthropic' : 'google';
   const limit = Number.parseInt(env.AI_DAILY_LIMIT ?? '', 10);
+  const timeout = Number.parseInt(env.AI_TIMEOUT_MS ?? '', 10);
 
   return {
     enabled: Boolean(env[API_KEY_VARS[provider]]?.trim()),
     provider,
     model: env.AI_MODEL?.trim() || DEFAULT_MODELS[provider],
     dailyLimit: Number.isFinite(limit) && limit > 0 ? limit : 150,
+    timeoutMs: Number.isFinite(timeout) && timeout >= 5000 ? timeout : 45_000,
   };
 }
 
