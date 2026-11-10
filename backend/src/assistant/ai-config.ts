@@ -27,7 +27,7 @@ export const DEFAULT_MODELS: Record<AiProvider, string> = {
   anthropic: 'claude-haiku-5-5',
 };
 
-const API_KEY_VARS: Record<AiProvider, string> = {
+export const API_KEY_VARS: Record<AiProvider, string> = {
   google: 'GOOGLE_GENERATIVE_AI_API_KEY',
   anthropic: 'ANTHROPIC_API_KEY',
 };
@@ -38,7 +38,7 @@ export function readAiConfig(env: NodeJS.ProcessEnv = process.env): AiConfig {
   const limit = Number.parseInt(env.AI_DAILY_LIMIT ?? '', 10);
 
   return {
-    enabled: Boolean(env[API_KEY_VARS[provider]]),
+    enabled: Boolean(env[API_KEY_VARS[provider]]?.trim()),
     provider,
     model: env.AI_MODEL?.trim() || DEFAULT_MODELS[provider],
     dailyLimit: Number.isFinite(limit) && limit > 0 ? limit : 150,
