@@ -90,7 +90,11 @@ export default function BirthsPage() {
           <Stat label="Portées sous la mère" value={active.length} tone="info" />
           <Stat label="Lapereaux sous la mère" value={active.reduce((s, l) => s + l.currentCount, 0)} />
           <Stat label="Nés vivants (total)" value={liveBorn} tone="success" />
-          <Stat label="Mortinatalité" value={formatPercent(liveBorn + stillBorn ? (stillBorn / (liveBorn + stillBorn)) * 100 : null)} />
+          <Stat
+            label="Mortinatalité"
+            value={formatPercent(liveBorn + stillBorn ? (stillBorn / (liveBorn + stillBorn)) * 100 : null)}
+            hint={`${stillBorn} mort-né${stillBorn > 1 ? 's' : ''} sur ${liveBorn + stillBorn} naissances`}
+          />
         </Grid>
       </div>
 

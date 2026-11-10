@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import {
   ArrowLeft,
   CalendarDays,
@@ -35,6 +35,7 @@ export default function RabbitDetailsPage() {
   const params = useParams();
 
   const id = String(params.id);
+  const photoFailed = useSearchParams().get('photo') === 'echec';
 
   const {
     rabbit,
@@ -98,6 +99,13 @@ export default function RabbitDetailsPage() {
           Modifier
         </Link>
       </div>
+
+      {photoFailed && (
+        <p className="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+          Le lapin a bien été créé, mais sa photo n&apos;a pas pu être enregistrée. Tu peux l&apos;ajouter à nouveau dans la
+          section Photos ci-dessous.
+        </p>
+      )}
 
       <header className="mb-6">
         <p className="text-sm font-medium text-emerald-600">
