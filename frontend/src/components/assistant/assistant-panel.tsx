@@ -27,10 +27,20 @@ const SUGGESTIONS = [
   'F12 a mis bas 8 petits dont 1 mort',
 ];
 
+/** Après ce délai sans échange, l'assistant repart sur une discussion vierge. */
+const CHAT_IDLE_MS = 30 * 60_000;
+
+interface StoredChat {
+  at: number;
+  messages: ChatMessage[];
+}
+
 function loadChat(): ChatMessage[] {
   try {
     const raw = window.sessionStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as ChatMessage[]) : [];
+    const stored = raw ? (JSON.parse(raw) as Partial<StoredChat>) : null;
+    if (!stored || !Array.isArray(stored.messages) || typeof stored.at !== 'number') return [];
+    return Date.now() - stored.at < CHAT_IDLE_MS ? stored.messages : [];
   } catch {
     return [];
   }
@@ -38,7 +48,8 @@ function loadChat(): ChatMessage[] {
 
 function saveChat(messages: ChatMessage[]) {
   try {
-    window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(messages.slice(-30)));
+    const stored: StoredChat = { at: Date.now(), messages: messages.slice(-30) };
+    window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
   } catch {
     // Stockage indisponible (navigation privée) : la discussion n'est pas conservée.
   }
@@ -62,15 +73,26 @@ export function AssistantPanel() {
   const [ask, { loading, error, reset }] = useMutation<{ askAssistant: { text: string; drafts: AssistantDraft[] } }>(ASK_ASSISTANT);
   const speech = useSpeech((spoken) => setText((previous) => (previous ? `${previous} ${spoken}` : spoken)));
 
+  const lastActivity = useRef(0);
+
   if (open && !loaded) {
     setLoaded(true);
     setMessages(loadChat());
   }
 
   useEffect(() => {
+    if (loaded && messages.length > 0) lastActivity.current = Date.now();
     if (loaded) saveChat(messages);
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, loaded]);
+
+  function openPanel() {
+    // Une discussion restée inactive trop longtemps est remplacée par une nouvelle.
+    if (loaded && Date.now() - lastActivity.current >= CHAT_IDLE_MS) setMessages([]);
+    reset();
+    setTimedOut(false);
+    setOpen(true);
+  }
 
   if (!enabled) return null;
 
@@ -110,7 +132,7 @@ export function AssistantPanel() {
       {!open && (
         <button
           type="button"
-          onClick={() => setOpen(true)}
+          onClick={openPanel}
           aria-label="Ouvrir l’assistant IA"
           className="fixed bottom-24 right-4 z-50 flex items-center gap-2 rounded-full bg-violet-600 px-4 py-3 text-sm font-semibold text-white shadow-lg hover:bg-violet-700 lg:bottom-6 lg:right-6"
         >
@@ -132,8 +154,16 @@ export function AssistantPanel() {
             </div>
             <div className="flex gap-1">
               {messages.length > 0 && (
-                <button type="button" aria-label="Effacer la discussion" onClick={() => setMessages([])} className="rounded-lg p-2 text-slate-500 hover:bg-slate-100">
-                  <Trash2 size={16} />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMessages([]);
+                    reset();
+                    setTimedOut(false);
+                  }}
+                  className="flex items-center gap-1 rounded-lg px-2 py-2 text-xs font-medium text-slate-600 hover:bg-slate-100"
+                >
+                  <Trash2 size={14} /> Nouvelle discussion
                 </button>
               )}
               <button type="button" aria-label="Fermer l’assistant" onClick={() => setOpen(false)} className="rounded-lg p-2 text-slate-500 hover:bg-slate-100">
