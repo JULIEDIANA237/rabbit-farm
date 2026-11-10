@@ -4,6 +4,7 @@ import {
   Inject,
   Injectable,
   Logger,
+  Optional,
   ServiceUnavailableException,
 } from '@nestjs/common';
 import { generateText, Output, stepCountIs, type LanguageModel, type ModelMessage } from 'ai';
@@ -13,7 +14,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import type { CurrentUserType } from '../auth/types/current-user.type';
 
 import type { AiConfig } from './ai-config';
-import { describeAiError } from './ai-error';
+import { describeAiError, isOverloaded } from './ai-error';
 import { FORM_LABELS, FORM_SCHEMAS, prepareForm, type AssistantForm, type PreparedForm } from './assistant-forms';
 import { buildAssistantTools } from './assistant-tools';
 import { buildBriefing, type BriefingItem } from './briefing';
@@ -22,6 +23,7 @@ import type { AskAssistantInput, FillFormInput } from './inputs/assistant.inputs
 
 export const ASSISTANT_MODEL = Symbol('ASSISTANT_MODEL');
 export const ASSISTANT_CONFIG = Symbol('ASSISTANT_CONFIG');
+export const ASSISTANT_FALLBACK_MODEL = Symbol('ASSISTANT_FALLBACK_MODEL');
 
 const DAY = 86_400_000;
 const isoDay = (date: Date) => date.toISOString().slice(0, 10);
@@ -47,6 +49,7 @@ export class AssistantService {
     private readonly prisma: PrismaService,
     @Inject(ASSISTANT_MODEL) private readonly model: LanguageModel | null,
     @Inject(ASSISTANT_CONFIG) private readonly config: AiConfig,
+    @Optional() @Inject(ASSISTANT_FALLBACK_MODEL) private readonly fallback: LanguageModel | null = null,
   ) {}
 
   status() {
@@ -62,7 +65,7 @@ export class AssistantService {
   // ---------------------------------------------------------------
 
   async ask(user: CurrentUserType, input: AskAssistantInput) {
-    const model = this.requireModel(user);
+    this.requireModel(user);
     const now = new Date();
     const reader = new FarmReader(this.prisma, user.farmId, now);
     const drafts: PreparedForm[] = [];
@@ -77,8 +80,9 @@ export class AssistantService {
       { role: 'user', content: input.message },
     ];
 
-    const result = await this.call(() =>
-      generateText({
+    const result = await this.call((model) => {
+      drafts.length = 0; // un nouvel essai repart sans les brouillons du précédent
+      return generateText({
         model,
         system: `${BASE_RULES}\nAujourd'hui : ${isoDay(now)}.${input.page ? `\nL'éleveur est sur la page : ${input.page}.` : ''}`,
         messages,
@@ -86,8 +90,8 @@ export class AssistantService {
         stopWhen: stepCountIs(8),
         maxOutputTokens: 1200,
         ...this.limits(),
-      }),
-    );
+      });
+    });
 
     return {
       text: result.text.trim() || (drafts.length ? 'Voici le brouillon à vérifier.' : 'Je n’ai pas de réponse pour le moment.'),
@@ -100,11 +104,11 @@ export class AssistantService {
   // ---------------------------------------------------------------
 
   async fill(user: CurrentUserType, input: FillFormInput) {
-    const model = this.requireModel(user);
+    this.requireModel(user);
     const form = input.form as AssistantForm;
     const now = new Date();
 
-    const result = await this.call(() =>
+    const result = await this.call((model) =>
       generateText({
         model,
         system: `Tu extrais les informations d'une phrase d'éleveur de lapins pour remplir le formulaire « ${FORM_LABELS[form]} ».
@@ -197,8 +201,8 @@ Si l'éleveur donne un total et des morts (« 8 dont 1 mort »), les vivants son
     const cached = this.summaries.get(cacheKey);
     if (cached && Date.now() - cached.at < 3 * 3600_000) return cached.summary;
 
-    const model = this.requireModel(user);
-    const result = await this.call(() =>
+    this.requireModel(user);
+    const result = await this.call((model) =>
       generateText({
         model,
         system: `${BASE_RULES}\nAujourd'hui : ${date}.`,
@@ -239,10 +243,20 @@ Si l'éleveur donne un total et des morts (« 8 dont 1 mort »), les vivants son
     return { timeout: { totalMs: this.config.timeoutMs }, maxRetries: 1 };
   }
 
-  private async call<T>(run: () => Promise<T>): Promise<T> {
+  /**
+   * Lance l'appel avec le modèle principal, puis avec le modèle de secours
+   * si le premier est saturé (429 ou 5xx).
+   */
+  private async call<T>(run: (model: LanguageModel) => Promise<T>): Promise<T> {
     const started = Date.now();
     try {
-      return await run();
+      try {
+        return await run(this.model as LanguageModel);
+      } catch (error) {
+        if (!this.fallback || !isOverloaded(error)) throw error;
+        this.logger.warn(`Modèle ${this.config.model} saturé, essai avec ${this.config.fallbackModel}.`);
+        return await run(this.fallback);
+      }
     } catch (error) {
       const message = describeAiError(error, this.config.provider);
       this.logger.error(

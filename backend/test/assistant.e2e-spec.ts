@@ -1,8 +1,8 @@
 import type { INestApplication } from '@nestjs/common';
-import type { LanguageModelV4GenerateResult } from '@ai-sdk/provider';
+import { APICallError, type LanguageModelV4GenerateResult } from '@ai-sdk/provider';
 import { MockLanguageModelV4 } from 'ai/test';
 
-import { ASSISTANT_MODEL } from '../src/assistant/assistant.service';
+import { ASSISTANT_FALLBACK_MODEL, ASSISTANT_MODEL } from '../src/assistant/assistant.service';
 import { createTestApp, daysAgo, gql, gqlOk, registerFarm } from './utils/graphql';
 
 /**
@@ -67,6 +67,44 @@ describe('Assistant IA (e2e)', () => {
       const data = await gqlOk(app, '{ dailyBriefing(withSummary: true) { items { key count href } summary } }', {}, token);
       expect(data.dailyBriefing.items).toContainEqual({ key: 'OVERDUE', count: 1, href: '/tasks' });
       expect(data.dailyBriefing.summary).toBeNull();
+    });
+  });
+
+  describe('modèle saturé', () => {
+    let app: INestApplication;
+    let token: string;
+    const overloaded = new MockLanguageModelV4({
+      doGenerate: async () => {
+        throw new APICallError({
+          message: 'The model is overloaded',
+          url: 'https://example.test',
+          requestBodyValues: {},
+          statusCode: 503,
+          isRetryable: false,
+        });
+      },
+    });
+    const backup = new MockLanguageModelV4({ doGenerate: async () => textReply('Réponse du modèle de secours.') });
+
+    beforeAll(async () => {
+      ({ app } = await createTestApp((builder) =>
+        builder.overrideProvider(ASSISTANT_MODEL).useValue(overloaded).overrideProvider(ASSISTANT_FALLBACK_MODEL).useValue(backup),
+      ));
+      token = await registerFarm(app, 'ia-secours');
+    });
+
+    afterAll(async () => {
+      await app.close();
+    });
+
+    it('bascule sur le modèle de secours', async () => {
+      const data = await gqlOk(
+        app,
+        'mutation ($input: AskAssistantInput!) { askAssistant(input: $input) { text } }',
+        { input: { message: 'Bonjour' } },
+        token,
+      );
+      expect(data.askAssistant.text).toBe('Réponse du modèle de secours.');
     });
   });
 
