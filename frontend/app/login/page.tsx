@@ -54,6 +54,11 @@ export default function LoginPage() {
             required
           />
         </Field>
+        <p className="-mt-2 text-right text-sm">
+          <Link href="/forgot-password" className="font-medium text-emerald-700 hover:underline">
+            Mot de passe oublié ?
+          </Link>
+        </p>
         {error && <ErrorBox error="Identifiants invalides ou serveur injoignable." />}
         <Button type="submit" loading={loading} className="w-full">
           Se connecter

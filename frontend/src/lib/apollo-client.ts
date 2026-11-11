@@ -8,8 +8,9 @@ import {
 import { ErrorLink } from '@apollo/client/link/error';
 
 import { getAccessToken, removeAccessToken } from './auth-storage';
+import { createOfflineLink } from './offline-queue';
 
-const graphqlUrl =
+export const graphqlUrl =
   process.env.NEXT_PUBLIC_GRAPHQL_URL ?? 'http://localhost:3001/graphql';
 
 /**
@@ -51,7 +52,7 @@ const errorLink = new ErrorLink(({ error }) => {
 const httpLink = new HttpLink({ uri: graphqlUrl });
 
 export const apolloClient = new ApolloClient({
-  link: ApolloLink.from([errorLink, authLink, httpLink]),
+  link: ApolloLink.from([errorLink, authLink, createOfflineLink(), httpLink]),
   cache: new InMemoryCache(),
   devtools: { enabled: process.env.NODE_ENV !== 'production' },
 });

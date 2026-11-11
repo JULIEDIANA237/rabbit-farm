@@ -38,6 +38,10 @@ import { MortalityModule } from './mortality/mortality.module';
 import { StatisticsModule } from './statistics/statistics.module';
 import { AssistantModule } from './assistant/assistant.module';
 import { StorageModule } from './storage/storage.module';
+import { MailModule } from './mail/mail.module';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { NotificationsModule } from './notifications/notifications.module';
 
 import { GqlThrottlerGuard } from './auth/guards/gql-throttler.guard';
 import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor';
@@ -54,10 +58,10 @@ import { join } from 'path';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
 
-      autoSchemaFile: join(
-        process.cwd(),
-        'src/schema.gql',
-      ),
+      // Sur Vercel le disque est en lecture seule : schéma gardé en mémoire.
+      autoSchemaFile: process.env.VERCEL
+        ? true
+        : join(process.cwd(), 'src/schema.gql'),
 
       sortSchema: true,
 
@@ -104,9 +108,15 @@ import { join } from 'path';
     StatisticsModule,
     AssistantModule,
     StorageModule,
+    MailModule,
+    NotificationsModule,
   ],
 
+  // GET / répond « Hello World! » : sert à vérifier que l'API est en ligne.
+  controllers: [AppController],
+
   providers: [
+    AppService,
     {
       provide: APP_GUARD,
       useClass: GqlThrottlerGuard,

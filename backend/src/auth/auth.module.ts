@@ -11,6 +11,8 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { RolesGuard } from './guards/roles.guard';
 
 import { getJwtSecret } from './jwt-secret';
+import { PasswordResetResolver } from './password-reset/password-reset.resolver';
+import { PasswordResetService } from './password-reset/password-reset.service';
 
 @Module({
   imports: [
@@ -32,6 +34,8 @@ import { getJwtSecret } from './jwt-secret';
     JwtStrategy,
     JwtAuthGuard,
     RolesGuard,
+    PasswordResetService,
+    PasswordResetResolver,
   ],
 
   exports: [

@@ -200,10 +200,55 @@ model User {
 
   assignedTasks Task[] @relation("AssignedTasks")
 
+  passwordResetTokens PasswordResetToken[]
+  pushSubscriptions   PushSubscription[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([email])
+}
+
+/// Lien de réinitialisation du mot de passe (on ne garde que l'empreinte du jeton).
+model PasswordResetToken {
+  id        String    @id @default(uuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+/// Abonnement aux notifications du navigateur (rappels des tâches du jour).
+model PushSubscription {
+  id       String @id @default(uuid())
+  userId   String
+  farmId   String
+  endpoint String @unique
+  p256dh   String
+  auth     String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([farmId])
+}
+
+/// Nombre de demandes à l'assistant IA par ferme et par jour (limite quotidienne).
+model AiUsage {
+  farmId String
+  day    String
+  count  Int    @default(0)
+
+  updatedAt DateTime @updatedAt
+
+  @@id([farmId, day])
 }
 
 // ============================================================

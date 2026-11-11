@@ -14,6 +14,7 @@ import {
 
 import { useCreateRabbit } from '@/hooks/rabbits/useCreateRabbit';
 import { getAccessToken } from '@/lib/auth-storage';
+import { compressImage, MAX_SOURCE_SIZE } from '@/lib/image-compress';
 import type {
   CreateRabbitInput,
   RabbitSex,
@@ -80,12 +81,10 @@ export function RabbitForm() {
       return;
     }
 
-    // Limite raisonnable avant upload
-    const maxSize = 5 * 1024 * 1024;
-
-    if (file.size > maxSize) {
+    // La photo est réduite avant l'envoi ; seule la source est limitée.
+    if (file.size > MAX_SOURCE_SIZE) {
       setPhotoError(
-        'La photo ne doit pas dépasser 5 Mo.',
+        'Cette photo est trop lourde (25 Mo maximum).',
       );
 
       event.target.value = '';
@@ -155,7 +154,7 @@ export function RabbitForm() {
 
       const formData = new FormData();
 
-      formData.append('file', photo);
+      formData.append('file', await compressImage(photo));
 
       const response = await fetch(
         `${API_URL}/rabbits/${rabbitId}/photos`,
@@ -385,7 +384,7 @@ export function RabbitForm() {
                 </button>
 
                 <p className="text-center text-xs text-slate-400 sm:text-left">
-                  JPG, PNG ou WEBP · 5 Mo max.
+                  JPG, PNG ou WEBP · réduite automatiquement avant l’envoi
                 </p>
               </div>
             </div>

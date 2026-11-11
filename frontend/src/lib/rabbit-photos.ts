@@ -1,4 +1,5 @@
 import { getAccessToken } from '@/lib/auth-storage';
+import { compressImage } from '@/lib/image-compress';
 
 /**
  * Photos des lapins : elles passent par l'API REST du backend
@@ -6,8 +7,6 @@ import { getAccessToken } from '@/lib/auth-storage';
  */
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
-
-export const MAX_PHOTO_SIZE = 5 * 1024 * 1024;
 
 async function request(path: string, init: RequestInit) {
   const token = getAccessToken();
@@ -31,12 +30,11 @@ async function request(path: string, init: RequestInit) {
   return response.json().catch(() => null);
 }
 
-export function uploadRabbitPhoto(rabbitId: string, file: File, isPrimary = true) {
-  if (!file.type.startsWith('image/')) throw new Error('Le fichier doit être une image.');
-  if (file.size > MAX_PHOTO_SIZE) throw new Error('La photo ne doit pas dépasser 5 Mo.');
+export async function uploadRabbitPhoto(rabbitId: string, file: File, isPrimary = true) {
+  const photo = await compressImage(file);
 
   const body = new FormData();
-  body.append('file', file);
+  body.append('file', photo);
   body.append('isPrimary', String(isPrimary));
   return request(`/rabbits/${rabbitId}/photos`, { method: 'POST', body });
 }

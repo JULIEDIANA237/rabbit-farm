@@ -42,7 +42,6 @@ Règles :
 @Injectable()
 export class AssistantService {
   private readonly logger = new Logger(AssistantService.name);
-  private readonly usage = new Map<string, number>();
   private readonly summaries = new Map<string, { at: number; summary: string }>();
 
   constructor(
@@ -65,7 +64,7 @@ export class AssistantService {
   // ---------------------------------------------------------------
 
   async ask(user: CurrentUserType, input: AskAssistantInput) {
-    this.requireModel(user);
+    await this.requireModel(user);
     const now = new Date();
     const reader = new FarmReader(this.prisma, user.farmId, now);
     const drafts: PreparedForm[] = [];
@@ -104,7 +103,7 @@ export class AssistantService {
   // ---------------------------------------------------------------
 
   async fill(user: CurrentUserType, input: FillFormInput) {
-    this.requireModel(user);
+    await this.requireModel(user);
     const form = input.form as AssistantForm;
     const now = new Date();
 
@@ -201,7 +200,7 @@ Si l'éleveur donne un total et des morts (« 8 dont 1 mort »), les vivants son
     const cached = this.summaries.get(cacheKey);
     if (cached && Date.now() - cached.at < 3 * 3600_000) return cached.summary;
 
-    this.requireModel(user);
+    await this.requireModel(user);
     const result = await this.call((model) =>
       generateText({
         model,
@@ -220,21 +219,29 @@ Si l'éleveur donne un total et des morts (« 8 dont 1 mort »), les vivants son
   // Garde-fous
   // ---------------------------------------------------------------
 
-  private requireModel(user: CurrentUserType): LanguageModel {
+  /**
+   * Vérifie que l'assistant est configuré et compte la demande.
+   * Le compteur est en base : il reste juste même quand l'API tourne
+   * sur plusieurs instances (Vercel) ou redémarre.
+   */
+  private async requireModel(user: CurrentUserType): Promise<LanguageModel> {
     if (!this.model) {
       throw new ServiceUnavailableException(
         "L'assistant IA n'est pas configuré (clé API manquante côté serveur).",
       );
     }
-    const key = `${user.farmId}:${isoDay(new Date())}`;
-    const used = this.usage.get(key) ?? 0;
-    if (used >= this.config.dailyLimit) {
+    const day = isoDay(new Date());
+    const usage = await this.prisma.aiUsage.upsert({
+      where: { farmId_day: { farmId: user.farmId, day } },
+      create: { farmId: user.farmId, day, count: 1 },
+      update: { count: { increment: 1 } },
+    });
+    if (usage.count > this.config.dailyLimit) {
       throw new HttpException(
         `Limite quotidienne de l'assistant atteinte (${this.config.dailyLimit} demandes). Réessaie demain.`,
         HttpStatus.TOO_MANY_REQUESTS,
       );
     }
-    this.usage.set(key, used + 1);
     return this.model;
   }
 

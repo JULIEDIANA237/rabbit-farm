@@ -1052,6 +1052,23 @@ type Mutation {
   register(input: RegisterInput!): AuthModel!
   removeFarmMember(membershipId: ID!): FarmMembershipModel!
   removeLotMembers(input: RemoveLotMembersInput!): [LotMembershipModel!]!
+
+  """Envoie un lien de réinitialisation du mot de passe par e-mail."""
+  requestPasswordReset(input: RequestPasswordResetInput!): Boolean!
+
+  """Choisit un nouveau mot de passe à partir du lien reçu."""
+  resetPassword(input: ResetPasswordInput!): Boolean!
+
+  """
+  Envoie une notification d’essai ; renvoie le nombre d’appareils atteints.
+  """
+  sendTestPush: Int!
+
+  """Abonne cet appareil aux rappels du jour."""
+  subscribePush(input: PushSubscriptionInput!): Boolean!
+
+  """Désabonne cet appareil."""
+  unsubscribePush(endpoint: String!): Boolean!
   updateBreed(input: UpdateBreedInput!): BreedModel!
   updateCage(input: UpdateCageInput!): CageModel!
   updateCrossBreed(input: UpdateCrossBreedInput!): CrossBreedModel!
@@ -1121,6 +1138,18 @@ enum PregnancyResult {
   PREGNANT
 }
 
+type PushConfigModel {
+  """Les notifications sont configurées côté serveur (clés VAPID)."""
+  enabled: Boolean!
+  publicKey: String
+}
+
+input PushSubscriptionInput {
+  auth: String!
+  endpoint: String!
+  p256dh: String!
+}
+
 type Query {
   adoptions: [AdoptionModel!]!
 
@@ -1166,6 +1195,9 @@ type Query {
   mortalities(from: DateTime, to: DateTime): [MortalityModel!]!
   pregnancies: [PregnancyModel!]!
   pregnancyChecksByBreeding(breedingId: ID!): [PregnancyModel!]!
+
+  """Configuration des notifications du navigateur."""
+  pushConfig: PushConfigModel!
   rabbit(id: ID!): RabbitModel!
   rabbitCageMovements(rabbitId: ID!): [RabbitCageMovementModel!]!
   rabbitDescendants(generations: Int! = 3, rabbitId: ID!): [DescendantModel!]!
@@ -1358,6 +1390,15 @@ input RemoveLotMembersInput {
   lotId: ID!
   rabbitIds: [ID!]!
   reason: String
+}
+
+input RequestPasswordResetInput {
+  email: String!
+}
+
+input ResetPasswordInput {
+  password: String!
+  token: String!
 }
 
 type SaleItemModel {

@@ -7,6 +7,7 @@ import { useMutation, useQuery } from '@apollo/client/react';
 import { Button, Card, ErrorBox, Field, FormGrid, Input, Loading, PageHeader, Select, Table, Textarea } from '@/components/ui/kit';
 import { ME_QUERY, type Me } from '@/graphql/auth/mutations';
 import { useForm } from '@/hooks/use-form';
+import { NotificationsCard } from '@/components/settings/notifications-card';
 import { FARM_ROLE, INBREEDING_POLICY, label, options } from '@/lib/labels';
 
 const UPDATE_FARM = gql`
@@ -45,6 +46,7 @@ export default function SettingsPage() {
       <ErrorBox error={error} />
       {data && <FarmSettings me={data.me} canEdit={isAdmin} />}
       {data && <MembersCard me={data.me} canEdit={isAdmin} />}
+      <NotificationsCard />
     </div>
   );
 }

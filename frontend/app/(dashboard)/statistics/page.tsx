@@ -2,11 +2,13 @@
 
 import { useState } from 'react';
 import { gql } from '@apollo/client';
-import { useQuery } from '@apollo/client/react';
+import { useApolloClient, useQuery } from '@apollo/client/react';
+import { FileSpreadsheet, Printer } from 'lucide-react';
 
-import { Card, ErrorBox, Field, Grid, Input, Loading, PageHeader, Stat, Table } from '@/components/ui/kit';
+import { Button, Card, ErrorBox, Field, Grid, Input, Loading, PageHeader, Stat, Table } from '@/components/ui/kit';
 import { formatMoney, formatNumber, formatPercent, fromDateInput, toDateInput } from '@/lib/format';
-import { EXPENSE_CATEGORY, PURPOSE, RABBIT_STATUS, SEX, label } from '@/lib/labels';
+import { EXPENSE_CATEGORY, PAYMENT_METHOD, PURPOSE, RABBIT_STATUS, SALE_STATUS, SEX, label } from '@/lib/labels';
+import { downloadExcel, excelDate, type ExcelSheet } from '@/lib/export-excel';
 
 const STATS = gql`
   query FarmStatistics($from: DateTime, $to: DateTime) {
@@ -153,6 +155,103 @@ function MonthlyChart({ months }: { months: Stats['finance']['monthly'] }) {
   );
 }
 
+const LISTS_FOR_EXPORT = gql`
+  query ExportLists {
+    sales {
+      id
+      saleDate
+      customerName
+      status
+      totalAmount
+      paidAmount
+      remainingAmount
+      items { description }
+    }
+    expenses {
+      id
+      date
+      category
+      description
+      supplier
+      paymentMethod
+      amount
+    }
+  }
+`;
+
+interface ExportLists {
+  sales: Array<{ id: string; saleDate: string; customerName: string | null; status: string; totalAmount: number; paidAmount: number; remainingAmount: number; items: Array<{ description: string }> }>;
+  expenses: Array<{ id: string; date: string; category: string; description: string | null; supplier: string | null; paymentMethod: string | null; amount: number }>;
+}
+
+const pct = (value?: number | null) => (value == null ? null : Math.round(value * 10) / 10);
+
+function buildSheets(s: Stats, lists: ExportLists, from: string, to: string): ExcelSheet[] {
+  const inPeriod = (date: string) => date.slice(0, 10) >= from && date.slice(0, 10) <= to;
+  const t = s.technical;
+  const f = s.finance;
+  const breeders = (rows: Breeder[]) => [
+    ['Reproducteur', 'Portées', 'Nés vivants', 'Taille moyenne', 'Sevrés', 'Survie (%)'],
+    ...rows.map((b) => [b.rabbitCode, b.litters, b.bornAlive, pct(b.averageLitterSize), b.weaned, pct(b.survivalRate)]),
+  ];
+  return [
+    {
+      name: 'Synthèse',
+      widths: [38, 18],
+      rows: [
+        ['Indicateur', 'Valeur'],
+        ['Période', `${from} au ${to}`],
+        ['Saillies', t.breedings],
+        ['Fertilité (%)', pct(t.fertilityRate)],
+        ['Mises bas', t.births],
+        ['Nés vivants', t.liveBorn],
+        ['Mort-nés', t.stillBorn],
+        ['Taille moyenne de portée', pct(t.averageLitterSize)],
+        ['Mortinatalité (%)', pct(t.stillBirthRate)],
+        ['Morts avant sevrage', t.preWeaningDeaths],
+        ['Mortalité avant sevrage (%)', pct(t.preWeaningMortalityRate)],
+        ['Sevrés', t.weaned],
+        ['Taux de sevrage (%)', pct(t.weaningRate)],
+        ['Morts en engraissement', t.fatteningDeaths],
+        ['Chiffre d’affaires (FCFA)', f.revenue],
+        ['Encaissé (FCFA)', f.collected],
+        ['Reste à encaisser (FCFA)', f.outstanding],
+        ['Dépenses (FCFA)', f.expenses],
+        ['Marge (FCFA)', f.margin],
+        ['Lapins vendus', f.rabbitsSold],
+        ['Kg vendus', f.kgSold],
+        ['Coût de revient estimé (FCFA/kg)', f.estimatedCostPerKg ?? null],
+        ['Lapins actifs', s.population.active],
+      ],
+    },
+    { name: 'Mensuel', rows: [['Mois', 'Ventes (FCFA)', 'Dépenses (FCFA)', 'Marge (FCFA)'], ...f.monthly.map((m) => [m.month, m.revenue, m.expenses, m.margin])] },
+    { name: 'Dépenses par catégorie', widths: [26, 18], rows: [['Catégorie', 'Montant (FCFA)'], ...f.expensesByCategory.map((c) => [label(EXPENSE_CATEGORY, c.label), c.value])] },
+    {
+      name: 'Ventes',
+      widths: [12, 26, 40, 16, 16, 16, 20],
+      rows: [
+        ['Date', 'Client', 'Articles', 'Total', 'Payé', 'Reste', 'Statut'],
+        ...lists.sales
+          .filter((sale) => inPeriod(sale.saleDate))
+          .map((sale) => [excelDate(sale.saleDate), sale.customerName ?? 'Client de passage', sale.items.map((i) => i.description).join(', '), sale.totalAmount, sale.paidAmount, sale.remainingAmount, label(SALE_STATUS, sale.status)]),
+      ],
+    },
+    {
+      name: 'Dépenses',
+      widths: [12, 18, 34, 24, 16, 16],
+      rows: [
+        ['Date', 'Catégorie', 'Description', 'Fournisseur', 'Paiement', 'Montant'],
+        ...lists.expenses
+          .filter((expense) => inPeriod(expense.date))
+          .map((expense) => [excelDate(expense.date), label(EXPENSE_CATEGORY, expense.category), expense.description ?? '', expense.supplier ?? '', expense.paymentMethod ? label(PAYMENT_METHOD, expense.paymentMethod) : '', expense.amount]),
+      ],
+    },
+    { name: 'Meilleures mères', rows: breeders(s.genetic.bestMothers) },
+    { name: 'Meilleurs pères', rows: breeders(s.genetic.bestFathers) },
+    { name: 'Causes de mortalité', widths: [30, 12], rows: [['Cause', 'Morts'], ...t.deathsByCause.map((c) => [c.label, c.value])] },
+  ];
+}
+
 const breederColumns = [
   { header: 'Reproducteur', cell: (b: Breeder & { id: string }) => <strong>{b.rabbitCode}</strong> },
   { header: 'Portées', cell: (b: Breeder) => b.litters },
@@ -172,6 +271,24 @@ export default function StatisticsPage() {
     variables: { from: fromDateInput(from), to: new Date(`${to}T23:59:59.999Z`).toISOString() },
   });
   const s = data?.farmStatistics;
+  const client = useApolloClient();
+  const [exporting, setExporting] = useState(false);
+  const [exportError, setExportError] = useState<string | null>(null);
+
+  async function exportExcel() {
+    if (!s) return;
+    setExporting(true);
+    setExportError(null);
+    try {
+      const { data: lists } = await client.query<ExportLists>({ query: LISTS_FOR_EXPORT, fetchPolicy: 'network-only' });
+      if (!lists) throw new Error('Données indisponibles.');
+      await downloadExcel(`rabbitfarm-statistiques-${from}-au-${to}.xlsx`, buildSheets(s, lists, from, to));
+    } catch (caught) {
+      setExportError(caught instanceof Error ? caught.message : 'Export impossible.');
+    } finally {
+      setExporting(false);
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -180,7 +297,15 @@ export default function StatisticsPage() {
         title="Performances de l'élevage"
         description="Indicateurs techniques, génétiques et financiers sur la période choisie."
         actions={
-          <div className="flex gap-2">
+          <div className="flex flex-wrap items-end gap-2">
+            <div className="flex gap-2 print:hidden">
+              <Button variant="secondary" loading={exporting} disabled={!s} onClick={() => void exportExcel()}>
+                <FileSpreadsheet size={16} /> Excel
+              </Button>
+              <Button variant="secondary" disabled={!s} onClick={() => window.print()}>
+                <Printer size={16} /> PDF
+              </Button>
+            </div>
             <Field label="Du">
               <Input type="date" value={from} onChange={(e) => setFrom(e.target.value)} />
             </Field>
@@ -191,6 +316,7 @@ export default function StatisticsPage() {
         }
       />
       <ErrorBox error={error} onRetry={() => refetch()} />
+      <ErrorBox error={exportError} />
       {loading && !s && <Loading />}
       {s && (
         <>
