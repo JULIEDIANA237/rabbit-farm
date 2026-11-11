@@ -4,6 +4,7 @@ import './globals.css';
 
 import ApolloProviderWrapper from '@/providers/apollo-provider';
 import { RegisterServiceWorker } from '@/components/pwa/register-sw';
+import { UpdateBanner } from '@/components/pwa/update-banner';
 
 export const metadata: Metadata = {
   title: { default: 'Rabbit Farm', template: '%s · Rabbit Farm' },
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <ApolloProviderWrapper>{children}</ApolloProviderWrapper>
         <RegisterServiceWorker />
+        <UpdateBanner />
       </body>
     </html>
   );

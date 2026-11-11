@@ -7,7 +7,7 @@ import { useMutation } from '@apollo/client/react';
 
 import { RESET_PASSWORD } from '@/graphql/auth/mutations';
 import { AuthLayout } from '@/components/auth/auth-layout';
-import { Button, ErrorBox, Field, Input } from '@/components/ui/kit';
+import { Button, ErrorBox, Field, PasswordInput } from '@/components/ui/kit';
 
 function ResetPasswordForm() {
   const token = useSearchParams().get('token') ?? '';
@@ -56,10 +56,10 @@ function ResetPasswordForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <Field label="Nouveau mot de passe (8 caractères minimum)">
-        <Input type="password" autoComplete="new-password" minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <PasswordInput autoComplete="new-password" minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} required />
       </Field>
       <Field label="Confirmer le mot de passe">
-        <Input type="password" autoComplete="new-password" minLength={8} value={confirm} onChange={(e) => setConfirm(e.target.value)} required />
+        <PasswordInput autoComplete="new-password" minLength={8} value={confirm} onChange={(e) => setConfirm(e.target.value)} required />
       </Field>
       {mismatch && <ErrorBox error="Les deux mots de passe ne sont pas identiques." />}
       <ErrorBox error={error} />

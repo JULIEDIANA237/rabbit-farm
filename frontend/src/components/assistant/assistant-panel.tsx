@@ -134,9 +134,9 @@ export function AssistantPanel() {
           type="button"
           onClick={openPanel}
           aria-label="Ouvrir l’assistant IA"
-          className="fixed bottom-24 right-4 z-50 flex items-center gap-2 rounded-full bg-violet-600 px-4 py-3 text-sm font-semibold text-white shadow-lg hover:bg-violet-700 lg:bottom-6 lg:right-6"
+          className="fixed bottom-24 right-4 z-50 flex items-center gap-2 rounded-full bg-violet-600 p-3.5 text-sm sm:px-4 sm:py-3 font-semibold text-white shadow-lg hover:bg-violet-700 lg:bottom-6 lg:right-6"
         >
-          <Sparkles size={18} /> Assistant
+          <Sparkles size={18} /> <span className="hidden sm:inline">Assistant</span>
         </button>
       )}
 

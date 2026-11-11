@@ -6,9 +6,8 @@ import { useRouter } from 'next/navigation';
 import { useMutation } from '@apollo/client/react';
 
 import { REGISTER_MUTATION } from '@/graphql/auth/mutations';
-import { useAuthStore } from '@/stores/auth-store';
 import { AuthLayout } from '@/components/auth/auth-layout';
-import { Button, ErrorBox, Field, FormGrid, Input } from '@/components/ui/kit';
+import { Button, ErrorBox, Field, FormGrid, Input, PasswordInput } from '@/components/ui/kit';
 import { useForm } from '@/hooks/use-form';
 import { clean } from '@/lib/format';
 
@@ -18,7 +17,6 @@ interface RegisterResponse {
 
 export default function RegisterPage() {
   const router = useRouter();
-  const login = useAuthStore((s) => s.login);
   const { bind, values } = useForm({
     firstName: '',
     lastName: '',
@@ -34,8 +32,9 @@ export default function RegisterPage() {
     try {
       const { data } = await register({ variables: { input: clean(values) } });
       if (!data) return;
-      login(data.register.accessToken, { userId: data.register.userId, email: data.register.email });
-      router.replace('/dashboard');
+      // Le compte est créé : on passe par la page de connexion.
+      const params = new URLSearchParams({ registered: '1', email: data.register.email });
+      router.replace(`/login?${params.toString()}`);
     } catch {
       // affiché via `error`
     }
@@ -56,7 +55,7 @@ export default function RegisterPage() {
           <Input type="email" required autoComplete="email" {...bind('email')} />
         </Field>
         <Field label="Mot de passe" hint="8 caractères minimum">
-          <Input type="password" required minLength={8} autoComplete="new-password" {...bind('password')} />
+          <PasswordInput required minLength={8} autoComplete="new-password" {...bind('password')} />
         </Field>
         <Field label="Nom de l'élevage">
           <Input required {...bind('farmName')} />

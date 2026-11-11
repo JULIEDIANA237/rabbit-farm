@@ -37,7 +37,7 @@ export function AppShell({
             <OfflineBanner />
           </div>
 
-          <main className="flex-1 pb-20 lg:pb-0">
+          <main className="flex-1 pb-32 lg:pb-0">
             <div className="mx-auto w-full max-w-[1600px] px-4 py-5 md:px-6 md:py-7 xl:px-8">
               {children}
             </div>
