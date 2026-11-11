@@ -1,15 +1,29 @@
 {
-  "moduleFileExtensions": ["js", "json", "ts"],
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
   "rootDir": ".",
   "testEnvironment": "node",
   "testRegex": ".int-spec.ts$",
   "transform": {
-    "^.+\\.(t|j)s$": "ts-jest"
+    "^.+\\.ts$": [
+      "ts-jest",
+      {
+        "useESM": true
+      }
+    ]
   },
   "moduleNameMapper": {
     "^(\\.{1,2}/.*)\\.js$": "$1"
   },
-  "setupFiles": ["<rootDir>/setup/test-env.ts"],
+  "setupFiles": [
+    "<rootDir>/setup/test-env.ts"
+  ],
   "globalSetup": "<rootDir>/setup/global-setup.ts",
-  "testTimeout": 60000
+  "testTimeout": 60000,
+  "extensionsToTreatAsEsm": [
+    ".ts"
+  ]
 }

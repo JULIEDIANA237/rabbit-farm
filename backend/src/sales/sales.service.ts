@@ -8,14 +8,14 @@ import {
   FatteningLotStatus,
   RabbitStatus,
   SaleStatus,
-} from '../generated/prisma/client';
-import { PrismaService } from '../prisma/prisma.service';
-import type { CurrentUserType } from '../auth/types/current-user.type';
-import { CreateCustomerInput } from './inputs/create-customer.input';
-import { CreateSaleInput } from './inputs/create-sale.input';
-import { CreatePaymentInput } from './inputs/create-payment.input';
-import { CancelSaleInput } from './inputs/cancel-sale.input';
-import { computeSaleStatus, summarizeCustomerAccount } from './sales.utils';
+} from '../generated/prisma/client.js';
+import { PrismaService } from '../prisma/prisma.service.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
+import { CreateCustomerInput } from './inputs/create-customer.input.js';
+import { CreateSaleInput } from './inputs/create-sale.input.js';
+import { CreatePaymentInput } from './inputs/create-payment.input.js';
+import { CancelSaleInput } from './inputs/cancel-sale.input.js';
+import { computeSaleStatus, summarizeCustomerAccount } from './sales.utils.js';
 
 type DecimalLike = { toString(): string } | number;
 

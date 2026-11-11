@@ -8,22 +8,22 @@ import {
 
 import { UseGuards } from '@nestjs/common';
 
-import { FarmRole } from '../auth/graphql/farm-role.enum';
+import { FarmRole } from '../auth/graphql/farm-role.enum.js';
 
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
 
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import { Roles } from '../auth/decorators/roles.decorator';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import { Roles } from '../auth/decorators/roles.decorator.js';
 
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
-import { AddMemberInput } from './inputs/add-member.input';
-import { UpdateMemberRoleInput } from './inputs/update-member-role.input';
+import { AddMemberInput } from './inputs/add-member.input.js';
+import { UpdateMemberRoleInput } from './inputs/update-member-role.input.js';
 
-import { FarmMembershipModel } from './models/farm-membership.model';
+import { FarmMembershipModel } from './models/farm-membership.model.js';
 
-import { UsersService } from './users.service';
+import { UsersService } from './users.service.js';
 
 @Resolver(() => FarmMembershipModel)
 @UseGuards(

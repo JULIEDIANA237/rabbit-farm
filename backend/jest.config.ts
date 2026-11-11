@@ -14,8 +14,10 @@ const config: Config = {
   moduleFileExtensions: ['js', 'json', 'ts'],
   rootDir: '.',
   testRegex: '.*\\.spec\\.ts$',
+  // Le backend est un paquet ESM ("type": "module") : les tests aussi.
+  extensionsToTreatAsEsm: ['.ts'],
   transform: {
-    '^.+\\.(t|j)s$': 'ts-jest',
+    '^.+\\.ts$': ['ts-jest', { useESM: true }],
   },
   moduleNameMapper: {
     // Le client Prisma généré en TypeScript importe des fichiers avec

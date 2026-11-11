@@ -7,23 +7,23 @@ import {
 } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 
-import { OperationsService } from './operations.service';
-import { TaskStatus } from './graphql/task-status.enum';
-import { ExpenseModel } from './models/expense.model';
-import { InventoryItemModel } from './models/inventory-item.model';
-import { StockMovementModel } from './models/stock-movement.model';
-import { TaskModel } from './models/task.model';
-import { CreateExpenseInput } from './inputs/create-expense.input';
-import { CreateInventoryItemInput } from './inputs/create-inventory-item.input';
-import { CreateStockMovementInput } from './inputs/create-stock-movement.input';
-import { CreateTaskInput } from './inputs/create-task.input';
-import { UpdateTaskInput } from './inputs/update-task.input';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import type { CurrentUserType } from '../auth/types/current-user.type';
-import { FarmRole } from '../generated/prisma/client';
+import { OperationsService } from './operations.service.js';
+import { TaskStatus } from './graphql/task-status.enum.js';
+import { ExpenseModel } from './models/expense.model.js';
+import { InventoryItemModel } from './models/inventory-item.model.js';
+import { StockMovementModel } from './models/stock-movement.model.js';
+import { TaskModel } from './models/task.model.js';
+import { CreateExpenseInput } from './inputs/create-expense.input.js';
+import { CreateInventoryItemInput } from './inputs/create-inventory-item.input.js';
+import { CreateStockMovementInput } from './inputs/create-stock-movement.input.js';
+import { CreateTaskInput } from './inputs/create-task.input.js';
+import { UpdateTaskInput } from './inputs/update-task.input.js';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
+import { Roles } from '../auth/decorators/roles.decorator.js';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
+import { FarmRole } from '../generated/prisma/client.js';
 
 @Resolver()
 @UseGuards(JwtAuthGuard, RolesGuard)

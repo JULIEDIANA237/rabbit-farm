@@ -3,7 +3,7 @@ import {
   InputType,
 } from '@nestjs/graphql';
 
-import { RabbitIdentificationType } from '../graphql/rabbit-identification-type.enum';
+import { RabbitIdentificationType } from '../graphql/rabbit-identification-type.enum.js';
 
 @InputType()
 export class AddRabbitIdentificationInput {

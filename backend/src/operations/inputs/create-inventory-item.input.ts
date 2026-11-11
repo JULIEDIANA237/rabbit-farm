@@ -1,6 +1,6 @@
 import { Field, Float, InputType } from '@nestjs/graphql';
 
-import { InventoryItemType } from '../graphql/inventory-item-type.enum';
+import { InventoryItemType } from '../graphql/inventory-item-type.enum.js';
 
 @InputType()
 export class CreateInventoryItemInput {

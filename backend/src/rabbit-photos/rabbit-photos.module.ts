@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 
-import { AuthModule } from '../auth/auth.module';
+import { AuthModule } from '../auth/auth.module.js';
 
-import { RabbitPhotosController } from './rabbit-photos.controller';
-import { RabbitPhotosService } from './rabbit-photos.service';
+import { RabbitPhotosController } from './rabbit-photos.controller.js';
+import { RabbitPhotosService } from './rabbit-photos.service.js';
 
 @Module({
   imports: [

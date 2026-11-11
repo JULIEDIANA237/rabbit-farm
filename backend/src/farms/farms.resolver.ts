@@ -8,22 +8,22 @@ import {
 
 import { UseGuards } from '@nestjs/common';
 
-import { FarmRole } from '../generated/prisma/client';
+import { FarmRole } from '../generated/prisma/client.js';
 
-import { FarmModel } from './models/farm.model';
-import { CreateFarmInput } from './dto/create-farm.input';
-import { UpdateFarmInput } from './dto/update-farm.input';
-import { MeModel } from '../auth/models/me.model';
+import { FarmModel } from './models/farm.model.js';
+import { CreateFarmInput } from './dto/create-farm.input.js';
+import { UpdateFarmInput } from './dto/update-farm.input.js';
+import { MeModel } from '../auth/models/me.model.js';
 
-import { FarmsService } from './farms.service';
+import { FarmsService } from './farms.service.js';
 
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
 
-import { Roles } from '../auth/decorators/roles.decorator';
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { Roles } from '../auth/decorators/roles.decorator.js';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
 
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
 @Resolver(() => FarmModel)
 export class FarmsResolver {

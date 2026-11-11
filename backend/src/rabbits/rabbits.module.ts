@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 
-import { AuthModule } from '../auth/auth.module';
+import { AuthModule } from '../auth/auth.module.js';
 
-import { RabbitsService } from './rabbits.service';
-import { RabbitsResolver } from './rabbits.resolver';
-import { TraceabilityService } from './traceability.service';
+import { RabbitsService } from './rabbits.service.js';
+import { RabbitsResolver } from './rabbits.resolver.js';
+import { TraceabilityService } from './traceability.service.js';
 
-import { RabbitPhotosService } from './rabbit-photo.service';
-import { RabbitPhotoController } from './rabbit-photo.controller';
-import { StorageModule } from '../storage/storage.module';
+import { RabbitPhotosService } from './rabbit-photo.service.js';
+import { RabbitPhotoController } from './rabbit-photo.controller.js';
+import { StorageModule } from '../storage/storage.module.js';
 
 @Module({
   imports: [

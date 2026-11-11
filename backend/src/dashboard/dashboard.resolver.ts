@@ -1,14 +1,14 @@
 import { Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 
-import { DashboardService } from './dashboard.service';
-import { DashboardModel } from './models/dashboard.model';
+import { DashboardService } from './dashboard.service.js';
+import { DashboardModel } from './models/dashboard.model.js';
 
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
 
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
 @Resolver(() => DashboardModel)
 @UseGuards(JwtAuthGuard, RolesGuard)

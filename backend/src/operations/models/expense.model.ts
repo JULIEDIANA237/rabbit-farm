@@ -1,7 +1,7 @@
 import { Field, Float, ID, ObjectType } from '@nestjs/graphql';
 
-import { ExpenseCategory } from '../graphql/expense-category.enum';
-import { PaymentMethod } from '../../sales/graphql/payment-method.enum';
+import { ExpenseCategory } from '../graphql/expense-category.enum.js';
+import { PaymentMethod } from '../../sales/graphql/payment-method.enum.js';
 
 @ObjectType()
 export class ExpenseModel {

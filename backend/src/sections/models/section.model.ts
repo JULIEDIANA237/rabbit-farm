@@ -5,7 +5,7 @@ import {
   ObjectType,
 } from '@nestjs/graphql';
 
-import { SectionType } from '../graphql/section-type.enum';
+import { SectionType } from '../graphql/section-type.enum.js';
 
 @ObjectType()
 export class SectionModel {

@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 
-import { AuthModule } from '../auth/auth.module';
+import { AuthModule } from '../auth/auth.module.js';
 
-import { CagesService } from './cages.service';
-import { CagesResolver } from './cages.resolver';
+import { CagesService } from './cages.service.js';
+import { CagesResolver } from './cages.resolver.js';
 
 @Module({
   imports: [

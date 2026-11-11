@@ -4,13 +4,13 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { PrismaService } from '../prisma/prisma.service';
-import { CurrentUserType } from '../auth/types/current-user.type';
+import { PrismaService } from '../prisma/prisma.service.js';
+import { CurrentUserType } from '../auth/types/current-user.type.js';
 
-import { CreateBreedInput } from './inputs/create-breed.input';
-import { UpdateBreedInput } from './inputs/update-breed.input';
-import { CreateCrossBreedInput } from './inputs/create-cross-breed.input';
-import { UpdateCrossBreedInput } from './inputs/update-cross-breed.input';
+import { CreateBreedInput } from './inputs/create-breed.input.js';
+import { UpdateBreedInput } from './inputs/update-breed.input.js';
+import { CreateCrossBreedInput } from './inputs/create-cross-breed.input.js';
+import { UpdateCrossBreedInput } from './inputs/update-cross-breed.input.js';
 
 @Injectable()
 export class GeneticsService {

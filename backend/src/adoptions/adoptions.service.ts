@@ -4,9 +4,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { PrismaService } from '../prisma/prisma.service';
-import { CurrentUserType } from '../auth/types/current-user.type';
-import { CreateAdoptionInput } from './inputs/create-adoption.input';
+import { PrismaService } from '../prisma/prisma.service.js';
+import { CurrentUserType } from '../auth/types/current-user.type.js';
+import { CreateAdoptionInput } from './inputs/create-adoption.input.js';
 
 const adoptionInclude = {
   sourceLitter: { select: { code: true } },

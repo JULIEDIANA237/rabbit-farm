@@ -7,19 +7,19 @@ import {
 } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 
-import { SalesService } from './sales.service';
-import { CancelSaleInput } from './inputs/cancel-sale.input';
-import { CustomerModel } from './models/customer.model';
-import { PaymentModel, SaleModel } from './models/sale.model';
-import { CreateCustomerInput } from './inputs/create-customer.input';
-import { CreateSaleInput } from './inputs/create-sale.input';
-import { CreatePaymentInput } from './inputs/create-payment.input';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import type { CurrentUserType } from '../auth/types/current-user.type';
-import { FarmRole } from '../generated/prisma/client';
+import { SalesService } from './sales.service.js';
+import { CancelSaleInput } from './inputs/cancel-sale.input.js';
+import { CustomerModel } from './models/customer.model.js';
+import { PaymentModel, SaleModel } from './models/sale.model.js';
+import { CreateCustomerInput } from './inputs/create-customer.input.js';
+import { CreateSaleInput } from './inputs/create-sale.input.js';
+import { CreatePaymentInput } from './inputs/create-payment.input.js';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
+import { Roles } from '../auth/decorators/roles.decorator.js';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
+import { FarmRole } from '../generated/prisma/client.js';
 
 @Resolver(() => SaleModel)
 @UseGuards(JwtAuthGuard, RolesGuard)

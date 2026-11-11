@@ -7,21 +7,21 @@ import {
 } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 
-import { BreedingService } from './breeding.service';
-import { BreedingModel } from './models/breeding.model';
-import { NestInstallationModel } from './models/nest-installation.model';
-import { CreateBreedingInput } from './inputs/create-breeding.input';
-import { RecordNestInstallationInput } from './inputs/record-nest-installation.input';
-import { CancelBreedingInput } from './inputs/cancel-breeding.input';
-import { BreedingStatus } from './graphql/breeding-status.enum';
+import { BreedingService } from './breeding.service.js';
+import { BreedingModel } from './models/breeding.model.js';
+import { NestInstallationModel } from './models/nest-installation.model.js';
+import { CreateBreedingInput } from './inputs/create-breeding.input.js';
+import { RecordNestInstallationInput } from './inputs/record-nest-installation.input.js';
+import { CancelBreedingInput } from './inputs/cancel-breeding.input.js';
+import { BreedingStatus } from './graphql/breeding-status.enum.js';
 
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import { Roles } from '../auth/decorators/roles.decorator';
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import { Roles } from '../auth/decorators/roles.decorator.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
-import { FarmRole } from '../generated/prisma/client';
+import { FarmRole } from '../generated/prisma/client.js';
 
 @Resolver(() => BreedingModel)
 @UseGuards(JwtAuthGuard, RolesGuard)

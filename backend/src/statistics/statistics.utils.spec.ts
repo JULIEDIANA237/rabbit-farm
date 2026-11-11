@@ -5,7 +5,7 @@ import {
   estimatedCostPerKg,
   lastMonths,
   rate,
-} from './statistics.utils';
+} from './statistics.utils.js';
 
 describe('statistics.utils (§51-53)', () => {
   it('calcule taux et moyennes', () => {

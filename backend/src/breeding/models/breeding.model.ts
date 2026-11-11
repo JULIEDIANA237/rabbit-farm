@@ -1,8 +1,8 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
-import { BreedingStatus } from '../graphql/breeding-status.enum';
-import { RabbitSummaryModel } from '../../common/models/rabbit-summary.model';
-import { NestInstallationModel } from './nest-installation.model';
+import { BreedingStatus } from '../graphql/breeding-status.enum.js';
+import { RabbitSummaryModel } from '../../common/models/rabbit-summary.model.js';
+import { NestInstallationModel } from './nest-installation.model.js';
 
 @ObjectType()
 export class BreedingModel {

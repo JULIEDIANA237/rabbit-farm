@@ -1,6 +1,6 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 
-import { RabbitStatus } from '../../rabbits/graphql/rabbit-status.enum';
+import { RabbitStatus } from '../../rabbits/graphql/rabbit-status.enum.js';
 
 @InputType()
 export class RecordRabbitExitInput {

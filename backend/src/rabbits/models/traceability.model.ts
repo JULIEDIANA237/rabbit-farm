@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
-import { RabbitModel } from './rabbit.model';
-import { RabbitSummaryModel } from '../../common/models/rabbit-summary.model';
+import { RabbitModel } from './rabbit.model.js';
+import { RabbitSummaryModel } from '../../common/models/rabbit-summary.model.js';
 
 @ObjectType()
 export class TraceEventModel {

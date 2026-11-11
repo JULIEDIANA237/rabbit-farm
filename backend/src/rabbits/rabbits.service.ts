@@ -5,16 +5,16 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service.js';
 
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
-import { AddRabbitIdentificationInput } from './inputs/add-rabbit-identification.input';
-import { CreateRabbitInput } from './inputs/create-rabbit.input';
-import { MoveRabbitInput } from './inputs/move-rabbit.input';
-import { UpdateRabbitInput } from './inputs/update-rabbit.input';
-import { RabbitsPaginationInput } from './inputs/rabbits-pagination.input';
-import { normalizeMovementReason } from '../common/constants/movement-reasons';
+import { AddRabbitIdentificationInput } from './inputs/add-rabbit-identification.input.js';
+import { CreateRabbitInput } from './inputs/create-rabbit.input.js';
+import { MoveRabbitInput } from './inputs/move-rabbit.input.js';
+import { UpdateRabbitInput } from './inputs/update-rabbit.input.js';
+import { RabbitsPaginationInput } from './inputs/rabbits-pagination.input.js';
+import { normalizeMovementReason } from '../common/constants/movement-reasons.js';
 
 type RabbitWithRelations = {
   photos?: unknown[] | null;

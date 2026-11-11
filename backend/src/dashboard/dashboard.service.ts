@@ -11,12 +11,12 @@ import {
   TaskSourceType,
   TaskStatus,
   type Prisma,
-} from '../generated/prisma/client';
+} from '../generated/prisma/client.js';
 
-import { PrismaService } from '../prisma/prisma.service';
-import { computeAutonomy } from '../operations/automation/stock-autonomy';
+import { PrismaService } from '../prisma/prisma.service.js';
+import { computeAutonomy } from '../operations/automation/stock-autonomy.js';
 
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
 /**
  * Naissance telle que retournée par Prisma avec

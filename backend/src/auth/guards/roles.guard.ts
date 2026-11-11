@@ -6,9 +6,9 @@ import {
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 
-import { FarmRole } from '../../generated/prisma/client';
-import { ROLES_KEY } from '../decorators/roles.decorator';
-import { CurrentUserType } from '../types/current-user.type';
+import { FarmRole } from '../../generated/prisma/client.js';
+import { ROLES_KEY } from '../decorators/roles.decorator.js';
+import { CurrentUserType } from '../types/current-user.type.js';
 
 @Injectable()
 export class RolesGuard implements CanActivate {

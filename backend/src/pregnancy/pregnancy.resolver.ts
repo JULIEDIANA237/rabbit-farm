@@ -7,18 +7,18 @@ import {
 } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 
-import { PregnancyService } from './pregnancy.service';
-import { PregnancyModel } from './models/pregnancy.model';
-import { CreatePregnancyCheckInput } from './inputs/create-pregnancy-check.input';
+import { PregnancyService } from './pregnancy.service.js';
+import { PregnancyModel } from './models/pregnancy.model.js';
+import { CreatePregnancyCheckInput } from './inputs/create-pregnancy-check.input.js';
 
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
 
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
-import { FarmRole } from '../generated/prisma/client';
-import { Roles } from '../auth/decorators/roles.decorator';
+import { FarmRole } from '../generated/prisma/client.js';
+import { Roles } from '../auth/decorators/roles.decorator.js';
 
 @Resolver(() => PregnancyModel)
 @UseGuards(JwtAuthGuard, RolesGuard)

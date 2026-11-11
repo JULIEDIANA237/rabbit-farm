@@ -1,10 +1,10 @@
 import { PassportModule } from '@nestjs/passport';
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service.js';
 
-import { SectionsResolver } from './sections.resolver';
-import { SectionsService } from './sections.service';
+import { SectionsResolver } from './sections.resolver.js';
+import { SectionsService } from './sections.service.js';
 
 describe('SectionsResolver', () => {
   let resolver: SectionsResolver;

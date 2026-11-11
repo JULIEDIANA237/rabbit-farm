@@ -1,5 +1,5 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { PregnancyResult } from '../graphql/pregnancy-result.enum';
+import { PregnancyResult } from '../graphql/pregnancy-result.enum.js';
 
 @InputType()
 export class CreatePregnancyCheckInput {

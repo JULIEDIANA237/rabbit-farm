@@ -1,7 +1,7 @@
 import type { INestApplication } from '@nestjs/common';
 
-import type { PrismaService } from '../src/prisma/prisma.service';
-import { createTestApp, daysAgo, gql, gqlOk, registerFarm } from './utils/graphql';
+import type { PrismaService } from '../src/prisma/prisma.service.js';
+import { createTestApp, daysAgo, gql, gqlOk, registerFarm } from './utils/graphql.js';
 
 /**
  * Scénarios fonctionnels du cahier des charges :

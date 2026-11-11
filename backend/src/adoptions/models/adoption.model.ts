@@ -1,5 +1,5 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
-import { AdoptionReason } from '../graphql/adoption-reason.enum';
+import { AdoptionReason } from '../graphql/adoption-reason.enum.js';
 
 @ObjectType()
 export class AdoptionModel {

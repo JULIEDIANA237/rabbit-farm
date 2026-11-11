@@ -4,11 +4,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service.js';
 
-import { SupabaseStorageService } from '../storage/supabase-storage.service';
+import { SupabaseStorageService } from '../storage/supabase-storage.service.js';
 
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
 @Injectable()
 export class RabbitPhotosService {

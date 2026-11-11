@@ -1,7 +1,7 @@
 import { Controller, Get, Headers, ServiceUnavailableException, UnauthorizedException } from '@nestjs/common';
 import { timingSafeEqual } from 'node:crypto';
 
-import { NotificationsService } from './notifications.service';
+import { NotificationsService } from './notifications.service.js';
 
 /**
  * Appelé chaque matin par la tâche planifiée de Vercel (vercel.json → crons),

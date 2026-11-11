@@ -1,12 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service.js';
 import {
   StockMovementType,
   TaskSourceType,
   TaskStatus,
   type Prisma,
-} from '../../generated/prisma/client';
+} from '../../generated/prisma/client.js';
 
 import {
   AUTOMATION_KEYS,
@@ -18,8 +18,8 @@ import {
   type AutomationKey,
   type BreedingForPlanning,
   type PlannedTask,
-} from './task-planner';
-import { computeAutonomy } from './stock-autonomy';
+} from './task-planner.js';
+import { computeAutonomy } from './stock-autonomy.js';
 
 type Db = PrismaService | Prisma.TransactionClient;
 

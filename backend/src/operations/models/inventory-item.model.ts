@@ -1,7 +1,7 @@
 import { Field, Float, ID, ObjectType } from '@nestjs/graphql';
 
-import { InventoryItemType } from '../graphql/inventory-item-type.enum';
-import { StockMovementModel } from './stock-movement.model';
+import { InventoryItemType } from '../graphql/inventory-item-type.enum.js';
+import { StockMovementModel } from './stock-movement.model.js';
 
 @ObjectType()
 export class InventoryItemModel {

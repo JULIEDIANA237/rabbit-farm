@@ -1,10 +1,10 @@
 import { Logger, Module } from '@nestjs/common';
 
-import { AuthModule } from '../auth/auth.module';
+import { AuthModule } from '../auth/auth.module.js';
 
-import { API_KEY_VARS, createModel, readAiConfig, type AiConfig } from './ai-config';
-import { AssistantResolver } from './assistant.resolver';
-import { ASSISTANT_CONFIG, ASSISTANT_FALLBACK_MODEL, ASSISTANT_MODEL, AssistantService } from './assistant.service';
+import { API_KEY_VARS, createModel, readAiConfig, type AiConfig } from './ai-config.js';
+import { AssistantResolver } from './assistant.resolver.js';
+import { ASSISTANT_CONFIG, ASSISTANT_FALLBACK_MODEL, ASSISTANT_MODEL, AssistantService } from './assistant.service.js';
 
 @Module({
   imports: [AuthModule],

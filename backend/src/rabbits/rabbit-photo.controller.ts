@@ -14,12 +14,12 @@ import {
   FileInterceptor,
 } from '@nestjs/platform-express';
 
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
 
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
-import { RabbitPhotosService } from './rabbit-photo.service';
+import { RabbitPhotosService } from './rabbit-photo.service.js';
 
 @Controller('rabbits')
 @UseGuards(JwtAuthGuard)

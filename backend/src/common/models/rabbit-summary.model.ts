@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
-import { RabbitSex } from '../../rabbits/graphql/rabbit-sex.enum';
-import { RabbitStatus } from '../../rabbits/graphql/rabbit-status.enum';
+import { RabbitSex } from '../../rabbits/graphql/rabbit-sex.enum.js';
+import { RabbitStatus } from '../../rabbits/graphql/rabbit-status.enum.js';
 
 /**
  * Représentation légère d'un lapin, réutilisée par les vues

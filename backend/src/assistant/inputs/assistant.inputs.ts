@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 import { ArrayMaxSize, IsIn, IsOptional, IsString, MaxLength, MinLength, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
-import { AssistantFormKind } from '../models/assistant-form-kind.enum';
+import { AssistantFormKind } from '../models/assistant-form-kind.enum.js';
 
 @InputType()
 export class AssistantMessageInput {

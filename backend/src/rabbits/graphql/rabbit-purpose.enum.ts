@@ -1,5 +1,5 @@
 import { registerEnumType } from '@nestjs/graphql';
-import { RabbitPurpose } from '../../generated/prisma/client';
+import { RabbitPurpose } from '../../generated/prisma/client.js';
 
 registerEnumType(RabbitPurpose, {
   name: 'RabbitPurpose',

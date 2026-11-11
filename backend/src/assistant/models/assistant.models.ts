@@ -1,6 +1,6 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 
-import { AssistantFormKind } from './assistant-form-kind.enum';
+import { AssistantFormKind } from './assistant-form-kind.enum.js';
 
 @ObjectType()
 export class AssistantStatusModel {

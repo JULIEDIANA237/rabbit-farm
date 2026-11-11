@@ -1,4 +1,4 @@
-import { computeSaleStatus, summarizeCustomerAccount } from './sales.utils';
+import { computeSaleStatus, summarizeCustomerAccount } from './sales.utils.js';
 
 describe('sales.utils (§42, §43)', () => {
   it('calcule le statut de paiement', () => {

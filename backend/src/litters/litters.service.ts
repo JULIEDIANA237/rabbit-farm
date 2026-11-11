@@ -5,18 +5,18 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { PrismaService } from '../prisma/prisma.service';
-import { CurrentUserType } from '../auth/types/current-user.type';
+import { PrismaService } from '../prisma/prisma.service.js';
+import { CurrentUserType } from '../auth/types/current-user.type.js';
 
-import { CreateLitterInput } from './inputs/create-litter.input';
-import { CreateLitterRabbitsInput } from './inputs/create-litter-rabbits.input';
+import { CreateLitterInput } from './inputs/create-litter.input.js';
+import { CreateLitterRabbitsInput } from './inputs/create-litter-rabbits.input.js';
 
 import {
   RabbitSex,
   RabbitStatus,
-} from '../generated/prisma/client';
-import { AssignLitterRabbitsToCageInput } from './inputs/assign-litter-rabbits-to-cage.input';
-import { formatKitCode } from '../common/utils/codes';
+} from '../generated/prisma/client.js';
+import { AssignLitterRabbitsToCageInput } from './inputs/assign-litter-rabbits-to-cage.input.js';
+import { formatKitCode } from '../common/utils/codes.js';
 
 const litterInclude = {
   mother: true,

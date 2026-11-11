@@ -4,16 +4,16 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { PrismaService } from '../prisma/prisma.service';
-import { CurrentUserType } from '../auth/types/current-user.type';
+import { PrismaService } from '../prisma/prisma.service.js';
+import { CurrentUserType } from '../auth/types/current-user.type.js';
 
 import {
   BreedingStatus,
   PregnancyResult,
-} from '../generated/prisma/client';
+} from '../generated/prisma/client.js';
 
-import { CreatePregnancyCheckInput } from './inputs/create-pregnancy-check.input';
-import { TaskAutomationService } from '../operations/automation/task-automation.service';
+import { CreatePregnancyCheckInput } from './inputs/create-pregnancy-check.input.js';
+import { TaskAutomationService } from '../operations/automation/task-automation.service.js';
 
 @Injectable()
 export class PregnancyService {

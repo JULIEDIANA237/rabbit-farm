@@ -5,7 +5,7 @@ import {
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-import { describeNetworkError } from '../common/utils/network-error';
+import { describeNetworkError } from '../common/utils/network-error.js';
 
 @Injectable()
 export class SupabaseStorageService {

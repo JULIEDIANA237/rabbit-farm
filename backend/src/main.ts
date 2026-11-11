@@ -6,8 +6,8 @@ import {
 
 import * as express from 'express';
 
-import { AppModule } from './app.module';
-import { trustSystemCertificates } from './common/utils/system-ca';
+import { AppModule } from './app.module.js';
+import { trustSystemCertificates } from './common/utils/system-ca.js';
 
 async function bootstrap() {
   trustSystemCertificates();

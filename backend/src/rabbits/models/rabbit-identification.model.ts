@@ -4,7 +4,7 @@ import {
   ObjectType,
 } from '@nestjs/graphql';
 
-import { RabbitIdentificationType } from '../graphql/rabbit-identification-type.enum';
+import { RabbitIdentificationType } from '../graphql/rabbit-identification-type.enum.js';
 
 @ObjectType()
 export class RabbitIdentificationModel {

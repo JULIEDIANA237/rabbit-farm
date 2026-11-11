@@ -5,6 +5,7 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "type": "module",
   "scripts": {
     "build": "nest build",
     "vercel-build": "prisma migrate deploy && nest build",
@@ -42,7 +43,6 @@
     "@nestjs/passport": "^12.0.0",
     "@nestjs/platform-express": "^12.1.2",
     "@nestjs/serve-static": "^12.0.0",
-    "@nestjs/throttler": "^6.7.0",
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/client": "^7.10.0",
     "@supabase/supabase-js": "^2.117.2",

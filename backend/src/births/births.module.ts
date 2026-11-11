@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 
-import { BirthsService } from './births.service';
-import { BirthsResolver } from './births.resolver';
+import { BirthsService } from './births.service.js';
+import { BirthsResolver } from './births.resolver.js';
 
-import { AuthModule } from '../auth/auth.module';
-import { OperationsModule } from '../operations/operations.module';
+import { AuthModule } from '../auth/auth.module.js';
+import { OperationsModule } from '../operations/operations.module.js';
 
 @Module({
   imports: [

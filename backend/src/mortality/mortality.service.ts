@@ -5,19 +5,19 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { PrismaService } from '../prisma/prisma.service';
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import { PrismaService } from '../prisma/prisma.service.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 import {
   BreedingStatus,
   LitterStatus,
   MortalityScope,
   RabbitStatus,
   TaskStatus,
-} from '../generated/prisma/client';
+} from '../generated/prisma/client.js';
 
-import { RecordRabbitExitInput } from './inputs/record-rabbit-exit.input';
-import { RecordLitterMortalityInput } from './inputs/record-litter-mortality.input';
-import { mapRabbit } from '../rabbits/rabbits.service';
+import { RecordRabbitExitInput } from './inputs/record-rabbit-exit.input.js';
+import { RecordLitterMortalityInput } from './inputs/record-litter-mortality.input.js';
+import { mapRabbit } from '../rabbits/rabbits.service.js';
 
 const EXIT_STATUSES: RabbitStatus[] = [
   RabbitStatus.DEAD,

@@ -2,8 +2,8 @@ import type { INestApplication } from '@nestjs/common';
 import { APICallError, type LanguageModelV4GenerateResult } from '@ai-sdk/provider';
 import { MockLanguageModelV4 } from 'ai/test';
 
-import { ASSISTANT_FALLBACK_MODEL, ASSISTANT_MODEL } from '../src/assistant/assistant.service';
-import { createTestApp, daysAgo, gql, gqlOk, registerFarm } from './utils/graphql';
+import { ASSISTANT_FALLBACK_MODEL, ASSISTANT_MODEL } from '../src/assistant/assistant.service.js';
+import { createTestApp, daysAgo, gql, gqlOk, registerFarm } from './utils/graphql.js';
 
 /**
  * Assistant IA : le fournisseur est remplacé par un modèle simulé.

@@ -3,11 +3,11 @@ import {
   LitterStatus,
   RabbitStatus,
   TaskStatus,
-} from '../generated/prisma/client';
+} from '../generated/prisma/client.js';
 
-import type { PrismaService } from '../prisma/prisma.service';
-import { computeAutonomy } from '../operations/automation/stock-autonomy';
-import type { FormLookups, OpenBreedingRef, RabbitRef } from './assistant-forms';
+import type { PrismaService } from '../prisma/prisma.service.js';
+import { computeAutonomy } from '../operations/automation/stock-autonomy.js';
+import type { FormLookups, OpenBreedingRef, RabbitRef } from './assistant-forms.js';
 
 /**
  * Lectures (et uniquement des lectures) des données d'une ferme,

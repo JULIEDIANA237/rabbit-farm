@@ -1,9 +1,9 @@
 import type { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 
-import { PrismaService } from '../src/prisma/prisma.service';
-import { SupabaseStorageService } from '../src/storage/supabase-storage.service';
-import { createTestApp, daysAgo, gqlOk, registerFarm } from './utils/graphql';
+import { PrismaService } from '../src/prisma/prisma.service.js';
+import { SupabaseStorageService } from '../src/storage/supabase-storage.service.js';
+import { createTestApp, daysAgo, gqlOk, registerFarm } from './utils/graphql.js';
 
 /**
  * Photos des lapins par l'API REST, avec un stockage simulé.

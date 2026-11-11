@@ -2,10 +2,10 @@ import type { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { MockLanguageModelV4 } from 'ai/test';
 
-import { ASSISTANT_CONFIG, ASSISTANT_MODEL } from '../src/assistant/assistant.service';
-import { readAiConfig } from '../src/assistant/ai-config';
-import { MailService, type MailMessage } from '../src/mail/mail.service';
-import { createTestApp, gql, gqlOk, registerFarm } from './utils/graphql';
+import { ASSISTANT_CONFIG, ASSISTANT_MODEL } from '../src/assistant/assistant.service.js';
+import { readAiConfig } from '../src/assistant/ai-config.js';
+import { MailService, type MailMessage } from '../src/mail/mail.service.js';
+import { createTestApp, gql, gqlOk, registerFarm } from './utils/graphql.js';
 
 /**
  * Mot de passe oublié, notifications (abonnement + tâche planifiée) et

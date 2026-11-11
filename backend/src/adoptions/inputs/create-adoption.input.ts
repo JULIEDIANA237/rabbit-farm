@@ -1,5 +1,5 @@
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
-import { AdoptionReason } from '../graphql/adoption-reason.enum';
+import { AdoptionReason } from '../graphql/adoption-reason.enum.js';
 
 @InputType()
 export class CreateAdoptionInput {

@@ -9,31 +9,31 @@ import {
 
 import { UseGuards } from '@nestjs/common';
 
-import { FarmRole } from '../auth/graphql/farm-role.enum';
+import { FarmRole } from '../auth/graphql/farm-role.enum.js';
 
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
 
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import { Roles } from '../auth/decorators/roles.decorator';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import { Roles } from '../auth/decorators/roles.decorator.js';
 
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
-import { CreateRabbitInput } from './inputs/create-rabbit.input';
-import { UpdateRabbitInput } from './inputs/update-rabbit.input';
-import { AddRabbitIdentificationInput } from './inputs/add-rabbit-identification.input';
-import { MoveRabbitInput } from './inputs/move-rabbit.input';
-import { RabbitCageMovementModel } from './models/rabbit-cage-movement.model';
+import { CreateRabbitInput } from './inputs/create-rabbit.input.js';
+import { UpdateRabbitInput } from './inputs/update-rabbit.input.js';
+import { AddRabbitIdentificationInput } from './inputs/add-rabbit-identification.input.js';
+import { MoveRabbitInput } from './inputs/move-rabbit.input.js';
+import { RabbitCageMovementModel } from './models/rabbit-cage-movement.model.js';
 
-import { RabbitModel } from './models/rabbit.model';
-import { RabbitIdentificationModel } from './models/rabbit-identification.model';
+import { RabbitModel } from './models/rabbit.model.js';
+import { RabbitIdentificationModel } from './models/rabbit-identification.model.js';
 
-import { RabbitsService } from './rabbits.service';
-import { TraceabilityService } from './traceability.service';
-import { RabbitTraceabilityModel } from './models/traceability.model';
-import { RabbitsPaginationInput } from './inputs/rabbits-pagination.input';
-import { RabbitPageModel } from './models/paginated-rabbits.model';
-//import { PaginatedRabbitsModel } from './models/paginated-rabbits.model';
+import { RabbitsService } from './rabbits.service.js';
+import { TraceabilityService } from './traceability.service.js';
+import { RabbitTraceabilityModel } from './models/traceability.model.js';
+import { RabbitsPaginationInput } from './inputs/rabbits-pagination.input.js';
+import { RabbitPageModel } from './models/paginated-rabbits.model.js';
+//import { PaginatedRabbitsModel } from './models/paginated-rabbits.model.js';
 
 @Resolver(() => RabbitModel)
 @UseGuards(

@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
-import { FarmModel } from '../../farms/models/farm.model';
-import { FarmRole } from '../graphql/farm-role.enum';
+import { FarmModel } from '../../farms/models/farm.model.js';
+import { FarmRole } from '../graphql/farm-role.enum.js';
 
 @ObjectType()
 export class MeModel {

@@ -1,10 +1,10 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { Throttle } from '@nestjs/throttler';
+import { Throttle } from '../common/throttle/throttle.js';
 
-import { AuthService } from './auth.service';
-import { RegisterInput } from './dto/register.input';
-import { LoginInput } from './dto/login.input';
-import { AuthModel } from './models/auth.model';
+import { AuthService } from './auth.service.js';
+import { RegisterInput } from './dto/register.input.js';
+import { LoginInput } from './dto/login.input.js';
+import { AuthModel } from './models/auth.model.js';
 
 @Resolver(() => AuthModel)
 export class AuthResolver {

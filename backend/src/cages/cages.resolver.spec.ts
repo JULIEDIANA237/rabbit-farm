@@ -1,10 +1,10 @@
 import { PassportModule } from '@nestjs/passport';
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service.js';
 
-import { CagesResolver } from './cages.resolver';
-import { CagesService } from './cages.service';
+import { CagesResolver } from './cages.resolver.js';
+import { CagesService } from './cages.service.js';
 
 describe('CagesResolver', () => {
   let resolver: CagesResolver;

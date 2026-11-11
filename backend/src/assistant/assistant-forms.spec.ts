@@ -1,4 +1,4 @@
-import { prepareForm, prefillHref, type FormLookups, type RabbitRef } from './assistant-forms';
+import { prepareForm, prefillHref, type FormLookups, type RabbitRef } from './assistant-forms.js';
 
 const rabbits: RabbitRef[] = [
   { id: 'f-1', code: 'F12', sex: 'FEMALE', status: 'ACTIVE' },

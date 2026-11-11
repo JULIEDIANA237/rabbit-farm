@@ -4,7 +4,7 @@ import {
   InputType,
 } from '@nestjs/graphql';
 
-import { SectionType } from '../graphql/section-type.enum';
+import { SectionType } from '../graphql/section-type.enum.js';
 
 @InputType()
 export class UpdateSectionInput {

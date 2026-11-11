@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { FarmsService } from './farms.service';
-import { FarmsResolver } from './farms.resolver';
-import { AuthModule } from '../auth/auth.module';
+import { FarmsService } from './farms.service.js';
+import { FarmsResolver } from './farms.resolver.js';
+import { AuthModule } from '../auth/auth.module.js';
 
 @Module({
   imports: [AuthModule],
