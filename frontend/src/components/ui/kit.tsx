@@ -7,8 +7,8 @@ import type {
   SelectHTMLAttributes,
   TextareaHTMLAttributes,
 } from 'react';
-import { useEffect } from 'react';
-import { AlertTriangle, Inbox, Loader2, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { AlertTriangle, Eye, EyeOff, Inbox, Loader2, X } from 'lucide-react';
 
 import { errorMessage } from '@/lib/format';
 
@@ -51,7 +51,7 @@ export function Card({
   className?: string;
 }) {
   return (
-    <section className={`rounded-2xl border border-slate-200 bg-white p-5 shadow-sm ${className}`}>
+    <section className={`min-w-0 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 ${className}`}>
       {(title || actions) && (
         <div className="mb-4 flex items-start justify-between gap-3">
           <div>
@@ -153,7 +153,7 @@ export function Button({
 /* ---------------------------------------------------------------- Form fields */
 
 const inputClass =
-  'w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-100';
+  'w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-base text-slate-900 shadow-sm focus:border-emerald-500 sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-100';
 
 export function Field({
   label,
@@ -177,6 +177,25 @@ export function Field({
 
 export function Input(props: InputHTMLAttributes<HTMLInputElement>) {
   return <input {...props} className={`${inputClass} ${props.className ?? ''}`} />;
+}
+
+/** Champ mot de passe avec un œil pour afficher / masquer la saisie. */
+export function PasswordInput(props: Omit<InputHTMLAttributes<HTMLInputElement>, 'type'>) {
+  const [visible, setVisible] = useState(false);
+  return (
+    <div className="relative">
+      <input {...props} type={visible ? 'text' : 'password'} className={`${inputClass} pr-11 ${props.className ?? ''}`} />
+      <button
+        type="button"
+        onClick={() => setVisible((v) => !v)}
+        aria-label={visible ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+        aria-pressed={visible}
+        className="absolute inset-y-0 right-0 flex w-11 items-center justify-center rounded-r-xl text-slate-500 hover:text-slate-800"
+      >
+        {visible ? <EyeOff size={18} /> : <Eye size={18} />}
+      </button>
+    </div>
+  );
 }
 
 export function Textarea(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
@@ -264,35 +283,76 @@ export function Table<T extends { id: string }>({
   onRowClick?: (row: T) => void;
 }) {
   if (!rows.length) return <Empty title={empty} />;
+  const [first, ...rest] = columns;
+  const details = rest.filter((c) => c.header);
+  const actions = rest.filter((c) => !c.header);
   return (
-    <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <table className="min-w-full divide-y divide-slate-100 text-sm">
-        <thead className="bg-slate-50">
-          <tr>
-            {columns.map((c) => (
-              <th key={c.header} className={`px-4 py-3 text-left font-semibold text-slate-600 ${c.className ?? ''}`}>
-                {c.header}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-slate-100">
-          {rows.map((row) => (
-            <tr
-              key={row.id}
-              onClick={onRowClick ? () => onRowClick(row) : undefined}
-              className={onRowClick ? 'cursor-pointer hover:bg-slate-50' : ''}
-            >
+    <>
+      {/* Téléphone : une carte par ligne, plus lisible qu'un tableau qui défile. */}
+      <ul className="space-y-3 sm:hidden">
+        {rows.map((row) => (
+          <li
+            key={row.id}
+            onClick={onRowClick ? () => onRowClick(row) : undefined}
+            className={`rounded-2xl border border-slate-200 bg-white p-4 text-sm shadow-sm ${onRowClick ? 'cursor-pointer active:bg-slate-50' : ''}`}
+          >
+            {first && (
+              <div className="mb-2 font-semibold text-slate-900">
+                {first.header && <span className="mr-1 text-xs font-normal text-slate-500">{first.header} :</span>}
+                {first.cell(row)}
+              </div>
+            )}
+            {details.length > 0 && (
+              <dl className="grid grid-cols-2 gap-x-3 gap-y-2">
+                {details.map((c) => (
+                  <div key={c.header} className="min-w-0">
+                    <dt className="text-xs text-slate-500">{c.header}</dt>
+                    <dd className="break-words text-slate-800">{c.cell(row)}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+            {actions.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-2 border-t border-slate-100 pt-3" onClick={(e) => e.stopPropagation()}>
+                {actions.map((c, i) => (
+                  // Les boutons d'action passent à la ligne au lieu de déborder.
+                  <div key={i} className="min-w-0 max-w-full [&_.flex]:flex-wrap [&_.flex]:gap-2">{c.cell(row)}</div>
+                ))}
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
+
+      <div className="hidden overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm sm:block">
+        <table className="min-w-full divide-y divide-slate-100 text-sm">
+          <thead className="bg-slate-50">
+            <tr>
               {columns.map((c) => (
-                <td key={c.header} className={`whitespace-nowrap px-4 py-3 text-slate-700 ${c.className ?? ''}`}>
-                  {c.cell(row)}
-                </td>
+                <th key={c.header} className={`px-4 py-3 text-left font-semibold text-slate-600 ${c.className ?? ''}`}>
+                  {c.header}
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody className="divide-y divide-slate-100">
+            {rows.map((row) => (
+              <tr
+                key={row.id}
+                onClick={onRowClick ? () => onRowClick(row) : undefined}
+                className={onRowClick ? 'cursor-pointer hover:bg-slate-50' : ''}
+              >
+                {columns.map((c) => (
+                  <td key={c.header} className={`whitespace-nowrap px-4 py-3 text-slate-700 ${c.className ?? ''}`}>
+                    {c.cell(row)}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 }
 

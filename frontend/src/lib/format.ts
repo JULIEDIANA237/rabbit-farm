@@ -38,8 +38,12 @@ export function ageInDays(birthDate?: string | null): number | null {
 
 export function errorMessage(error: unknown): string {
   if (!error) return '';
-  if (error instanceof Error) return error.message;
-  return String(error);
+  const message = error instanceof Error ? error.message : String(error);
+  // Erreur réseau (API éteinte, mauvaise adresse, CORS…) : message compréhensible.
+  if (/failed to fetch|networkerror|load failed|network request failed/i.test(message)) {
+    return 'Serveur injoignable. Vérifie ta connexion internet, puis réessaie.';
+  }
+  return message;
 }
 
 /** Retire les chaînes vides pour ne pas envoyer "" au lieu de null. */
