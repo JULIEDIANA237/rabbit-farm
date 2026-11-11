@@ -385,7 +385,7 @@ export function RabbitForm() {
                 </button>
 
                 <p className="text-center text-xs text-slate-400 sm:text-left">
-                  JPG, PNG ou WEBP · 10 Mo max.
+                  JPG, PNG ou WEBP · 5 Mo max.
                 </p>
               </div>
             </div>

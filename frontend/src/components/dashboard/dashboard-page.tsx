@@ -10,7 +10,10 @@ import {
   Syringe,
   Wheat,
   Home,
+  RefreshCw,
 } from 'lucide-react';
+import { useState } from 'react';
+import { useApolloClient } from '@apollo/client/react';
 
 import { formatMoney } from '@/lib/format';
 import { HealthActionsCard } from './health-actions-card';
@@ -54,6 +57,24 @@ export function DashboardPage() {
     error,
     refetch,
   } = useDashboard();
+  const client = useApolloClient();
+  const [refreshing, setRefreshing] = useState(false);
+  const [refreshedAt, setRefreshedAt] = useState<Date | null>(null);
+  const [refreshError, setRefreshError] = useState<string | null>(null);
+
+  /** Recharge depuis le serveur tout ce qui est affiché (KPI, point du jour, cartes). */
+  async function refresh() {
+    setRefreshing(true);
+    setRefreshError(null);
+    try {
+      await client.refetchQueries({ include: 'active' });
+      setRefreshedAt(new Date());
+    } catch (caught) {
+      setRefreshError(caught instanceof Error ? caught.message : 'Actualisation impossible.');
+    } finally {
+      setRefreshing(false);
+    }
+  }
 
   if (loading && !dashboard) {
     return <DashboardSkeleton />;
@@ -109,12 +130,24 @@ export function DashboardPage() {
           </p>
         </div>
 
-        <button
-          onClick={() => refetch()}
-          className="w-fit rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50"
-        >
-          Actualiser
-        </button>
+        <div className="flex flex-col items-start gap-1 sm:items-end">
+          <button
+            type="button"
+            onClick={() => void refresh()}
+            disabled={refreshing}
+            className="inline-flex w-fit items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 disabled:opacity-60"
+          >
+            <RefreshCw size={16} className={refreshing ? 'animate-spin' : undefined} />
+            {refreshing ? 'Actualisation…' : 'Actualiser'}
+          </button>
+          {refreshError ? (
+            <p className="text-xs text-red-600">{refreshError}</p>
+          ) : refreshedAt ? (
+            <p className="text-xs text-slate-500">
+              Mis à jour à {refreshedAt.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+            </p>
+          ) : null}
+        </div>
       </header>
 
       <BriefingCard />
