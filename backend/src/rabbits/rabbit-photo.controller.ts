@@ -1,7 +1,9 @@
 import {
+  Body,
   Controller,
   Delete,
   Param,
+  Patch,
   Post,
   UploadedFile,
   UseGuards,
@@ -37,10 +39,27 @@ export class RabbitPhotoController {
 
     @CurrentUser()
     currentUser: CurrentUserType,
+
+    /** « false » pour ajouter la photo à la galerie sans changer la principale. */
+    @Body('isPrimary') isPrimary?: string,
   ) {
     return this.photoService.upload(
       rabbitId,
       file,
+      currentUser,
+      isPrimary !== 'false',
+    );
+  }
+
+  @Patch('photos/:photoId/primary')
+  async setPrimary(
+    @Param('photoId') photoId: string,
+
+    @CurrentUser()
+    currentUser: CurrentUserType,
+  ) {
+    return this.photoService.setPrimary(
+      photoId,
       currentUser,
     );
   }
