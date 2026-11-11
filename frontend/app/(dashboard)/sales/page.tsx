@@ -157,6 +157,14 @@ export default function SalesPage() {
               cell: (s) =>
                 s.status !== 'CANCELLED' && (
                   <div className="flex gap-1">
+                    <a
+                      href={`/print/invoice/${s.id}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded-xl border border-slate-200 px-3 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50"
+                    >
+                      {s.remainingAmount > 0 ? 'Facture' : 'Reçu'}
+                    </a>
                     {s.remainingAmount > 0 && (
                       <Button className="px-3 py-1 text-xs" onClick={() => setPaying(s)}>Paiement</Button>
                     )}

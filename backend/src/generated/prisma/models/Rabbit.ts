@@ -1021,10 +1021,6 @@ export type EnumRabbitPurposeFieldUpdateOperationsInput = {
   set?: $Enums.RabbitPurpose
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type NullableDecimalFieldUpdateOperationsInput = {
   set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   increment?: runtime.Decimal | runtime.DecimalJsLike | number | string

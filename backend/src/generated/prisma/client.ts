@@ -45,6 +45,21 @@ export { Prisma }
  */
 export type User = Prisma.UserModel
 /**
+ * Model PasswordResetToken
+ * Lien de réinitialisation du mot de passe (on ne garde que l'empreinte du jeton).
+ */
+export type PasswordResetToken = Prisma.PasswordResetTokenModel
+/**
+ * Model PushSubscription
+ * Abonnement aux notifications du navigateur (rappels des tâches du jour).
+ */
+export type PushSubscription = Prisma.PushSubscriptionModel
+/**
+ * Model AiUsage
+ * Nombre de demandes à l'assistant IA par ferme et par jour (limite quotidienne).
+ */
+export type AiUsage = Prisma.AiUsageModel
+/**
  * Model Farm
  * 
  */
