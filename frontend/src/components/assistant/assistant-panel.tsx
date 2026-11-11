@@ -75,6 +75,16 @@ export function AssistantPanel() {
 
   const lastActivity = useRef(0);
 
+  // Plein écran sur téléphone : la page derrière ne doit pas défiler.
+  useEffect(() => {
+    if (!open || window.matchMedia('(min-width: 1024px)').matches) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [open]);
+
   if (open && !loaded) {
     setLoaded(true);
     setMessages(loadChat());
@@ -143,16 +153,16 @@ export function AssistantPanel() {
       {open && (
         <section
           aria-label="Assistant IA"
-          className="fixed inset-0 z-50 flex flex-col bg-white shadow-2xl lg:inset-auto lg:bottom-6 lg:right-6 lg:h-[640px] lg:max-h-[calc(100vh-3rem)] lg:w-[420px] lg:rounded-3xl lg:border lg:border-slate-200"
+          className="fixed inset-x-0 top-0 z-50 flex h-[100dvh] flex-col bg-white pt-[env(safe-area-inset-top)] shadow-2xl lg:inset-auto lg:bottom-6 lg:right-6 lg:h-[640px] lg:max-h-[calc(100vh-3rem)] lg:w-[420px] lg:pt-0 lg:rounded-3xl lg:border lg:border-slate-200"
         >
-          <header className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
-            <div>
+          <header className="flex items-start justify-between gap-2 border-b border-slate-100 px-4 py-3">
+            <div className="min-w-0">
               <p className="flex items-center gap-2 font-semibold text-slate-900">
                 <Sparkles size={18} className="text-violet-600" /> Assistant RabbitFarm
               </p>
-              <p className="text-xs text-slate-500">Il lit tes données et prépare des fiches. Rien n’est enregistré sans toi.</p>
+              <p className="text-xs leading-snug text-slate-500">Il lit tes données et prépare des fiches. Rien n’est enregistré sans toi.</p>
             </div>
-            <div className="flex gap-1">
+            <div className="flex shrink-0 gap-1">
               {messages.length > 0 && (
                 <button
                   type="button"
@@ -161,9 +171,10 @@ export function AssistantPanel() {
                     reset();
                     setTimedOut(false);
                   }}
-                  className="flex items-center gap-1 rounded-lg px-2 py-2 text-xs font-medium text-slate-600 hover:bg-slate-100"
+                  aria-label="Nouvelle discussion"
+                  className="flex items-center gap-1 rounded-lg p-2 text-xs font-medium text-slate-600 hover:bg-slate-100 sm:px-2"
                 >
-                  <Trash2 size={14} /> Nouvelle discussion
+                  <Trash2 size={16} /> <span className="hidden sm:inline">Nouvelle discussion</span>
                 </button>
               )}
               <button type="button" aria-label="Fermer l’assistant" onClick={() => setOpen(false)} className="rounded-lg p-2 text-slate-500 hover:bg-slate-100">
@@ -172,7 +183,7 @@ export function AssistantPanel() {
             </div>
           </header>
 
-          <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
+          <div className="min-h-0 flex-1 space-y-3 overflow-y-auto overscroll-contain px-4 py-4">
             {messages.length === 0 && (
               <div className="space-y-3">
                 <p className="text-sm text-slate-600">
@@ -196,7 +207,7 @@ export function AssistantPanel() {
             {messages.map((message, index) => (
               <div key={index} className={message.role === 'user' ? 'flex justify-end' : 'flex justify-start'}>
                 <div
-                  className={`max-w-[88%] space-y-2 rounded-2xl px-3 py-2 text-sm ${
+                  className={`max-w-[88%] min-w-0 space-y-2 rounded-2xl px-3 py-2 text-sm [overflow-wrap:anywhere] ${
                     message.role === 'user' ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-800'
                   }`}
                 >
@@ -236,7 +247,7 @@ export function AssistantPanel() {
           </div>
 
           <form
-            className="flex items-end gap-2 border-t border-slate-100 p-3"
+            className="flex items-end gap-2 border-t border-slate-100 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
             onSubmit={(event) => {
               event.preventDefault();
               send(text).catch(() => undefined);
@@ -253,14 +264,14 @@ export function AssistantPanel() {
               }}
               rows={1}
               placeholder="Écris ou dicte ta question…"
-              className="max-h-32 w-full resize-none rounded-xl border border-slate-200 px-3 py-2 text-sm focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-100"
+              className="max-h-32 min-w-0 flex-1 resize-none rounded-xl border border-slate-200 px-3 py-2 text-base focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-100 sm:text-sm"
             />
             {speech.supported && (
               <button
                 type="button"
                 onClick={speech.toggle}
                 aria-label={speech.listening ? 'Arrêter la dictée' : 'Dicter'}
-                className={`rounded-xl p-2.5 ${speech.listening ? 'animate-pulse bg-red-600 text-white' : 'text-violet-700 ring-1 ring-violet-200'}`}
+                className={`shrink-0 rounded-xl p-2.5 ${speech.listening ? 'animate-pulse bg-red-600 text-white' : 'text-violet-700 ring-1 ring-violet-200'}`}
               >
                 {speech.listening ? <MicOff size={18} /> : <Mic size={18} />}
               </button>
@@ -269,7 +280,7 @@ export function AssistantPanel() {
               type="submit"
               aria-label="Envoyer"
               disabled={!text.trim() || loading}
-              className="rounded-xl bg-violet-600 p-2.5 text-white disabled:opacity-50"
+              className="shrink-0 rounded-xl bg-violet-600 p-2.5 text-white disabled:opacity-50"
             >
               <SendHorizontal size={18} />
             </button>

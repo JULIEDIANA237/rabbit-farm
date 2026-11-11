@@ -21,6 +21,10 @@ export const viewport: Viewport = {
   themeColor: '#059669',
   width: 'device-width',
   initialScale: 1,
+  // Le clavier du téléphone réduit la page au lieu de recouvrir les champs,
+  // et le contenu peut aller sous l'encoche (marges via safe-area).
+  interactiveWidget: 'resizes-content',
+  viewportFit: 'cover',
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
