@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { FarmModel } from '../../farms/models/farm.model';
+import { FarmModel } from '../../farms/models/farm.model.js';
 
 @ObjectType()
 export class AuthModel {

@@ -7,7 +7,7 @@ import {
   kinshipCoefficient,
   wouldCreateCycle,
   type PedigreeEntry,
-} from './genealogy.utils';
+} from './genealogy.utils.js';
 
 /**
  * Arbre de test :

@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { PrismaService } from '../prisma/prisma.service';
-import type { CurrentUserType } from '../auth/types/current-user.type';
-import { RabbitStatus } from '../generated/prisma/client';
+import { PrismaService } from '../prisma/prisma.service.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
+import { RabbitStatus } from '../generated/prisma/client.js';
 
-import { mapRabbit } from './rabbits.service';
+import { mapRabbit } from './rabbits.service.js';
 
 type TraceEvent = {
   date: Date;

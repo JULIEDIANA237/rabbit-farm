@@ -1,10 +1,10 @@
 import { PassportModule } from '@nestjs/passport';
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service.js';
 
-import { UsersResolver } from './users.resolver';
-import { UsersService } from './users.service';
+import { UsersResolver } from './users.resolver.js';
+import { UsersService } from './users.service.js';
 
 describe('UsersResolver', () => {
   let resolver: UsersResolver;

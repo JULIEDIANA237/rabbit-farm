@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 
-import { GeneticsService } from './genetics.service';
-import { GeneticsResolver } from './genetics.resolver';
-import { GenealogyService } from './genealogy.service';
-import { GenealogyResolver } from './genealogy.resolver';
+import { GeneticsService } from './genetics.service.js';
+import { GeneticsResolver } from './genetics.resolver.js';
+import { GenealogyService } from './genealogy.service.js';
+import { GenealogyResolver } from './genealogy.resolver.js';
 
-import { AuthModule } from '../auth/auth.module';
+import { AuthModule } from '../auth/auth.module.js';
 
 @Module({
   imports: [AuthModule],

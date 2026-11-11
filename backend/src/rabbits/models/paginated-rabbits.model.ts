@@ -1,6 +1,6 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 
-import { RabbitModel } from './rabbit.model';
+import { RabbitModel } from './rabbit.model.js';
 
 @ObjectType()
 export class RabbitPageModel {

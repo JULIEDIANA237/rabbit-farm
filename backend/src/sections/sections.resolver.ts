@@ -8,22 +8,22 @@ import {
 
 import { UseGuards } from '@nestjs/common';
 
-import { FarmRole } from '../auth/graphql/farm-role.enum';
+import { FarmRole } from '../auth/graphql/farm-role.enum.js';
 
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
 
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import { Roles } from '../auth/decorators/roles.decorator';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import { Roles } from '../auth/decorators/roles.decorator.js';
 
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
-import { CreateSectionInput } from './inputs/create-section.input';
-import { UpdateSectionInput } from './inputs/update-section.input';
+import { CreateSectionInput } from './inputs/create-section.input.js';
+import { UpdateSectionInput } from './inputs/update-section.input.js';
 
-import { SectionModel } from './models/section.model';
+import { SectionModel } from './models/section.model.js';
 
-import { SectionsService } from './sections.service';
+import { SectionsService } from './sections.service.js';
 
 @Resolver(() => SectionModel)
 @UseGuards(

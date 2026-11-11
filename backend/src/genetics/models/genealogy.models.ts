@@ -1,9 +1,9 @@
 import { Field, Float, ID, Int, ObjectType } from '@nestjs/graphql';
 
-import { CompatibilityLevel } from '../graphql/compatibility-level.enum';
-import { RabbitSummaryModel } from '../../common/models/rabbit-summary.model';
-import { RabbitSex } from '../../rabbits/graphql/rabbit-sex.enum';
-import { RabbitStatus } from '../../rabbits/graphql/rabbit-status.enum';
+import { CompatibilityLevel } from '../graphql/compatibility-level.enum.js';
+import { RabbitSummaryModel } from '../../common/models/rabbit-summary.model.js';
+import { RabbitSex } from '../../rabbits/graphql/rabbit-sex.enum.js';
+import { RabbitStatus } from '../../rabbits/graphql/rabbit-status.enum.js';
 
 @ObjectType()
 export class CompatibilityReasonModel {

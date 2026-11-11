@@ -1,11 +1,11 @@
 import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
 
-import { DashboardTaskModel } from './dashboard-task.model';
-import { DashboardBreedingActionModel } from './dashboard-breeding-action.model';
-import { DashboardBirthModel } from './dashboard-birth.model';
-import { DashboardWeaningModel } from './dashboard-weaning.model';
-import { DashboardStockAlertModel } from './dashboard-stock-alert.model';
-import { DashboardHealthActionModel } from './dashboard-health-action.model';
+import { DashboardTaskModel } from './dashboard-task.model.js';
+import { DashboardBreedingActionModel } from './dashboard-breeding-action.model.js';
+import { DashboardBirthModel } from './dashboard-birth.model.js';
+import { DashboardWeaningModel } from './dashboard-weaning.model.js';
+import { DashboardStockAlertModel } from './dashboard-stock-alert.model.js';
+import { DashboardHealthActionModel } from './dashboard-health-action.model.js';
 
 @ObjectType()
 export class DashboardModel {

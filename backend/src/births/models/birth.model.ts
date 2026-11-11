@@ -1,6 +1,6 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
-import { RabbitSummaryModel } from '../../common/models/rabbit-summary.model';
+import { RabbitSummaryModel } from '../../common/models/rabbit-summary.model.js';
 
 @ObjectType()
 export class BirthModel {

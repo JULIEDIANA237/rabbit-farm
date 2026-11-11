@@ -20,9 +20,9 @@ import {
 
 import { extname } from 'path';
 
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
 
-import { RabbitPhotosService } from './rabbit-photos.service';
+import { RabbitPhotosService } from './rabbit-photos.service.js';
 
 @Controller('rabbits')
 @UseGuards(JwtAuthGuard)

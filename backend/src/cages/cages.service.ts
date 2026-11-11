@@ -5,14 +5,14 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { CageStatus } from '../generated/prisma/client';
+import { CageStatus } from '../generated/prisma/client.js';
 
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service.js';
 
-import { CurrentUserType } from '../auth/types/current-user.type';
+import { CurrentUserType } from '../auth/types/current-user.type.js';
 
-import { CreateCageInput } from './inputs/create-cage.input';
-import { UpdateCageInput } from './inputs/update-cage.input';
+import { CreateCageInput } from './inputs/create-cage.input.js';
+import { UpdateCageInput } from './inputs/update-cage.input.js';
 
 @Injectable()
 export class CagesService {

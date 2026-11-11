@@ -7,25 +7,25 @@ import {
 } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 
-import { LittersService } from './litters.service';
-import { LitterModel } from './models/litter.model';
-import { CreateLitterInput } from './inputs/create-litter.input';
+import { LittersService } from './litters.service.js';
+import { LitterModel } from './models/litter.model.js';
+import { CreateLitterInput } from './inputs/create-litter.input.js';
 
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import type { CurrentUserType } from '../auth/types/current-user.type';
-import { Roles } from '../auth/decorators/roles.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
+import { Roles } from '../auth/decorators/roles.decorator.js';
 
-import { FarmRole } from '../generated/prisma/client';
+import { FarmRole } from '../generated/prisma/client.js';
 
-import { CreateLitterRabbitsInput } from './inputs/create-litter-rabbits.input';
-import { RabbitModel } from '../rabbits/models/rabbit.model';
+import { CreateLitterRabbitsInput } from './inputs/create-litter-rabbits.input.js';
+import { RabbitModel } from '../rabbits/models/rabbit.model.js';
 
-import { RabbitCageMovementModel } from '../rabbits/models/rabbit-cage-movement.model';
+import { RabbitCageMovementModel } from '../rabbits/models/rabbit-cage-movement.model.js';
 
-import { AssignLitterRabbitsToCageInput } from './inputs/assign-litter-rabbits-to-cage.input';
-import { LitterDetailModel } from './models/litter-detail.model';
+import { AssignLitterRabbitsToCageInput } from './inputs/assign-litter-rabbits-to-cage.input.js';
+import { LitterDetailModel } from './models/litter-detail.model.js';
 
 @Resolver(() => LitterModel)
 @UseGuards(JwtAuthGuard, RolesGuard)

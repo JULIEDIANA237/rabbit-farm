@@ -9,17 +9,17 @@ import {
 } from '@nestjs/common';
 import { generateText, Output, stepCountIs, type LanguageModel, type ModelMessage } from 'ai';
 
-import { BreedingStatus, TaskStatus } from '../generated/prisma/client';
-import { PrismaService } from '../prisma/prisma.service';
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import { BreedingStatus, TaskStatus } from '../generated/prisma/client.js';
+import { PrismaService } from '../prisma/prisma.service.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
-import type { AiConfig } from './ai-config';
-import { describeAiError, isOverloaded } from './ai-error';
-import { FORM_LABELS, FORM_SCHEMAS, prepareForm, type AssistantForm, type PreparedForm } from './assistant-forms';
-import { buildAssistantTools } from './assistant-tools';
-import { buildBriefing, type BriefingItem } from './briefing';
-import { FarmReader } from './farm-reader';
-import type { AskAssistantInput, FillFormInput } from './inputs/assistant.inputs';
+import type { AiConfig } from './ai-config.js';
+import { describeAiError, isOverloaded } from './ai-error.js';
+import { FORM_LABELS, FORM_SCHEMAS, prepareForm, type AssistantForm, type PreparedForm } from './assistant-forms.js';
+import { buildAssistantTools } from './assistant-tools.js';
+import { buildBriefing, type BriefingItem } from './briefing.js';
+import { FarmReader } from './farm-reader.js';
+import type { AskAssistantInput, FillFormInput } from './inputs/assistant.inputs.js';
 
 export const ASSISTANT_MODEL = Symbol('ASSISTANT_MODEL');
 export const ASSISTANT_CONFIG = Symbol('ASSISTANT_CONFIG');

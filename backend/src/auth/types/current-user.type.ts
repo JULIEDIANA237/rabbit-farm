@@ -1,4 +1,4 @@
-import { FarmRole } from '../../generated/prisma/client';
+import { FarmRole } from '../../generated/prisma/client.js';
 
 export interface CurrentUserType {
   userId: string;

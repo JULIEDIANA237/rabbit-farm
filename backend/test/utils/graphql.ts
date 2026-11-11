@@ -2,9 +2,9 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, type TestingModuleBuilder } from '@nestjs/testing';
 import request from 'supertest';
 
-import { AppModule } from '../../src/app.module';
-import { PrismaService } from '../../src/prisma/prisma.service';
-import { resetDatabase } from './database';
+import { AppModule } from '../../src/app.module.js';
+import { PrismaService } from '../../src/prisma/prisma.service.js';
+import { resetDatabase } from './database.js';
 
 export async function createTestApp(
   configure: (builder: TestingModuleBuilder) => TestingModuleBuilder = (builder) => builder,

@@ -5,14 +5,14 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { FarmRole } from '../generated/prisma/client';
+import { FarmRole } from '../generated/prisma/client.js';
 
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service.js';
 
-import { AddMemberInput } from './inputs/add-member.input';
-import { UpdateMemberRoleInput } from './inputs/update-member-role.input';
+import { AddMemberInput } from './inputs/add-member.input.js';
+import { UpdateMemberRoleInput } from './inputs/update-member-role.input.js';
 
-import { CurrentUserType } from '../auth/types/current-user.type';
+import { CurrentUserType } from '../auth/types/current-user.type.js';
 
 @Injectable()
 export class UsersService {

@@ -4,11 +4,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { PrismaService } from '../prisma/prisma.service';
-import type { CurrentUserType } from '../auth/types/current-user.type';
-import { CreateHealthRecordInput } from './inputs/create-health-record.input';
-import { TaskAutomationService } from '../operations/automation/task-automation.service';
-import { HealthRecordType } from '../generated/prisma/client';
+import { PrismaService } from '../prisma/prisma.service.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
+import { CreateHealthRecordInput } from './inputs/create-health-record.input.js';
+import { TaskAutomationService } from '../operations/automation/task-automation.service.js';
+import { HealthRecordType } from '../generated/prisma/client.js';
 
 const recordInclude = { rabbit: { select: { code: true } } } as const;
 

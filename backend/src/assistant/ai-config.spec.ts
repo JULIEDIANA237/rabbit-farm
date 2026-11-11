@@ -1,4 +1,4 @@
-import { readAiConfig } from './ai-config';
+import { readAiConfig } from './ai-config.js';
 
 describe('readAiConfig', () => {
   it('utilise Gemini par défaut et se désactive sans clé', () => {

@@ -1,7 +1,7 @@
 import { Field, Float, ID, Int, ObjectType } from '@nestjs/graphql';
 
-import { PaymentMethod } from '../graphql/payment-method.enum';
-import { SaleStatus } from '../graphql/sale-status.enum';
+import { PaymentMethod } from '../graphql/payment-method.enum.js';
+import { SaleStatus } from '../graphql/sale-status.enum.js';
 
 @ObjectType()
 export class SaleItemModel {

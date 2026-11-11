@@ -1,6 +1,6 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 
-import { FarmRole } from '../../auth/graphql/farm-role.enum';
+import { FarmRole } from '../../auth/graphql/farm-role.enum.js';
 
 @InputType()
 export class UpdateMemberRoleInput {

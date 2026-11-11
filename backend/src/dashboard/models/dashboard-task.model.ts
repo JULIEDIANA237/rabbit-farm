@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
-import { TaskPriority } from '../../operations/graphql/task-priority.enum';
-import { TaskStatus } from '../../operations/graphql/task-status.enum';
+import { TaskPriority } from '../../operations/graphql/task-priority.enum.js';
+import { TaskStatus } from '../../operations/graphql/task-status.enum.js';
 
 @ObjectType()
 export class DashboardTaskModel {

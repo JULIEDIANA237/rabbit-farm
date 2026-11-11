@@ -1,6 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
-import { HealthRecordType } from '../../health/graphql/health-record-type.enum';
+import { HealthRecordType } from '../../health/graphql/health-record-type.enum.js';
 
 @ObjectType()
 export class DashboardHealthActionModel {

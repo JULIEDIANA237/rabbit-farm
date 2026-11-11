@@ -4,7 +4,7 @@ import {
   computeBreedingCalendar,
   computeWeaningDate,
   diffInDays,
-} from './breeding-calendar';
+} from './breeding-calendar.js';
 
 describe('breeding-calendar', () => {
   const breedingDate = new Date('2026-09-10T00:00:00.000Z');

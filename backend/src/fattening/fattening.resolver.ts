@@ -7,23 +7,23 @@ import {
 } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 
-import { FatteningService } from './fattening.service';
-import { FatteningLotModel } from './models/fattening-lot.model';
-import { LotMembershipModel } from './models/lot-membership.model';
-import { WeighingModel } from './models/weighing.model';
-import { CreateFatteningLotInput } from './inputs/create-fattening-lot.input';
-import { AddLotMembersInput } from './inputs/add-lot-members.input';
-import { RemoveLotMembersInput } from './inputs/remove-lot-members.input';
-import { CompleteFatteningLotInput } from './inputs/complete-fattening-lot.input';
-import { CreateWeighingInput } from './inputs/create-weighing.input';
-import { MoveFatteningLotInput } from './inputs/move-fattening-lot.input';
-import { LotCageMovementModel } from './models/lot-cage-movement.model';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import type { CurrentUserType } from '../auth/types/current-user.type';
-import { FarmRole } from '../generated/prisma/client';
+import { FatteningService } from './fattening.service.js';
+import { FatteningLotModel } from './models/fattening-lot.model.js';
+import { LotMembershipModel } from './models/lot-membership.model.js';
+import { WeighingModel } from './models/weighing.model.js';
+import { CreateFatteningLotInput } from './inputs/create-fattening-lot.input.js';
+import { AddLotMembersInput } from './inputs/add-lot-members.input.js';
+import { RemoveLotMembersInput } from './inputs/remove-lot-members.input.js';
+import { CompleteFatteningLotInput } from './inputs/complete-fattening-lot.input.js';
+import { CreateWeighingInput } from './inputs/create-weighing.input.js';
+import { MoveFatteningLotInput } from './inputs/move-fattening-lot.input.js';
+import { LotCageMovementModel } from './models/lot-cage-movement.model.js';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
+import { Roles } from '../auth/decorators/roles.decorator.js';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
+import { FarmRole } from '../generated/prisma/client.js';
 
 @Resolver(() => FatteningLotModel)
 @UseGuards(JwtAuthGuard, RolesGuard)

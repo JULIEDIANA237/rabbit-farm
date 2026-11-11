@@ -1,5 +1,5 @@
 import { registerEnumType } from '@nestjs/graphql';
-import { InbreedingPolicy } from '../../generated/prisma/client';
+import { InbreedingPolicy } from '../../generated/prisma/client.js';
 
 registerEnumType(InbreedingPolicy, {
   name: 'InbreedingPolicy',

@@ -1,5 +1,5 @@
-import { describeNetworkError } from '../common/utils/network-error';
-import { API_KEY_VARS, type AiProvider } from './ai-config';
+import { describeNetworkError } from '../common/utils/network-error.js';
+import { API_KEY_VARS, type AiProvider } from './ai-config.js';
 
 /**
  * Explique pourquoi un appel au modèle a échoué, en français, pour

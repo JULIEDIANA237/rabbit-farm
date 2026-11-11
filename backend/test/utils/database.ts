@@ -1,4 +1,4 @@
-import type { PrismaService } from '../../src/prisma/prisma.service';
+import type { PrismaService } from '../../src/prisma/prisma.service.js';
 
 /**
  * Vide toutes les tables (sauf l'historique des migrations).

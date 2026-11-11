@@ -9,19 +9,19 @@ import {
   StockMovementType,
   TaskPriority,
   TaskStatus,
-} from '../generated/prisma/client';
+} from '../generated/prisma/client.js';
 
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service.js';
 
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
-import { CreateExpenseInput } from './inputs/create-expense.input';
-import { CreateInventoryItemInput } from './inputs/create-inventory-item.input';
-import { CreateStockMovementInput } from './inputs/create-stock-movement.input';
-import { CreateTaskInput } from './inputs/create-task.input';
-import { UpdateTaskInput } from './inputs/update-task.input';
-import { TaskAutomationService } from './automation/task-automation.service';
-import { computeAutonomy } from './automation/stock-autonomy';
+import { CreateExpenseInput } from './inputs/create-expense.input.js';
+import { CreateInventoryItemInput } from './inputs/create-inventory-item.input.js';
+import { CreateStockMovementInput } from './inputs/create-stock-movement.input.js';
+import { CreateTaskInput } from './inputs/create-task.input.js';
+import { UpdateTaskInput } from './inputs/update-task.input.js';
+import { TaskAutomationService } from './automation/task-automation.service.js';
+import { computeAutonomy } from './automation/stock-autonomy.js';
 
 const taskInclude = { rabbit: { select: { code: true } } } as const;
 

@@ -1,6 +1,6 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
-import { MortalityScope } from '../graphql/mortality-scope.enum';
+import { MortalityScope } from '../graphql/mortality-scope.enum.js';
 
 @ObjectType()
 export class MortalityModel {

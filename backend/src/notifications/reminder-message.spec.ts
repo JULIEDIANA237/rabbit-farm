@@ -1,4 +1,4 @@
-import { reminderMessage } from './reminder-message';
+import { reminderMessage } from './reminder-message.js';
 
 describe('reminderMessage', () => {
   it('résume la journée', () => {

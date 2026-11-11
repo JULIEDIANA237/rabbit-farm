@@ -1,12 +1,12 @@
 import {
   TaskPriority,
   TaskSourceType,
-} from '../../generated/prisma/enums';
+} from '../../generated/prisma/enums.js';
 import {
   addDays,
   BREEDING_CALENDAR,
   computeWeaningDate,
-} from '../../common/calendar/breeding-calendar';
+} from '../../common/calendar/breeding-calendar.js';
 
 /**
  * Planification des tâches générées par les événements métier (§47).

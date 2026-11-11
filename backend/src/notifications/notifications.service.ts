@@ -1,12 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 
-import { BreedingStatus, TaskStatus } from '../generated/prisma/client';
-import { PrismaService } from '../prisma/prisma.service';
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import { BreedingStatus, TaskStatus } from '../generated/prisma/client.js';
+import { PrismaService } from '../prisma/prisma.service.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
-import { readPushConfig, sendPush, type PushPayload, type PushResult } from './push-sender';
-import { reminderMessage } from './reminder-message';
-import type { PushSubscriptionInput } from './notifications.inputs';
+import { readPushConfig, sendPush, type PushPayload, type PushResult } from './push-sender.js';
+import { reminderMessage } from './reminder-message.js';
+import type { PushSubscriptionInput } from './notifications.inputs.js';
 
 const DAY = 86_400_000;
 

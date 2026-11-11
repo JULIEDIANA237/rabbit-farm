@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { BreedModel } from './breed.model';
+import { BreedModel } from './breed.model.js';
 
 @ObjectType()
 export class CrossBreedModel {

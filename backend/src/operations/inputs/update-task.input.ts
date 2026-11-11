@@ -1,8 +1,8 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 
-import { TaskPriority } from '../graphql/task-priority.enum';
-import { TaskSourceType } from '../graphql/task-source-type.enum';
-import { TaskStatus } from '../graphql/task-status.enum';
+import { TaskPriority } from '../graphql/task-priority.enum.js';
+import { TaskSourceType } from '../graphql/task-source-type.enum.js';
+import { TaskStatus } from '../graphql/task-status.enum.js';
 
 @InputType()
 export class UpdateTaskInput {

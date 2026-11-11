@@ -1,14 +1,14 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 
-import { PrismaService } from '../prisma/prisma.service';
-import { GenealogyService } from '../genetics/genealogy.service';
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import { PrismaService } from '../prisma/prisma.service.js';
+import { GenealogyService } from '../genetics/genealogy.service.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 import {
   MortalityScope,
   PregnancyResult,
   RabbitStatus,
   SaleStatus,
-} from '../generated/prisma/client';
+} from '../generated/prisma/client.js';
 
 import {
   average,
@@ -19,7 +19,7 @@ import {
   monthKey,
   rate,
   type LitterFacts,
-} from './statistics.utils';
+} from './statistics.utils.js';
 
 const DAY = 86_400_000;
 

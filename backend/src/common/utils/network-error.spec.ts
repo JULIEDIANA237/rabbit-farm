@@ -1,4 +1,4 @@
-import { describeNetworkError } from './network-error';
+import { describeNetworkError } from './network-error.js';
 
 describe('describeNetworkError', () => {
   const fetchFailed = (code: string) => {

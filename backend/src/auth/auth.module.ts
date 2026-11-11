@@ -3,16 +3,16 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
-import { AuthService } from './auth.service';
-import { AuthResolver } from './auth.resolver';
-import { JwtStrategy } from './strategies/jwt.strategy';
+import { AuthService } from './auth.service.js';
+import { AuthResolver } from './auth.resolver.js';
+import { JwtStrategy } from './strategies/jwt.strategy.js';
 
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { RolesGuard } from './guards/roles.guard';
+import { JwtAuthGuard } from './guards/jwt-auth.guard.js';
+import { RolesGuard } from './guards/roles.guard.js';
 
-import { getJwtSecret } from './jwt-secret';
-import { PasswordResetResolver } from './password-reset/password-reset.resolver';
-import { PasswordResetService } from './password-reset/password-reset.service';
+import { getJwtSecret } from './jwt-secret.js';
+import { PasswordResetResolver } from './password-reset/password-reset.resolver.js';
+import { PasswordResetService } from './password-reset/password-reset.service.js';
 
 @Module({
   imports: [

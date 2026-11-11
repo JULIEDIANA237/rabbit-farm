@@ -1,20 +1,20 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Throttle } from '@nestjs/throttler';
+import { Throttle } from '../common/throttle/throttle.js';
 
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
-import { AssistantService } from './assistant.service';
-import { AskAssistantInput, FillFormInput } from './inputs/assistant.inputs';
+import { AssistantService } from './assistant.service.js';
+import { AskAssistantInput, FillFormInput } from './inputs/assistant.inputs.js';
 import {
   AssistantDraftModel,
   AssistantReplyModel,
   AssistantStatusModel,
   DailyBriefingModel,
-} from './models/assistant.models';
+} from './models/assistant.models.js';
 
 @Resolver()
 @UseGuards(JwtAuthGuard, RolesGuard)

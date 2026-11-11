@@ -1,8 +1,8 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { Throttle } from '@nestjs/throttler';
+import { Throttle } from '../../common/throttle/throttle.js';
 
-import { RequestPasswordResetInput, ResetPasswordInput } from './password-reset.inputs';
-import { PasswordResetService } from './password-reset.service';
+import { RequestPasswordResetInput, ResetPasswordInput } from './password-reset.inputs.js';
+import { PasswordResetService } from './password-reset.service.js';
 
 @Resolver()
 export class PasswordResetResolver {

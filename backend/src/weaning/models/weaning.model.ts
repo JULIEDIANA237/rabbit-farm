@@ -1,5 +1,5 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
-import { WeaningRabbitModel } from './weaning-rabbit.model';
+import { WeaningRabbitModel } from './weaning-rabbit.model.js';
 
 @ObjectType()
 export class WeaningModel {

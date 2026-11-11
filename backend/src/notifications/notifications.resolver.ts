@@ -1,13 +1,13 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Throttle } from '@nestjs/throttler';
+import { Throttle } from '../common/throttle/throttle.js';
 
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
-import { PushConfigModel, PushSubscriptionInput } from './notifications.inputs';
-import { NotificationsService } from './notifications.service';
+import { PushConfigModel, PushSubscriptionInput } from './notifications.inputs.js';
+import { NotificationsService } from './notifications.service.js';
 
 @Resolver()
 @UseGuards(JwtAuthGuard)

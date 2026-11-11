@@ -1,4 +1,4 @@
-import { computeAutonomy, stockFromMovements } from './stock-autonomy';
+import { computeAutonomy, stockFromMovements } from './stock-autonomy.js';
 
 describe('stock-autonomy (§45, §46)', () => {
   const now = new Date('2026-11-06T12:00:00.000Z');

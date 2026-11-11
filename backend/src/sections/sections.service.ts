@@ -5,12 +5,12 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service.js';
 
-import { CurrentUserType } from '../auth/types/current-user.type';
+import { CurrentUserType } from '../auth/types/current-user.type.js';
 
-import { CreateSectionInput } from './inputs/create-section.input';
-import { UpdateSectionInput } from './inputs/update-section.input';
+import { CreateSectionInput } from './inputs/create-section.input.js';
+import { UpdateSectionInput } from './inputs/update-section.input.js';
 
 @Injectable()
 export class SectionsService {

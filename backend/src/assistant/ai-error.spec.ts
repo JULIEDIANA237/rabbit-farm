@@ -1,4 +1,4 @@
-import { describeAiError, isOverloaded } from './ai-error';
+import { describeAiError, isOverloaded } from './ai-error.js';
 
 const apiError = (statusCode: number, responseBody = '') =>
   Object.assign(new Error('API call failed'), { name: 'AI_APICallError', statusCode, responseBody });

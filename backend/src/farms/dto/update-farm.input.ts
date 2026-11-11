@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 
-import { InbreedingPolicy } from '../../genetics/graphql/inbreeding-policy.enum';
+import { InbreedingPolicy } from '../../genetics/graphql/inbreeding-policy.enum.js';
 
 @InputType()
 export class UpdateFarmInput {

@@ -1,5 +1,5 @@
 import { registerEnumType } from '@nestjs/graphql';
-import { HealthRecordType } from '../../generated/prisma/client';
+import { HealthRecordType } from '../../generated/prisma/client.js';
 
 registerEnumType(HealthRecordType, {
   name: 'HealthRecordType',

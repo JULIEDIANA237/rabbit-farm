@@ -5,22 +5,22 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { PrismaService } from '../prisma/prisma.service';
-import { CurrentUserType } from '../auth/types/current-user.type';
+import { PrismaService } from '../prisma/prisma.service.js';
+import { CurrentUserType } from '../auth/types/current-user.type.js';
 
-import { CreateBreedingInput } from './inputs/create-breeding.input';
-import { RecordNestInstallationInput } from './inputs/record-nest-installation.input';
-import { CancelBreedingInput } from './inputs/cancel-breeding.input';
+import { CreateBreedingInput } from './inputs/create-breeding.input.js';
+import { RecordNestInstallationInput } from './inputs/record-nest-installation.input.js';
+import { CancelBreedingInput } from './inputs/cancel-breeding.input.js';
 
 import {
   BreedingStatus,
   RabbitSex,
   RabbitStatus,
-} from '../generated/prisma/client';
+} from '../generated/prisma/client.js';
 
-import { computeBreedingCalendar } from '../common/calendar/breeding-calendar';
-import { GenealogyService } from '../genetics/genealogy.service';
-import { TaskAutomationService } from '../operations/automation/task-automation.service';
+import { computeBreedingCalendar } from '../common/calendar/breeding-calendar.js';
+import { GenealogyService } from '../genetics/genealogy.service.js';
+import { TaskAutomationService } from '../operations/automation/task-automation.service.js';
 
 /** Statuts pour lesquels la femelle est engagée dans un cycle. */
 export const ACTIVE_BREEDING_STATUSES = [

@@ -4,8 +4,8 @@ import {
   InputType,
 } from '@nestjs/graphql';
 
-import { RabbitSex } from '../graphql/rabbit-sex.enum';
-import { RabbitPurpose } from '../graphql/rabbit-purpose.enum';
+import { RabbitSex } from '../graphql/rabbit-sex.enum.js';
+import { RabbitPurpose } from '../graphql/rabbit-purpose.enum.js';
 
 @InputType()
 export class CreateRabbitInput {

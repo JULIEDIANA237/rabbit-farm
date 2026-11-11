@@ -5,18 +5,18 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { PrismaService } from '../prisma/prisma.service';
-import type { CurrentUserType } from '../auth/types/current-user.type';
-import { CreateWeaningInput } from './inputs/create-weaning.input';
-import { CompleteWeaningInput } from './inputs/complete-weaning.input';
-import { TaskAutomationService } from '../operations/automation/task-automation.service';
+import { PrismaService } from '../prisma/prisma.service.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
+import { CreateWeaningInput } from './inputs/create-weaning.input.js';
+import { CompleteWeaningInput } from './inputs/complete-weaning.input.js';
+import { TaskAutomationService } from '../operations/automation/task-automation.service.js';
 import {
   FatteningLotStatus,
   LitterStatus,
   RabbitPurpose,
   RabbitStatus,
   type Prisma,
-} from '../generated/prisma/client';
+} from '../generated/prisma/client.js';
 
 const weaningInclude = {
   rabbits: true,

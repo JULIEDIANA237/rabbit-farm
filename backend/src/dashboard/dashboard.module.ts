@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 
-import { DashboardResolver } from './dashboard.resolver';
-import { DashboardService } from './dashboard.service';
+import { DashboardResolver } from './dashboard.resolver.js';
+import { DashboardService } from './dashboard.service.js';
 
-import { AuthModule } from '../auth/auth.module';
+import { AuthModule } from '../auth/auth.module.js';
 
 @Module({
   imports: [

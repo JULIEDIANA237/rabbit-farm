@@ -1,7 +1,7 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
-import { RabbitSummaryModel } from '../../common/models/rabbit-summary.model';
-import { LitterStatus } from '../graphql/litter-status.enum';
+import { RabbitSummaryModel } from '../../common/models/rabbit-summary.model.js';
+import { LitterStatus } from '../graphql/litter-status.enum.js';
 
 @ObjectType()
 export class LitterModel {

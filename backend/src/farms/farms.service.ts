@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service.js';
 
-import { CreateFarmInput } from './dto/create-farm.input';
-import { UpdateFarmInput } from './dto/update-farm.input';
+import { CreateFarmInput } from './dto/create-farm.input.js';
+import { UpdateFarmInput } from './dto/update-farm.input.js';
 
-import { CurrentUserType } from '../auth/types/current-user.type';
+import { CurrentUserType } from '../auth/types/current-user.type.js';
 
 @Injectable()
 export class FarmsService {

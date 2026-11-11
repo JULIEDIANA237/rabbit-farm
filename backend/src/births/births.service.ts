@@ -5,8 +5,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { PrismaService } from '../prisma/prisma.service';
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import { PrismaService } from '../prisma/prisma.service.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
 import {
   BreedingStatus,
@@ -14,11 +14,11 @@ import {
   RabbitPurpose,
   RabbitSex,
   RabbitStatus,
-} from '../generated/prisma/client';
+} from '../generated/prisma/client.js';
 
-import { CreateBirthInput } from './inputs/create-birth.input';
-import { TaskAutomationService } from '../operations/automation/task-automation.service';
-import { formatKitCode, nextLitterCode } from '../common/utils/codes';
+import { CreateBirthInput } from './inputs/create-birth.input.js';
+import { TaskAutomationService } from '../operations/automation/task-automation.service.js';
+import { formatKitCode, nextLitterCode } from '../common/utils/codes.js';
 
 const birthInclude = {
   mother: true,

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { AuthResolver } from './auth.resolver';
-import { AuthService } from './auth.service';
+import { AuthResolver } from './auth.resolver.js';
+import { AuthService } from './auth.service.js';
 
 describe('AuthResolver', () => {
   let resolver: AuthResolver;

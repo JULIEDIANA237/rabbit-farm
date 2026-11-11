@@ -5,9 +5,9 @@ import {
   registerEnumType,
 } from '@nestjs/graphql';
 
-import { FarmRole } from '../../generated/prisma/client';
+import { FarmRole } from '../../generated/prisma/client.js';
 
-import { UserModel } from './user.model';
+import { UserModel } from './user.model.js';
 
 registerEnumType(FarmRole, {
   name: 'FarmRole',

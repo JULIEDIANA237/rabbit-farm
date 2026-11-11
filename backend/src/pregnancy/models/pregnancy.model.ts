@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { PregnancyResult } from '../graphql/pregnancy-result.enum';
+import { PregnancyResult } from '../graphql/pregnancy-result.enum.js';
 
 @ObjectType()
 export class PregnancyModel {

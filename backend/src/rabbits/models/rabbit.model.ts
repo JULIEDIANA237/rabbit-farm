@@ -4,12 +4,12 @@ import {
   ObjectType,
 } from '@nestjs/graphql';
 
-import { RabbitSex } from '../graphql/rabbit-sex.enum';
-import { RabbitStatus } from '../graphql/rabbit-status.enum';
-import { RabbitPurpose } from '../graphql/rabbit-purpose.enum';
+import { RabbitSex } from '../graphql/rabbit-sex.enum.js';
+import { RabbitStatus } from '../graphql/rabbit-status.enum.js';
+import { RabbitPurpose } from '../graphql/rabbit-purpose.enum.js';
 
-import { RabbitIdentificationModel } from './rabbit-identification.model';
-import { RabbitPhotoModel } from './rabbit-photo.model';
+import { RabbitIdentificationModel } from './rabbit-identification.model.js';
+import { RabbitPhotoModel } from './rabbit-photo.model.js';
 
 @ObjectType()
 export class RabbitModel {

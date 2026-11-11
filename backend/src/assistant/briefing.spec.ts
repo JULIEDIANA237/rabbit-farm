@@ -1,4 +1,4 @@
-import { buildBriefing, type BriefingInput } from './briefing';
+import { buildBriefing, type BriefingInput } from './briefing.js';
 
 const empty: BriefingInput = {
   overdueTasks: 0,

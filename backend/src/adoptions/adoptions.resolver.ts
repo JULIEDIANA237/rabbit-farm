@@ -7,17 +7,17 @@ import {
 } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 
-import { AdoptionsService } from './adoptions.service';
-import { AdoptionModel } from './models/adoption.model';
-import { CreateAdoptionInput } from './inputs/create-adoption.input';
+import { AdoptionsService } from './adoptions.service.js';
+import { AdoptionModel } from './models/adoption.model.js';
+import { CreateAdoptionInput } from './inputs/create-adoption.input.js';
 
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
+import { Roles } from '../auth/decorators/roles.decorator.js';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
-import { FarmRole } from '../generated/prisma/client';
+import { FarmRole } from '../generated/prisma/client.js';
 
 @Resolver(() => AdoptionModel)
 @UseGuards(JwtAuthGuard, RolesGuard)

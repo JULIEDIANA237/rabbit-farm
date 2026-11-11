@@ -7,16 +7,16 @@ import {
 } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 
-import { WeaningService } from './weaning.service';
-import { WeaningModel } from './models/weaning.model';
-import { CreateWeaningInput } from './inputs/create-weaning.input';
-import { CompleteWeaningInput } from './inputs/complete-weaning.input';
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import type { CurrentUserType } from '../auth/types/current-user.type';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { FarmRole } from '../generated/prisma/client';
+import { WeaningService } from './weaning.service.js';
+import { WeaningModel } from './models/weaning.model.js';
+import { CreateWeaningInput } from './inputs/create-weaning.input.js';
+import { CompleteWeaningInput } from './inputs/complete-weaning.input.js';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
+import { Roles } from '../auth/decorators/roles.decorator.js';
+import { FarmRole } from '../generated/prisma/client.js';
 
 @Resolver(() => WeaningModel)
 @UseGuards(JwtAuthGuard, RolesGuard)

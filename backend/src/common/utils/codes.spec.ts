@@ -1,4 +1,4 @@
-import { formatKitCode, formatLitterCode, nextLitterCode } from './codes';
+import { formatKitCode, formatLitterCode, nextLitterCode } from './codes.js';
 
 describe('codes', () => {
   it('formate les codes de portée et de lapereaux (§12)', () => {

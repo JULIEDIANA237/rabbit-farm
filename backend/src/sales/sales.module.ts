@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 
-import { AuthModule } from '../auth/auth.module';
-import { SalesResolver } from './sales.resolver';
-import { SalesService } from './sales.service';
+import { AuthModule } from '../auth/auth.module.js';
+import { SalesResolver } from './sales.resolver.js';
+import { SalesService } from './sales.service.js';
 
 @Module({
   imports: [AuthModule],

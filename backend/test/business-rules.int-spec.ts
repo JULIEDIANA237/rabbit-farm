@@ -1,7 +1,7 @@
 import type { INestApplication } from '@nestjs/common';
 
-import { createTestApp, daysAgo, gql, gqlOk, registerFarm } from './utils/graphql';
-import type { PrismaService } from '../src/prisma/prisma.service';
+import { createTestApp, daysAgo, gql, gqlOk, registerFarm } from './utils/graphql.js';
+import type { PrismaService } from '../src/prisma/prisma.service.js';
 
 /**
  * Tests d'intégration des règles métier sur une vraie base PostgreSQL.

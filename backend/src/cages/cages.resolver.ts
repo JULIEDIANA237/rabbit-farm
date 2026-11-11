@@ -8,22 +8,22 @@ import {
 
 import { UseGuards } from '@nestjs/common';
 
-import { FarmRole } from '../auth/graphql/farm-role.enum';
+import { FarmRole } from '../auth/graphql/farm-role.enum.js';
 
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
 
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import { Roles } from '../auth/decorators/roles.decorator';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import { Roles } from '../auth/decorators/roles.decorator.js';
 
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
-import { CreateCageInput } from './inputs/create-cage.input';
-import { UpdateCageInput } from './inputs/update-cage.input';
+import { CreateCageInput } from './inputs/create-cage.input.js';
+import { UpdateCageInput } from './inputs/update-cage.input.js';
 
-import { CageModel } from './models/cage.model';
+import { CageModel } from './models/cage.model.js';
 
-import { CagesService } from './cages.service';
+import { CagesService } from './cages.service.js';
 
 @Resolver(() => CageModel)
 @UseGuards(

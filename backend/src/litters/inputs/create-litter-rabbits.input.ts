@@ -5,7 +5,7 @@ import {
   Int,
 } from '@nestjs/graphql';
 
-import { RabbitSex } from '../../rabbits/graphql/rabbit-sex.enum';
+import { RabbitSex } from '../../rabbits/graphql/rabbit-sex.enum.js';
 
 @InputType()
 export class CreateLitterRabbitsInput {

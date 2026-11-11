@@ -7,23 +7,23 @@ import {
 } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 
-import { GeneticsService } from './genetics.service';
+import { GeneticsService } from './genetics.service.js';
 
-import { BreedModel } from './models/breed.model';
-import { CrossBreedModel } from './models/cross-breed.model';
+import { BreedModel } from './models/breed.model.js';
+import { CrossBreedModel } from './models/cross-breed.model.js';
 
-import { CreateBreedInput } from './inputs/create-breed.input';
-import { UpdateBreedInput } from './inputs/update-breed.input';
-import { CreateCrossBreedInput } from './inputs/create-cross-breed.input';
-import { UpdateCrossBreedInput } from './inputs/update-cross-breed.input';
+import { CreateBreedInput } from './inputs/create-breed.input.js';
+import { UpdateBreedInput } from './inputs/update-breed.input.js';
+import { CreateCrossBreedInput } from './inputs/create-cross-breed.input.js';
+import { UpdateCrossBreedInput } from './inputs/update-cross-breed.input.js';
 
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import { Roles } from '../auth/decorators/roles.decorator';
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import { Roles } from '../auth/decorators/roles.decorator.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
-import { FarmRole } from '../generated/prisma/client';
+import { FarmRole } from '../generated/prisma/client.js';
 
 @Resolver()
 @UseGuards(JwtAuthGuard, RolesGuard)

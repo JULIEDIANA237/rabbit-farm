@@ -2,8 +2,8 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { createHash, randomBytes } from 'node:crypto';
 
-import { MailService } from '../../mail/mail.service';
-import { PrismaService } from '../../prisma/prisma.service';
+import { MailService } from '../../mail/mail.service.js';
+import { PrismaService } from '../../prisma/prisma.service.js';
 
 const VALIDITY_MS = 60 * 60_000; // 1 heure
 

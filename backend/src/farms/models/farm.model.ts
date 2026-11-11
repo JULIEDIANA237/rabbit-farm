@@ -1,6 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
-import { InbreedingPolicy } from '../../genetics/graphql/inbreeding-policy.enum';
+import { InbreedingPolicy } from '../../genetics/graphql/inbreeding-policy.enum.js';
 
 @ObjectType()
 export class FarmModel {

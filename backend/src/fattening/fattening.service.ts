@@ -8,16 +8,16 @@ import {
 import {
   FatteningLotStatus,
   RabbitStatus,
-} from '../generated/prisma/client';
-import { PrismaService } from '../prisma/prisma.service';
-import type { CurrentUserType } from '../auth/types/current-user.type';
-import { CreateFatteningLotInput } from './inputs/create-fattening-lot.input';
-import { AddLotMembersInput } from './inputs/add-lot-members.input';
-import { RemoveLotMembersInput } from './inputs/remove-lot-members.input';
-import { CompleteFatteningLotInput } from './inputs/complete-fattening-lot.input';
-import { CreateWeighingInput } from './inputs/create-weighing.input';
-import { MoveFatteningLotInput } from './inputs/move-fattening-lot.input';
-import { normalizeMovementReason } from '../common/constants/movement-reasons';
+} from '../generated/prisma/client.js';
+import { PrismaService } from '../prisma/prisma.service.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
+import { CreateFatteningLotInput } from './inputs/create-fattening-lot.input.js';
+import { AddLotMembersInput } from './inputs/add-lot-members.input.js';
+import { RemoveLotMembersInput } from './inputs/remove-lot-members.input.js';
+import { CompleteFatteningLotInput } from './inputs/complete-fattening-lot.input.js';
+import { CreateWeighingInput } from './inputs/create-weighing.input.js';
+import { MoveFatteningLotInput } from './inputs/move-fattening-lot.input.js';
+import { normalizeMovementReason } from '../common/constants/movement-reasons.js';
 
 const lotInclude = {
   memberships: { where: { leftAt: null }, select: { id: true } },

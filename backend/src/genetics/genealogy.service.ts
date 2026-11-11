@@ -4,13 +4,13 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { PrismaService } from '../prisma/prisma.service';
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import { PrismaService } from '../prisma/prisma.service.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 import {
   RabbitPurpose,
   RabbitSex,
   RabbitStatus,
-} from '../generated/prisma/client';
+} from '../generated/prisma/client.js';
 
 import {
   buildPedigreeMap,
@@ -19,13 +19,13 @@ import {
   wouldCreateCycle,
   type CompatibilityResult,
   type PedigreeMap,
-} from './genealogy.utils';
-import { CompatibilityLevel } from './graphql/compatibility-level.enum';
+} from './genealogy.utils.js';
+import { CompatibilityLevel } from './graphql/compatibility-level.enum.js';
 import type {
   BreedingCompatibilityModel,
   DescendantModel,
   PedigreeNodeModel,
-} from './models/genealogy.models';
+} from './models/genealogy.models.js';
 
 type FarmRabbit = {
   id: string;

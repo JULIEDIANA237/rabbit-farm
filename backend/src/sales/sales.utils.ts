@@ -1,4 +1,4 @@
-import { SaleStatus } from '../generated/prisma/enums';
+import { SaleStatus } from '../generated/prisma/enums.js';
 
 const EPSILON = 0.0001;
 

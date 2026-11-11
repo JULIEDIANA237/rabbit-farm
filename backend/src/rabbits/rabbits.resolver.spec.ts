@@ -1,11 +1,11 @@
 import { PassportModule } from '@nestjs/passport';
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service.js';
 
-import { RabbitsResolver } from './rabbits.resolver';
-import { RabbitsService } from './rabbits.service';
-import { TraceabilityService } from './traceability.service';
+import { RabbitsResolver } from './rabbits.resolver.js';
+import { RabbitsService } from './rabbits.service.js';
+import { TraceabilityService } from './traceability.service.js';
 
 describe('RabbitsResolver', () => {
   let resolver: RabbitsResolver;

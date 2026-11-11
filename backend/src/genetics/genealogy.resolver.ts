@@ -1,17 +1,17 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, ID, Int, Query, Resolver } from '@nestjs/graphql';
 
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import type { CurrentUserType } from '../auth/types/current-user.type';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
-import { GenealogyService } from './genealogy.service';
+import { GenealogyService } from './genealogy.service.js';
 import {
   BreedingCompatibilityModel,
   DescendantModel,
   PedigreeNodeModel,
-} from './models/genealogy.models';
+} from './models/genealogy.models.js';
 
 @Resolver()
 @UseGuards(JwtAuthGuard, RolesGuard)

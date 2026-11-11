@@ -8,16 +8,16 @@ import {
 } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 
-import { HealthService } from './health.service';
-import { HealthRecordType } from './graphql/health-record-type.enum';
-import { HealthRecordModel } from './models/health-record.model';
-import { CreateHealthRecordInput } from './inputs/create-health-record.input';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import type { CurrentUserType } from '../auth/types/current-user.type';
-import { FarmRole } from '../generated/prisma/client';
+import { HealthService } from './health.service.js';
+import { HealthRecordType } from './graphql/health-record-type.enum.js';
+import { HealthRecordModel } from './models/health-record.model.js';
+import { CreateHealthRecordInput } from './inputs/create-health-record.input.js';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
+import { Roles } from '../auth/decorators/roles.decorator.js';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
+import { FarmRole } from '../generated/prisma/client.js';
 
 @Resolver(() => HealthRecordModel)
 @UseGuards(JwtAuthGuard, RolesGuard)

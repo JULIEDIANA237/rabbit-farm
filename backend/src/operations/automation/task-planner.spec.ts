@@ -1,4 +1,4 @@
-import { computeBreedingCalendar } from '../../common/calendar/breeding-calendar';
+import { computeBreedingCalendar } from '../../common/calendar/breeding-calendar.js';
 import {
   AUTOMATION_KEYS,
   planBreedingTasks,
@@ -6,7 +6,7 @@ import {
   planRepalpationTask,
   planStockReorderTask,
   planWeaningTask,
-} from './task-planner';
+} from './task-planner.js';
 
 describe('task-planner (§47)', () => {
   const breedingDate = new Date('2026-09-10T00:00:00.000Z');

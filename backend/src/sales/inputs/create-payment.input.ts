@@ -1,6 +1,6 @@
 import { Field, Float, ID, InputType } from '@nestjs/graphql';
 
-import { PaymentMethod } from '../graphql/payment-method.enum';
+import { PaymentMethod } from '../graphql/payment-method.enum.js';
 
 @InputType()
 export class CreatePaymentInput {

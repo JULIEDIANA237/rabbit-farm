@@ -1,18 +1,18 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import type { CurrentUserType } from '../auth/types/current-user.type';
-import { FarmRole } from '../generated/prisma/client';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
+import { Roles } from '../auth/decorators/roles.decorator.js';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import type { CurrentUserType } from '../auth/types/current-user.type.js';
+import { FarmRole } from '../generated/prisma/client.js';
 
-import { MortalityService } from './mortality.service';
-import { MortalityModel } from './models/mortality.model';
-import { RecordRabbitExitInput } from './inputs/record-rabbit-exit.input';
-import { RecordLitterMortalityInput } from './inputs/record-litter-mortality.input';
-import { RabbitModel } from '../rabbits/models/rabbit.model';
+import { MortalityService } from './mortality.service.js';
+import { MortalityModel } from './models/mortality.model.js';
+import { RecordRabbitExitInput } from './inputs/record-rabbit-exit.input.js';
+import { RecordLitterMortalityInput } from './inputs/record-litter-mortality.input.js';
+import { RabbitModel } from '../rabbits/models/rabbit.model.js';
 
 @Resolver(() => MortalityModel)
 @UseGuards(JwtAuthGuard, RolesGuard)

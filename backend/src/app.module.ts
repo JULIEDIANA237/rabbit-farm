@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 
-import { ThrottlerModule } from '@nestjs/throttler';
 
 import type { Request, Response } from 'express';
 
@@ -14,37 +13,37 @@ import {
 
 import { GraphQLModule } from '@nestjs/graphql';
 
-import { PrismaModule } from './prisma/prisma.module';
-import { AuthModule } from './auth/auth.module';
+import { PrismaModule } from './prisma/prisma.module.js';
+import { AuthModule } from './auth/auth.module.js';
 
-import { FarmsModule } from './farms/farms.module';
-import { UsersModule } from './users/users.module';
-import { SectionsModule } from './sections/sections.module';
-import { CagesModule } from './cages/cages.module';
-import { RabbitsModule } from './rabbits/rabbits.module';
-import { GeneticsModule } from './genetics/genetics.module';
-import { BreedingModule } from './breeding/breeding.module';
-import { PregnancyModule } from './pregnancy/pregnancy.module';
-import { BirthsModule } from './births/births.module';
-import { LittersModule } from './litters/litters.module';
-import { AdoptionsModule } from './adoptions/adoptions.module';
-import { WeaningModule } from './weaning/weaning.module';
-import { FatteningModule } from './fattening/fattening.module';
-import { HealthModule } from './health/health.module';
-import { SalesModule } from './sales/sales.module';
-import { OperationsModule } from './operations/operations.module';
-import { DashboardModule } from './dashboard/dashboard.module';
-import { MortalityModule } from './mortality/mortality.module';
-import { StatisticsModule } from './statistics/statistics.module';
-import { AssistantModule } from './assistant/assistant.module';
-import { StorageModule } from './storage/storage.module';
-import { MailModule } from './mail/mail.module';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { NotificationsModule } from './notifications/notifications.module';
+import { FarmsModule } from './farms/farms.module.js';
+import { UsersModule } from './users/users.module.js';
+import { SectionsModule } from './sections/sections.module.js';
+import { CagesModule } from './cages/cages.module.js';
+import { RabbitsModule } from './rabbits/rabbits.module.js';
+import { GeneticsModule } from './genetics/genetics.module.js';
+import { BreedingModule } from './breeding/breeding.module.js';
+import { PregnancyModule } from './pregnancy/pregnancy.module.js';
+import { BirthsModule } from './births/births.module.js';
+import { LittersModule } from './litters/litters.module.js';
+import { AdoptionsModule } from './adoptions/adoptions.module.js';
+import { WeaningModule } from './weaning/weaning.module.js';
+import { FatteningModule } from './fattening/fattening.module.js';
+import { HealthModule } from './health/health.module.js';
+import { SalesModule } from './sales/sales.module.js';
+import { OperationsModule } from './operations/operations.module.js';
+import { DashboardModule } from './dashboard/dashboard.module.js';
+import { MortalityModule } from './mortality/mortality.module.js';
+import { StatisticsModule } from './statistics/statistics.module.js';
+import { AssistantModule } from './assistant/assistant.module.js';
+import { StorageModule } from './storage/storage.module.js';
+import { MailModule } from './mail/mail.module.js';
+import { AppController } from './app.controller.js';
+import { AppService } from './app.service.js';
+import { NotificationsModule } from './notifications/notifications.module.js';
 
-import { GqlThrottlerGuard } from './auth/guards/gql-throttler.guard';
-import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor';
+import { GqlThrottlerGuard } from './auth/guards/gql-throttler.guard.js';
+import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor.js';
 
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
@@ -76,13 +75,6 @@ import { join } from 'path';
         res,
       }),
     }),
-
-    ThrottlerModule.forRoot([
-      {
-        ttl: 60000,
-        limit: 300,
-      },
-    ]),
 
     PrismaModule,
 

@@ -1,6 +1,6 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 
-import { HealthRecordType } from '../graphql/health-record-type.enum';
+import { HealthRecordType } from '../graphql/health-record-type.enum.js';
 
 @InputType()
 export class CreateHealthRecordInput {

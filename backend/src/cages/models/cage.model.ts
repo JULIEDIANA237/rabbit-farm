@@ -5,7 +5,7 @@ import {
   ObjectType,
 } from '@nestjs/graphql';
 
-import { CageStatus } from '../graphql/cage-status.enum';
+import { CageStatus } from '../graphql/cage-status.enum.js';
 
 @ObjectType()
 export class CageModel {

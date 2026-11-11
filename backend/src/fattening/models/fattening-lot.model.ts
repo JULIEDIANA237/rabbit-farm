@@ -1,6 +1,6 @@
 import { Field, Float, ID, Int, ObjectType } from '@nestjs/graphql';
 
-import { FatteningLotStatus } from '../graphql/fattening-lot-status.enum';
+import { FatteningLotStatus } from '../graphql/fattening-lot-status.enum.js';
 
 @ObjectType()
 export class FatteningLotModel {

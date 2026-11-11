@@ -1,8 +1,8 @@
 import { tool, type ToolSet } from 'ai';
 import { z } from 'zod';
 
-import { ASSISTANT_FORMS, FORM_LABELS, FORM_SCHEMAS, prepareForm, type AssistantForm, type PreparedForm } from './assistant-forms';
-import type { FarmReader } from './farm-reader';
+import { ASSISTANT_FORMS, FORM_LABELS, FORM_SCHEMAS, prepareForm, type AssistantForm, type PreparedForm } from './assistant-forms.js';
+import type { FarmReader } from './farm-reader.js';
 
 /**
  * Outils mis à disposition du modèle.

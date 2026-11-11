@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 
-import { LittersService } from './litters.service';
-import { LittersResolver } from './litters.resolver';
+import { LittersService } from './litters.service.js';
+import { LittersResolver } from './litters.resolver.js';
 
-import { AuthModule } from '../auth/auth.module';
+import { AuthModule } from '../auth/auth.module.js';
 
 @Module({
   imports: [
