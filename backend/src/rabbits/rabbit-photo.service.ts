@@ -71,8 +71,15 @@ export class RabbitPhotosService {
       );
     }
 
+    const uploaded =
+      await this.storage.uploadRabbitPhoto(
+        file,
+        farmId,
+        rabbitId,
+      );
+
     /*
-     * Si la photo devient principale,
+     * Une fois l'envoi réussi seulement : si la photo devient principale,
      * on retire ce statut aux autres photos.
      */
     if (isPrimary) {
@@ -86,13 +93,6 @@ export class RabbitPhotosService {
         },
       });
     }
-
-    const uploaded =
-      await this.storage.uploadRabbitPhoto(
-        file,
-        farmId,
-        rabbitId,
-      );
 
     const photo =
       await this.prisma.rabbitPhoto.create({
@@ -176,10 +176,60 @@ export class RabbitPhotosService {
 
     await this.storage.deleteFile(photo.path);
 
-    return this.prisma.rabbitPhoto.delete({
+    const deleted = await this.prisma.rabbitPhoto.delete({
       where: {
         id: photo.id,
       },
     });
+
+    // La photo principale supprimée est remplacée par la plus récente.
+    if (photo.isPrimary) {
+      const next = await this.prisma.rabbitPhoto.findFirst({
+        where: { rabbitId: photo.rabbitId },
+        orderBy: { createdAt: 'desc' },
+      });
+      if (next) {
+        await this.prisma.rabbitPhoto.update({
+          where: { id: next.id },
+          data: { isPrimary: true },
+        });
+      }
+    }
+
+    return deleted;
+  }
+
+  async setPrimary(
+    photoId: string,
+    currentUser: CurrentUserType,
+  ) {
+    const photo =
+      await this.prisma.rabbitPhoto.findFirst({
+        where: {
+          id: photoId,
+          rabbit: {
+            farmId: currentUser.farmId,
+          },
+        },
+      });
+
+    if (!photo) {
+      throw new NotFoundException(
+        'Photo introuvable.',
+      );
+    }
+
+    const [, updated] = await this.prisma.$transaction([
+      this.prisma.rabbitPhoto.updateMany({
+        where: { rabbitId: photo.rabbitId, isPrimary: true },
+        data: { isPrimary: false },
+      }),
+      this.prisma.rabbitPhoto.update({
+        where: { id: photo.id },
+        data: { isPrimary: true },
+      }),
+    ]);
+
+    return updated;
   }
 }

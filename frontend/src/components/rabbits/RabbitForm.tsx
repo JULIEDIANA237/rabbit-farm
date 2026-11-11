@@ -81,11 +81,11 @@ export function RabbitForm() {
     }
 
     // Limite raisonnable avant upload
-    const maxSize = 10 * 1024 * 1024;
+    const maxSize = 5 * 1024 * 1024;
 
     if (file.size > maxSize) {
       setPhotoError(
-        'La photo ne doit pas dépasser 10 Mo.',
+        'La photo ne doit pas dépasser 5 Mo.',
       );
 
       event.target.value = '';

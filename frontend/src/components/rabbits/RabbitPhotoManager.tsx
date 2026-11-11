@@ -9,15 +9,14 @@ import {
   X,
 } from 'lucide-react';
 import { useRef, useState } from 'react';
-import { useMutation } from '@apollo/client/react';
 
 import type { RabbitPhoto } from '@/types/rabbit';
 
 import {
-  ADD_RABBIT_PHOTO,
-  DELETE_RABBIT_PHOTO,
-  SET_PRIMARY_RABBIT_PHOTO,
-} from '@/graphql/rabbits/photo-mutations';
+  deleteRabbitPhoto,
+  setPrimaryRabbitPhoto,
+  uploadRabbitPhoto,
+} from '@/lib/rabbit-photos';
 
 interface RabbitPhotoManagerProps {
   rabbitId: string;
@@ -36,90 +35,40 @@ export function RabbitPhotoManager({
   const [preview, setPreview] =
     useState<RabbitPhoto | null>(null);
 
-  const [addPhoto] = useMutation(ADD_RABBIT_PHOTO);
-  const [setPrimary] = useMutation(
-    SET_PRIMARY_RABBIT_PHOTO,
-  );
-  const [deletePhoto] = useMutation(
-    DELETE_RABBIT_PHOTO,
-  );
+  const [busy, setBusy] = useState(false);
+  const [photoError, setPhotoError] = useState<string | null>(null);
+
+  /** Lance une action sur les photos, puis recharge la fiche. */
+  async function run(action: () => Promise<unknown>) {
+    setBusy(true);
+    setPhotoError(null);
+    try {
+      await action();
+      onChanged?.();
+    } catch (error) {
+      setPhotoError(error instanceof Error ? error.message : 'Action impossible sur la photo.');
+    } finally {
+      setBusy(false);
+    }
+  }
 
   const primaryPhoto =
     photos.find((photo) => photo.isPrimary) ??
     photos[0] ??
     null;
 
-  async function handleFile(file: File) {
-    /*
-     * Cette étape suppose que ton backend dispose
-     * d'un endpoint/service d'upload.
-     *
-     * Ici on utilise temporairement une URL locale
-     * pour garder le composant indépendant du stockage.
-     *
-     * Dès que ton upload réel est branché :
-     * 1. upload du File
-     * 2. récupération de l'URL
-     * 3. addRabbitPhoto()
-     */
-
-    const localUrl = URL.createObjectURL(file);
-
-    try {
-      await addPhoto({
-        variables: {
-          rabbitId,
-          url: localUrl,
-          isPrimary: photos.length === 0,
-        },
-      });
-
-      onChanged?.();
-    } catch (error) {
-      console.error(
-        '[RABBIT PHOTO] Erreur upload:',
-        error,
-      );
-    }
+  function handleFile(file: File) {
+    return run(() => uploadRabbitPhoto(rabbitId, file, photos.length === 0));
   }
 
-  async function handleSetPrimary(
-    photoId: string,
-  ) {
-    try {
-      await setPrimary({
-        variables: {
-          rabbitId,
-          photoId,
-        },
-      });
-
-      onChanged?.();
-    } catch (error) {
-      console.error(
-        '[RABBIT PHOTO] Erreur photo principale:',
-        error,
-      );
-    }
+  function handleSetPrimary(photoId: string) {
+    return run(() => setPrimaryRabbitPhoto(photoId));
   }
 
   async function handleDelete(photoId: string) {
-    try {
-      await deletePhoto({
-        variables: {
-          rabbitId,
-          photoId,
-        },
-      });
-
-      setPreview(null);
-      onChanged?.();
-    } catch (error) {
-      console.error(
-        '[RABBIT PHOTO] Erreur suppression:',
-        error,
-      );
-    }
+    if (!window.confirm('Supprimer cette photo ?')) return;
+    await run(() => deleteRabbitPhoto(photoId));
+    setPreview(null);
   }
 
   function handleInputChange(
@@ -154,6 +103,11 @@ export function RabbitPhotoManager({
           {photos.length > 1 ? 's' : ''}
         </span>
       </div>
+
+      {busy && <p className="mb-3 text-sm text-slate-500">Envoi en cours…</p>}
+      {photoError && (
+        <p className="mb-3 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">{photoError}</p>
+      )}
 
       {primaryPhoto ? (
         <button
