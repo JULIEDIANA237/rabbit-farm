@@ -21,4 +21,10 @@ export class CreateInventoryItemInput {
 
   @Field({ nullable: true })
   description?: string;
+
+  @Field(() => Float, { nullable: true, description: 'Stock de départ (mouvement « stock initial »)' })
+  initialStock?: number;
+
+  @Field({ nullable: true, description: 'Date du stock de départ (par défaut : aujourd’hui)' })
+  initialStockDate?: Date;
 }

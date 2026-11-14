@@ -202,3 +202,9 @@ export type MortalityRecord = Prisma.MortalityRecordModel
  * 
  */
 export type LotCageMovement = Prisma.LotCageMovementModel
+/**
+ * Model FeedRation
+ * Quantité d'un aliment donnée chaque jour à UN lapin d'une catégorie
+ * (dans l'unité de l'article, ex. kg).
+ */
+export type FeedRation = Prisma.FeedRationModel

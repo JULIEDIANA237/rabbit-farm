@@ -7,6 +7,7 @@ import { Plus } from 'lucide-react';
 
 import { Badge, Button, ErrorBox, Field, FormGrid, Grid, Input, Loading, Modal, PageHeader, Select, Stat, Table, Textarea } from '@/components/ui/kit';
 import { RowActions, useDeleteAction } from '@/components/ui/row-actions';
+import { FeedingPlanCard } from '@/components/stock/feeding-plan';
 import { toFloat, useForm } from '@/hooks/use-form';
 import { CURRENCY, clean, cleanEdit, formatDate, formatMoney, formatNumber, fromDateInput, toDateInput } from '@/lib/format';
 import { INVENTORY_TYPE, STOCK_MOVEMENT, label, options } from '@/lib/labels';
@@ -62,7 +63,7 @@ interface Item {
   movements: Array<{ id: string; type: string; quantity: number; date: string; description?: string | null; unitCost?: number | null }>;
 }
 
-const refetchQueries = ['InventoryItems', 'Dashboard', 'HeaderTasks'];
+const refetchQueries = ['InventoryItems', 'FeedingPlan', 'Dashboard', 'HeaderTasks'];
 
 export default function InventoryPage() {
   const [creating, setCreating] = useState(false);
@@ -147,6 +148,12 @@ export default function InventoryPage() {
         />
       )}
 
+      {items.length > 0 && (
+        <div className="mt-6">
+          <FeedingPlanCard />
+        </div>
+      )}
+
       {creating && <ItemModal onClose={() => setCreating(false)} />}
       {editing && <ItemModal key={editing.id} editing={editing} onClose={() => setEditing(null)} />}
       {removeItem.dialog}
@@ -189,9 +196,12 @@ function ItemModal({ onClose, editing }: { onClose: () => void; editing?: Item }
     minimumStock: editing?.minimumStock != null ? String(editing.minimumStock) : '',
     unitPrice: editing?.unitPrice != null ? String(editing.unitPrice) : '',
     description: editing?.description ?? '',
+    initialStock: '',
+    initialStockDate: toDateInput(),
   });
   const [save, { loading, error }] = useMutation(editing ? UPDATE_ITEM : CREATE_ITEM, { refetchQueries });
-  const payload = { ...values, minimumStock: toFloat(values.minimumStock), unitPrice: toFloat(values.unitPrice) };
+  const { initialStock, initialStockDate, ...fields } = values;
+  const payload = { ...fields, minimumStock: toFloat(values.minimumStock), unitPrice: toFloat(values.unitPrice) };
   const submit = () =>
     save({
       variables: {
@@ -202,7 +212,11 @@ function ItemModal({ onClose, editing }: { onClose: () => void; editing?: Item }
               minimumStock: payload.minimumStock ?? null,
               unitPrice: payload.unitPrice ?? null,
             }
-          : clean(payload),
+          : clean({
+              ...payload,
+              initialStock: toFloat(initialStock),
+              initialStockDate: initialStock ? fromDateInput(initialStockDate) : undefined,
+            }),
       },
     })
       .then(onClose)
@@ -237,7 +251,22 @@ function ItemModal({ onClose, editing }: { onClose: () => void; editing?: Item }
         <Field label="Stock minimum" hint="Une tâche de réapprovisionnement est créée en dessous">
           <Input inputMode="decimal" {...bind('minimumStock')} />
         </Field>
+        {!editing && (
+          <>
+            <Field label={`Stock initial (${values.unit || 'unité'})`} hint="Quantité disponible au départ">
+              <Input inputMode="decimal" {...bind('initialStock')} />
+            </Field>
+            <Field label="Date du stock initial">
+              <Input type="date" {...bind('initialStockDate')} />
+            </Field>
+          </>
+        )}
       </FormGrid>
+      {!editing && values.type === 'FEED' && (
+        <p className="text-xs text-slate-500">
+          Après la création, définis les rations journalières par catégorie de lapin dans « Rations journalières ».
+        </p>
+      )}
       <Field label="Description">
         <Textarea {...bind('description')} />
       </Field>

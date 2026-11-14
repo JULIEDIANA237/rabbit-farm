@@ -158,11 +158,12 @@ const GUIDES: Array<{ prefix: string; guide: ModuleGuide }> = [
       key: 'inventory',
       title: 'Stock',
       steps: [
-        'Crée tes articles (granulés, foin, médicaments) avec leur prix unitaire.',
-        'Enregistre les achats et les consommations : la valeur et l’autonomie se calculent seules.',
+        'Crée tes articles (granulés, foin, médicaments) avec leur prix unitaire et leur stock initial.',
+        'Dans « Rations journalières », indique la quantité donnée par lapin et par jour : gestantes, allaitantes, engraissement et autres.',
+        'L’app calcule le besoin de la ferme, le coût par jour et la date de rupture ; « Déduire » retire les rations du stock.',
         'Sous le stock minimum, une tâche de réapprovisionnement est créée.',
       ],
-      question: 'Comment bien suivre mon stock d’aliment ?',
+      question: 'Quelles rations journalières donner à mes lapines gestantes, allaitantes, à l’engraissement et aux autres ?',
     },
   },
   {

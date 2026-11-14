@@ -375,6 +375,12 @@ input CreateHealthRecordInput {
 
 input CreateInventoryItemInput {
   description: String
+
+  """Stock de départ (mouvement « stock initial »)"""
+  initialStock: Float
+
+  """Date du stock de départ (par défaut : aujourd’hui)"""
+  initialStockDate: DateTime
   minimumStock: Float
   name: String!
   type: InventoryItemType!
@@ -745,6 +751,80 @@ enum FatteningLotStatus {
   COMPLETED
 }
 
+input FeedRationInput {
+  category: FeedingCategory!
+
+  """0 pour retirer la ration"""
+  dailyQuantity: Float!
+}
+
+type FeedRationModel {
+  category: FeedingCategory!
+
+  """Quantité par lapin et par jour (unité de l’article)"""
+  dailyQuantity: Float!
+}
+
+"""
+Gestante, allaitante, engraissement ou entretien (tous les autres lapins).
+"""
+enum FeedingCategory {
+  FATTENING
+  LACTATING
+  MAINTENANCE
+  PREGNANT
+}
+
+type FeedingHeadcountsModel {
+  """Lapins à l’engraissement (sevrés)"""
+  FATTENING: Int!
+
+  """Femelles allaitantes (portée non sevrée)"""
+  LACTATING: Int!
+
+  """Tous les autres lapins actifs (entretien)"""
+  MAINTENANCE: Int!
+
+  """Femelles gestantes confirmées"""
+  PREGNANT: Int!
+
+  """Lapereaux sous la mère, nourris avec elle"""
+  underMother: Int!
+}
+
+type FeedingItemPlanModel {
+  """Rations déduites du stock jusqu’à cette date"""
+  appliedUntil: DateTime
+  autonomyDays: Float
+  currentStock: Float!
+
+  """Coût journalier (besoin × prix unitaire)"""
+  dailyCost: Float
+
+  """Besoin journalier de toute la ferme"""
+  dailyNeed: Float!
+
+  """Date estimée de rupture"""
+  depletionDate: DateTime
+
+  """Stock estimé après déduction des jours en attente"""
+  estimatedStock: Float!
+  inventoryItemId: ID!
+  name: String!
+
+  """Jours de rations pas encore déduits"""
+  pendingDays: Int!
+  pendingQuantity: Float!
+  rations: [FeedRationModel!]!
+  unit: String!
+  unitPrice: Float
+}
+
+type FeedingPlanModel {
+  headcounts: FeedingHeadcountsModel!
+  items: [FeedingItemPlanModel!]!
+}
+
 input FillFormInput {
   """Contexte déjà connu (ex. « Femelle : F12 »)"""
   context: String
@@ -1020,6 +1100,11 @@ type Mutation {
   addPayment(input: CreatePaymentInput!): PaymentModel!
   addRabbitIdentification(input: AddRabbitIdentificationInput!, rabbitId: ID!): RabbitIdentificationModel!
 
+  """
+  Déduit du stock les rations des jours écoulés depuis la dernière déduction.
+  """
+  applyFeedRations(inventoryItemId: ID!): StockMovementModel
+
   """Pose une question à l’assistant (aucune donnée n’est modifiée)"""
   askAssistant(input: AskAssistantInput!): AssistantReplyModel!
   assignLitterRabbitsToCage(input: AssignLitterRabbitsToCageInput!): [RabbitCageMovementModel!]!
@@ -1101,6 +1186,7 @@ type Mutation {
   Envoie une notification d’essai ; renvoie le nombre d’appareils atteints.
   """
   sendTestPush: Int!
+  setFeedRations(input: SetFeedRationsInput!): FeedingItemPlanModel!
 
   """Abonne cet appareil aux rappels du jour."""
   subscribePush(input: PushSubscriptionInput!): Boolean!
@@ -1227,6 +1313,11 @@ type Query {
   farms: [FarmModel!]!
   fatteningLot(id: ID!): FatteningLotModel!
   fatteningLots: [FatteningLotModel!]!
+
+  """
+  Effectifs par catégorie, besoins journaliers et autonomie de chaque aliment.
+  """
+  feedingPlan: FeedingPlanModel!
   healthRecord(id: ID!): HealthRecordModel!
   healthRecords(type: HealthRecordType): [HealthRecordModel!]!
   healthRecordsByRabbit(rabbitId: ID!): [HealthRecordModel!]!
@@ -1512,6 +1603,16 @@ enum SectionType {
   OTHER
   QUARANTINE
   REPRODUCTION
+}
+
+input SetFeedRationsInput {
+  inventoryItemId: ID!
+  rations: [FeedRationInput!]!
+
+  """
+  Début du calcul des rations (par défaut : aujourd’hui, ou la dernière déduction).
+  """
+  startDate: DateTime
 }
 
 type StockMovementModel {

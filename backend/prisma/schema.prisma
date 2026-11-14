@@ -121,6 +121,14 @@ enum InventoryItemType {
   OTHER
 }
 
+/// Catégories de lapins pour le calcul des rations journalières.
+enum FeedingCategory {
+  PREGNANT
+  LACTATING
+  FATTENING
+  MAINTENANCE
+}
+
 enum StockMovementType {
   INITIAL
   PURCHASE
@@ -287,6 +295,7 @@ model Farm {
 
   expenses       Expense[]
   inventoryItems InventoryItem[]
+  feedRations    FeedRation[]
   tasks          Task[]
 
   adoptions LitterAdoption[]
@@ -1054,6 +1063,11 @@ model InventoryItem {
   /// Prix unitaire de référence (dernier prix d'achat ou saisi).
   unitPrice Decimal?
 
+  /// Date jusqu'à laquelle les rations journalières ont été déduites du stock.
+  rationsAppliedUntil DateTime?
+
+  rations FeedRation[]
+
   description String?
 
   farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)
@@ -1221,4 +1235,29 @@ model LotCageMovement {
   @@index([cageId])
   @@index([startedAt])
   @@index([endedAt])
+}
+
+// ============================================================
+// RATIONS JOURNALIÈRES
+// ============================================================
+
+/// Quantité d'un aliment donnée chaque jour à UN lapin d'une catégorie
+/// (dans l'unité de l'article, ex. kg).
+model FeedRation {
+  id String @id @default(uuid())
+
+  farmId          String
+  inventoryItemId String
+  category        FeedingCategory
+
+  dailyQuantity Float
+
+  farm          Farm          @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  inventoryItem InventoryItem @relation(fields: [inventoryItemId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([inventoryItemId, category])
+  @@index([farmId])
 }

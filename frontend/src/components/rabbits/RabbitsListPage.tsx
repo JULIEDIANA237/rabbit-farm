@@ -87,6 +87,7 @@ export function RabbitsListPage({ category }: { category: 'ADULT' | 'KIT' }) {
           <p className="mt-1 text-xs text-slate-400">{copy.hint}</p>
         </div>
 
+        {category === 'ADULT' && (
         <Link
           href="/rabbits/new"
           className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 font-semibold text-white shadow-sm transition hover:bg-emerald-700"
@@ -97,6 +98,7 @@ export function RabbitsListPage({ category }: { category: 'ADULT' | 'KIT' }) {
             Nouveau lapin
           </span>
         </Link>
+        )}
       </header>
 
       <div className="mb-6">
