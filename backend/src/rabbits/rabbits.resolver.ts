@@ -235,4 +235,15 @@ async rabbitsPaginated(
   );
 }
   
+
+  @Mutation(() => Boolean, {
+    description: 'Supprime un lapin saisi par erreur (sans historique).',
+  })
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  deleteRabbit(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.rabbitsService.remove(id, currentUser);
+  }
 }

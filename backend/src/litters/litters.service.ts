@@ -450,7 +450,10 @@ async assignRabbitsToCage(
       /*
        * 6. Créer un mouvement pour chaque lapereau.
        */
-      const startedAt = new Date();
+      const startedAt = input.date ? new Date(input.date) : new Date();
+      if (Number.isNaN(startedAt.getTime())) {
+        throw new BadRequestException('La date est invalide.');
+      }
 
       const movements = [];
 

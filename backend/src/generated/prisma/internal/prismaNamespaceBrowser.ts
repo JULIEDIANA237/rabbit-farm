@@ -87,7 +87,8 @@ export const ModelName = {
   Task: 'Task',
   NestInstallation: 'NestInstallation',
   MortalityRecord: 'MortalityRecord',
-  LotCageMovement: 'LotCageMovement'
+  LotCageMovement: 'LotCageMovement',
+  FeedRation: 'FeedRation'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -575,6 +576,8 @@ export const InventoryItemScalarFieldEnum = {
   unit: 'unit',
   currentStock: 'currentStock',
   minimumStock: 'minimumStock',
+  unitPrice: 'unitPrice',
+  rationsAppliedUntil: 'rationsAppliedUntil',
   description: 'description',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -663,6 +666,19 @@ export const LotCageMovementScalarFieldEnum = {
 } as const
 
 export type LotCageMovementScalarFieldEnum = (typeof LotCageMovementScalarFieldEnum)[keyof typeof LotCageMovementScalarFieldEnum]
+
+
+export const FeedRationScalarFieldEnum = {
+  id: 'id',
+  farmId: 'farmId',
+  inventoryItemId: 'inventoryItemId',
+  category: 'category',
+  dailyQuantity: 'dailyQuantity',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FeedRationScalarFieldEnum = (typeof FeedRationScalarFieldEnum)[keyof typeof FeedRationScalarFieldEnum]
 
 
 export const SortOrder = {

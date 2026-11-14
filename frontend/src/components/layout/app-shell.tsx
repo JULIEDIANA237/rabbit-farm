@@ -8,6 +8,7 @@ import { Header } from './header';
 import { MobileNavigation } from './mobile-navigation';
 import { AssistantPanel } from '@/components/assistant/assistant-panel';
 import { OfflineBanner } from './offline-banner';
+import { ModuleGuide } from '@/components/onboarding/module-guide';
 
 interface AppShellProps {
   children: ReactNode;
@@ -39,6 +40,9 @@ export function AppShell({
 
           <main className="flex-1 pb-32 lg:pb-0">
             <div className="mx-auto w-full max-w-[1600px] px-4 py-5 md:px-6 md:py-7 xl:px-8">
+              <div className="print:hidden">
+                <ModuleGuide />
+              </div>
               {children}
             </div>
           </main>

@@ -11,7 +11,8 @@ import {
 } from '@/components/ui/kit';
 import { useCustomerOptions, useLotOptions, useRabbitOptions } from '@/graphql/options';
 import { toFloat, toInt, useForm, useOpenFromQuery } from '@/hooks/use-form';
-import { CURRENCY, clean, formatDate, formatMoney, fromDateInput, toDateInput } from '@/lib/format';
+import { CURRENCY, clean, cleanEdit, formatDate, formatMoney, fromDateInput, toDateInput } from '@/lib/format';
+import { RowActions, useDeleteAction } from '@/components/ui/row-actions';
 import { PAYMENT_METHOD, SALE_STATUS, label, options } from '@/lib/labels';
 
 const SALES = gql`
@@ -35,6 +36,7 @@ const SALES = gql`
       phone
       email
       address
+      notes
       saleCount
       totalPurchases
       totalPaid
@@ -54,12 +56,29 @@ const CANCEL = gql`
 const CREATE_CUSTOMER = gql`
   mutation CreateCustomer($input: CreateCustomerInput!) { createCustomer(input: $input) { id } }
 `;
+const UPDATE_CUSTOMER = gql`
+  mutation UpdateCustomer($input: UpdateCustomerInput!) { updateCustomer(input: $input) { id } }
+`;
+const DELETE_CUSTOMER = gql`
+  mutation DeleteCustomer($id: ID!) { deleteCustomer(id: $id) }
+`;
+const UPDATE_SALE = gql`
+  mutation UpdateSale($input: UpdateSaleInput!) { updateSale(input: $input) { id } }
+`;
+const DELETE_SALE = gql`
+  mutation DeleteSale($id: ID!) { deleteSale(id: $id) }
+`;
+const DELETE_PAYMENT = gql`
+  mutation DeletePayment($id: ID!) { deletePayment(id: $id) }
+`;
 
 interface Sale {
   id: string;
   saleDate: string;
   status: string;
+  customerId?: string | null;
   customerName?: string | null;
+  observation?: string | null;
   totalAmount: number;
   paidAmount: number;
   remainingAmount: number;
@@ -72,6 +91,8 @@ interface Customer {
   name: string;
   phone?: string | null;
   email?: string | null;
+  address?: string | null;
+  notes?: string | null;
   saleCount: number;
   totalPurchases: number;
   totalPaid: number;
@@ -92,6 +113,10 @@ export default function SalesPage() {
   const [lotId] = useState(initialLotId);
   const [paying, setPaying] = useState<Sale | null>(null);
   const [newCustomer, setNewCustomer] = useState(false);
+  const [editingSale, setEditingSale] = useState<Sale | null>(null);
+  const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
+  const removeSale = useDeleteAction(DELETE_SALE, { refetchQueries });
+  const removeCustomer = useDeleteAction(DELETE_CUSTOMER, { refetchQueries: ['Sales', 'CustomerOptions'] });
   useOpenFromQuery(() => setCreating(true));
 
   const { data, loading, error, refetch } = useQuery<{ sales: Sale[]; customers: Customer[] }>(SALES);
@@ -154,33 +179,49 @@ export default function SalesPage() {
             { header: 'Statut', cell: (s) => <Badge tone={STATUS_TONE[s.status]}>{label(SALE_STATUS, s.status)}</Badge> },
             {
               header: '',
-              cell: (s) =>
-                s.status !== 'CANCELLED' && (
-                  <div className="flex gap-1">
-                    <a
-                      href={`/print/invoice/${s.id}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="rounded-xl border border-slate-200 px-3 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50"
-                    >
-                      {s.remainingAmount > 0 ? 'Facture' : 'Reçu'}
-                    </a>
-                    {s.remainingAmount > 0 && (
-                      <Button className="px-3 py-1 text-xs" onClick={() => setPaying(s)}>Paiement</Button>
-                    )}
-                    <Button
-                      variant="ghost"
-                      className="px-2 py-1 text-xs text-red-600"
-                      onClick={() => {
-                        const reason = window.prompt("Motif d'annulation ?");
-                        if (reason === null) return;
-                        cancel({ variables: { input: { id: s.id, reason } } }).catch((e) => window.alert(e.message));
-                      }}
-                    >
-                      Annuler
-                    </Button>
-                  </div>
-                ),
+              cell: (s) => (
+                <RowActions
+                  onEdit={() => setEditingSale(s)}
+                  onDelete={() =>
+                    removeSale.ask(
+                      s.id,
+                      `la vente du ${formatDate(s.saleDate)} (${formatMoney(s.totalAmount)})`,
+                      s.status !== 'CANCELLED'
+                        ? `Ses paiements seront supprimés et les lapins ou lots vendus redeviendront actifs.`
+                        : undefined,
+                    )
+                  }
+                >
+                  {s.status !== 'CANCELLED' && (
+                    <>
+                      <a
+                        href={`/print/invoice/${s.id}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="rounded-xl border border-slate-200 px-3 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50"
+                      >
+                        {s.remainingAmount > 0 ? 'Facture' : 'Reçu'}
+                      </a>
+                      {s.remainingAmount > 0 && (
+                        <Button className="px-3 py-1 text-xs" onClick={() => setPaying(s)}>Paiement</Button>
+                      )}
+                      {s.payments.length === 0 && (
+                        <Button
+                          variant="ghost"
+                          className="px-2 py-1 text-xs text-red-600"
+                          onClick={() => {
+                            const reason = window.prompt("Motif d'annulation ?");
+                            if (reason === null) return;
+                            cancel({ variables: { input: { id: s.id, reason } } }).catch((e) => window.alert(e.message));
+                          }}
+                        >
+                          Annuler
+                        </Button>
+                      )}
+                    </>
+                  )}
+                </RowActions>
+              ),
             },
           ]}
         />
@@ -198,6 +239,17 @@ export default function SalesPage() {
               header: 'Solde dû',
               cell: (c) => <span className={c.outstandingBalance > 0 ? 'font-semibold text-red-600' : ''}>{formatMoney(c.outstandingBalance)}</span>,
             },
+            {
+              header: '',
+              cell: (c) => (
+                <RowActions
+                  onEdit={() => setEditingCustomer(c)}
+                  onDelete={() =>
+                    removeCustomer.ask(c.id, `le client « ${c.name} »`, c.saleCount ? `Ses ${c.saleCount} vente(s) sont conservées, sans client associé.` : undefined)
+                  }
+                />
+              ),
+            },
           ]}
         />
       )}
@@ -205,6 +257,16 @@ export default function SalesPage() {
       <SaleModal open={creating} initialLotId={lotId} onClose={() => setCreating(false)} />
       {paying && <PaymentModal sale={paying} onClose={() => setPaying(null)} />}
       <CustomerModal open={newCustomer} onClose={() => setNewCustomer(false)} />
+      {editingCustomer && <CustomerModal key={editingCustomer.id} open editing={editingCustomer} onClose={() => setEditingCustomer(null)} />}
+      {editingSale && (
+        <SaleEditModal
+          key={editingSale.id}
+          sale={sales.find((x) => x.id === editingSale.id) ?? editingSale}
+          onClose={() => setEditingSale(null)}
+        />
+      )}
+      {removeSale.dialog}
+      {removeCustomer.dialog}
     </div>
   );
 }
@@ -442,9 +504,15 @@ function PaymentModal({ sale, onClose }: { sale: Sale; onClose: () => void }) {
   );
 }
 
-function CustomerModal({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { bind, values, reset } = useForm({ name: '', phone: '', email: '', address: '', notes: '' });
-  const [create, { loading, error, reset: resetMutation }] = useMutation(CREATE_CUSTOMER, {
+function CustomerModal({ open, onClose, editing }: { open: boolean; onClose: () => void; editing?: Customer }) {
+  const { bind, values, reset } = useForm({
+    name: editing?.name ?? '',
+    phone: editing?.phone ?? '',
+    email: editing?.email ?? '',
+    address: editing?.address ?? '',
+    notes: editing?.notes ?? '',
+  });
+  const [save, { loading, error, reset: resetMutation }] = useMutation(editing ? UPDATE_CUSTOMER : CREATE_CUSTOMER, {
     refetchQueries: ['Sales', 'CustomerOptions'],
   });
   const close = () => {
@@ -455,13 +523,25 @@ function CustomerModal({ open, onClose }: { open: boolean; onClose: () => void }
   return (
     <Modal
       open={open}
-      title="Nouveau client"
+      title={editing ? `Modifier ${editing.name}` : 'Nouveau client'}
       onClose={close}
       footer={
         <>
           <Button variant="secondary" onClick={close}>Annuler</Button>
-          <Button loading={loading} disabled={!values.name} onClick={() => create({ variables: { input: clean(values) } }).then(close).catch(() => undefined)}>
-            Créer
+          <Button
+            loading={loading}
+            disabled={!values.name}
+            onClick={() =>
+              save({
+                variables: {
+                  input: editing ? { id: editing.id, ...cleanEdit(values, ['phone', 'email', 'address', 'notes']) } : clean(values),
+                },
+              })
+                .then(close)
+                .catch(() => undefined)
+            }
+          >
+            {editing ? 'Enregistrer' : 'Créer'}
           </Button>
         </>
       }
@@ -484,6 +564,75 @@ function CustomerModal({ open, onClose }: { open: boolean; onClose: () => void }
         <Textarea {...bind('notes')} />
       </Field>
       <ErrorBox error={error} />
+    </Modal>
+  );
+}
+
+/** Correction d'une vente : date, client, observation et paiements. */
+function SaleEditModal({ sale, onClose }: { sale: Sale; onClose: () => void }) {
+  const customers = useCustomerOptions();
+  const { bind, values } = useForm({
+    saleDate: toDateInput(sale.saleDate),
+    customerId: sale.customerId ?? '',
+    observation: sale.observation ?? '',
+  });
+  const [save, { loading, error }] = useMutation(UPDATE_SALE, { refetchQueries });
+  const removePayment = useDeleteAction(DELETE_PAYMENT, { refetchQueries });
+  return (
+    <Modal
+      open
+      title={`Modifier la vente du ${formatDate(sale.saleDate)}`}
+      onClose={onClose}
+      footer={
+        <>
+          <Button variant="secondary" onClick={onClose}>Fermer</Button>
+          <Button
+            loading={loading}
+            onClick={() =>
+              save({ variables: { input: { id: sale.id, saleDate: fromDateInput(values.saleDate), customerId: values.customerId, observation: values.observation } } })
+                .then(onClose)
+                .catch(() => undefined)
+            }
+          >
+            Enregistrer
+          </Button>
+        </>
+      }
+    >
+      <FormGrid>
+        <Field label="Date de vente">
+          <Input type="date" {...bind('saleDate')} />
+        </Field>
+        <Field label="Client">
+          <Select placeholder="Client de passage" options={customers.options} {...bind('customerId')} />
+        </Field>
+      </FormGrid>
+      <Field label="Observation">
+        <Textarea {...bind('observation')} />
+      </Field>
+      <p className="text-xs text-slate-500">
+        Pour changer les articles ou les prix, supprime la vente puis saisis-la à nouveau.
+      </p>
+      <div>
+        <h3 className="mb-2 text-sm font-semibold text-slate-700">Paiements</h3>
+        <Table
+          rows={sale.payments}
+          empty="Aucun paiement"
+          columns={[
+            { header: 'Date', cell: (p) => formatDate(p.paymentDate) },
+            { header: 'Montant', cell: (p) => <strong>{formatMoney(p.amount)}</strong> },
+            { header: 'Moyen', cell: (p) => label(PAYMENT_METHOD, p.method) },
+            {
+              header: '',
+              cell: (p) => (
+                <RowActions onDelete={() => removePayment.ask(p.id, `le paiement de ${formatMoney(p.amount)} du ${formatDate(p.paymentDate)}`)} />
+              ),
+            },
+          ]}
+        />
+      </div>
+      <ErrorBox error={error} />
+      {removePayment.dialog}
     </Modal>
   );
 }

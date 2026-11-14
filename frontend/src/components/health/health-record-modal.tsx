@@ -7,12 +7,36 @@ import { Button, ErrorBox, Field, FormGrid, Input, Modal, Select, Textarea } fro
 import { useRabbitOptions } from '@/graphql/options';
 import { useForm, type Prefill } from '@/hooks/use-form';
 import { AiFill } from '@/components/assistant/ai-fill';
-import { clean, fromDateInput, toDateInput } from '@/lib/format';
+import { clean, cleanEdit, fromDateInput, toDateInput } from '@/lib/format';
 import { HEALTH_TYPE, options } from '@/lib/labels';
 
 const CREATE = gql`
   mutation CreateHealthRecord($input: CreateHealthRecordInput!) { createHealthRecord(input: $input) { id } }
 `;
+const UPDATE = gql`
+  mutation UpdateHealthRecord($input: UpdateHealthRecordInput!) { updateHealthRecord(input: $input) { id } }
+`;
+export const DELETE_HEALTH_RECORD = gql`
+  mutation DeleteHealthRecord($id: ID!) { deleteHealthRecord(id: $id) }
+`;
+
+/** Fiche sanitaire à corriger. */
+export interface EditableHealthRecord {
+  id: string;
+  rabbitId: string;
+  type: string;
+  date: string;
+  symptoms?: string | null;
+  suspicion?: string | null;
+  diagnosis?: string | null;
+  treatment?: string | null;
+  medication?: string | null;
+  dosage?: string | null;
+  nextDueDate?: string | null;
+  observation?: string | null;
+}
+
+const TEXT_FIELDS = ['symptoms', 'suspicion', 'diagnosis', 'treatment', 'medication', 'dosage', 'observation'] as const;
 
 export function HealthRecordModal({
   open,
@@ -20,30 +44,33 @@ export function HealthRecordModal({
   rabbitId,
   rabbitCode,
   prefill,
+  editing,
 }: {
   open: boolean;
   onClose: () => void;
   rabbitId?: string;
   rabbitCode?: string;
   prefill?: Prefill;
+  editing?: EditableHealthRecord;
 }) {
   const rabbits = useRabbitOptions();
+  const fixedRabbit = rabbitId ?? editing?.rabbitId;
   const { bind, values, reset, setValues } = useForm({
-    rabbitId: rabbitId ?? '',
-    type: 'OBSERVATION',
-    date: toDateInput(),
-    symptoms: '',
-    suspicion: '',
-    diagnosis: '',
-    treatment: '',
-    medication: '',
-    dosage: '',
-    nextDueDate: '',
-    observation: '',
+    rabbitId: fixedRabbit ?? '',
+    type: editing?.type ?? 'OBSERVATION',
+    date: toDateInput(editing?.date),
+    symptoms: editing?.symptoms ?? '',
+    suspicion: editing?.suspicion ?? '',
+    diagnosis: editing?.diagnosis ?? '',
+    treatment: editing?.treatment ?? '',
+    medication: editing?.medication ?? '',
+    dosage: editing?.dosage ?? '',
+    nextDueDate: editing?.nextDueDate ? toDateInput(editing.nextDueDate) : '',
+    observation: editing?.observation ?? '',
     ...prefill,
-    ...(rabbitId ? { rabbitId } : {}),
+    ...(fixedRabbit ? { rabbitId: fixedRabbit } : {}),
   });
-  const [create, { loading, error, reset: resetMutation }] = useMutation(CREATE, {
+  const [create, { loading, error, reset: resetMutation }] = useMutation(editing ? UPDATE : CREATE, {
     refetchQueries: ['HealthRecords', 'Dashboard', 'RabbitHealth'],
   });
   const close = () => {
@@ -55,7 +82,7 @@ export function HealthRecordModal({
   return (
     <Modal
       open={open}
-      title="Nouvel enregistrement sanitaire"
+      title={editing ? 'Modifier l’enregistrement sanitaire' : 'Nouvel enregistrement sanitaire'}
       onClose={close}
       footer={
         <>
@@ -66,11 +93,20 @@ export function HealthRecordModal({
             onClick={() =>
               create({
                 variables: {
-                  input: clean({
-                    ...values,
-                    date: fromDateInput(values.date),
-                    nextDueDate: values.nextDueDate ? fromDateInput(values.nextDueDate) : undefined,
-                  }),
+                  input: editing
+                    ? {
+                        id: editing.id,
+                        ...cleanEdit(
+                          { ...values, rabbitId: undefined, date: fromDateInput(values.date), nextDueDate: undefined },
+                          [...TEXT_FIELDS],
+                        ),
+                        nextDueDate: values.nextDueDate ? fromDateInput(values.nextDueDate) : null,
+                      }
+                    : clean({
+                        ...values,
+                        date: fromDateInput(values.date),
+                        nextDueDate: values.nextDueDate ? fromDateInput(values.nextDueDate) : undefined,
+                      }),
                 },
               })
                 .then(close)
@@ -82,13 +118,13 @@ export function HealthRecordModal({
         </>
       }
     >
-      <AiFill
+      {!editing && <AiFill
         form="HEALTH"
         context={rabbitCode ? `Lapin concerné : ${rabbitCode}` : undefined}
         onFill={(fields) => setValues((previous) => ({ ...previous, ...fields, ...(rabbitId ? { rabbitId } : {}) }))}
-      />
+      />}
       <FormGrid>
-        {!rabbitId && (
+        {!fixedRabbit && (
           <Field label="Lapin">
             <Select placeholder="Choisir…" options={rabbits.options} {...bind('rabbitId')} />
           </Field>

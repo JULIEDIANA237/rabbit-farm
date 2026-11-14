@@ -1,5 +1,5 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
 import { RolesGuard } from '../auth/guards/roles.guard.js';
@@ -56,5 +56,25 @@ export class MortalityResolver {
     @CurrentUser() currentUser: CurrentUserType,
   ) {
     return this.mortalityService.recordLitterMortality(input, currentUser);
+  }
+
+  @Mutation(() => RabbitModel, {
+    description: 'Annule une sortie (décès, réforme, transfert) saisie par erreur.',
+  })
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  cancelRabbitExit(
+    @Args('rabbitId', { type: () => ID }) rabbitId: string,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.mortalityService.cancelRabbitExit(rabbitId, currentUser);
+  }
+
+  @Mutation(() => Boolean)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  deleteMortalityRecord(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.mortalityService.deleteMortalityRecord(id, currentUser);
   }
 }

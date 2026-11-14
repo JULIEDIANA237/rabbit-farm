@@ -10,4 +10,7 @@ export class RemoveLotMembersInput {
 
   @Field({ nullable: true })
   reason?: string;
+
+  @Field({ nullable: true, description: 'Date de l’opération (par défaut : maintenant)' })
+  date?: Date;
 }

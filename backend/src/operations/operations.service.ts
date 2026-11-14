@@ -20,8 +20,11 @@ import { CreateInventoryItemInput } from './inputs/create-inventory-item.input.j
 import { CreateStockMovementInput } from './inputs/create-stock-movement.input.js';
 import { CreateTaskInput } from './inputs/create-task.input.js';
 import { UpdateTaskInput } from './inputs/update-task.input.js';
+import { UpdateExpenseInput } from './inputs/update-expense.input.js';
+import { UpdateInventoryItemInput } from './inputs/update-inventory-item.input.js';
 import { TaskAutomationService } from './automation/task-automation.service.js';
 import { computeAutonomy } from './automation/stock-autonomy.js';
+import { startOfDay } from './feeding/feeding-plan.js';
 
 const taskInclude = { rabbit: { select: { code: true } } } as const;
 
@@ -153,6 +156,7 @@ export class OperationsService {
   private mapInventoryItem(item: {
     currentStock: number;
     minimumStock: number | null;
+    unitPrice?: { toString(): string } | number | null;
     movements?: Array<{
       type: StockMovementType;
       quantity: number;
@@ -162,8 +166,13 @@ export class OperationsService {
   }) {
     const autonomy = computeAutonomy(item.currentStock, item.movements ?? []);
 
+    const unitPrice = this.toNumber(item.unitPrice);
+
     return {
       ...item,
+      unitPrice,
+      stockValue:
+        unitPrice != null ? Math.round(unitPrice * item.currentStock * 100) / 100 : null,
       currentStock: item.currentStock,
       isBelowMinimum:
         item.minimumStock != null && item.currentStock <= item.minimumStock,
@@ -261,6 +270,10 @@ export class OperationsService {
       );
     }
 
+    if (input.unitPrice != null && input.unitPrice < 0) {
+      throw new BadRequestException('Le prix unitaire ne peut pas être négatif.');
+    }
+
     const existing =
       await this.prisma.inventoryItem.findUnique({
         where: {
@@ -277,29 +290,45 @@ export class OperationsService {
       );
     }
 
-    const item =
-      await this.prisma.inventoryItem.create({
+    if (input.initialStock != null && input.initialStock < 0) {
+      throw new BadRequestException('Le stock initial ne peut pas être négatif.');
+    }
+    const initialDate = input.initialStockDate ? new Date(input.initialStockDate) : new Date();
+    this.validateDate(initialDate, 'du stock initial');
+    const initialStock = input.initialStock ?? 0;
+
+    const item = await this.prisma.$transaction(async (tx) => {
+      const created = await tx.inventoryItem.create({
         data: {
           farmId: currentUser.farmId,
-
           name,
           type: input.type,
           unit,
-
           minimumStock: input.minimumStock,
-
-          // Le stock initial est toujours 0.
-          // Il sera modifié par un mouvement INITIAL.
-          currentStock: 0,
-
-          description:
-            input.description?.trim() || null,
-        },
-
-        include: {
-          movements: true,
+          unitPrice: input.unitPrice ?? null,
+          currentStock: initialStock,
+          // Les rations journalières se calculent à partir du stock initial.
+          rationsAppliedUntil: initialStock > 0 ? startOfDay(initialDate) : null,
+          description: input.description?.trim() || null,
         },
       });
+      if (initialStock > 0) {
+        await tx.stockMovement.create({
+          data: {
+            inventoryItemId: created.id,
+            type: StockMovementType.INITIAL,
+            quantity: initialStock,
+            date: initialDate,
+            unitCost: input.unitPrice ?? null,
+            description: 'Stock initial',
+          },
+        });
+      }
+      return tx.inventoryItem.findUniqueOrThrow({
+        where: { id: created.id },
+        include: { movements: true },
+      });
+    });
 
     return this.mapInventoryItem(item);
   }
@@ -470,6 +499,12 @@ export class OperationsService {
         },
         data: {
           currentStock: nextStock,
+          // Un achat avec un coût unitaire met à jour le prix de référence.
+          ...(input.unitCost != null &&
+          (input.type === StockMovementType.PURCHASE ||
+            input.type === StockMovementType.INITIAL)
+            ? { unitPrice: input.unitCost }
+            : {}),
         },
       });
 
@@ -795,5 +830,162 @@ export class OperationsService {
     });
 
     return this.mapTask(updated);
+  }
+
+  // ============================================================
+  // CORRECTIONS (modifier / supprimer)
+  // ============================================================
+
+  private optionalText(value: string | undefined) {
+    return value === undefined ? undefined : value.trim() || null;
+  }
+
+  async updateExpense(input: UpdateExpenseInput, currentUser: CurrentUserType) {
+    const expense = await this.prisma.expense.findFirst({
+      where: { id: input.id, farmId: currentUser.farmId },
+    });
+    if (!expense) {
+      throw new NotFoundException('Dépense introuvable.');
+    }
+    if (input.amount != null && input.amount <= 0) {
+      throw new BadRequestException('Le montant doit être supérieur à zéro.');
+    }
+    let date: Date | undefined;
+    if (input.date) {
+      date = new Date(input.date);
+      this.validateDate(date, 'de dépense');
+    }
+    const updated = await this.prisma.expense.update({
+      where: { id: expense.id },
+      data: {
+        category: input.category ?? undefined,
+        amount: input.amount ?? undefined,
+        date,
+        description: this.optionalText(input.description),
+        reference: this.optionalText(input.reference),
+        supplier: this.optionalText(input.supplier),
+        paymentMethod: input.paymentMethod ?? undefined,
+        observation: this.optionalText(input.observation),
+      },
+    });
+    return this.mapExpense(updated);
+  }
+
+  async deleteExpense(id: string, currentUser: CurrentUserType) {
+    const { count } = await this.prisma.expense.deleteMany({
+      where: { id, farmId: currentUser.farmId },
+    });
+    if (!count) {
+      throw new NotFoundException('Dépense introuvable.');
+    }
+    return true;
+  }
+
+  async updateInventoryItem(
+    input: UpdateInventoryItemInput,
+    currentUser: CurrentUserType,
+  ) {
+    const item = await this.prisma.inventoryItem.findFirst({
+      where: { id: input.id, farmId: currentUser.farmId },
+    });
+    if (!item) {
+      throw new NotFoundException('Article de stock introuvable.');
+    }
+    const name = input.name?.trim();
+    if (input.name !== undefined && !name) {
+      throw new BadRequestException('Le nom de l’article est obligatoire.');
+    }
+    if (input.unit !== undefined && !input.unit.trim()) {
+      throw new BadRequestException('L’unité de l’article est obligatoire.');
+    }
+    if (input.minimumStock != null && input.minimumStock < 0) {
+      throw new BadRequestException('Le stock minimum ne peut pas être négatif.');
+    }
+    if (input.unitPrice != null && input.unitPrice < 0) {
+      throw new BadRequestException('Le prix unitaire ne peut pas être négatif.');
+    }
+    if (name && name !== item.name) {
+      const duplicate = await this.prisma.inventoryItem.findUnique({
+        where: { farmId_name: { farmId: currentUser.farmId, name } },
+      });
+      if (duplicate) {
+        throw new ConflictException('Un autre article porte déjà ce nom.');
+      }
+    }
+    const updated = await this.prisma.inventoryItem.update({
+      where: { id: item.id },
+      data: {
+        name,
+        type: input.type ?? undefined,
+        unit: input.unit?.trim(),
+        minimumStock: input.minimumStock,
+        unitPrice: input.unitPrice,
+        description: this.optionalText(input.description),
+      },
+      include: { movements: { orderBy: { date: 'desc' } } },
+    });
+    await this.automation.onStockChanged(currentUser.farmId, item.id);
+    return this.mapInventoryItem(updated);
+  }
+
+  async deleteInventoryItem(id: string, currentUser: CurrentUserType) {
+    const item = await this.prisma.inventoryItem.findFirst({
+      where: { id, farmId: currentUser.farmId },
+    });
+    if (!item) {
+      throw new NotFoundException('Article de stock introuvable.');
+    }
+    // Les mouvements sont supprimés en cascade.
+    await this.prisma.inventoryItem.delete({ where: { id: item.id } });
+    return true;
+  }
+
+  /**
+   * Supprime un mouvement de stock et annule son effet
+   * sur le stock courant.
+   */
+  async deleteStockMovement(id: string, currentUser: CurrentUserType) {
+    return this.prisma.$transaction(async (tx) => {
+      const movement = await tx.stockMovement.findFirst({
+        where: { id, inventoryItem: { farmId: currentUser.farmId } },
+        include: { inventoryItem: true },
+      });
+      if (!movement) {
+        throw new NotFoundException('Mouvement de stock introuvable.');
+      }
+      const delta = this.signedQuantity(movement.type, movement.quantity);
+      const nextStock = movement.inventoryItem.currentStock - delta;
+      if (nextStock < -1e-9) {
+        throw new BadRequestException(
+          'Impossible : le stock deviendrait négatif. Supprime d’abord les sorties plus récentes.',
+        );
+      }
+      await tx.stockMovement.delete({ where: { id: movement.id } });
+      // Déduction de rations annulée : ces jours redeviennent « à déduire ».
+      const rationStart = /^Rations du (\d{4}-\d{2}-\d{2})/.exec(movement.description ?? '')?.[1];
+      await tx.inventoryItem.update({
+        where: { id: movement.inventoryItemId },
+        data: {
+          currentStock: Math.max(0, nextStock),
+          ...(rationStart ? { rationsAppliedUntil: new Date(`${rationStart}T00:00:00.000Z`) } : {}),
+        },
+      });
+      await this.automation.onStockChanged(
+        currentUser.farmId,
+        movement.inventoryItemId,
+        tx,
+      );
+      return true;
+    });
+  }
+
+  async deleteTask(id: string, currentUser: CurrentUserType) {
+    const { count } = await this.prisma.task.deleteMany({
+      where: { id, farmId: currentUser.farmId },
+    });
+    if (!count) {
+      throw new NotFoundException('Tâche introuvable.');
+    }
+    return true;
   }
 }

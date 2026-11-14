@@ -11,6 +11,7 @@ import {
 import { useCageOptions, useRabbitOptions } from '@/graphql/options';
 import { toFloat, toInt, useForm } from '@/hooks/use-form';
 import { clean, formatDate, formatNumber, fromDateInput, toDateInput } from '@/lib/format';
+import { RowActions, useDeleteAction } from '@/components/ui/row-actions';
 import { LOT_STATUS, MOVEMENT_REASON, label, options } from '@/lib/labels';
 
 const LOT = gql`
@@ -42,6 +43,9 @@ const REMOVE = gql`
 `;
 const WEIGH = gql`
   mutation Weigh($input: CreateWeighingInput!) { createWeighing(input: $input) { id } }
+`;
+const DELETE_WEIGHING = gql`
+  mutation DeleteWeighing($id: ID!) { deleteWeighing(id: $id) }
 `;
 const MOVE = gql`
   mutation MoveLot($input: MoveFatteningLotInput!) { moveFatteningLot(input: $input) { id } }
@@ -75,6 +79,7 @@ export default function LotPage({ params }: { params: Promise<{ id: string }> })
   const { data, loading, error, refetch } = useQuery<LotData>(LOT, { variables: { id } });
   const [kind, setKind] = useState<Kind>(null);
   const [remove] = useMutation(REMOVE, { refetchQueries: ['FatteningLot'] });
+  const removeWeighing = useDeleteAction(DELETE_WEIGHING, { refetchQueries: ['FatteningLot', 'FatteningLots'] });
 
   if (loading && !data) return <Loading />;
   if (error) return <ErrorBox error={error} onRetry={() => refetch()} />;
@@ -155,6 +160,12 @@ export default function LotPage({ params }: { params: Promise<{ id: string }> })
                 { header: 'Total', cell: (w) => `${formatNumber(w.totalWeight, 2)} kg` },
                 { header: 'Moyenne', cell: (w) => `${formatNumber(w.averageWeight ?? w.totalWeight / w.animalCount, 3)} kg` },
                 { header: 'Âge', cell: (w) => (w.ageInDays != null ? `${w.ageInDays} j` : '—') },
+                {
+                  header: '',
+                  cell: (w) => (
+                    <RowActions onDelete={() => removeWeighing.ask(w.id, `la pesée du ${formatDate(w.date)} (${formatNumber(w.totalWeight, 2)} kg)`)} />
+                  ),
+                },
               ]}
             />
           </Card>
@@ -175,6 +186,7 @@ export default function LotPage({ params }: { params: Promise<{ id: string }> })
       </div>
 
       <LotModal kind={kind} lotId={lot.id} memberCount={active.length} onClose={() => setKind(null)} />
+      {removeWeighing.dialog}
     </div>
   );
 }
@@ -209,7 +221,7 @@ function LotModal({ kind, lotId, memberCount, onClose }: { kind: Kind; lotId: st
   const observation = values.observation || undefined;
 
   async function submit() {
-    if (kind === 'add') await add({ variables: { input: { lotId, rabbitIds: selected } } });
+    if (kind === 'add') await add({ variables: { input: { lotId, rabbitIds: selected, date: fromDateInput(values.date) } } });
     if (kind === 'weigh')
       await weigh({
         variables: {
@@ -223,7 +235,8 @@ function LotModal({ kind, lotId, memberCount, onClose }: { kind: Kind; lotId: st
           }),
         },
       });
-    if (kind === 'move') await move({ variables: { input: clean({ lotId, cageId: values.cageId, reason: values.reason, observation }) } });
+    if (kind === 'move')
+      await move({ variables: { input: clean({ lotId, cageId: values.cageId, reason: values.reason, observation, date: fromDateInput(values.date) }) } });
     if (kind === 'complete') await complete({ variables: { input: clean({ id: lotId, exitDate: fromDateInput(values.date), observation }) } });
     close();
   }
@@ -243,6 +256,11 @@ function LotModal({ kind, lotId, memberCount, onClose }: { kind: Kind; lotId: st
       }
     >
       {kind === 'add' && (
+        <Field label="Date d'entrée dans le lot">
+          <Input type="date" {...bind('date')} />
+        </Field>
+      )}
+      {kind === 'add' && (
         <div className="max-h-72 space-y-1 overflow-y-auto rounded-xl border border-slate-200 p-2">
           {rabbits.rabbits
             .filter((r) => r.purpose !== 'BREEDER')
@@ -260,7 +278,7 @@ function LotModal({ kind, lotId, memberCount, onClose }: { kind: Kind; lotId: st
       )}
       {kind !== 'add' && (
         <FormGrid>
-          {kind !== 'move' && (
+          {(
             <Field label="Date">
               <Input type="date" {...bind('date')} />
             </Field>

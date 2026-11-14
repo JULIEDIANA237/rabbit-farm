@@ -7,6 +7,7 @@ import { ArrowUpRight, Mic, MicOff, SendHorizontal, Sparkles, Trash2, X } from '
 
 import { ErrorBox } from '@/components/ui/kit';
 import { URL_COMMAND_EVENT } from '@/hooks/use-form';
+import { ASK_ASSISTANT_EVENT } from '@/components/onboarding/module-guide';
 import { useSpeech } from '@/hooks/use-speech';
 import { ASK_ASSISTANT, useAssistantEnabled, type AssistantDraft } from '@/lib/assistant';
 
@@ -84,6 +85,28 @@ export function AssistantPanel() {
       document.body.style.overflow = previous;
     };
   }, [open]);
+
+  // Question envoyée par une bulle d'aide (« Demander à l'assistant »).
+  const pendingQuestion = useRef<string | null>(null);
+  const [questionStamp, setQuestionStamp] = useState(0);
+  useEffect(() => {
+    const onAsk = (event: Event) => {
+      const question = (event as CustomEvent<{ question?: string }>).detail?.question;
+      if (!question) return;
+      pendingQuestion.current = question;
+      setOpen(true);
+      setQuestionStamp(Date.now());
+    };
+    window.addEventListener(ASK_ASSISTANT_EVENT, onAsk);
+    return () => window.removeEventListener(ASK_ASSISTANT_EVENT, onAsk);
+  }, []);
+  useEffect(() => {
+    if (!questionStamp || !loaded || !pendingQuestion.current) return;
+    const question = pendingQuestion.current;
+    pendingQuestion.current = null;
+    void send(question);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [questionStamp, loaded]);
 
   if (open && !loaded) {
     setLoaded(true);

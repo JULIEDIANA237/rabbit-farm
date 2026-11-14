@@ -12,6 +12,7 @@ import { HealthService } from './health.service.js';
 import { HealthRecordType } from './graphql/health-record-type.enum.js';
 import { HealthRecordModel } from './models/health-record.model.js';
 import { CreateHealthRecordInput } from './inputs/create-health-record.input.js';
+import { UpdateHealthRecordInput } from './inputs/update-health-record.input.js';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
 import { RolesGuard } from '../auth/guards/roles.guard.js';
 import { Roles } from '../auth/decorators/roles.decorator.js';
@@ -71,5 +72,28 @@ export class HealthResolver {
     @CurrentUser() currentUser: CurrentUserType,
   ) {
     return this.healthService.create(input, currentUser);
+  }
+
+  @Mutation(() => HealthRecordModel)
+  @Roles(
+    FarmRole.ADMIN,
+    FarmRole.BREEDING_MANAGER,
+    FarmRole.EMPLOYEE,
+    FarmRole.VETERINARIAN,
+  )
+  updateHealthRecord(
+    @Args('input') input: UpdateHealthRecordInput,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.healthService.update(input, currentUser);
+  }
+
+  @Mutation(() => Boolean)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER, FarmRole.VETERINARIAN)
+  deleteHealthRecord(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.healthService.remove(id, currentUser);
   }
 }

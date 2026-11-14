@@ -5,6 +5,8 @@ import {
   Query,
   Resolver,
 } from '@nestjs/graphql';
+import { UpdateFatteningLotInput } from './inputs/update-fattening-lot.input.js';
+import { UpdateWeighingInput } from './inputs/update-weighing.input.js';
 import { UseGuards } from '@nestjs/common';
 
 import { FatteningService } from './fattening.service.js';
@@ -120,5 +122,41 @@ export class FatteningResolver {
     @CurrentUser() currentUser: CurrentUserType,
   ) {
     return this.fatteningService.createWeighing(input, currentUser);
+  }
+
+  @Mutation(() => FatteningLotModel)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  updateFatteningLot(
+    @Args('input') input: UpdateFatteningLotInput,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.fatteningService.updateLot(input, currentUser);
+  }
+
+  @Mutation(() => Boolean)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  deleteFatteningLot(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.fatteningService.deleteLot(id, currentUser);
+  }
+
+  @Mutation(() => WeighingModel)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER, FarmRole.EMPLOYEE)
+  updateWeighing(
+    @Args('input') input: UpdateWeighingInput,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.fatteningService.updateWeighing(input, currentUser);
+  }
+
+  @Mutation(() => Boolean)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  deleteWeighing(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.fatteningService.deleteWeighing(id, currentUser);
   }
 }

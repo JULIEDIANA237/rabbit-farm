@@ -11,6 +11,7 @@ import {
   CircleDollarSign,
   ClipboardList,
   Home,
+  PawPrint,
   Rabbit,
   Settings,
   Sprout,
@@ -36,6 +37,11 @@ const navigation = [
     label: 'Lapins',
     href: '/rabbits',
     icon: Rabbit,
+  },
+  {
+    label: 'Lapereaux',
+    href: '/kits',
+    icon: PawPrint,
   },
   {
     label: 'Génétique',

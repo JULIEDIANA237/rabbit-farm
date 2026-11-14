@@ -220,22 +220,55 @@ export default function LitterPage({ params }: { params: Promise<{ id: string }>
 }
 
 function KitDeathButton({ kitId, code }: { kitId: string; code: string }) {
-  const [exit, { loading }] = useMutation(EXIT, { refetchQueries: ['LitterDetail'] });
+  const [open, setOpen] = useState(false);
+  const { bind, values } = useForm({ date: toDateInput(), cause: '' });
+  const [exit, { loading, error, reset }] = useMutation(EXIT, { refetchQueries: ['LitterDetail', 'Litters', 'Dashboard'] });
   return (
-    <Button
-      variant="ghost"
-      className="px-2 py-1 text-xs text-red-600"
-      loading={loading}
-      onClick={() => {
-        const cause = window.prompt(`Cause du décès de ${code} ?`);
-        if (cause === null) return;
-        exit({ variables: { input: { rabbitId: kitId, status: 'DEAD', date: new Date().toISOString(), cause } } }).catch((e) =>
-          window.alert(e.message),
-        );
-      }}
-    >
-      Décès
-    </Button>
+    <>
+      <Button
+        variant="ghost"
+        className="px-2 py-1 text-xs text-red-600"
+        onClick={() => {
+          reset();
+          setOpen(true);
+        }}
+      >
+        Décès
+      </Button>
+      {open && (
+        <Modal
+          open
+          title={`Décès de ${code}`}
+          onClose={() => setOpen(false)}
+          footer={
+            <>
+              <Button variant="secondary" onClick={() => setOpen(false)}>Annuler</Button>
+              <Button
+                variant="danger"
+                loading={loading}
+                onClick={() =>
+                  exit({ variables: { input: clean({ rabbitId: kitId, status: 'DEAD', date: fromDateInput(values.date), cause: values.cause }) } })
+                    .then(() => setOpen(false))
+                    .catch(() => undefined)
+                }
+              >
+                Enregistrer le décès
+              </Button>
+            </>
+          }
+        >
+          <FormGrid>
+            <Field label="Date du décès">
+              <Input type="date" {...bind('date')} />
+            </Field>
+            <Field label="Cause">
+              <Input placeholder="Écrasement, froid, diarrhée…" {...bind('cause')} />
+            </Field>
+          </FormGrid>
+          <ErrorBox error={error} />
+        </Modal>
+      )}
+    </>
   );
 }
 
@@ -289,7 +322,7 @@ function LitterActionModal({
 
   async function submit() {
     if (kind === 'cage') {
-      await assign({ variables: { input: clean({ litterId, cageId: values.cageId, rabbitIds: selected, reason: values.reason, observation }) } });
+      await assign({ variables: { input: clean({ litterId, cageId: values.cageId, rabbitIds: selected, reason: values.reason, observation, date }) } });
     } else if (kind === 'adoption') {
       await adopt({
         variables: {

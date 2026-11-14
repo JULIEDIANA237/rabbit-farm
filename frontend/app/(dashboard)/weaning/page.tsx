@@ -12,6 +12,7 @@ import {
 import { useLitterOptions, useLotOptions } from '@/graphql/options';
 import { toFloat, toInt, useForm, useOpenFromQuery } from '@/hooks/use-form';
 import { clean, formatDate, formatNumber, fromDateInput, toDateInput } from '@/lib/format';
+import { RowActions, useDeleteAction } from '@/components/ui/row-actions';
 
 const WEANINGS = gql`
   query Weanings {
@@ -31,6 +32,12 @@ const WEANINGS = gql`
 const CREATE = gql`
   mutation CreateWeaning($input: CreateWeaningInput!) { createWeaning(input: $input) { id } }
 `;
+const UPDATE = gql`
+  mutation UpdateWeaning($input: UpdateWeaningInput!) { updateWeaning(input: $input) { id } }
+`;
+const DELETE = gql`
+  mutation DeleteWeaning($id: ID!) { deleteWeaning(id: $id) }
+`;
 const COMPLETE = gql`
   mutation CompleteWeaning($input: CompleteWeaningInput!) { completeWeaning(input: $input) { id } }
 `;
@@ -44,6 +51,7 @@ interface Weaning {
   quantity: number;
   averageWeight?: number | null;
   totalWeight?: number | null;
+  observation?: string | null;
 }
 
 const refetchQueries = ['Weanings', 'Dashboard', 'LitterOptions'];
@@ -52,6 +60,8 @@ export default function WeaningPage() {
   const [tab, setTab] = useState<'planned' | 'done'>('planned');
   const [creating, setCreating] = useState(false);
   const [completing, setCompleting] = useState<Weaning | null>(null);
+  const [editing, setEditing] = useState<Weaning | null>(null);
+  const remove = useDeleteAction(DELETE, { refetchQueries: [...refetchQueries, 'Litters', 'Tasks', 'HeaderTasks'] });
   useOpenFromQuery(() => setCreating(true));
 
   const { data, loading, error, refetch } = useQuery<{ weanings: Weaning[] }>(WEANINGS);
@@ -95,14 +105,96 @@ export default function WeaningPage() {
             { header: 'Poids moyen', cell: (w) => (w.averageWeight != null ? `${formatNumber(w.averageWeight, 3)} kg` : '—') },
             {
               header: '',
-              cell: (w) => !w.actualDate && <Button className="px-3 py-1 text-xs" onClick={() => setCompleting(w)}>Réaliser</Button>,
+              cell: (w) => (
+                <RowActions
+                  onEdit={() => setEditing(w)}
+                  onDelete={() =>
+                    remove.ask(
+                      w.id,
+                      `le sevrage de la portée ${w.litterCode ?? ''} (${formatDate(w.actualDate ?? w.plannedDate)})`,
+                      w.actualDate ? 'Les lapereaux reviennent dans la portée et sortent du lot où le sevrage les avait placés.' : undefined,
+                    )
+                  }
+                >
+                  {!w.actualDate && <Button className="px-3 py-1 text-xs" onClick={() => setCompleting(w)}>Réaliser</Button>}
+                </RowActions>
+              ),
             },
           ]}
         />
       )}
       <WeaningModal open={creating} onClose={() => setCreating(false)} />
       {completing && <WeaningModal open weaning={completing} onClose={() => setCompleting(null)} />}
+      {editing && <EditWeaningModal key={editing.id} weaning={editing} onClose={() => setEditing(null)} />}
+      {remove.dialog}
     </div>
+  );
+}
+
+function EditWeaningModal({ weaning, onClose }: { weaning: Weaning; onClose: () => void }) {
+  const { bind, values } = useForm({
+    plannedDate: toDateInput(weaning.plannedDate),
+    actualDate: weaning.actualDate ? toDateInput(weaning.actualDate) : '',
+    averageWeight: weaning.averageWeight != null ? String(weaning.averageWeight) : '',
+    totalWeight: weaning.totalWeight != null ? String(weaning.totalWeight) : '',
+    observation: weaning.observation ?? '',
+  });
+  const [save, { loading, error }] = useMutation(UPDATE, { refetchQueries });
+  return (
+    <Modal
+      open
+      title={`Modifier le sevrage — portée ${weaning.litterCode ?? ''}`}
+      onClose={onClose}
+      footer={
+        <>
+          <Button variant="secondary" onClick={onClose}>Annuler</Button>
+          <Button
+            loading={loading}
+            onClick={() =>
+              save({
+                variables: {
+                  input: {
+                    ...clean({
+                      id: weaning.id,
+                      plannedDate: fromDateInput(values.plannedDate),
+                      actualDate: values.actualDate ? fromDateInput(values.actualDate) : undefined,
+                      averageWeight: toFloat(values.averageWeight),
+                      totalWeight: toFloat(values.totalWeight),
+                    }),
+                    observation: values.observation,
+                  },
+                },
+              })
+                .then(onClose)
+                .catch(() => undefined)
+            }
+          >
+            Enregistrer
+          </Button>
+        </>
+      }
+    >
+      <FormGrid>
+        <Field label="Date prévue">
+          <Input type="date" {...bind('plannedDate')} />
+        </Field>
+        {weaning.actualDate && (
+          <Field label="Date réelle">
+            <Input type="date" {...bind('actualDate')} />
+          </Field>
+        )}
+        <Field label="Poids moyen (kg)">
+          <Input inputMode="decimal" {...bind('averageWeight')} />
+        </Field>
+        <Field label="Poids total (kg)">
+          <Input inputMode="decimal" {...bind('totalWeight')} />
+        </Field>
+      </FormGrid>
+      <Field label="Observation">
+        <Textarea {...bind('observation')} />
+      </Field>
+      <ErrorBox error={error} />
+    </Modal>
   );
 }
 

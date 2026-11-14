@@ -15,6 +15,9 @@ import { CreateCustomerInput } from './inputs/create-customer.input.js';
 import { CreateSaleInput } from './inputs/create-sale.input.js';
 import { CreatePaymentInput } from './inputs/create-payment.input.js';
 import { CancelSaleInput } from './inputs/cancel-sale.input.js';
+import { UpdateCustomerInput } from './inputs/update-customer.input.js';
+import { UpdateSaleInput } from './inputs/update-sale.input.js';
+import type { Prisma } from '../generated/prisma/client.js';
 import { computeSaleStatus, summarizeCustomerAccount } from './sales.utils.js';
 
 type DecimalLike = { toString(): string } | number;
@@ -400,38 +403,8 @@ export class SalesService {
       );
     }
 
-    const lotIds = sale.items.map((item) => item.lotId).filter(Boolean) as string[];
-    const directRabbitIds = sale.items
-      .map((item) => item.rabbitId)
-      .filter(Boolean) as string[];
-
     const updated = await this.prisma.$transaction(async (tx) => {
-      const lotMembers = lotIds.length
-        ? await tx.lotMembership.findMany({
-            where: { lotId: { in: lotIds }, leftAt: sale.saleDate, reason: 'Vente' },
-            select: { id: true, rabbitId: true },
-          })
-        : [];
-
-      const rabbitIds = [...new Set([...directRabbitIds, ...lotMembers.map((m) => m.rabbitId)])];
-
-      if (rabbitIds.length) {
-        await tx.rabbit.updateMany({
-          where: { id: { in: rabbitIds }, status: RabbitStatus.SOLD },
-          data: { status: RabbitStatus.ACTIVE, exitDate: null, exitCause: null },
-        });
-      }
-
-      if (lotMembers.length) {
-        await tx.lotMembership.updateMany({
-          where: { id: { in: lotMembers.map((m) => m.id) } },
-          data: { leftAt: null, reason: null },
-        });
-        await tx.fatteningLot.updateMany({
-          where: { id: { in: lotIds } },
-          data: { status: FatteningLotStatus.ACTIVE, exitDate: null },
-        });
-      }
+      await this.restoreSoldAnimals(tx, sale);
 
       return tx.sale.update({
         where: { id: sale.id },
@@ -501,5 +474,194 @@ export class SalesService {
       return created;
     });
     return this.mapPayment(payment);
+  }
+
+  // ============================================================
+  // CORRECTIONS (modifier / supprimer)
+  // ============================================================
+
+  /** Les lapins et lots d'une vente redeviennent actifs. */
+  private async restoreSoldAnimals(
+    tx: Prisma.TransactionClient,
+    sale: { saleDate: Date; items: Array<{ lotId: string | null; rabbitId: string | null }> },
+  ) {
+    const lotIds = sale.items.map((item) => item.lotId).filter(Boolean) as string[];
+    const directRabbitIds = sale.items
+      .map((item) => item.rabbitId)
+      .filter(Boolean) as string[];
+
+    const lotMembers = lotIds.length
+      ? await tx.lotMembership.findMany({
+          where: { lotId: { in: lotIds }, leftAt: sale.saleDate, reason: 'Vente' },
+          select: { id: true, rabbitId: true },
+        })
+      : [];
+
+    const rabbitIds = [...new Set([...directRabbitIds, ...lotMembers.map((m) => m.rabbitId)])];
+
+    if (rabbitIds.length) {
+      await tx.rabbit.updateMany({
+        where: { id: { in: rabbitIds }, status: RabbitStatus.SOLD },
+        data: { status: RabbitStatus.ACTIVE, exitDate: null, exitCause: null },
+      });
+    }
+
+    if (lotMembers.length) {
+      await tx.lotMembership.updateMany({
+        where: { id: { in: lotMembers.map((m) => m.id) } },
+        data: { leftAt: null, reason: null },
+      });
+      await tx.fatteningLot.updateMany({
+        where: { id: { in: lotIds } },
+        data: { status: FatteningLotStatus.ACTIVE, exitDate: null },
+      });
+    }
+  }
+
+  async updateCustomer(input: UpdateCustomerInput, currentUser: CurrentUserType) {
+    const customer = await this.prisma.customer.findFirst({
+      where: { id: input.id, farmId: currentUser.farmId },
+    });
+    if (!customer) {
+      throw new NotFoundException('Client introuvable.');
+    }
+    if (input.name !== undefined && !input.name.trim()) {
+      throw new BadRequestException('Le nom du client est obligatoire.');
+    }
+    const text = (value: string | undefined) =>
+      value === undefined ? undefined : value.trim() || null;
+    await this.prisma.customer.update({
+      where: { id: customer.id },
+      data: {
+        name: input.name?.trim(),
+        phone: text(input.phone),
+        email: input.email === undefined ? undefined : input.email.trim().toLowerCase() || null,
+        address: text(input.address),
+        notes: text(input.notes),
+      },
+    });
+    return this.findCustomer(customer.id, currentUser);
+  }
+
+  /** Les ventes du client sont conservées, sans client associé. */
+  async deleteCustomer(id: string, currentUser: CurrentUserType) {
+    const { count } = await this.prisma.customer.deleteMany({
+      where: { id, farmId: currentUser.farmId },
+    });
+    if (!count) {
+      throw new NotFoundException('Client introuvable.');
+    }
+    return true;
+  }
+
+  async updateSale(input: UpdateSaleInput, currentUser: CurrentUserType) {
+    const sale = await this.prisma.sale.findFirst({
+      where: { id: input.id, farmId: currentUser.farmId },
+      include: { items: true },
+    });
+    if (!sale) {
+      throw new NotFoundException('Vente introuvable.');
+    }
+    let customerId: string | null | undefined;
+    if (input.customerId !== undefined) {
+      customerId = input.customerId || null;
+      if (customerId) {
+        const customer = await this.prisma.customer.findFirst({
+          where: { id: customerId, farmId: currentUser.farmId },
+          select: { id: true },
+        });
+        if (!customer) {
+          throw new NotFoundException('Client introuvable.');
+        }
+      }
+    }
+    const saleDate = input.saleDate ? new Date(input.saleDate) : undefined;
+    if (saleDate && Number.isNaN(saleDate.getTime())) {
+      throw new BadRequestException('La date de vente est invalide.');
+    }
+    const dateChanged = saleDate && saleDate.getTime() !== sale.saleDate.getTime();
+
+    const updated = await this.prisma.$transaction(async (tx) => {
+      if (dateChanged && sale.status !== SaleStatus.CANCELLED) {
+        const lotIds = sale.items.map((item) => item.lotId).filter(Boolean) as string[];
+        const rabbitIds = sale.items.map((item) => item.rabbitId).filter(Boolean) as string[];
+        const members = await tx.lotMembership.findMany({
+          where: {
+            leftAt: sale.saleDate,
+            reason: 'Vente',
+            OR: [{ lotId: { in: lotIds } }, { rabbitId: { in: rabbitIds } }],
+          },
+          select: { id: true, rabbitId: true },
+        });
+        const allRabbits = [...new Set([...rabbitIds, ...members.map((m) => m.rabbitId)])];
+        await tx.lotMembership.updateMany({
+          where: { id: { in: members.map((m) => m.id) } },
+          data: { leftAt: saleDate },
+        });
+        await tx.rabbit.updateMany({
+          where: { id: { in: allRabbits }, status: RabbitStatus.SOLD },
+          data: { exitDate: saleDate },
+        });
+        if (lotIds.length) {
+          await tx.fatteningLot.updateMany({
+            where: { id: { in: lotIds } },
+            data: { exitDate: saleDate },
+          });
+        }
+      }
+      return tx.sale.update({
+        where: { id: sale.id },
+        data: {
+          saleDate,
+          customerId,
+          observation:
+            input.observation === undefined ? undefined : input.observation.trim() || null,
+        },
+        include: saleInclude,
+      });
+    });
+    return this.mapSale(updated);
+  }
+
+  /** Supprime une vente (et ses paiements) ; les animaux redeviennent actifs. */
+  async deleteSale(id: string, currentUser: CurrentUserType) {
+    const sale = await this.prisma.sale.findFirst({
+      where: { id, farmId: currentUser.farmId },
+      include: { items: true },
+    });
+    if (!sale) {
+      throw new NotFoundException('Vente introuvable.');
+    }
+    await this.prisma.$transaction(async (tx) => {
+      if (sale.status !== SaleStatus.CANCELLED) {
+        await this.restoreSoldAnimals(tx, sale);
+      }
+      await tx.sale.delete({ where: { id: sale.id } });
+    });
+    return true;
+  }
+
+  async deletePayment(id: string, currentUser: CurrentUserType) {
+    const payment = await this.prisma.payment.findFirst({
+      where: { id, sale: { farmId: currentUser.farmId } },
+      include: { sale: { include: { payments: true } } },
+    });
+    if (!payment) {
+      throw new NotFoundException('Paiement introuvable.');
+    }
+    const { sale } = payment;
+    const remainingPaid = sale.payments
+      .filter((p) => p.id !== payment.id)
+      .reduce((sum, p) => sum + this.toNumber(p.amount), 0);
+    await this.prisma.$transaction(async (tx) => {
+      await tx.payment.delete({ where: { id: payment.id } });
+      if (sale.status !== SaleStatus.CANCELLED) {
+        await tx.sale.update({
+          where: { id: sale.id },
+          data: { status: computeSaleStatus(this.toNumber(sale.totalAmount), remainingPaid) },
+        });
+      }
+    });
+    return true;
   }
 }

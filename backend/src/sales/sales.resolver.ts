@@ -8,6 +8,8 @@ import {
 import { UseGuards } from '@nestjs/common';
 
 import { SalesService } from './sales.service.js';
+import { UpdateCustomerInput } from './inputs/update-customer.input.js';
+import { UpdateSaleInput } from './inputs/update-sale.input.js';
 import { CancelSaleInput } from './inputs/cancel-sale.input.js';
 import { CustomerModel } from './models/customer.model.js';
 import { PaymentModel, SaleModel } from './models/sale.model.js';
@@ -90,5 +92,50 @@ export class SalesResolver {
     @CurrentUser() currentUser: CurrentUserType,
   ) {
     return this.salesService.cancelSale(input, currentUser);
+  }
+
+  @Mutation(() => CustomerModel)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER, FarmRole.EMPLOYEE)
+  updateCustomer(
+    @Args('input') input: UpdateCustomerInput,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.salesService.updateCustomer(input, currentUser);
+  }
+
+  @Mutation(() => Boolean)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  deleteCustomer(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.salesService.deleteCustomer(id, currentUser);
+  }
+
+  @Mutation(() => SaleModel)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  updateSale(
+    @Args('input') input: UpdateSaleInput,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.salesService.updateSale(input, currentUser);
+  }
+
+  @Mutation(() => Boolean)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  deleteSale(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.salesService.deleteSale(id, currentUser);
+  }
+
+  @Mutation(() => Boolean)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  deletePayment(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.salesService.deletePayment(id, currentUser);
   }
 }

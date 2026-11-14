@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { gql } from '@apollo/client';
 import { useQuery, useApolloClient } from '@apollo/client/react';
-import { Bell, LogOut, Menu, RefreshCw } from 'lucide-react';
+import { Bell, CircleHelp, LogOut, Menu, RefreshCw } from 'lucide-react';
+import { SHOW_GUIDE_EVENT } from '@/components/onboarding/module-guide';
 import { useState } from 'react';
 
 import { ME_QUERY, type Me } from '@/graphql/auth/mutations';
@@ -82,6 +83,15 @@ export function Header({ onMenuClick }: HeaderProps) {
           className="rounded-xl p-2.5 text-slate-600 hover:bg-slate-100 lg:hidden"
         >
           <RefreshCw size={20} className={reloading ? 'animate-spin' : ''} />
+        </button>
+        <button
+          type="button"
+          onClick={() => window.dispatchEvent(new Event(SHOW_GUIDE_EVENT))}
+          aria-label="Aide de la page"
+          title="Aide de la page"
+          className="rounded-xl p-2.5 text-slate-600 hover:bg-slate-100"
+        >
+          <CircleHelp size={20} />
         </button>
         <Link
           href="/tasks"

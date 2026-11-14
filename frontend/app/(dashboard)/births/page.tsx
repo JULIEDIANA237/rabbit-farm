@@ -3,10 +3,12 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { gql } from '@apollo/client';
-import { useQuery } from '@apollo/client/react';
+import { useMutation, useQuery } from '@apollo/client/react';
 
-import { Badge, Button, Card, ErrorBox, Grid, Loading, PageHeader, Stat, Table, Tabs } from '@/components/ui/kit';
-import { formatDate, formatPercent } from '@/lib/format';
+import { Badge, Button, Card, ErrorBox, Field, FormGrid, Grid, Input, Loading, Modal, PageHeader, Stat, Table, Tabs, Textarea } from '@/components/ui/kit';
+import { RowActions, useDeleteAction } from '@/components/ui/row-actions';
+import { toInt, useForm } from '@/hooks/use-form';
+import { formatDate, formatPercent, fromDateInput, toDateInput } from '@/lib/format';
 import { LITTER_STATUS, label } from '@/lib/labels';
 
 const LITTERS = gql`
@@ -30,6 +32,7 @@ const LITTERS = gql`
       stillBorn
       litterId
       litterCode
+      observation
       mother { id code }
       father { id code }
     }
@@ -56,15 +59,39 @@ interface Birth {
   stillBorn: number;
   litterId?: string | null;
   litterCode?: string | null;
+  observation?: string | null;
   mother?: { code: string } | null;
   father?: { code: string } | null;
 }
+
+const UPDATE_BIRTH = gql`
+  mutation UpdateBirth($input: UpdateBirthInput!) { updateBirth(input: $input) { id } }
+`;
+const DELETE_BIRTH = gql`
+  mutation DeleteBirth($id: ID!) { deleteBirth(id: $id) }
+`;
+const refetchQueries = ['Litters', 'Breedings', 'Dashboard', 'Tasks', 'HeaderTasks'];
 
 const ageDays = (d: string) => Math.floor((Date.now() - new Date(d).getTime()) / 86_400_000);
 
 export default function BirthsPage() {
   const [tab, setTab] = useState<'litters' | 'births'>('litters');
   const { data, loading, error, refetch } = useQuery<{ litters: Litter[]; births: Birth[] }>(LITTERS);
+  const [editing, setEditing] = useState<Birth | null>(null);
+  const remove = useDeleteAction(DELETE_BIRTH, { refetchQueries });
+  const birthActions = (b?: Birth) =>
+    b && (
+      <RowActions
+        onEdit={() => setEditing(b)}
+        onDelete={() =>
+          remove.ask(
+            b.id,
+            `la mise bas du ${formatDate(b.birthDate)} (${b.mother?.code ?? ''})`,
+            'La portée et ses lapereaux sont supprimés (impossible s’ils ont déjà un historique : sevrage, pesée, soin…). L’accouplement redevient « gestante ».',
+          )
+        }
+      />
+    );
 
   const litters = data?.litters ?? [];
   const births = data?.births ?? [];
@@ -122,6 +149,7 @@ export default function BirthsPage() {
             { header: 'Vivants / mort-nés', cell: (l) => `${l.liveBorn} / ${l.stillBorn}` },
             { header: 'Effectif actuel', cell: (l) => l.currentCount },
             { header: 'Statut', cell: (l) => <Badge tone={l.status === 'ACTIVE' ? 'pink' : 'slate'}>{label(LITTER_STATUS, l.status)}</Badge> },
+            { header: '', cell: (l) => birthActions(births.find((b) => b.litterId === l.id)) },
           ]}
         />
       ) : (
@@ -139,10 +167,69 @@ export default function BirthsPage() {
                 header: 'Portée',
                 cell: (b) => (b.litterId ? <Link className="text-emerald-700" href={`/litters/${b.litterId}`}>{b.litterCode}</Link> : '—'),
               },
+              { header: '', cell: (b) => birthActions(b) },
             ]}
           />
         </Card>
       )}
+      {editing && <EditBirthModal key={editing.id} birth={editing} onClose={() => setEditing(null)} />}
+      {remove.dialog}
     </div>
+  );
+}
+
+function EditBirthModal({ birth, onClose }: { birth: Birth; onClose: () => void }) {
+  const { bind, values } = useForm({
+    birthDate: toDateInput(birth.birthDate),
+    stillBorn: String(birth.stillBorn),
+    observation: birth.observation ?? '',
+  });
+  const [save, { loading, error }] = useMutation(UPDATE_BIRTH, { refetchQueries });
+  return (
+    <Modal
+      open
+      title={`Modifier la mise bas de ${birth.mother?.code ?? ''}`}
+      onClose={onClose}
+      footer={
+        <>
+          <Button variant="secondary" onClick={onClose}>Annuler</Button>
+          <Button
+            loading={loading}
+            onClick={() =>
+              save({
+                variables: {
+                  input: {
+                    id: birth.id,
+                    birthDate: fromDateInput(values.birthDate),
+                    stillBorn: toInt(values.stillBorn),
+                    observation: values.observation,
+                  },
+                },
+              })
+                .then(onClose)
+                .catch(() => undefined)
+            }
+          >
+            Enregistrer
+          </Button>
+        </>
+      }
+    >
+      <FormGrid>
+        <Field label="Date de mise bas" hint="La date de naissance des lapereaux suit">
+          <Input type="date" {...bind('birthDate')} />
+        </Field>
+        <Field label="Mort-nés">
+          <Input inputMode="numeric" {...bind('stillBorn')} />
+        </Field>
+      </FormGrid>
+      <p className="text-xs text-slate-500">
+        Nés vivants : {birth.liveBorn}. Pour corriger ce nombre, supprime la mise bas puis enregistre-la à nouveau.
+      </p>
+      <Field label="Observation">
+        <Textarea {...bind('observation')} />
+      </Field>
+      <ErrorBox error={error} />
+    </Modal>
   );
 }

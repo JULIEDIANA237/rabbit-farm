@@ -26,6 +26,12 @@ export class InventoryItemModel {
   @Field(() => Float)
   currentStock: number;
 
+  @Field(() => Float, { nullable: true, description: 'Prix unitaire de référence' })
+  unitPrice?: number | null;
+
+  @Field(() => Float, { nullable: true, description: 'Valeur du stock (stock × prix unitaire)' })
+  stockValue?: number | null;
+
   @Field({ nullable: true })
   description?: string;
 

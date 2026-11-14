@@ -164,6 +164,16 @@ export const InventoryItemType = {
 export type InventoryItemType = (typeof InventoryItemType)[keyof typeof InventoryItemType]
 
 
+export const FeedingCategory = {
+  PREGNANT: 'PREGNANT',
+  LACTATING: 'LACTATING',
+  FATTENING: 'FATTENING',
+  MAINTENANCE: 'MAINTENANCE'
+} as const
+
+export type FeedingCategory = (typeof FeedingCategory)[keyof typeof FeedingCategory]
+
+
 export const StockMovementType = {
   INITIAL: 'INITIAL',
   PURCHASE: 'PURCHASE',

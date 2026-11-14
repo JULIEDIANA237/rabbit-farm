@@ -10,6 +10,7 @@ import { UseGuards } from '@nestjs/common';
 import { WeaningService } from './weaning.service.js';
 import { WeaningModel } from './models/weaning.model.js';
 import { CreateWeaningInput } from './inputs/create-weaning.input.js';
+import { UpdateWeaningInput } from './inputs/update-weaning.input.js';
 import { CompleteWeaningInput } from './inputs/complete-weaning.input.js';
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
 import type { CurrentUserType } from '../auth/types/current-user.type.js';
@@ -60,5 +61,23 @@ export class WeaningResolver {
     @CurrentUser() currentUser: CurrentUserType,
   ) {
     return this.weaningService.findByLitter(litterId, currentUser);
+  }
+
+  @Mutation(() => WeaningModel)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  updateWeaning(
+    @Args('input') input: UpdateWeaningInput,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.weaningService.update(input, currentUser);
+  }
+
+  @Mutation(() => Boolean)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  deleteWeaning(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.weaningService.remove(id, currentUser);
   }
 }

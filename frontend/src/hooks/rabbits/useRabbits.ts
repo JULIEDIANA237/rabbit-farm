@@ -21,6 +21,7 @@ interface GetRabbitsVariables {
     page: number;
     pageSize: number;
     search: string;
+    category?: 'ADULT' | 'KIT';
   };
 }
 
@@ -36,6 +37,7 @@ export function useRabbits(
   page: number,
   pageSize: number,
   search: string,
+  category?: 'ADULT' | 'KIT',
 ) {
   const {
     data,
@@ -50,6 +52,7 @@ export function useRabbits(
         page,
         pageSize,
         search,
+        ...(category ? { category } : {}),
       },
     },
     fetchPolicy: 'cache-and-network',

@@ -61,6 +61,11 @@ const actionItems = [
 
 const menuItems = [
   {
+    label: 'Lapereaux',
+    href: '/kits',
+    icon: Sprout,
+  },
+  {
     label: 'Reproduction',
     href: '/breeding',
     icon: HeartPulse,

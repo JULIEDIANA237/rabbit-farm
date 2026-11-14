@@ -12,6 +12,7 @@ import { BreedingModel } from './models/breeding.model.js';
 import { NestInstallationModel } from './models/nest-installation.model.js';
 import { CreateBreedingInput } from './inputs/create-breeding.input.js';
 import { RecordNestInstallationInput } from './inputs/record-nest-installation.input.js';
+import { UpdateBreedingInput } from './inputs/update-breeding.input.js';
 import { CancelBreedingInput } from './inputs/cancel-breeding.input.js';
 import { BreedingStatus } from './graphql/breeding-status.enum.js';
 
@@ -72,5 +73,23 @@ export class BreedingResolver {
     @CurrentUser() currentUser: CurrentUserType,
   ) {
     return this.breedingService.recordNestInstallation(input, currentUser);
+  }
+
+  @Mutation(() => BreedingModel)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  async updateBreeding(
+    @Args('input') input: UpdateBreedingInput,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.breedingService.update(input, currentUser);
+  }
+
+  @Mutation(() => Boolean)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  async deleteBreeding(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.breedingService.remove(id, currentUser);
   }
 }
