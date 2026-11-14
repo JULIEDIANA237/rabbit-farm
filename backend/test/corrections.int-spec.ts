@@ -152,4 +152,38 @@ describe('Corrections et rations (intégration)', () => {
     expect(kits.rabbitsPaginated.total).toBe(0);
     expect(adults.rabbitsPaginated.items.map((r: { code: string }) => r.code)).toContain('F-RATION');
   });
+  it('cages : modifier, supprimer une cage vide, refuser une cage avec historique', async () => {
+    const { createSection } = await run(
+      `mutation ($input: CreateSectionInput!) { createSection(input: $input) { id } }`,
+      { input: { name: 'Bâtiment test', type: 'MATERNITY' } },
+    );
+    const cage = async (code: string) =>
+      (
+        await run(`mutation ($input: CreateCageInput!) { createCage(input: $input) { id } }`, {
+          input: { sectionId: createSection.id, code, capacity: 2 },
+        })
+      ).createCage.id as string;
+
+    const empty = await cage('C-VIDE');
+    const { updateCage } = await run(
+      `mutation ($input: UpdateCageInput!) { updateCage(input: $input) { code capacity type } }`,
+      { input: { id: empty, code: 'C-RENOMMEE', capacity: 4, type: 'Grillage' } },
+    );
+    expect(updateCage).toEqual({ code: 'C-RENOMMEE', capacity: 4, type: 'Grillage' });
+    await run(`mutation ($id: ID!) { deleteCage(id: $id) { id } }`, { id: empty });
+
+    const used = await cage('C-HISTO');
+    const first = await cage('C-SUIVANTE');
+    const r = await rabbit('R-CAGE', 'FEMALE');
+    const move = `mutation ($input: MoveRabbitInput!) { moveRabbit(input: $input) { id } }`;
+    await run(move, { input: { rabbitId: r, cageId: used, movedAt: daysAgo(10) } });
+
+    const occupied = await gql(app, `mutation ($id: ID!) { deleteCage(id: $id) { id } }`, { id: used }, token);
+    expect(occupied.errors?.[0]?.message).toMatch(/contenant encore des lapins/);
+
+    await run(move, { input: { rabbitId: r, cageId: first, movedAt: daysAgo(2) } });
+    const history = await gql(app, `mutation ($id: ID!) { deleteCage(id: $id) { id } }`, { id: used }, token);
+    expect(history.errors?.[0]?.message).toMatch(/historique/);
+    expect(await prisma.rabbitCageMovement.count({ where: { cageId: used } })).toBe(1);
+  });
 });

@@ -7,7 +7,8 @@ import { Plus } from 'lucide-react';
 
 import { Badge, Button, Card, ErrorBox, Field, FormGrid, Input, Loading, Modal, PageHeader, Select } from '@/components/ui/kit';
 import { toInt, useForm } from '@/hooks/use-form';
-import { clean } from '@/lib/format';
+import { clean, cleanEdit } from '@/lib/format';
+import { RowActions, useDeleteAction } from '@/components/ui/row-actions';
 import { CAGE_STATUS, SECTION_TYPE, label, options } from '@/lib/labels';
 
 const FARM = gql`
@@ -21,6 +22,15 @@ const CREATE_SECTION = gql`
 `;
 const CREATE_CAGE = gql`
   mutation CreateCage($input: CreateCageInput!) { createCage(input: $input) { id } }
+`;
+const UPDATE_SECTION = gql`
+  mutation UpdateSection($input: UpdateSectionInput!) { updateSection(input: $input) { id } }
+`;
+const DELETE_SECTION = gql`
+  mutation DeleteSection($id: ID!) { deleteSection(id: $id) { id } }
+`;
+const DELETE_CAGE = gql`
+  mutation DeleteCage($id: ID!) { deleteCage(id: $id) { id } }
 `;
 const UPDATE_CAGE = gql`
   mutation UpdateCage($input: UpdateCageInput!) { updateCage(input: $input) { id status } }
@@ -48,7 +58,11 @@ const refetchQueries = ['FarmStructure', 'CageOptions'];
 export default function FarmPage() {
   const { data, loading, error, refetch } = useQuery<{ sections: Section[]; cages: Cage[] }>(FARM);
   const [modal, setModal] = useState<'section' | { sectionId: string } | null>(null);
+  const [editingSection, setEditingSection] = useState<Section | null>(null);
+  const [editingCage, setEditingCage] = useState<Cage | null>(null);
   const [updateCage] = useMutation(UPDATE_CAGE, { refetchQueries });
+  const removeCage = useDeleteAction(DELETE_CAGE, { refetchQueries });
+  const removeSection = useDeleteAction(DELETE_SECTION, { refetchQueries });
 
   if (loading && !data) return <Loading />;
 
@@ -75,9 +89,20 @@ export default function FarmPage() {
           title={section.name}
           subtitle={`${label(SECTION_TYPE, section.type)}${section.description ? ` · ${section.description}` : ''}`}
           actions={
-            <Button variant="secondary" onClick={() => setModal({ sectionId: section.id })}>
-              <Plus size={14} /> Cage
-            </Button>
+            <RowActions
+              onEdit={() => setEditingSection(section)}
+              onDelete={() =>
+                removeSection.ask(
+                  section.id,
+                  `la section ${section.name}`,
+                  section.cageCount > 0 ? 'Une section ne peut être supprimée qu’une fois toutes ses cages supprimées.' : undefined,
+                )
+              }
+            >
+              <Button variant="secondary" onClick={() => setModal({ sectionId: section.id })}>
+                <Plus size={14} /> Cage
+              </Button>
+            </RowActions>
           }
         >
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
@@ -100,9 +125,29 @@ export default function FarmPage() {
                               : 'border-emerald-200 bg-emerald-50'
                     }`}
                   >
-                    <div className="flex items-center justify-between">
-                      <strong>{c.code}</strong>
-                      {c.status !== 'ACTIVE' && <Badge>{label(CAGE_STATUS, c.status)}</Badge>}
+                    <div className="flex items-start justify-between gap-1">
+                      <div className="min-w-0">
+                        <strong className="break-words">{c.code}</strong>
+                        {c.status !== 'ACTIVE' && (
+                          <div className="mt-0.5">
+                            <Badge>{label(CAGE_STATUS, c.status)}</Badge>
+                          </div>
+                        )}
+                      </div>
+                      <div className="-mr-2 -mt-2 shrink-0">
+                        <RowActions
+                          onEdit={() => setEditingCage(c)}
+                          onDelete={() =>
+                            removeCage.ask(
+                              c.id,
+                              `la cage ${c.code}`,
+                              c.rabbitCount > 0
+                                ? `Cette cage contient ${c.rabbitCount} lapin(s) : déplacez-les d’abord.`
+                                : 'Une cage qui a déjà accueilli des lapins ne peut pas être supprimée (leur historique serait perdu) : passez-la plutôt en « Inactive ».',
+                            )
+                          }
+                        />
+                      </div>
                     </div>
                     <p className="mt-1 text-slate-600">
                       {c.rabbitCount}/{c.capacity} lapin(s)
@@ -135,23 +180,48 @@ export default function FarmPage() {
 
       {modal === 'section' && <SectionModal onClose={() => setModal(null)} />}
       {modal && modal !== 'section' && <CageModal sectionId={modal.sectionId} onClose={() => setModal(null)} />}
+      {editingSection && <SectionModal key={editingSection.id} editing={editingSection} onClose={() => setEditingSection(null)} />}
+      {editingCage && (
+        <CageModal
+          key={editingCage.id}
+          sectionId={editingCage.sectionId}
+          editing={editingCage}
+          sections={data?.sections ?? []}
+          onClose={() => setEditingCage(null)}
+        />
+      )}
+      {removeCage.dialog}
+      {removeSection.dialog}
     </div>
   );
 }
 
-function SectionModal({ onClose }: { onClose: () => void }) {
-  const { bind, values } = useForm({ name: '', type: 'MATERNITY', description: '' });
-  const [create, { loading, error }] = useMutation(CREATE_SECTION, { refetchQueries });
+function SectionModal({ onClose, editing }: { onClose: () => void; editing?: Section }) {
+  const { bind, values } = useForm({
+    name: editing?.name ?? '',
+    type: editing?.type ?? 'MATERNITY',
+    description: editing?.description ?? '',
+  });
+  const [create, createState] = useMutation(CREATE_SECTION, { refetchQueries });
+  const [update, updateState] = useMutation(UPDATE_SECTION, { refetchQueries });
+  const { loading, error } = editing ? updateState : createState;
+  const submit = () =>
+    (editing
+      ? update({ variables: { input: { id: editing.id, ...cleanEdit(values, ['description']) } } })
+      : create({ variables: { input: clean(values) } })
+    )
+      .then(onClose)
+      .catch(() => undefined);
   return (
     <Modal
       open
-      title="Nouvelle section"
+      title={editing ? 'Modifier la section' : 'Nouvelle section'}
       onClose={onClose}
       footer={
         <>
           <Button variant="secondary" onClick={onClose}>Annuler</Button>
-          <Button loading={loading} disabled={!values.name} onClick={() => create({ variables: { input: clean(values) } }).then(onClose).catch(() => undefined)}>
-            Créer
+          <Button loading={loading} disabled={!values.name} onClick={submit}>
+            {editing ? 'Enregistrer' : 'Créer'}
           </Button>
         </>
       }
@@ -172,27 +242,55 @@ function SectionModal({ onClose }: { onClose: () => void }) {
   );
 }
 
-function CageModal({ sectionId, onClose }: { sectionId: string; onClose: () => void }) {
-  const { bind, values } = useForm({ code: '', capacity: '1', type: '' });
-  const [create, { loading, error }] = useMutation(CREATE_CAGE, { refetchQueries });
+function CageModal({
+  sectionId,
+  onClose,
+  editing,
+  sections = [],
+}: {
+  sectionId: string;
+  onClose: () => void;
+  editing?: Cage;
+  sections?: Section[];
+}) {
+  const { bind, values } = useForm({
+    code: editing?.code ?? '',
+    capacity: editing ? String(editing.capacity) : '1',
+    type: editing?.type ?? '',
+    sectionId,
+    status: editing?.status ?? 'ACTIVE',
+  });
+  const [create, createState] = useMutation(CREATE_CAGE, { refetchQueries });
+  const [update, updateState] = useMutation(UPDATE_CAGE, { refetchQueries });
+  const { loading, error } = editing ? updateState : createState;
+  const capacity = toInt(values.capacity) ?? 1;
+  const submit = () =>
+    (editing
+      ? update({
+          variables: {
+            input: {
+              id: editing.id,
+              ...cleanEdit(
+                { code: values.code, capacity, type: values.type, sectionId: values.sectionId, status: values.status },
+                ['type'],
+              ),
+            },
+          },
+        })
+      : create({ variables: { input: clean({ sectionId, code: values.code, capacity, type: values.type }) } })
+    )
+      .then(onClose)
+      .catch(() => undefined);
   return (
     <Modal
       open
-      title="Nouvelle cage"
+      title={editing ? `Modifier la cage ${editing.code}` : 'Nouvelle cage'}
       onClose={onClose}
       footer={
         <>
           <Button variant="secondary" onClick={onClose}>Annuler</Button>
-          <Button
-            loading={loading}
-            disabled={!values.code}
-            onClick={() =>
-              create({ variables: { input: clean({ sectionId, code: values.code, capacity: toInt(values.capacity) ?? 1, type: values.type }) } })
-                .then(onClose)
-                .catch(() => undefined)
-            }
-          >
-            Créer
+          <Button loading={loading} disabled={!values.code} onClick={submit}>
+            {editing ? 'Enregistrer' : 'Créer'}
           </Button>
         </>
       }
@@ -207,7 +305,22 @@ function CageModal({ sectionId, onClose }: { sectionId: string; onClose: () => v
         <Field label="Type">
           <Input placeholder="Maternité, engraissement…" {...bind('type')} />
         </Field>
+        {editing && (
+          <>
+            <Field label="Section">
+              <Select options={sections.map((s) => ({ value: s.id, label: s.name }))} {...bind('sectionId')} />
+            </Field>
+            <Field label="Statut">
+              <Select options={options(CAGE_STATUS)} {...bind('status')} />
+            </Field>
+          </>
+        )}
       </FormGrid>
+      {editing && editing.rabbitCount > 0 && (
+        <p className="text-xs text-slate-500">
+          {editing.rabbitCount} lapin(s) dans cette cage : la capacité ne peut pas descendre en dessous.
+        </p>
+      )}
       <ErrorBox error={error} />
     </Modal>
   );

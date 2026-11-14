@@ -361,6 +361,35 @@ export class CagesService {
       );
     }
 
+    /**
+     * Supprimer la cage effacerait (cascade) l'historique
+     * des placements des lapins et des lots qui y sont passés.
+     */
+    const [activeLots, pastRabbits, pastLots] =
+      await Promise.all([
+        this.prisma.lotCageMovement.count({
+          where: { cageId: cage.id, endedAt: null },
+        }),
+        this.prisma.rabbitCageMovement.count({
+          where: { cageId: cage.id },
+        }),
+        this.prisma.lotCageMovement.count({
+          where: { cageId: cage.id },
+        }),
+      ]);
+
+    if (activeLots > 0) {
+      throw new ConflictException(
+        'Impossible de supprimer une cage contenant encore un lot d’engraissement.',
+      );
+    }
+
+    if (pastRabbits + pastLots > 0) {
+      throw new ConflictException(
+        'Cette cage a déjà accueilli des lapins : la supprimer effacerait leur historique. Passez-la plutôt en statut « Inactive ».',
+      );
+    }
+
     const deletedCage = await this.prisma.cage.delete({
       where: {
         id: cage.id,
