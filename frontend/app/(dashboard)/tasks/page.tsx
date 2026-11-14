@@ -13,6 +13,7 @@ import { useRabbitOptions } from '@/graphql/options';
 import { useCreateModal, useForm, type Prefill } from '@/hooks/use-form';
 import { AiFill } from '@/components/assistant/ai-fill';
 import { clean, formatDate, fromDateInput, toDateInput } from '@/lib/format';
+import { RowActions, useDeleteAction } from '@/components/ui/row-actions';
 import { TASK_PRIORITY, TASK_STATUS, label, options } from '@/lib/labels';
 
 const TASKS = gql`
@@ -38,6 +39,9 @@ const CREATE = gql`
 `;
 const UPDATE = gql`
   mutation UpdateTask($input: UpdateTaskInput!) { updateTask(input: $input) { id status } }
+`;
+const DELETE = gql`
+  mutation DeleteTask($id: ID!) { deleteTask(id: $id) }
 `;
 
 interface Task {
@@ -89,6 +93,16 @@ export default function TasksPage() {
     variables: tab === 'open' ? { openOnly: true } : { status: tab },
   });
   const [update] = useMutation(UPDATE, { refetchQueries });
+  const [editing, setEditing] = useState<Task | null>(null);
+  const remove = useDeleteAction(DELETE, { refetchQueries });
+  const actions = (t: Task) => (
+    <RowActions
+      onEdit={() => setEditing(t)}
+      onDelete={() =>
+        remove.ask(t.id, `la tâche « ${t.title} »`, t.automationKey ? 'Cette tâche a été créée automatiquement : elle ne sera pas recréée.' : undefined)
+      }
+    />
+  );
 
   const today = new Date();
   today.setHours(23, 59, 59, 999);
@@ -159,23 +173,44 @@ export default function TasksPage() {
                     )}
                     <Button variant={taskActionHref(t) ? 'secondary' : 'primary'} className="px-2 py-1 text-xs" onClick={() => setStatus(t.id, 'COMPLETED')}>Terminer</Button>
                     <Button variant="ghost" className="px-2 py-1 text-xs" onClick={() => setStatus(t.id, 'CANCELLED')}>Annuler</Button>
+                    {actions(t)}
                   </div>
                 ) : (
-                  <Button variant="ghost" className="px-2 py-1 text-xs" onClick={() => setStatus(t.id, 'TODO')}>Rouvrir</Button>
+                  <div className="flex gap-1">
+                    <Button variant="ghost" className="px-2 py-1 text-xs" onClick={() => setStatus(t.id, 'TODO')}>Rouvrir</Button>
+                    {actions(t)}
+                  </div>
                 ),
             },
           ]}
         />
       )}
       <TaskModal key={creating.key} open={creating.open} prefill={creating.prefill} onClose={creating.close} />
+      {editing && <TaskModal key={editing.id} open editing={editing} onClose={() => setEditing(null)} />}
+      {remove.dialog}
     </div>
   );
 }
 
-function TaskModal({ open, onClose, prefill }: { open: boolean; onClose: () => void; prefill?: Prefill }) {
+function TaskModal({ open, onClose, prefill, editing }: { open: boolean; onClose: () => void; prefill?: Prefill; editing?: Task }) {
   const rabbits = useRabbitOptions();
-  const { bind, values, reset, setValues } = useForm({ title: '', description: '', dueDate: toDateInput(), priority: 'MEDIUM', rabbitId: '', ...prefill });
-  const [create, { loading, error, reset: r }] = useMutation(CREATE, { refetchQueries });
+  const { bind, values, reset, setValues } = useForm({
+    title: editing?.title ?? '',
+    description: editing?.description ?? '',
+    dueDate: toDateInput(editing?.dueDate),
+    priority: editing?.priority ?? 'MEDIUM',
+    rabbitId: editing?.rabbitId ?? '',
+    ...prefill,
+  });
+  const [save, { loading, error, reset: r }] = useMutation(editing ? UPDATE : CREATE, { refetchQueries });
+  const submit = () =>
+    save({
+      variables: {
+        input: editing
+          ? { id: editing.id, ...clean({ ...values, dueDate: fromDateInput(values.dueDate) }), description: values.description }
+          : clean({ ...values, dueDate: fromDateInput(values.dueDate), sourceType: 'MANUAL' }),
+      },
+    });
   const close = () => {
     reset();
     r();
@@ -184,7 +219,7 @@ function TaskModal({ open, onClose, prefill }: { open: boolean; onClose: () => v
   return (
     <Modal
       open={open}
-      title="Nouvelle tâche"
+      title={editing ? 'Modifier la tâche' : 'Nouvelle tâche'}
       onClose={close}
       footer={
         <>
@@ -192,14 +227,14 @@ function TaskModal({ open, onClose, prefill }: { open: boolean; onClose: () => v
           <Button
             loading={loading}
             disabled={!values.title}
-            onClick={() => create({ variables: { input: clean({ ...values, dueDate: fromDateInput(values.dueDate), sourceType: 'MANUAL' }) } }).then(close).catch(() => undefined)}
+            onClick={() => submit().then(close).catch(() => undefined)}
           >
-            Créer
+            {editing ? 'Enregistrer' : 'Créer'}
           </Button>
         </>
       }
     >
-      <AiFill form="TASK" onFill={(fields) => setValues((previous) => ({ ...previous, ...fields }))} />
+      {!editing && <AiFill form="TASK" onFill={(fields) => setValues((previous) => ({ ...previous, ...fields }))} />}
       <Field label="Titre">
         <Input {...bind('title')} />
       </Field>

@@ -16,4 +16,7 @@ export class AssignLitterRabbitsToCageInput {
 
   @Field({ nullable: true })
   observation?: string;
+
+  @Field({ nullable: true, description: 'Date de mise en cage (par défaut : maintenant)' })
+  date?: Date;
 }

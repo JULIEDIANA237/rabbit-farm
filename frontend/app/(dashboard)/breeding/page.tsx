@@ -13,6 +13,7 @@ import { useRabbitOptions } from '@/graphql/options';
 import { parsePrefill, toInt, useCreateModal, useForm, useUrlCommand, type Prefill } from '@/hooks/use-form';
 import { AiFill } from '@/components/assistant/ai-fill';
 import { clean, formatDate, fromDateInput, toDateInput } from '@/lib/format';
+import { RowActions, useDeleteAction } from '@/components/ui/row-actions';
 import { BREEDING_STATUS, COMPATIBILITY, PREGNANCY_RESULT, label, options } from '@/lib/labels';
 
 const BREEDINGS = gql`
@@ -51,6 +52,20 @@ const CREATE = gql`
 `;
 const CANCEL = gql`
   mutation CancelBreeding($input: CancelBreedingInput!) { cancelBreeding(input: $input) { id } }
+`;
+const UPDATE = gql`
+  mutation UpdateBreeding($input: UpdateBreedingInput!) { updateBreeding(input: $input) { id } }
+`;
+const DELETE = gql`
+  mutation DeleteBreeding($id: ID!) { deleteBreeding(id: $id) }
+`;
+const CHECKS = gql`
+  query BreedingChecks($breedingId: ID!) {
+    pregnancyChecksByBreeding(breedingId: $breedingId) { id checkedDate result observation }
+  }
+`;
+const DELETE_CHECK = gql`
+  mutation DeletePregnancyCheck($id: ID!) { deletePregnancyCheck(id: $id) }
 `;
 const PALPATION = gql`
   mutation Palpation($input: CreatePregnancyCheckInput!) { createPregnancyCheck(input: $input) { id } }
@@ -101,6 +116,8 @@ const refetchQueries = ['Breedings', 'Dashboard'];
 export default function BreedingPage() {
   const [tab, setTab] = useState<'open' | 'all'>('open');
   const creating = useCreateModal();
+  const [editing, setEditing] = useState<Breeding | null>(null);
+  const remove = useDeleteAction(DELETE, { refetchQueries: [...refetchQueries, 'Tasks', 'HeaderTasks'] });
   const [selected, setSelected] = useState<Action>(null);
   // Action demandée par l'URL (tâche du jour ou brouillon de l'assistant),
   // ouverte dès que l'accouplement concerné est chargé.
@@ -177,7 +194,20 @@ export default function BreedingPage() {
             },
             {
               header: 'Actions',
-              cell: (b) => <RowActions breeding={b} onAction={setAction} />,
+              cell: (b) => (
+                <RowActions
+                  onEdit={() => setEditing(b)}
+                  onDelete={() =>
+                    remove.ask(
+                      b.id,
+                      `l'accouplement ${b.female?.code ?? ''} × ${b.male?.code ?? ''} du ${formatDate(b.breedingDate)}`,
+                      b.birthId ? undefined : 'Ses palpations, son nid et ses tâches automatiques seront aussi supprimés.',
+                    )
+                  }
+                >
+                  <BreedingActions breeding={b} onAction={setAction} />
+                </RowActions>
+              ),
             },
           ]}
         />
@@ -185,11 +215,13 @@ export default function BreedingPage() {
 
       <CreateBreedingModal key={creating.key} open={creating.open} prefill={creating.prefill} onClose={creating.close} />
       <ActionModal key={actionKey} action={action} onClose={() => setAction(null)} />
+      {editing && <EditBreedingModal key={editing.id} breeding={editing} onClose={() => setEditing(null)} />}
+      {remove.dialog}
     </div>
   );
 }
 
-function RowActions({ breeding, onAction }: { breeding: Breeding; onAction: (a: Action) => void }) {
+function BreedingActions({ breeding, onAction }: { breeding: Breeding; onAction: (a: Action) => void }) {
   const s = breeding.status;
   const btn = (kind: NonNullable<Action>['kind'], text: string, variant: 'secondary' | 'ghost' = 'secondary') => (
     <Button variant={variant} className="px-3 py-1 text-xs" onClick={() => onAction({ kind, breeding })}>
@@ -501,6 +533,109 @@ function ActionModal({ action, onClose }: { action: Action; onClose: () => void 
         <Textarea {...bind('observation')} />
       </Field>
       <ErrorBox error={mutation.error} />
+    </Modal>
+  );
+}
+
+/** Correction d'un accouplement et de ses palpations. */
+function EditBreedingModal({ breeding, onClose }: { breeding: Breeding; onClose: () => void }) {
+  const males = useRabbitOptions({ sex: 'MALE' });
+  const locked = Boolean(breeding.birthId);
+  const { bind, values } = useForm({
+    maleId: breeding.male?.id ?? '',
+    breedingDate: toDateInput(breeding.breedingDate),
+    observation: breeding.observation ?? '',
+  });
+  const [acknowledge, setAcknowledge] = useState(false);
+  const [save, { loading, error }] = useMutation(UPDATE, { refetchQueries: [...refetchQueries, 'Tasks', 'HeaderTasks'] });
+  const { data: checks } = useQuery<{
+    pregnancyChecksByBreeding: Array<{ id: string; checkedDate: string; result: string; observation?: string | null }>;
+  }>(CHECKS, { variables: { breedingId: breeding.id }, fetchPolicy: 'cache-and-network' });
+  const removeCheck = useDeleteAction(DELETE_CHECK, {
+    refetchQueries: [...refetchQueries, 'BreedingChecks', 'Tasks', 'HeaderTasks'],
+  });
+  const warning = error && /avertissement|confirm/i.test(error.message);
+
+  return (
+    <Modal
+      open
+      title={`Modifier l'accouplement ${breeding.female?.code ?? ''} × ${breeding.male?.code ?? ''}`}
+      onClose={onClose}
+      footer={
+        <>
+          <Button variant="secondary" onClick={onClose}>Fermer</Button>
+          <Button
+            loading={loading}
+            onClick={() =>
+              save({
+                variables: {
+                  input: locked
+                    ? { id: breeding.id, observation: values.observation }
+                    : {
+                        id: breeding.id,
+                        maleId: values.maleId || undefined,
+                        breedingDate: fromDateInput(values.breedingDate),
+                        observation: values.observation,
+                        acknowledgeWarnings: acknowledge,
+                      },
+                },
+              })
+                .then(onClose)
+                .catch(() => undefined)
+            }
+          >
+            Enregistrer
+          </Button>
+        </>
+      }
+    >
+      {locked && (
+        <p className="rounded-xl bg-amber-50 p-3 text-sm text-amber-800">
+          La mise bas est enregistrée : seule l&apos;observation peut être modifiée. Pour corriger la date ou le mâle, supprime d&apos;abord la mise bas (page Mises bas).
+        </p>
+      )}
+      <FormGrid>
+        <Field label="Date de saillie" hint="Le calendrier et les tâches sont recalculés">
+          <Input type="date" disabled={locked} {...bind('breedingDate')} />
+        </Field>
+        <Field label="Mâle">
+          <Select disabled={locked} options={males.options} {...bind('maleId')} />
+        </Field>
+      </FormGrid>
+      <Field label="Observation">
+        <Textarea {...bind('observation')} />
+      </Field>
+      {warning && (
+        <label className="flex items-center gap-2 text-sm text-amber-800">
+          <input type="checkbox" checked={acknowledge} onChange={(e) => setAcknowledge(e.target.checked)} />
+          Je confirme ce mâle malgré l&apos;avertissement généalogique
+        </label>
+      )}
+      <ErrorBox error={error} />
+      <div>
+        <h3 className="mb-2 text-sm font-semibold text-slate-700">Palpations</h3>
+        <Table
+          rows={checks?.pregnancyChecksByBreeding ?? []}
+          empty="Aucune palpation"
+          columns={[
+            { header: 'Date', cell: (c) => formatDate(c.checkedDate) },
+            { header: 'Résultat', cell: (c) => label(PREGNANCY_RESULT, c.result) },
+            { header: 'Observation', cell: (c) => c.observation ?? '—' },
+            {
+              header: '',
+              cell: (c) =>
+                !locked && (
+                  <RowActions
+                    onDelete={() =>
+                      removeCheck.ask(c.id, `la palpation du ${formatDate(c.checkedDate)}`, 'Le statut de l’accouplement revient à la palpation précédente.')
+                    }
+                  />
+                ),
+            },
+          ]}
+        />
+      </div>
+      {removeCheck.dialog}
     </Modal>
   );
 }

@@ -7,7 +7,8 @@ import { useQuery } from '@apollo/client/react';
 import { Plus } from 'lucide-react';
 
 import { Badge, Button, Card, ErrorBox, Loading, PageHeader, Table, Tabs } from '@/components/ui/kit';
-import { HealthRecordModal } from '@/components/health/health-record-modal';
+import { DELETE_HEALTH_RECORD, HealthRecordModal, type EditableHealthRecord } from '@/components/health/health-record-modal';
+import { RowActions, useDeleteAction } from '@/components/ui/row-actions';
 import { formatDate } from '@/lib/format';
 import { useNow } from '@/hooks/use-now';
 import { useCreateModal } from '@/hooks/use-form';
@@ -22,6 +23,7 @@ const RECORDS = gql`
       type
       date
       symptoms
+      suspicion
       diagnosis
       treatment
       medication
@@ -41,18 +43,8 @@ const RECORDS = gql`
   }
 `;
 
-interface HealthRecord {
-  id: string;
-  rabbitId: string;
+interface HealthRecord extends EditableHealthRecord {
   rabbitCode?: string | null;
-  type: string;
-  date: string;
-  symptoms?: string | null;
-  diagnosis?: string | null;
-  treatment?: string | null;
-  medication?: string | null;
-  dosage?: string | null;
-  nextDueDate?: string | null;
 }
 
 const TYPE_TONE = { OBSERVATION: 'slate', TREATMENT: 'amber', VACCINATION: 'blue', ANALYSIS: 'pink', CONTROL: 'green' } as const;
@@ -60,6 +52,8 @@ const TYPE_TONE = { OBSERVATION: 'slate', TREATMENT: 'amber', VACCINATION: 'blue
 export default function HealthPage() {
   const [type, setType] = useState<string>('ALL');
   const creating = useCreateModal();
+  const [editing, setEditing] = useState<HealthRecord | null>(null);
+  const remove = useDeleteAction(DELETE_HEALTH_RECORD, { refetchQueries: ['HealthRecords', 'Dashboard', 'RabbitHealth', 'Tasks'] });
   const { data, loading, error, refetch } = useQuery<{
     healthRecords: HealthRecord[];
     upcomingHealthActions: HealthRecord[];
@@ -117,11 +111,22 @@ export default function HealthPage() {
             { header: 'Symptômes / diagnostic', cell: (r) => [r.symptoms, r.diagnosis].filter(Boolean).join(' · ') || '—' },
             { header: 'Traitement', cell: (r) => [r.treatment, r.medication, r.dosage].filter(Boolean).join(' · ') || '—' },
             { header: 'Prochaine échéance', cell: (r) => formatDate(r.nextDueDate) },
+            {
+              header: '',
+              cell: (r) => (
+                <RowActions
+                  onEdit={() => setEditing(r)}
+                  onDelete={() => remove.ask(r.id, `l'enregistrement du ${formatDate(r.date)} (${r.rabbitCode ?? 'lapin'})`)}
+                />
+              ),
+            },
           ]}
         />
       )}
 
       <HealthRecordModal key={creating.key} open={creating.open} prefill={creating.prefill} onClose={creating.close} />
+      {editing && <HealthRecordModal key={editing.id} open editing={editing} onClose={() => setEditing(null)} />}
+      {remove.dialog}
     </div>
   );
 }

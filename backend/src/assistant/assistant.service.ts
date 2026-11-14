@@ -13,7 +13,7 @@ import { BreedingStatus, TaskStatus } from '../generated/prisma/client.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
-import type { AiConfig } from './ai-config.js';
+import { speedOptions, type AiConfig } from './ai-config.js';
 import { describeAiError, isOverloaded } from './ai-error.js';
 import { FORM_LABELS, FORM_SCHEMAS, prepareForm, type AssistantForm, type PreparedForm } from './assistant-forms.js';
 import { buildAssistantTools } from './assistant-tools.js';
@@ -70,7 +70,7 @@ export class AssistantService {
     const drafts: PreparedForm[] = [];
 
     const messages: ModelMessage[] = [
-      ...(input.history ?? []).slice(-20).map(
+      ...(input.history ?? []).slice(-12).map(
         (message): ModelMessage =>
           message.role === 'assistant'
             ? { role: 'assistant', content: message.content }
@@ -79,16 +79,20 @@ export class AssistantService {
       { role: 'user', content: input.message },
     ];
 
+    // La vue d'ensemble est fournie d'emblée : le modèle n'a pas besoin
+    // d'un aller-retour d'outil pour les questions les plus courantes.
+    const overview = await reader.overview().catch(() => null);
+
     const result = await this.call((model) => {
       drafts.length = 0; // un nouvel essai repart sans les brouillons du précédent
       return generateText({
         model,
-        system: `${BASE_RULES}\nAujourd'hui : ${isoDay(now)}.${input.page ? `\nL'éleveur est sur la page : ${input.page}.` : ''}`,
+        system: `${BASE_RULES}\nAujourd'hui : ${isoDay(now)}.${input.page ? `\nL'éleveur est sur la page : ${input.page}.` : ''}${overview ? `\nVue d'ensemble actuelle de la ferme (inutile de rappeler lireVueEnsemble) : ${JSON.stringify(overview)}` : ''}`,
         messages,
         tools: buildAssistantTools(reader, drafts),
-        stopWhen: stepCountIs(8),
-        maxOutputTokens: 1200,
-        ...this.limits(),
+        stopWhen: stepCountIs(6),
+        maxOutputTokens: 900,
+        ...this.limits(model),
       });
     });
 
@@ -116,7 +120,7 @@ Si l'éleveur donne un total et des morts (« 8 dont 1 mort »), les vivants son
         prompt: `${input.context ? `Contexte déjà connu : ${input.context}\n` : ''}Phrase de l'éleveur : ${input.text}`,
         output: Output.object({ schema: FORM_SCHEMAS[form] }),
         maxOutputTokens: 600,
-        ...this.limits(),
+        ...this.limits(model),
       }),
     );
 
@@ -207,7 +211,7 @@ Si l'éleveur donne un total et des morts (« 8 dont 1 mort »), les vivants son
         system: `${BASE_RULES}\nAujourd'hui : ${date}.`,
         prompt: `Voici le point du jour calculé par l'application :\n${items.map((item) => `- ${item.label}`).join('\n')}\n\nÉcris en 2 ou 3 phrases ce que l'éleveur doit faire en priorité aujourd'hui, dans l'ordre. Pas de liste, pas de titre.`,
         maxOutputTokens: 300,
-        ...this.limits(),
+        ...this.limits(model),
       }),
     );
     const summary = result.text.trim();
@@ -246,8 +250,14 @@ Si l'éleveur donne un total et des morts (« 8 dont 1 mort »), les vivants son
   }
 
   /** Délai maximum et nombre de nouvelles tentatives de chaque appel. */
-  private limits() {
-    return { timeout: { totalMs: this.config.timeoutMs }, maxRetries: 1 };
+  private limits(model?: LanguageModel) {
+    const modelId =
+      model && model === this.fallback ? this.config.fallbackModel : this.config.model;
+    return {
+      timeout: { totalMs: this.config.timeoutMs },
+      maxRetries: 1,
+      providerOptions: speedOptions(this.config, modelId),
+    };
   }
 
   /**

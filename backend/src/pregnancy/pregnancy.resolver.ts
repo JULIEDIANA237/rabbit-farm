@@ -68,4 +68,13 @@ export class PregnancyResolver {
       currentUser,
     );
   }
+
+  @Mutation(() => Boolean)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  deletePregnancyCheck(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.pregnancyService.deleteCheck(id, currentUser);
+  }
 }

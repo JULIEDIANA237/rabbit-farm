@@ -17,6 +17,8 @@ import { RemoveLotMembersInput } from './inputs/remove-lot-members.input.js';
 import { CompleteFatteningLotInput } from './inputs/complete-fattening-lot.input.js';
 import { CreateWeighingInput } from './inputs/create-weighing.input.js';
 import { MoveFatteningLotInput } from './inputs/move-fattening-lot.input.js';
+import { UpdateFatteningLotInput } from './inputs/update-fattening-lot.input.js';
+import { UpdateWeighingInput } from './inputs/update-weighing.input.js';
 import { normalizeMovementReason } from '../common/constants/movement-reasons.js';
 
 const lotInclude = {
@@ -53,6 +55,14 @@ export class FatteningService {
       latestAverageWeight: latest?.averageWeight ?? null,
       latestWeighingDate: latest?.date ?? null,
     };
+  }
+
+  /** Date saisie (passée possible) ou maintenant. */
+  private operationDate(value?: Date) {
+    if (!value) return new Date();
+    const date = new Date(value);
+    this.validateDate(date, 'de l’opération');
+    return date;
   }
 
   private validateDate(date: Date, fieldName: string) {
@@ -172,7 +182,7 @@ export class FatteningService {
           data: {
             lotId: lot.id,
             rabbitId,
-            joinedAt: new Date(),
+            joinedAt: this.operationDate(input.date),
             reason: input.reason?.trim() || null,
           },
         }),
@@ -206,7 +216,7 @@ export class FatteningService {
       );
     }
 
-    const leftAt = new Date();
+    const leftAt = this.operationDate(input.date);
     const reason = input.reason?.trim() || null;
 
     return this.prisma.$transaction(
@@ -349,7 +359,7 @@ export class FatteningService {
       throw new BadRequestException((error as Error).message);
     }
 
-    const now = new Date();
+    const now = this.operationDate(input.date);
     const moveMembers = input.moveMembers ?? true;
 
     return this.prisma.$transaction(async (tx) => {
@@ -464,5 +474,97 @@ export class FatteningService {
       ...movement,
       cageCode: cage.code,
     }));
+  }
+
+  // ============================================================
+  // CORRECTIONS (modifier / supprimer)
+  // ============================================================
+
+  async updateLot(input: UpdateFatteningLotInput, currentUser: CurrentUserType) {
+    const lot = await this.findLot(input.id, currentUser);
+    const code = input.code?.trim().toUpperCase();
+    if (input.code !== undefined && !code) {
+      throw new BadRequestException('Le code du lot est obligatoire.');
+    }
+    if (code && code !== lot.code) {
+      const duplicate = await this.prisma.fatteningLot.findUnique({
+        where: { farmId_code: { farmId: currentUser.farmId, code } },
+      });
+      if (duplicate) {
+        throw new ConflictException('Ce code de lot existe déjà.');
+      }
+    }
+    const entryDate = input.entryDate ? new Date(input.entryDate) : undefined;
+    if (entryDate) this.validateDate(entryDate, "d'entrée");
+    const updated = await this.prisma.fatteningLot.update({
+      where: { id: lot.id },
+      data: {
+        code,
+        entryDate,
+        observation:
+          input.observation === undefined ? undefined : input.observation.trim() || null,
+      },
+      include: lotInclude,
+    });
+    return this.toLotModel(updated);
+  }
+
+  /** Supprime un lot créé par erreur (sans vente rattachée). */
+  async deleteLot(id: string, currentUser: CurrentUserType) {
+    const lot = await this.findLot(id, currentUser);
+    const sales = await this.prisma.saleItem.count({ where: { lotId: lot.id } });
+    if (sales) {
+      throw new ConflictException('Ce lot a été vendu : supprime d’abord la vente.');
+    }
+    await this.prisma.fatteningLot.delete({ where: { id: lot.id } });
+    return true;
+  }
+
+  private async findWeighing(id: string, currentUser: CurrentUserType) {
+    const weighing = await this.prisma.weighing.findFirst({
+      where: {
+        id,
+        OR: [
+          { rabbit: { farmId: currentUser.farmId } },
+          { lot: { farmId: currentUser.farmId } },
+        ],
+      },
+    });
+    if (!weighing) {
+      throw new NotFoundException('Pesée introuvable.');
+    }
+    return weighing;
+  }
+
+  async updateWeighing(input: UpdateWeighingInput, currentUser: CurrentUserType) {
+    const weighing = await this.findWeighing(input.id, currentUser);
+    const totalWeight = input.totalWeight ?? weighing.totalWeight;
+    const animalCount = input.animalCount ?? weighing.animalCount;
+    if (totalWeight <= 0 || animalCount <= 0) {
+      throw new BadRequestException(
+        'Le poids et le nombre d’animaux doivent être positifs.',
+      );
+    }
+    const date = input.date ? new Date(input.date) : undefined;
+    if (date) this.validateDate(date, 'de pesée');
+    const recompute = input.totalWeight != null || input.animalCount != null;
+    return this.prisma.weighing.update({
+      where: { id: weighing.id },
+      data: {
+        date,
+        totalWeight,
+        animalCount,
+        averageWeight:
+          input.averageWeight ?? (recompute ? totalWeight / animalCount : undefined),
+        observation:
+          input.observation === undefined ? undefined : input.observation.trim() || null,
+      },
+    });
+  }
+
+  async deleteWeighing(id: string, currentUser: CurrentUserType) {
+    const weighing = await this.findWeighing(id, currentUser);
+    await this.prisma.weighing.delete({ where: { id: weighing.id } });
+    return true;
   }
 }

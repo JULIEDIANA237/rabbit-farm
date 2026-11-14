@@ -13,6 +13,7 @@ import {
 import { useRabbit } from '@/hooks/rabbits/useRabbits';
 import { RabbitPhotoManager } from '@/components/rabbits/RabbitPhotoManager';
 import { RabbitLifecycle } from '@/components/rabbits/RabbitLifecycle';
+import { RabbitCorrections } from '@/components/rabbits/RabbitCorrections';
 import { PURPOSE, RABBIT_STATUS, label } from '@/lib/labels';
 
 function sexLabel(sex: string) {
@@ -81,23 +82,26 @@ export default function RabbitDetailsPage() {
     <main className="mx-auto w-full max-w-6xl px-4 py-6 pb-28">
       <div className="mb-6 flex items-center justify-between gap-3">
         <Link
-          href="/rabbits"
+          href={rabbit.birthLitterId && rabbit.purpose === 'FATTENING' ? '/kits' : '/rabbits'}
           className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100"
         >
           <ArrowLeft size={18} />
 
           <span className="hidden sm:inline">
-            Retour aux lapins
+            {rabbit.birthLitterId && rabbit.purpose === 'FATTENING' ? 'Retour aux lapereaux' : 'Retour aux lapins'}
           </span>
         </Link>
 
-        <Link
-          href={`/rabbits/${rabbit.id}/edit`}
-          className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800"
-        >
-          <Edit size={16} />
-          Modifier
-        </Link>
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          <RabbitCorrections rabbit={rabbit} />
+          <Link
+            href={`/rabbits/${rabbit.id}/edit`}
+            className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800"
+          >
+            <Edit size={16} />
+            Modifier
+          </Link>
+        </div>
       </div>
 
       {photoFailed && (

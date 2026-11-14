@@ -91,6 +91,28 @@ export class TaskAutomationService {
     return result.count;
   }
 
+  /**
+   * Supprime les tâches automatiques encore ouvertes d'un
+   * enregistrement corrigé ou supprimé (les tâches faites restent).
+   */
+  async removeOpenTasksForSource(
+    farmId: string,
+    sourceType: TaskSourceType,
+    sourceId: string,
+    db: Db = this.prisma,
+  ) {
+    const result = await db.task.deleteMany({
+      where: {
+        farmId,
+        sourceType,
+        sourceId,
+        automationKey: { not: null },
+        status: { in: OPEN_STATUSES },
+      },
+    });
+    return result.count;
+  }
+
   // ------------------------------------------------------------
   // Reproduction
   // ------------------------------------------------------------
@@ -101,6 +123,28 @@ export class TaskAutomationService {
     db: Db = this.prisma,
   ) {
     await this.createTasks(farmId, planBreedingTasks(breeding), db);
+  }
+
+  /**
+   * Recalcule les tâches d'un accouplement corrigé : les tâches
+   * ouvertes sont remplacées, celles déjà traitées sont conservées.
+   */
+  async onBreedingUpdated(
+    farmId: string,
+    breeding: BreedingForPlanning,
+    db: Db = this.prisma,
+  ) {
+    await this.removeOpenTasksForSource(farmId, TaskSourceType.BREEDING, breeding.id, db);
+    const handled = await db.task.findMany({
+      where: { farmId, sourceType: TaskSourceType.BREEDING, sourceId: breeding.id },
+      select: { automationKey: true },
+    });
+    const done = new Set(handled.map((task) => task.automationKey));
+    await this.createTasks(
+      farmId,
+      planBreedingTasks(breeding).filter((task) => !done.has(task.automationKey)),
+      db,
+    );
   }
 
   async onPregnancyChecked(
@@ -193,6 +237,27 @@ export class TaskAutomationService {
     );
 
     if (birth.liveBorn > 0) {
+      await this.createTasks(farmId, [planWeaningTask(birth)], db);
+    }
+  }
+
+  /** Mise bas corrigée ou supprimée : la tâche de sevrage est recalculée. */
+  async onBirthChanged(
+    farmId: string,
+    birth: {
+      id: string;
+      breedingId: string;
+      birthDate: Date;
+      motherId: string;
+      motherCode: string;
+      liveBorn: number;
+      litterCode?: string | null;
+    } | null,
+    birthId: string,
+    db: Db = this.prisma,
+  ) {
+    await this.removeOpenTasksForSource(farmId, TaskSourceType.BIRTH, birthId, db);
+    if (birth && birth.liveBorn > 0) {
       await this.createTasks(farmId, [planWeaningTask(birth)], db);
     }
   }

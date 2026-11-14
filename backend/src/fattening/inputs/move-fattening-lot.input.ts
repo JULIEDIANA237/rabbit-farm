@@ -11,6 +11,9 @@ export class MoveFatteningLotInput {
   @Field({ nullable: true })
   reason?: string;
 
+  @Field({ nullable: true, description: 'Date de l’opération (par défaut : maintenant)' })
+  date?: Date;
+
   @Field({ nullable: true })
   observation?: string;
 

@@ -1051,6 +1051,9 @@ model InventoryItem {
   currentStock Float  @default(0)
   minimumStock Float?
 
+  /// Prix unitaire de référence (dernier prix d'achat ou saisi).
+  unitPrice Decimal?
+
   description String?
 
   farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)

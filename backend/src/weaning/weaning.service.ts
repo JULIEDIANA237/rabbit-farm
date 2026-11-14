@@ -9,12 +9,15 @@ import { PrismaService } from '../prisma/prisma.service.js';
 import type { CurrentUserType } from '../auth/types/current-user.type.js';
 import { CreateWeaningInput } from './inputs/create-weaning.input.js';
 import { CompleteWeaningInput } from './inputs/complete-weaning.input.js';
+import { UpdateWeaningInput } from './inputs/update-weaning.input.js';
 import { TaskAutomationService } from '../operations/automation/task-automation.service.js';
 import {
   FatteningLotStatus,
   LitterStatus,
   RabbitPurpose,
   RabbitStatus,
+  TaskSourceType,
+  TaskStatus,
   type Prisma,
 } from '../generated/prisma/client.js';
 
@@ -309,5 +312,106 @@ export class WeaningService {
       orderBy: { plannedDate: 'desc' },
     });
     return weanings.map((weaning) => this.toModel(weaning));
+  }
+
+  async update(input: UpdateWeaningInput, currentUser: CurrentUserType) {
+    const weaning = await this.prisma.weaning.findFirst({
+      where: { id: input.id, farmId: currentUser.farmId },
+      include: { rabbits: true, litter: true },
+    });
+    if (!weaning) {
+      throw new NotFoundException('Sevrage introuvable.');
+    }
+    const plannedDate = input.plannedDate ? new Date(input.plannedDate) : undefined;
+    if (plannedDate) this.validateDate(plannedDate, 'prévue');
+    let actualDate: Date | undefined;
+    if (input.actualDate) {
+      if (!weaning.actualDate) {
+        throw new BadRequestException('Utilise « Réaliser le sevrage » pour un sevrage prévu.');
+      }
+      actualDate = new Date(input.actualDate);
+      this.validateDate(actualDate, 'effective');
+      if (actualDate < weaning.litter.birthDate) {
+        throw new BadRequestException('Le sevrage ne peut pas précéder la naissance.');
+      }
+    }
+    const updated = await this.prisma.$transaction(async (tx) => {
+      if (actualDate && weaning.actualDate && actualDate.getTime() !== weaning.actualDate.getTime()) {
+        await tx.lotMembership.updateMany({
+          where: {
+            rabbitId: { in: weaning.rabbits.map((r) => r.rabbitId) },
+            joinedAt: weaning.actualDate,
+            reason: 'Sevrage',
+          },
+          data: { joinedAt: actualDate },
+        });
+      }
+      return tx.weaning.update({
+        where: { id: weaning.id },
+        data: {
+          plannedDate,
+          actualDate,
+          totalWeight: input.totalWeight ?? undefined,
+          averageWeight: input.averageWeight ?? undefined,
+          observation:
+            input.observation === undefined ? undefined : input.observation.trim() || null,
+        },
+        include: weaningInclude,
+      });
+    });
+    return this.toModel(updated);
+  }
+
+  /**
+   * Supprime un sevrage saisi par erreur. S'il était réalisé, les
+   * lapereaux reviennent dans la portée et leur entrée en lot
+   * d'engraissement (faite au sevrage) est retirée.
+   */
+  async remove(id: string, currentUser: CurrentUserType) {
+    const weaning = await this.prisma.weaning.findFirst({
+      where: { id, farmId: currentUser.farmId },
+      include: { rabbits: true, litter: true },
+    });
+    if (!weaning) {
+      throw new NotFoundException('Sevrage introuvable.');
+    }
+    await this.prisma.$transaction(async (tx) => {
+      if (weaning.actualDate) {
+        const rabbitIds = weaning.rabbits.map((r) => r.rabbitId);
+        if (rabbitIds.length) {
+          await tx.lotMembership.deleteMany({
+            where: {
+              rabbitId: { in: rabbitIds },
+              joinedAt: weaning.actualDate,
+              reason: 'Sevrage',
+              leftAt: null,
+            },
+          });
+        }
+        await tx.litter.update({
+          where: { id: weaning.litterId },
+          data: {
+            currentCount: { increment: weaning.quantity },
+            ...(weaning.litter.status === LitterStatus.WEANED
+              ? { status: LitterStatus.ACTIVE }
+              : {}),
+          },
+        });
+        if (weaning.litter.birthId) {
+          await tx.task.updateMany({
+            where: {
+              farmId: currentUser.farmId,
+              sourceType: TaskSourceType.BIRTH,
+              sourceId: weaning.litter.birthId,
+              automationKey: 'LITTER_WEANING',
+              status: TaskStatus.COMPLETED,
+            },
+            data: { status: TaskStatus.TODO, completedAt: null },
+          });
+        }
+      }
+      await tx.weaning.delete({ where: { id: weaning.id } });
+    });
+    return true;
   }
 }

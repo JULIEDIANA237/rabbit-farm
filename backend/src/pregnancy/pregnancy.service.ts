@@ -10,7 +10,10 @@ import { CurrentUserType } from '../auth/types/current-user.type.js';
 import {
   BreedingStatus,
   PregnancyResult,
+  TaskSourceType,
+  TaskStatus,
 } from '../generated/prisma/client.js';
+import { ConflictException } from '@nestjs/common';
 
 import { CreatePregnancyCheckInput } from './inputs/create-pregnancy-check.input.js';
 import { TaskAutomationService } from '../operations/automation/task-automation.service.js';
@@ -191,5 +194,80 @@ export class PregnancyService {
     return pregnancies.map((pregnancy) =>
       this.toPregnancyModel(pregnancy),
     );
+  }
+
+  /**
+   * Supprime une palpation saisie par erreur : le statut de
+   * l'accouplement revient au résultat de la palpation précédente
+   * (ou « en attente de palpation ») et les tâches sont recalculées.
+   */
+  async deleteCheck(id: string, currentUser: CurrentUserType) {
+    const pregnancy = await this.prisma.pregnancy.findFirst({
+      where: { id, farmId: currentUser.farmId },
+      include: { breeding: { include: { female: { select: { code: true } }, male: { select: { code: true } } } } },
+    });
+    if (!pregnancy) {
+      throw new NotFoundException('Palpation introuvable.');
+    }
+    const { breeding } = pregnancy;
+    if (breeding.status === BreedingStatus.BIRTH_RECORDED) {
+      throw new ConflictException(
+        'La mise bas est déjà enregistrée : supprime-la d’abord.',
+      );
+    }
+
+    await this.prisma.$transaction(async (tx) => {
+      await tx.pregnancy.delete({ where: { id: pregnancy.id } });
+      const previous = await tx.pregnancy.findFirst({
+        where: { breedingId: breeding.id },
+        orderBy: [{ checkDate: 'desc' }, { createdAt: 'desc' }],
+      });
+      const status =
+        breeding.status === BreedingStatus.CANCELLED
+          ? BreedingStatus.CANCELLED
+          : !previous
+            ? BreedingStatus.AWAITING_PALPATION
+            : previous.result === PregnancyResult.PREGNANT
+              ? BreedingStatus.PREGNANT
+              : previous.result === PregnancyResult.NOT_PREGNANT
+                ? BreedingStatus.NON_PREGNANT
+                : BreedingStatus.INCONCLUSIVE;
+      await tx.breeding.update({ where: { id: breeding.id }, data: { status } });
+
+      if (status === BreedingStatus.CANCELLED) return;
+
+      // Les tâches automatiques non faites sont replanifiées.
+      await tx.task.deleteMany({
+        where: {
+          farmId: currentUser.farmId,
+          sourceType: TaskSourceType.BREEDING,
+          sourceId: breeding.id,
+          automationKey: { not: null },
+          OR: [
+            { status: { not: TaskStatus.COMPLETED } },
+            ...(previous ? [] : [{ automationKey: 'BREEDING_PALPATION' }]),
+          ],
+        },
+      });
+      if (status === BreedingStatus.NON_PREGNANT) return;
+      if (breeding.palpationStartDate && breeding.palpationEndDate && breeding.nestDate && breeding.expectedBirthStartDate && breeding.expectedBirthEndDate) {
+        await this.tasks.onBreedingUpdated(
+          currentUser.farmId,
+          {
+            id: breeding.id,
+            femaleId: breeding.femaleId,
+            femaleCode: breeding.female.code,
+            maleCode: breeding.male.code,
+            palpationStartDate: breeding.palpationStartDate,
+            palpationEndDate: breeding.palpationEndDate,
+            nestDate: breeding.nestDate,
+            expectedBirthStartDate: breeding.expectedBirthStartDate,
+            expectedBirthEndDate: breeding.expectedBirthEndDate,
+          },
+          tx,
+        );
+      }
+    });
+    return true;
   }
 }

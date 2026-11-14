@@ -575,6 +575,7 @@ export const InventoryItemScalarFieldEnum = {
   unit: 'unit',
   currentStock: 'currentStock',
   minimumStock: 'minimumStock',
+  unitPrice: 'unitPrice',
   description: 'description',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

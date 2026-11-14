@@ -11,11 +11,13 @@ import { CurrentUserType } from '../auth/types/current-user.type.js';
 import { CreateBreedingInput } from './inputs/create-breeding.input.js';
 import { RecordNestInstallationInput } from './inputs/record-nest-installation.input.js';
 import { CancelBreedingInput } from './inputs/cancel-breeding.input.js';
+import { UpdateBreedingInput } from './inputs/update-breeding.input.js';
 
 import {
   BreedingStatus,
   RabbitSex,
   RabbitStatus,
+  TaskSourceType,
 } from '../generated/prisma/client.js';
 
 import { computeBreedingCalendar } from '../common/calendar/breeding-calendar.js';
@@ -298,5 +300,123 @@ export class BreedingService {
 
       return nest;
     });
+  }
+
+  /**
+   * Corrige un accouplement tant que la mise bas n'est pas enregistrée.
+   * Le calendrier et les tâches ouvertes sont recalculés.
+   */
+  async update(input: UpdateBreedingInput, currentUser: CurrentUserType) {
+    const breeding = await this.prisma.breeding.findFirst({
+      where: { id: input.id, farmId: currentUser.farmId },
+      include: { female: true, male: true, birth: { select: { id: true } } },
+    });
+    if (!breeding) {
+      throw new NotFoundException('Accouplement introuvable.');
+    }
+    const structural = input.maleId !== undefined || input.breedingDate !== undefined;
+    if (structural && breeding.birth) {
+      throw new ConflictException(
+        'La mise bas est déjà enregistrée : supprime-la d’abord pour corriger l’accouplement.',
+      );
+    }
+
+    let male = breeding.male;
+    if (input.maleId && input.maleId !== breeding.maleId) {
+      const candidate = await this.prisma.rabbit.findFirst({
+        where: { id: input.maleId, farmId: currentUser.farmId },
+      });
+      if (!candidate) {
+        throw new NotFoundException('Mâle introuvable dans cette ferme.');
+      }
+      if (candidate.sex !== RabbitSex.MALE) {
+        throw new BadRequestException(
+          `Le lapin ${candidate.code} ne peut pas être utilisé comme mâle.`,
+        );
+      }
+      await this.genealogy.assertBreedingAllowed(
+        breeding.femaleId,
+        candidate.id,
+        currentUser,
+        input.acknowledgeWarnings ?? false,
+      );
+      male = candidate;
+    }
+
+    const breedingDate = input.breedingDate ? new Date(input.breedingDate) : breeding.breedingDate;
+    if (Number.isNaN(breedingDate.getTime())) {
+      throw new BadRequestException('La date d’accouplement est invalide.');
+    }
+    const dateChanged = breedingDate.getTime() !== breeding.breedingDate.getTime();
+    const calendar = dateChanged ? computeBreedingCalendar(breedingDate) : null;
+
+    const updated = await this.prisma.$transaction(async (tx) => {
+      const result = await tx.breeding.update({
+        where: { id: breeding.id },
+        data: {
+          maleId: male.id,
+          breedingDate,
+          ...(calendar ?? {}),
+          observation:
+            input.observation === undefined ? undefined : input.observation.trim() || null,
+        },
+        include: breedingInclude,
+      });
+      if (
+        (dateChanged || male.id !== breeding.maleId) &&
+        ACTIVE_BREEDING_STATUSES.includes(breeding.status as (typeof ACTIVE_BREEDING_STATUSES)[number])
+      ) {
+        await this.tasks.onBreedingUpdated(
+          currentUser.farmId,
+          {
+            id: result.id,
+            femaleId: breeding.femaleId,
+            femaleCode: breeding.female.code,
+            maleCode: male.code,
+            palpationStartDate: result.palpationStartDate!,
+            palpationEndDate: result.palpationEndDate!,
+            nestDate: result.nestDate!,
+            expectedBirthStartDate: result.expectedBirthStartDate!,
+            expectedBirthEndDate: result.expectedBirthEndDate!,
+          },
+          tx,
+        );
+      }
+      return result;
+    });
+    return this.toModel(updated);
+  }
+
+  /**
+   * Supprime un accouplement saisi par erreur (avec ses palpations,
+   * son nid et ses tâches automatiques ouvertes). Impossible après
+   * l'enregistrement de la mise bas.
+   */
+  async remove(id: string, currentUser: CurrentUserType) {
+    const breeding = await this.prisma.breeding.findFirst({
+      where: { id, farmId: currentUser.farmId },
+      include: { birth: { select: { id: true } }, litters: { select: { id: true } } },
+    });
+    if (!breeding) {
+      throw new NotFoundException('Accouplement introuvable.');
+    }
+    if (breeding.birth || breeding.litters.length) {
+      throw new ConflictException(
+        'Une mise bas est liée à cet accouplement : supprime-la d’abord.',
+      );
+    }
+    await this.prisma.$transaction(async (tx) => {
+      // Accouplement saisi par erreur : ses tâches automatiques disparaissent.
+      await tx.task.deleteMany({
+        where: {
+          farmId: currentUser.farmId,
+          sourceType: { in: [TaskSourceType.BREEDING, TaskSourceType.PREGNANCY] },
+          sourceId: breeding.id,
+          automationKey: { not: null },
+        },
+      });
+      await tx.breeding.delete({ where: { id: breeding.id } });
+    });
+    return true;
   }
 }

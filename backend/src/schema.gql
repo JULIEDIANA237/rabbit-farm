@@ -3,6 +3,8 @@
 # ------------------------------------------------------
 
 input AddLotMembersInput {
+  """Date de l’opération (par défaut : maintenant)"""
+  date: DateTime
   lotId: ID!
   rabbitIds: [ID!]!
   reason: String
@@ -52,6 +54,9 @@ input AskAssistantInput {
 
 input AssignLitterRabbitsToCageInput {
   cageId: ID!
+
+  """Date de mise en cage (par défaut : maintenant)"""
+  date: DateTime
   litterId: ID!
   observation: String
   rabbitIds: [ID!]!
@@ -374,6 +379,9 @@ input CreateInventoryItemInput {
   name: String!
   type: InventoryItemType!
   unit: String!
+
+  """Prix unitaire de référence"""
+  unitPrice: Float
 }
 
 input CreateLitterInput {
@@ -820,8 +828,14 @@ type InventoryItemModel {
   minimumStock: Float
   movements: [StockMovementModel!]!
   name: String!
+
+  """Valeur du stock (stock × prix unitaire)"""
+  stockValue: Float
   type: InventoryItemType!
   unit: String!
+
+  """Prix unitaire de référence"""
+  unitPrice: Float
   updatedAt: DateTime!
 }
 
@@ -973,6 +987,9 @@ enum MortalityScope {
 
 input MoveFatteningLotInput {
   cageId: ID!
+
+  """Date de l’opération (par défaut : maintenant)"""
+  date: DateTime
   lotId: ID!
 
   """
@@ -1007,6 +1024,9 @@ type Mutation {
   askAssistant(input: AskAssistantInput!): AssistantReplyModel!
   assignLitterRabbitsToCage(input: AssignLitterRabbitsToCageInput!): [RabbitCageMovementModel!]!
   cancelBreeding(input: CancelBreedingInput!): BreedingModel!
+
+  """Annule une sortie (décès, réforme, transfert) saisie par erreur."""
+  cancelRabbitExit(rabbitId: ID!): RabbitModel!
   cancelSale(input: CancelSaleInput!): SaleModel!
   completeFatteningLot(input: CompleteFatteningLotInput!): FatteningLotModel!
   completeWeaning(input: CompleteWeaningInput!): WeaningModel!
@@ -1032,10 +1052,28 @@ type Mutation {
   createTask(input: CreateTaskInput!): TaskModel!
   createWeaning(input: CreateWeaningInput!): WeaningModel!
   createWeighing(input: CreateWeighingInput!): WeighingModel!
+  deleteBirth(id: ID!): Boolean!
   deleteBreed(id: ID!): Boolean!
+  deleteBreeding(id: ID!): Boolean!
   deleteCage(id: ID!): CageModel!
   deleteCrossBreed(id: ID!): Boolean!
+  deleteCustomer(id: ID!): Boolean!
+  deleteExpense(id: ID!): Boolean!
+  deleteFatteningLot(id: ID!): Boolean!
+  deleteHealthRecord(id: ID!): Boolean!
+  deleteInventoryItem(id: ID!): Boolean!
+  deleteMortalityRecord(id: ID!): Boolean!
+  deletePayment(id: ID!): Boolean!
+  deletePregnancyCheck(id: ID!): Boolean!
+
+  """Supprime un lapin saisi par erreur (sans historique)."""
+  deleteRabbit(id: ID!): Boolean!
+  deleteSale(id: ID!): Boolean!
   deleteSection(id: ID!): SectionModel!
+  deleteStockMovement(id: ID!): Boolean!
+  deleteTask(id: ID!): Boolean!
+  deleteWeaning(id: ID!): Boolean!
+  deleteWeighing(id: ID!): Boolean!
 
   """
   Pré-remplit un formulaire à partir d’une phrase (rien n’est enregistré)
@@ -1069,14 +1107,24 @@ type Mutation {
 
   """Désabonne cet appareil."""
   unsubscribePush(endpoint: String!): Boolean!
+  updateBirth(input: UpdateBirthInput!): BirthModel!
   updateBreed(input: UpdateBreedInput!): BreedModel!
+  updateBreeding(input: UpdateBreedingInput!): BreedingModel!
   updateCage(input: UpdateCageInput!): CageModel!
   updateCrossBreed(input: UpdateCrossBreedInput!): CrossBreedModel!
+  updateCustomer(input: UpdateCustomerInput!): CustomerModel!
+  updateExpense(input: UpdateExpenseInput!): ExpenseModel!
   updateFarm(input: UpdateFarmInput!): FarmModel!
   updateFarmMemberRole(input: UpdateMemberRoleInput!): FarmMembershipModel!
+  updateFatteningLot(input: UpdateFatteningLotInput!): FatteningLotModel!
+  updateHealthRecord(input: UpdateHealthRecordInput!): HealthRecordModel!
+  updateInventoryItem(input: UpdateInventoryItemInput!): InventoryItemModel!
   updateRabbit(input: UpdateRabbitInput!): RabbitModel!
+  updateSale(input: UpdateSaleInput!): SaleModel!
   updateSection(input: UpdateSectionInput!): SectionModel!
   updateTask(input: UpdateTaskInput!): TaskModel!
+  updateWeaning(input: UpdateWeaningInput!): WeaningModel!
+  updateWeighing(input: UpdateWeighingInput!): WeighingModel!
 }
 
 type NestInstallationModel {
@@ -1236,6 +1284,11 @@ type RabbitCageMovementModel {
   startedAt: DateTime!
 }
 
+enum RabbitCategory {
+  ADULT
+  KIT
+}
+
 type RabbitIdentificationModel {
   createdAt: DateTime!
   id: ID!
@@ -1339,6 +1392,9 @@ type RabbitTraceabilityModel {
 
 input RabbitsPaginationInput {
   cageId: ID
+
+  """Lapins (ADULT) ou lapereaux (KIT)"""
+  category: RabbitCategory
   litterId: ID
   page: Int = 1
   pageSize: Int = 10
@@ -1387,6 +1443,8 @@ input RegisterInput {
 }
 
 input RemoveLotMembersInput {
+  """Date de l’opération (par défaut : maintenant)"""
+  date: DateTime
   lotId: ID!
   rabbitIds: [ID!]!
   reason: String
@@ -1563,10 +1621,25 @@ type TraceEventModel {
   type: String!
 }
 
+input UpdateBirthInput {
+  birthDate: DateTime
+  id: ID!
+  observation: String
+  stillBorn: Int
+}
+
 input UpdateBreedInput {
   description: String
   id: ID!
   name: String
+}
+
+input UpdateBreedingInput {
+  acknowledgeWarnings: Boolean = false
+  breedingDate: DateTime
+  id: ID!
+  maleId: ID
+  observation: String
 }
 
 input UpdateCageInput {
@@ -1586,11 +1659,65 @@ input UpdateCrossBreedInput {
   parentBreedBId: ID
 }
 
+input UpdateCustomerInput {
+  address: String
+  email: String
+  id: ID!
+  name: String
+  notes: String
+  phone: String
+}
+
+input UpdateExpenseInput {
+  amount: Float
+  category: ExpenseCategory
+  date: DateTime
+  description: String
+  id: ID!
+  observation: String
+  paymentMethod: PaymentMethod
+  reference: String
+  supplier: String
+}
+
 input UpdateFarmInput {
   description: String
   inbreedingPolicy: InbreedingPolicy
   location: String
   name: String
+}
+
+input UpdateFatteningLotInput {
+  code: String
+  entryDate: DateTime
+  id: ID!
+  observation: String
+}
+
+input UpdateHealthRecordInput {
+  date: DateTime
+  diagnosis: String
+  dosage: String
+  id: ID!
+  medication: String
+  nextDueDate: DateTime
+  observation: String
+  suspicion: String
+  symptoms: String
+  treatment: String
+  type: HealthRecordType = OBSERVATION
+}
+
+input UpdateInventoryItemInput {
+  description: String
+  id: ID!
+  minimumStock: Float
+  name: String
+  type: InventoryItemType
+  unit: String
+
+  """Prix unitaire de référence"""
+  unitPrice: Float
 }
 
 input UpdateMemberRoleInput {
@@ -1614,6 +1741,14 @@ input UpdateRabbitInput {
   weight: Float
 }
 
+input UpdateSaleInput {
+  """Chaîne vide pour retirer le client"""
+  customerId: ID
+  id: ID!
+  observation: String
+  saleDate: DateTime
+}
+
 input UpdateSectionInput {
   description: String
   id: ID!
@@ -1632,6 +1767,25 @@ input UpdateTaskInput {
   sourceType: TaskSourceType
   status: TaskStatus
   title: String
+}
+
+input UpdateWeaningInput {
+  """Uniquement pour un sevrage déjà réalisé"""
+  actualDate: DateTime
+  averageWeight: Float
+  id: ID!
+  observation: String
+  plannedDate: DateTime
+  totalWeight: Float
+}
+
+input UpdateWeighingInput {
+  animalCount: Int
+  averageWeight: Float
+  date: DateTime
+  id: ID!
+  observation: String
+  totalWeight: Float
 }
 
 type UserModel {

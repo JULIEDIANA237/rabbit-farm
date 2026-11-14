@@ -9,6 +9,7 @@ import { UseGuards } from '@nestjs/common';
 
 import { BirthsService } from './births.service.js';
 import { BirthModel } from './models/birth.model.js';
+import { UpdateBirthInput } from './inputs/update-birth.input.js';
 import { CreateBirthInput } from './inputs/create-birth.input.js';
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
@@ -67,5 +68,23 @@ export class BirthsResolver {
       id,
       currentUser,
     );
+  }
+
+  @Mutation(() => BirthModel)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  updateBirth(
+    @Args('input') input: UpdateBirthInput,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.birthsService.update(input, currentUser);
+  }
+
+  @Mutation(() => Boolean)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  deleteBirth(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.birthsService.remove(id, currentUser);
   }
 }

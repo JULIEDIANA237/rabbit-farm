@@ -52,3 +52,15 @@ export function clean<T extends Record<string, unknown>>(input: T): T {
     Object.entries(input).filter(([, v]) => v !== '' && v !== undefined),
   ) as T;
 }
+
+/**
+ * Comme `clean`, mais garde les champs texte vidés (`keep`) pour
+ * qu'une modification puisse effacer une valeur.
+ */
+export function cleanEdit<T extends Record<string, unknown>>(input: T, keep: (keyof T)[]): T {
+  return Object.fromEntries(
+    Object.entries(input).filter(
+      ([k, v]) => v !== undefined && (v !== '' || keep.includes(k as keyof T)),
+    ),
+  ) as T;
+}

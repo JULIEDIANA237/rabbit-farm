@@ -8,7 +8,8 @@ import { PrismaService } from '../prisma/prisma.service.js';
 import type { CurrentUserType } from '../auth/types/current-user.type.js';
 import { CreateHealthRecordInput } from './inputs/create-health-record.input.js';
 import { TaskAutomationService } from '../operations/automation/task-automation.service.js';
-import { HealthRecordType } from '../generated/prisma/client.js';
+import { HealthRecordType, TaskSourceType } from '../generated/prisma/client.js';
+import { UpdateHealthRecordInput } from './inputs/update-health-record.input.js';
 
 const recordInclude = { rabbit: { select: { code: true } } } as const;
 
@@ -166,5 +167,99 @@ export class HealthService {
       orderBy: { date: 'desc' },
     });
     return records.map((record) => this.toModel(record));
+  }
+
+  async update(input: UpdateHealthRecordInput, currentUser: CurrentUserType) {
+    const existing = await this.prisma.healthRecord.findFirst({
+      where: { id: input.id, farmId: currentUser.farmId },
+      include: { rabbit: { select: { id: true, code: true } } },
+    });
+    if (!existing) {
+      throw new NotFoundException('Fiche sanitaire introuvable.');
+    }
+    const date = input.date ? new Date(input.date) : existing.date;
+    if (Number.isNaN(date.getTime())) {
+      throw new BadRequestException('La date est invalide.');
+    }
+    const nextDueDate =
+      input.nextDueDate === undefined
+        ? existing.nextDueDate
+        : input.nextDueDate
+          ? new Date(input.nextDueDate)
+          : null;
+    if (nextDueDate && Number.isNaN(nextDueDate.getTime())) {
+      throw new BadRequestException('La prochaine échéance est invalide.');
+    }
+    if (nextDueDate && nextDueDate < date) {
+      throw new BadRequestException(
+        'La prochaine échéance ne peut pas précéder la date du soin.',
+      );
+    }
+    const text = (value: string | undefined) =>
+      value === undefined ? undefined : value.trim() || null;
+    const dueChanged =
+      (nextDueDate?.getTime() ?? null) !== (existing.nextDueDate?.getTime() ?? null);
+
+    return this.prisma.$transaction(async (tx) => {
+      const record = await tx.healthRecord.update({
+        where: { id: existing.id },
+        include: recordInclude,
+        data: {
+          type: input.type ?? undefined,
+          date,
+          symptoms: text(input.symptoms),
+          observation: text(input.observation),
+          suspicion: text(input.suspicion),
+          diagnosis: text(input.diagnosis),
+          treatment: text(input.treatment),
+          medication: text(input.medication),
+          dosage: text(input.dosage),
+          nextDueDate,
+        },
+      });
+      if (dueChanged) {
+        // L'échéance a changé : la tâche de suivi est recréée.
+        await this.tasks.removeOpenTasksForSource(
+          currentUser.farmId,
+          TaskSourceType.HEALTH,
+          record.id,
+          tx,
+        );
+        await this.tasks.onHealthRecordCreated(
+          currentUser.farmId,
+          {
+            id: record.id,
+            rabbitId: existing.rabbit.id,
+            rabbitCode: existing.rabbit.code,
+            type: record.type,
+            nextDueDate,
+            treatment: record.treatment,
+            medication: record.medication,
+          },
+          tx,
+        );
+      }
+      return this.toModel(record);
+    });
+  }
+
+  async remove(id: string, currentUser: CurrentUserType) {
+    const existing = await this.prisma.healthRecord.findFirst({
+      where: { id, farmId: currentUser.farmId },
+      select: { id: true },
+    });
+    if (!existing) {
+      throw new NotFoundException('Fiche sanitaire introuvable.');
+    }
+    await this.prisma.$transaction(async (tx) => {
+      await this.tasks.removeOpenTasksForSource(
+        currentUser.farmId,
+        TaskSourceType.HEALTH,
+        existing.id,
+        tx,
+      );
+      await tx.healthRecord.delete({ where: { id: existing.id } });
+    });
+    return true;
   }
 }

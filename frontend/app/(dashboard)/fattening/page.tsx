@@ -9,6 +9,7 @@ import { Plus } from 'lucide-react';
 import { Badge, Button, ErrorBox, Field, FormGrid, Input, Loading, Modal, PageHeader, Table, Textarea } from '@/components/ui/kit';
 import { useForm } from '@/hooks/use-form';
 import { clean, formatDate, formatNumber, fromDateInput, toDateInput } from '@/lib/format';
+import { RowActions, useDeleteAction } from '@/components/ui/row-actions';
 import { LOT_STATUS, label } from '@/lib/labels';
 
 const LOTS = gql`
@@ -19,6 +20,7 @@ const LOTS = gql`
       status
       entryDate
       exitDate
+      observation
       activeMemberCount
       currentCageCode
       latestAverageWeight
@@ -29,6 +31,13 @@ const LOTS = gql`
 const CREATE = gql`
   mutation CreateLot($input: CreateFatteningLotInput!) { createFatteningLot(input: $input) { id } }
 `;
+const UPDATE = gql`
+  mutation UpdateLot($input: UpdateFatteningLotInput!) { updateFatteningLot(input: $input) { id } }
+`;
+const DELETE = gql`
+  mutation DeleteLot($id: ID!) { deleteFatteningLot(id: $id) }
+`;
+const refetchQueries = ['FatteningLots', 'LotOptions'];
 
 interface Lot {
   id: string;
@@ -36,6 +45,7 @@ interface Lot {
   status: string;
   entryDate: string;
   exitDate?: string | null;
+  observation?: string | null;
   activeMemberCount: number;
   currentCageCode?: string | null;
   latestAverageWeight?: number | null;
@@ -44,15 +54,9 @@ interface Lot {
 
 export default function FatteningPage() {
   const [creating, setCreating] = useState(false);
+  const [editing, setEditing] = useState<Lot | null>(null);
   const { data, loading, error, refetch } = useQuery<{ fatteningLots: Lot[] }>(LOTS);
-  const { bind, values, reset } = useForm({ code: '', entryDate: toDateInput(), observation: '' });
-  const [create, c] = useMutation(CREATE, { refetchQueries: ['FatteningLots', 'LotOptions'] });
-
-  const close = () => {
-    reset();
-    c.reset();
-    setCreating(false);
-  };
+  const remove = useDeleteAction(DELETE, { refetchQueries });
 
   return (
     <div>
@@ -83,43 +87,69 @@ export default function FatteningPage() {
               cell: (l) => (l.latestAverageWeight != null ? `${formatNumber(l.latestAverageWeight, 3)} kg (${formatDate(l.latestWeighingDate)})` : '—'),
             },
             { header: 'Statut', cell: (l) => <Badge tone={l.status === 'ACTIVE' ? 'green' : 'slate'}>{label(LOT_STATUS, l.status)}</Badge> },
+            {
+              header: '',
+              cell: (l) => (
+                <RowActions
+                  onEdit={() => setEditing(l)}
+                  onDelete={() =>
+                    remove.ask(l.id, `le lot ${l.code}`, 'Les lapins restent enregistrés ; l’historique du lot (membres, pesées du lot, cages) est supprimé.')
+                  }
+                />
+              ),
+            },
           ]}
         />
       )}
-      <Modal
-        open={creating}
-        title="Nouveau lot"
-        onClose={close}
-        footer={
-          <>
-            <Button variant="secondary" onClick={close}>Annuler</Button>
-            <Button
-              loading={c.loading}
-              disabled={!values.code}
-              onClick={() =>
-                create({ variables: { input: clean({ ...values, entryDate: fromDateInput(values.entryDate) }) } })
-                  .then(close)
-                  .catch(() => undefined)
-              }
-            >
-              Créer
-            </Button>
-          </>
-        }
-      >
-        <FormGrid>
-          <Field label="Code du lot">
-            <Input placeholder="LOT-2026-01" {...bind('code')} />
-          </Field>
-          <Field label="Date d'entrée">
-            <Input type="date" {...bind('entryDate')} />
-          </Field>
-        </FormGrid>
-        <Field label="Observation">
-          <Textarea {...bind('observation')} />
-        </Field>
-        <ErrorBox error={c.error} />
-      </Modal>
+      {creating && <LotModal onClose={() => setCreating(false)} />}
+      {editing && <LotModal key={editing.id} editing={editing} onClose={() => setEditing(null)} />}
+      {remove.dialog}
     </div>
+  );
+}
+
+function LotModal({ onClose, editing }: { onClose: () => void; editing?: Lot }) {
+  const { bind, values } = useForm({
+    code: editing?.code ?? '',
+    entryDate: toDateInput(editing?.entryDate),
+    observation: editing?.observation ?? '',
+  });
+  const [save, c] = useMutation(editing ? UPDATE : CREATE, { refetchQueries });
+  const payload = { ...values, entryDate: fromDateInput(values.entryDate) };
+  return (
+    <Modal
+      open
+      title={editing ? `Modifier le lot ${editing.code}` : 'Nouveau lot'}
+      onClose={onClose}
+      footer={
+        <>
+          <Button variant="secondary" onClick={onClose}>Annuler</Button>
+          <Button
+            loading={c.loading}
+            disabled={!values.code}
+            onClick={() =>
+              save({ variables: { input: editing ? { id: editing.id, ...payload } : clean(payload) } })
+                .then(onClose)
+                .catch(() => undefined)
+            }
+          >
+            {editing ? 'Enregistrer' : 'Créer'}
+          </Button>
+        </>
+      }
+    >
+      <FormGrid>
+        <Field label="Code du lot">
+          <Input placeholder="LOT-2026-01" {...bind('code')} />
+        </Field>
+        <Field label="Date d'entrée">
+          <Input type="date" {...bind('entryDate')} />
+        </Field>
+      </FormGrid>
+      <Field label="Observation">
+        <Textarea {...bind('observation')} />
+      </Field>
+      <ErrorBox error={c.error} />
+    </Modal>
   );
 }

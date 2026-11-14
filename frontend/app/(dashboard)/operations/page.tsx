@@ -9,7 +9,8 @@ import { Plus } from 'lucide-react';
 import { Button, Card, ErrorBox, Field, FormGrid, Grid, Input, Loading, Modal, PageHeader, Select, Stat, Table, Textarea } from '@/components/ui/kit';
 import { toFloat, useCreateModal, useForm, type Prefill } from '@/hooks/use-form';
 import { AiFill } from '@/components/assistant/ai-fill';
-import { CURRENCY, clean, formatDate, formatMoney, fromDateInput, toDateInput } from '@/lib/format';
+import { CURRENCY, clean, cleanEdit, formatDate, formatMoney, fromDateInput, toDateInput } from '@/lib/format';
+import { RowActions, useDeleteAction } from '@/components/ui/row-actions';
 import { EXPENSE_CATEGORY, PAYMENT_METHOD, label, options } from '@/lib/labels';
 
 const EXPENSES = gql`
@@ -30,6 +31,12 @@ const EXPENSES = gql`
 const CREATE = gql`
   mutation CreateExpense($input: CreateExpenseInput!) { createExpense(input: $input) { id } }
 `;
+const UPDATE = gql`
+  mutation UpdateExpense($input: UpdateExpenseInput!) { updateExpense(input: $input) { id } }
+`;
+const DELETE = gql`
+  mutation DeleteExpense($id: ID!) { deleteExpense(id: $id) }
+`;
 
 interface Expense {
   id: string;
@@ -40,10 +47,13 @@ interface Expense {
   supplier?: string | null;
   reference?: string | null;
   paymentMethod?: string | null;
+  observation?: string | null;
 }
 
 export default function OperationsPage() {
   const creating = useCreateModal();
+  const [editing, setEditing] = useState<Expense | null>(null);
+  const remove = useDeleteAction(DELETE, { refetchQueries: ['Expenses', 'Dashboard'] });
   const [category, setCategory] = useState('');
   const { data, loading, error, refetch } = useQuery<{ expenses: Expense[] }>(EXPENSES);
   const expenses = useMemo(
@@ -121,28 +131,60 @@ export default function OperationsPage() {
             { header: 'Fournisseur', cell: (e) => e.supplier ?? '—' },
             { header: 'Paiement', cell: (e) => label(PAYMENT_METHOD, e.paymentMethod) },
             { header: 'Montant', cell: (e) => <strong>{formatMoney(e.amount)}</strong> },
+            {
+              header: '',
+              cell: (e) => (
+                <RowActions
+                  onEdit={() => setEditing(e)}
+                  onDelete={() => remove.ask(e.id, `la dépense de ${formatMoney(e.amount)} du ${formatDate(e.date)}`)}
+                />
+              ),
+            },
           ]}
         />
       )}
 
       <ExpenseModal key={creating.key} open={creating.open} prefill={creating.prefill} onClose={creating.close} />
+      {editing && <ExpenseModal key={editing.id} open editing={editing} onClose={() => setEditing(null)} />}
+      {remove.dialog}
     </div>
   );
 }
 
-function ExpenseModal({ open, onClose, prefill }: { open: boolean; onClose: () => void; prefill?: Prefill }) {
+function ExpenseModal({
+  open,
+  onClose,
+  prefill,
+  editing,
+}: {
+  open: boolean;
+  onClose: () => void;
+  prefill?: Prefill;
+  editing?: Expense;
+}) {
   const { bind, values, reset, setValues } = useForm({
-    date: toDateInput(),
-    category: 'FEED',
-    amount: '',
-    description: '',
-    supplier: '',
-    reference: '',
-    paymentMethod: 'CASH',
-    observation: '',
+    date: toDateInput(editing?.date),
+    category: editing?.category ?? 'FEED',
+    amount: editing ? String(editing.amount) : '',
+    description: editing?.description ?? '',
+    supplier: editing?.supplier ?? '',
+    reference: editing?.reference ?? '',
+    paymentMethod: editing?.paymentMethod ?? 'CASH',
+    observation: editing?.observation ?? '',
     ...prefill,
   });
-  const [create, { loading, error, reset: resetMutation }] = useMutation(CREATE, { refetchQueries: ['Expenses', 'Dashboard'] });
+  const [save, { loading, error, reset: resetMutation }] = useMutation(editing ? UPDATE : CREATE, {
+    refetchQueries: ['Expenses', 'Dashboard'],
+  });
+  const payload = { ...values, date: fromDateInput(values.date), amount: toFloat(values.amount) };
+  const create = () =>
+    save({
+      variables: {
+        input: editing
+          ? { id: editing.id, ...cleanEdit(payload, ['description', 'supplier', 'reference', 'observation']) }
+          : clean(payload),
+      },
+    });
   const close = () => {
     reset();
     resetMutation();
@@ -151,7 +193,7 @@ function ExpenseModal({ open, onClose, prefill }: { open: boolean; onClose: () =
   return (
     <Modal
       open={open}
-      title="Nouvelle dépense"
+      title={editing ? 'Modifier la dépense' : 'Nouvelle dépense'}
       onClose={close}
       footer={
         <>
@@ -159,18 +201,14 @@ function ExpenseModal({ open, onClose, prefill }: { open: boolean; onClose: () =
           <Button
             loading={loading}
             disabled={!values.amount}
-            onClick={() =>
-              create({ variables: { input: clean({ ...values, date: fromDateInput(values.date), amount: toFloat(values.amount) }) } })
-                .then(close)
-                .catch(() => undefined)
-            }
+            onClick={() => create().then(close).catch(() => undefined)}
           >
             Enregistrer
           </Button>
         </>
       }
     >
-      <AiFill form="EXPENSE" onFill={(fields) => setValues((previous) => ({ ...previous, ...fields }))} />
+      {!editing && <AiFill form="EXPENSE" onFill={(fields) => setValues((previous) => ({ ...previous, ...fields }))} />}
       <FormGrid>
         <Field label="Date">
           <Input type="date" {...bind('date')} />

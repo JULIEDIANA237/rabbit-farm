@@ -18,6 +18,8 @@ import { CreateInventoryItemInput } from './inputs/create-inventory-item.input.j
 import { CreateStockMovementInput } from './inputs/create-stock-movement.input.js';
 import { CreateTaskInput } from './inputs/create-task.input.js';
 import { UpdateTaskInput } from './inputs/update-task.input.js';
+import { UpdateExpenseInput } from './inputs/update-expense.input.js';
+import { UpdateInventoryItemInput } from './inputs/update-inventory-item.input.js';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
 import { RolesGuard } from '../auth/guards/roles.guard.js';
 import { Roles } from '../auth/decorators/roles.decorator.js';
@@ -120,5 +122,59 @@ export class OperationsResolver {
     @CurrentUser() currentUser: CurrentUserType,
   ) {
     return this.operationsService.updateTask(input, currentUser);
+  }
+
+  @Mutation(() => ExpenseModel)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER, FarmRole.EMPLOYEE)
+  updateExpense(
+    @Args('input') input: UpdateExpenseInput,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.operationsService.updateExpense(input, currentUser);
+  }
+
+  @Mutation(() => Boolean)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  deleteExpense(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.operationsService.deleteExpense(id, currentUser);
+  }
+
+  @Mutation(() => InventoryItemModel)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  updateInventoryItem(
+    @Args('input') input: UpdateInventoryItemInput,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.operationsService.updateInventoryItem(input, currentUser);
+  }
+
+  @Mutation(() => Boolean)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  deleteInventoryItem(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.operationsService.deleteInventoryItem(id, currentUser);
+  }
+
+  @Mutation(() => Boolean)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  deleteStockMovement(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.operationsService.deleteStockMovement(id, currentUser);
+  }
+
+  @Mutation(() => Boolean)
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER, FarmRole.EMPLOYEE)
+  deleteTask(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.operationsService.deleteTask(id, currentUser);
   }
 }

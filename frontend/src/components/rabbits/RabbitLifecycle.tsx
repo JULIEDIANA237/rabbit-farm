@@ -7,7 +7,8 @@ import { useMutation, useQuery } from '@apollo/client/react';
 
 import { Badge, Button, Card, ErrorBox, Field, FormGrid, Input, Loading, Modal, Select, Table, Tabs, Textarea } from '@/components/ui/kit';
 import { PedigreeTree } from '@/components/genetics/pedigree-tree';
-import { HealthRecordModal } from '@/components/health/health-record-modal';
+import { DELETE_HEALTH_RECORD, HealthRecordModal, type EditableHealthRecord } from '@/components/health/health-record-modal';
+import { RowActions, useDeleteAction } from '@/components/ui/row-actions';
 import { useCageOptions } from '@/graphql/options';
 import { parsePrefill, useForm, useUrlCommand, type Prefill } from '@/hooks/use-form';
 import { AiFill } from '@/components/assistant/ai-fill';
@@ -27,7 +28,7 @@ const TRACE = gql`
 `;
 const HEALTH = gql`
   query RabbitHealth($id: ID!) {
-    healthRecordsByRabbit(rabbitId: $id) { id type date symptoms diagnosis treatment medication dosage nextDueDate }
+    healthRecordsByRabbit(rabbitId: $id) { id rabbitId type date symptoms suspicion diagnosis treatment medication dosage nextDueDate observation }
   }
 `;
 const MOVE = gql`
@@ -178,22 +179,32 @@ function GenealogyTab({ rabbitId }: { rabbitId: string }) {
 }
 
 function HealthTab({ rabbitId }: { rabbitId: string }) {
-  const { data, loading } = useQuery<{
-    healthRecordsByRabbit: Array<{ id: string; type: string; date: string; symptoms?: string | null; diagnosis?: string | null; treatment?: string | null; medication?: string | null; nextDueDate?: string | null }>;
-  }>(HEALTH, { variables: { id: rabbitId } });
+  const { data, loading } = useQuery<{ healthRecordsByRabbit: EditableHealthRecord[] }>(HEALTH, { variables: { id: rabbitId } });
+  const [editing, setEditing] = useState<EditableHealthRecord | null>(null);
+  const remove = useDeleteAction(DELETE_HEALTH_RECORD, { refetchQueries: ['RabbitHealth', 'HealthRecords', 'Dashboard', 'Tasks'] });
   if (loading && !data) return <Loading />;
   return (
-    <Table
-      rows={data?.healthRecordsByRabbit ?? []}
-      empty="Aucun enregistrement sanitaire"
-      columns={[
-        { header: 'Date', cell: (r) => formatDate(r.date) },
-        { header: 'Type', cell: (r) => label(HEALTH_TYPE, r.type) },
-        { header: 'Constat', cell: (r) => [r.symptoms, r.diagnosis].filter(Boolean).join(' · ') || '—' },
-        { header: 'Traitement', cell: (r) => [r.treatment, r.medication].filter(Boolean).join(' · ') || '—' },
-        { header: 'Échéance', cell: (r) => formatDate(r.nextDueDate) },
-      ]}
-    />
+    <>
+      <Table
+        rows={data?.healthRecordsByRabbit ?? []}
+        empty="Aucun enregistrement sanitaire"
+        columns={[
+          { header: 'Date', cell: (r) => formatDate(r.date) },
+          { header: 'Type', cell: (r) => label(HEALTH_TYPE, r.type) },
+          { header: 'Constat', cell: (r) => [r.symptoms, r.diagnosis].filter(Boolean).join(' · ') || '—' },
+          { header: 'Traitement', cell: (r) => [r.treatment, r.medication].filter(Boolean).join(' · ') || '—' },
+          { header: 'Échéance', cell: (r) => formatDate(r.nextDueDate) },
+          {
+            header: '',
+            cell: (r) => (
+              <RowActions onEdit={() => setEditing(r)} onDelete={() => remove.ask(r.id, `l'enregistrement du ${formatDate(r.date)}`)} />
+            ),
+          },
+        ]}
+      />
+      {editing && <HealthRecordModal key={editing.id} open editing={editing} onClose={() => setEditing(null)} />}
+      {remove.dialog}
+    </>
   );
 }
 

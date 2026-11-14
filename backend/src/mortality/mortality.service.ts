@@ -283,4 +283,87 @@ export class MortalityService {
 
     return records.map((record) => this.toModel(record));
   }
+
+  // ============================================================
+  // CORRECTIONS
+  // ============================================================
+
+  /**
+   * Annule une sortie (décès, réforme, transfert) saisie par erreur :
+   * le lapin redevient actif et retrouve son lot. Les accouplements
+   * annulés à la sortie restent annulés.
+   */
+  async cancelRabbitExit(rabbitId: string, currentUser: CurrentUserType) {
+    const rabbit = await this.prisma.rabbit.findFirst({
+      where: { id: rabbitId, farmId: currentUser.farmId },
+      include: { birthLitter: true },
+    });
+    if (!rabbit) {
+      throw new NotFoundException('Lapin introuvable.');
+    }
+    if (!EXIT_STATUSES.includes(rabbit.status)) {
+      throw new ConflictException(
+        rabbit.status === RabbitStatus.SOLD
+          ? 'Ce lapin a été vendu : supprime ou annule la vente.'
+          : 'Ce lapin est déjà actif.',
+      );
+    }
+    const exitDate = rabbit.exitDate;
+
+    const updated = await this.prisma.$transaction(async (tx) => {
+      if (rabbit.status === RabbitStatus.DEAD) {
+        await tx.mortalityRecord.deleteMany({
+          where: { farmId: currentUser.farmId, rabbitId: rabbit.id, scope: MortalityScope.RABBIT },
+        });
+        const litter = rabbit.birthLitter;
+        if (litter && litter.status !== LitterStatus.WEANED && litter.currentCount < litter.liveBorn) {
+          await tx.litter.update({
+            where: { id: litter.id },
+            data: { currentCount: { increment: 1 }, status: LitterStatus.ACTIVE },
+          });
+        }
+      }
+      if (exitDate) {
+        await tx.lotMembership.updateMany({
+          where: { rabbitId: rabbit.id, leftAt: exitDate, reason: { in: ['Décès', 'Sortie'] } },
+          data: { leftAt: null, reason: null },
+        });
+        await tx.rabbitCageMovement.updateMany({
+          where: { rabbitId: rabbit.id, endedAt: exitDate },
+          data: { endedAt: null },
+        });
+      }
+      return tx.rabbit.update({
+        where: { id: rabbit.id },
+        data: { status: RabbitStatus.ACTIVE, exitDate: null, exitCause: null },
+        include: { identifications: true, photos: true },
+      });
+    });
+    return mapRabbit(updated);
+  }
+
+  /** Supprime une mortalité de portée (lapereaux non identifiés). */
+  async deleteMortalityRecord(id: string, currentUser: CurrentUserType) {
+    const record = await this.prisma.mortalityRecord.findFirst({
+      where: { id, farmId: currentUser.farmId },
+      include: { litter: true },
+    });
+    if (!record) {
+      throw new NotFoundException('Enregistrement de mortalité introuvable.');
+    }
+    if (record.scope === MortalityScope.RABBIT && record.rabbitId) {
+      await this.cancelRabbitExit(record.rabbitId, currentUser);
+      return true;
+    }
+    await this.prisma.$transaction(async (tx) => {
+      if (record.litter && record.litter.status !== LitterStatus.WEANED) {
+        await tx.litter.update({
+          where: { id: record.litter.id },
+          data: { currentCount: { increment: record.count }, status: LitterStatus.ACTIVE },
+        });
+      }
+      await tx.mortalityRecord.delete({ where: { id: record.id } });
+    });
+    return true;
+  }
 }

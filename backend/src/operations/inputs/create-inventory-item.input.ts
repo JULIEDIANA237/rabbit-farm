@@ -16,6 +16,9 @@ export class CreateInventoryItemInput {
   @Field(() => Float, { nullable: true })
   minimumStock?: number;
 
+  @Field(() => Float, { nullable: true, description: 'Prix unitaire de référence' })
+  unitPrice?: number;
+
   @Field({ nullable: true })
   description?: string;
 }

@@ -50,22 +50,23 @@ function NodeBox({ node, role }: { node?: PedigreeNode | null; role: string }) {
   );
 }
 
-function Branch({ node, depth, role }: { node?: PedigreeNode | null; depth: number; role: string }) {
-  return (
-    <div className="flex items-center gap-2">
-      <div className="w-28 shrink-0">
-        <NodeBox node={node} role={role} />
-      </div>
-      {depth > 1 && (
-        <div className="flex flex-col gap-2 border-l border-slate-200 pl-2">
-          <Branch node={node?.father} depth={depth - 1} role="Père" />
-          <Branch node={node?.mother} depth={depth - 1} role="Mère" />
-        </div>
-      )}
-    </div>
-  );
+const LEVEL_TITLES = ['Lapin', 'Parents', 'Grands-parents', 'Arrière-grands-parents'];
+
+/** Les ascendants par génération : [lapin], [père, mère], [4 grands-parents]… */
+function levels(root: PedigreeNode, generations: number) {
+  const result: Array<Array<PedigreeNode | null>> = [[root]];
+  for (let g = 1; g <= generations; g += 1) {
+    result.push(result[g - 1].flatMap((node) => [node?.father ?? null, node?.mother ?? null]));
+  }
+  // Les générations entièrement inconnues ne sont pas affichées.
+  while (result.length > 1 && result[result.length - 1].every((node) => !node)) result.pop();
+  return result;
 }
 
+/**
+ * Arbre généalogique lu de haut en bas : les ancêtres les plus anciens
+ * en haut, puis le père et la mère, et enfin le lapin.
+ */
 export function PedigreeTree({ rabbitId, generations = 3 }: { rabbitId: string; generations?: number }) {
   const { data, loading, error } = useQuery<{ rabbitPedigree: PedigreeNode }>(PEDIGREE, {
     variables: { rabbitId, generations },
@@ -73,9 +74,32 @@ export function PedigreeTree({ rabbitId, generations = 3 }: { rabbitId: string; 
   if (loading && !data) return <Loading />;
   if (error) return <ErrorBox error={error} />;
   if (!data) return null;
+
+  const rows = levels(data.rabbitPedigree, generations);
+  const columns = 2 ** (rows.length - 1);
+
   return (
     <div className="overflow-x-auto pb-2">
-      <Branch node={data.rabbitPedigree} depth={generations + 1} role="Lapin" />
+      <div className="space-y-3" style={{ minWidth: `${Math.min(columns, 8) * 7}rem` }}>
+        {[...rows].reverse().map((row, reversedIndex) => {
+          const level = rows.length - 1 - reversedIndex;
+          return (
+            <div key={level}>
+              <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">{LEVEL_TITLES[level] ?? `Génération ${level}`}</p>
+              <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}>
+                {row.map((node, index) => (
+                  <div key={index} style={{ gridColumn: `span ${columns / row.length}` }} className="flex justify-center">
+                    <div className={level === 0 ? 'w-40' : 'w-full max-w-[10rem]'}>
+                      <NodeBox node={node} role={level === 0 ? 'Lapin' : index % 2 === 0 ? 'Père' : 'Mère'} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {level > 0 && <div className="mx-auto mt-2 h-3 w-px bg-slate-300" aria-hidden />}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
