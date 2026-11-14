@@ -203,12 +203,13 @@ const GUIDES: Array<{ prefix: string; guide: ModuleGuide }> = [
     prefix: '/farm',
     guide: {
       key: 'farm',
-      title: 'Ta ferme',
+      title: 'Tes cages',
       steps: [
-        'Crée tes sections (bâtiments) puis tes cages avec leur capacité.',
+        'Crée tes blocs (maternité, engraissement…) puis tes cages avec leur capacité.',
+        'Bouton « Lapins » sur une cage : place des lapins dedans, le compteur se met à jour tout seul.',
         'Les races et croisements servent à décrire tes lapins.',
       ],
-      question: 'Comment organiser mes cages et mes sections ?',
+      question: 'Comment organiser mes blocs et mes cages ?',
     },
   },
 ];

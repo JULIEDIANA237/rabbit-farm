@@ -1,14 +1,16 @@
 'use client';
 
-import { use } from 'react';
+import { use, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { gql } from '@apollo/client';
 import { useQuery } from '@apollo/client/react';
-import { Printer } from 'lucide-react';
+import { ArrowLeft, Download, X } from 'lucide-react';
 
 import { AuthGuard } from '@/components/auth/auth-guard';
 import { ME_QUERY, type Me } from '@/graphql/auth/mutations';
 import { formatDate, formatMoney, formatNumber } from '@/lib/format';
 import { PAYMENT_METHOD, SALE_STATUS, label } from '@/lib/labels';
+import { downloadPdf } from '@/lib/export-pdf';
 
 const SALE_FOR_INVOICE = gql`
   query SaleForInvoice($id: ID!) {
@@ -74,11 +76,70 @@ function invoiceNumber(sale: { id: string; saleDate: string }) {
 }
 
 function Invoice({ id }: { id: string }) {
+  const router = useRouter();
+  const sheet = useRef<HTMLDivElement>(null);
+  const [downloading, setDownloading] = useState(false);
+  const [pdfError, setPdfError] = useState<string | null>(null);
   const { data, loading, error } = useQuery<InvoiceData>(SALE_FOR_INVOICE, { variables: { id } });
   const { data: meData } = useQuery<{ me: Me }>(ME_QUERY);
 
+  /** Retour à la page précédente, ou aux ventes si le reçu a été ouvert directement. */
+  const close = () => (window.history.length > 1 ? router.back() : router.push('/sales'));
+
+  const closeBar = (
+    <div data-pdf-hidden className="mb-6 flex flex-wrap items-center justify-between gap-2 print:hidden">
+      <button
+        type="button"
+        onClick={close}
+        className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+      >
+        <ArrowLeft size={16} /> Retour
+      </button>
+      <div className="flex gap-2">
+        {data && (
+          <button
+            type="button"
+            disabled={downloading}
+            onClick={async () => {
+              if (!sheet.current || !data) return;
+              setDownloading(true);
+              setPdfError(null);
+              try {
+                const kind = data.sale.remainingAmount <= 0 ? 'recu' : 'facture';
+                await downloadPdf(sheet.current, `${kind}-${invoiceNumber(data.sale)}`);
+              } catch (e) {
+                setPdfError(e instanceof Error ? e.message : 'Le PDF n’a pas pu être créé.');
+              } finally {
+                setDownloading(false);
+              }
+            }}
+            className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 font-semibold text-white hover:bg-emerald-700 disabled:opacity-60"
+          >
+            <Download size={16} /> {downloading ? 'Préparation…' : 'Télécharger en PDF'}
+          </button>
+        )}
+        <button
+          type="button"
+          onClick={close}
+          aria-label="Fermer"
+          title="Fermer"
+          className="rounded-xl p-2 text-slate-500 hover:bg-slate-100"
+        >
+          <X size={20} />
+        </button>
+      </div>
+      {pdfError && <p className="w-full text-sm text-red-700">{pdfError}</p>}
+    </div>
+  );
+
   if (loading) return <p className="p-8 text-slate-500">Chargement…</p>;
-  if (error || !data) return <p className="p-8 text-red-700">Vente introuvable.</p>;
+  if (error || !data)
+    return (
+      <div className="mx-auto max-w-3xl p-6">
+        {closeBar}
+        <p className="text-red-700">Vente introuvable.</p>
+      </div>
+    );
 
   const { sale } = data;
   const customer = data.customers.find((item) => item.id === sale.customerId);
@@ -87,17 +148,9 @@ function Invoice({ id }: { id: string }) {
   const title = paid ? 'Reçu' : 'Facture';
 
   return (
-    <div className="mx-auto max-w-3xl bg-white p-6 text-sm text-slate-800 print:max-w-none print:p-0">
-      <div className="mb-6 flex justify-end gap-2 print:hidden">
-        <button
-          type="button"
-          onClick={() => window.print()}
-          className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 font-semibold text-white hover:bg-emerald-700"
-        >
-          <Printer size={16} /> Imprimer / enregistrer en PDF
-        </button>
-      </div>
-
+    <div className="mx-auto max-w-3xl p-4 text-sm text-slate-800 sm:p-6 print:max-w-none print:p-0">
+      {closeBar}
+      <div ref={sheet} className="bg-white p-4 sm:p-6">
       <header className="flex flex-wrap items-start justify-between gap-6 border-b border-slate-200 pb-6">
         <div>
           <p className="text-2xl font-bold text-emerald-700">{farm?.name ?? 'RabbitFarm'}</p>
@@ -174,6 +227,7 @@ function Invoice({ id }: { id: string }) {
       <footer className="mt-12 border-t border-slate-200 pt-4 text-center text-xs text-slate-500">
         {paid ? 'Merci pour votre achat.' : 'Merci de régler le reste à payer à la livraison ou selon l’accord convenu.'} Document édité avec RabbitFarm.
       </footer>
+      </div>
     </div>
   );
 }
