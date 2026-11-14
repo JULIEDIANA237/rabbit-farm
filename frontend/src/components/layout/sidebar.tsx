@@ -94,7 +94,7 @@ const navigation = [
     icon: ListChecks,
   },
   {
-    label: 'Ferme et cages',
+    label: 'Cages',
     href: '/farm',
     icon: Warehouse,
   },

@@ -41,12 +41,30 @@ const APPLY = gql`
 
 type Category = 'PREGNANT' | 'LACTATING' | 'FATTENING' | 'MAINTENANCE';
 
-const CATEGORIES: Array<{ key: Category; label: string; hint: string; suggestion: string }> = [
-  { key: 'PREGNANT', label: 'Gestantes', hint: 'Femelles dont la palpation est positive', suggestion: '0.2' },
-  { key: 'LACTATING', label: 'Allaitantes', hint: 'Mères avec une portée non sevrée (lapereaux compris)', suggestion: '0.35' },
-  { key: 'FATTENING', label: 'Engraissement', hint: 'Lapins sevrés destinés à la vente', suggestion: '0.12' },
-  { key: 'MAINTENANCE', label: 'Autres', hint: 'Mâles, femelles vides, futurs reproducteurs, réformes', suggestion: '0.15' },
+/** Valeurs indicatives en kg / lapin / jour (granulés), à adapter à chaque élevage. */
+const CATEGORIES: Array<{ key: Category; label: string; one: string; hint: string; suggestion: number }> = [
+  { key: 'PREGNANT', label: 'Gestantes', one: 'gestante(s)', hint: 'Femelles dont la palpation est positive', suggestion: 0.2 },
+  { key: 'LACTATING', label: 'Allaitantes', one: 'allaitante(s)', hint: 'Mères avec une portée non sevrée (lapereaux compris)', suggestion: 0.35 },
+  { key: 'FATTENING', label: 'Engraissement', one: 'en engraissement', hint: 'Lapins sevrés destinés à la vente', suggestion: 0.12 },
+  { key: 'MAINTENANCE', label: 'Autres', one: 'autre(s)', hint: 'Mâles, femelles vides, futurs reproducteurs, réformes', suggestion: 0.15 },
 ];
+
+/**
+ * Pour un aliment compté en kg, la ration se saisit en grammes
+ * (150 g est plus parlant que 0,15 kg). Elle reste stockée dans l'unité de l'article.
+ */
+function rationUnit(unit: string) {
+  return /^(kg|kgs|kilo|kilos|kilogramme|kilogrammes)$/i.test(unit.trim()) ? { label: 'g', factor: 1000 } : { label: unit, factor: 1 };
+}
+
+/** « 3 gestante(s) × 200 g + 10 autre(s) × 150 g » */
+function needDetail(item: Pick<PlanItem, 'unit' | 'rations'>, counts: Record<Category, number>) {
+  const u = rationUnit(item.unit);
+  return CATEGORIES.map((c) => ({ c, q: item.rations.find((r) => r.category === c.key)?.dailyQuantity ?? 0 }))
+    .filter(({ c, q }) => q > 0 && counts[c.key] > 0)
+    .map(({ c, q }) => `${counts[c.key]} ${c.one} × ${formatNumber(q * u.factor, u.factor > 1 ? 0 : 3)} ${u.label}`)
+    .join(' + ');
+}
 
 interface PlanItem {
   inventoryItemId: string;
@@ -89,8 +107,9 @@ export function FeedingPlanCard() {
   return (
     <Card title="Rations journalières">
       <p className="mb-4 text-sm text-slate-600">
-        Indique la quantité donnée <strong>par lapin et par jour</strong> pour chaque aliment. L&apos;app calcule le besoin de
-        la ferme avec ton effectif actuel, le coût par jour et le nombre de jours de stock restants.
+        L&apos;app ne devine rien : c&apos;est <strong>toi qui indiques la ration d&apos;un lapin par jour</strong> pour chaque
+        catégorie. Elle la multiplie par le nombre de lapins de chaque catégorie ci-dessous (ton effectif actuel) pour obtenir
+        le besoin de la ferme, le coût par jour et les jours de stock restants.
       </p>
       <ErrorBox error={error ?? applying.error} onRetry={() => refetch()} />
 
@@ -120,14 +139,31 @@ export function FeedingPlanCard() {
               i.rations.length ? (
                 <span className="whitespace-normal text-xs">
                   {CATEGORIES.filter((c) => i.rations.some((r) => r.category === c.key))
-                    .map((c) => `${c.label} ${formatNumber(i.rations.find((r) => r.category === c.key)!.dailyQuantity, 3)} ${i.unit}`)
+                    .map((c) => {
+                      const u = rationUnit(i.unit);
+                      const q = i.rations.find((r) => r.category === c.key)!.dailyQuantity * u.factor;
+                      return `${c.label} ${formatNumber(q, u.factor > 1 ? 0 : 3)} ${u.label}`;
+                    })
                     .join(' · ')}
                 </span>
               ) : (
                 <span className="text-xs text-amber-700">À définir</span>
               ),
           },
-          { header: 'Besoin / jour', cell: (i) => (i.dailyNeed ? `${formatNumber(i.dailyNeed, 2)} ${i.unit}` : '—') },
+          {
+            header: 'Besoin de la ferme / jour',
+            cell: (i) =>
+              i.dailyNeed ? (
+                <div className="whitespace-normal">
+                  <strong>
+                    {formatNumber(i.dailyNeed, 2)} {i.unit}
+                  </strong>
+                  {counts && <p className="text-xs text-slate-500">= {needDetail(i, counts)}</p>}
+                </div>
+              ) : (
+                '—'
+              ),
+          },
           { header: 'Coût / jour', cell: (i) => (i.dailyCost != null && i.dailyNeed ? formatMoney(i.dailyCost) : '—') },
           { header: 'Stock estimé', cell: (i) => `${formatNumber(i.estimatedStock, 2)} ${i.unit}` },
           {
@@ -168,14 +204,27 @@ export function FeedingPlanCard() {
         l&apos;effectif actuel. Une déduction se supprime dans l&apos;historique des mouvements de l&apos;article.
       </p>
 
-      {editing && <RationModal key={editing.inventoryItemId} item={editing} onClose={() => setEditing(null)} />}
+      {editing && <RationModal key={editing.inventoryItemId} item={editing} counts={counts} onClose={() => setEditing(null)} />}
     </Card>
   );
 }
 
-function RationModal({ item, onClose }: { item: PlanItem; onClose: () => void }) {
+function RationModal({
+  item,
+  counts,
+  onClose,
+}: {
+  item: PlanItem;
+  counts?: Record<Category, number> & { underMother: number };
+  onClose: () => void;
+}) {
+  const u = rationUnit(item.unit);
+  const show = (q: number) => String(+(q * u.factor).toFixed(u.factor > 1 ? 0 : 3));
   const initial = Object.fromEntries(
-    CATEGORIES.map((c) => [c.key, String(item.rations.find((r) => r.category === c.key)?.dailyQuantity ?? '')]),
+    CATEGORIES.map((c) => {
+      const q = item.rations.find((r) => r.category === c.key)?.dailyQuantity;
+      return [c.key, q ? show(q) : ''];
+    }),
   ) as Record<Category, string>;
   const { bind, values, setValues } = useForm({
     ...initial,
@@ -183,6 +232,8 @@ function RationModal({ item, onClose }: { item: PlanItem; onClose: () => void })
   });
   const [save, { loading, error }] = useMutation(SET_RATIONS, { refetchQueries, awaitRefetchQueries: true });
   const firstSetup = item.rations.length === 0;
+  const rations = CATEGORIES.map((c) => ({ category: c.key, dailyQuantity: (toFloat(values[c.key]) ?? 0) / u.factor }));
+  const preview = counts ? rations.reduce((sum, r) => sum + r.dailyQuantity * counts[r.category], 0) : null;
 
   return (
     <Modal
@@ -199,7 +250,7 @@ function RationModal({ item, onClose }: { item: PlanItem; onClose: () => void })
                 variables: {
                   input: {
                     inventoryItemId: item.inventoryItemId,
-                    rations: CATEGORIES.map((c) => ({ category: c.key, dailyQuantity: toFloat(values[c.key]) ?? 0 })),
+                    rations,
                     startDate: fromDateInput(values.startDate),
                   },
                 },
@@ -214,12 +265,17 @@ function RationModal({ item, onClose }: { item: PlanItem; onClose: () => void })
       }
     >
       <p className="text-sm text-slate-600">
-        Quantité en <strong>{item.unit}</strong> par lapin et par jour. Laisse vide une catégorie qui ne reçoit pas cet aliment.
+        Quantité en <strong>{u.label}</strong> donnée à <strong>un seul lapin</strong> par jour. Laisse vide une catégorie qui ne
+        reçoit pas cet aliment.
       </p>
       <FormGrid>
         {CATEGORIES.map((c) => (
-          <Field key={c.key} label={`${c.label} (${item.unit} / lapin / jour)`} hint={c.hint}>
-            <Input inputMode="decimal" placeholder={`ex. ${c.suggestion}`} {...bind(c.key)} />
+          <Field
+            key={c.key}
+            label={`${c.label} (${u.label} / lapin / jour)`}
+            hint={`${c.hint}${counts ? ` · ${counts[c.key]} lapin(s) aujourd’hui` : ''}`}
+          >
+            <Input inputMode="decimal" placeholder={`ex. ${show(c.suggestion)}`} {...bind(c.key)} />
           </Field>
         ))}
         <Field
@@ -229,11 +285,18 @@ function RationModal({ item, onClose }: { item: PlanItem; onClose: () => void })
           <Input type="date" {...bind('startDate')} />
         </Field>
       </FormGrid>
+      {preview != null && (
+        <p className="rounded-xl bg-emerald-50 p-3 text-sm text-emerald-900">
+          Avec ton effectif actuel, la ferme consommera <strong>{formatNumber(preview, 2)} {item.unit} par jour</strong>
+          {preview > 0 && item.currentStock > 0 ? `, soit environ ${formatNumber(item.currentStock / preview, 0)} jours de stock.` : '.'}
+          {' '}Si ce total ne correspond pas à ce que tu donnes vraiment, ajuste les rations.
+        </p>
+      )}
       {firstSetup && (
         <button
           type="button"
           className="text-xs font-medium text-emerald-700 hover:underline"
-          onClick={() => setValues((v) => ({ ...v, ...Object.fromEntries(CATEGORIES.map((c) => [c.key, c.suggestion])) }))}
+          onClick={() => setValues((v) => ({ ...v, ...Object.fromEntries(CATEGORIES.map((c) => [c.key, show(c.suggestion)])) }))}
         >
           Pré-remplir avec des valeurs indicatives (granulés, à adapter à ton élevage)
         </button>

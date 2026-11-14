@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 import { gql } from '@apollo/client';
 import { useMutation, useQuery } from '@apollo/client/react';
@@ -194,14 +195,13 @@ export default function SalesPage() {
                 >
                   {s.status !== 'CANCELLED' && (
                     <>
-                      <a
+                      {/* Même onglet : dans l'app installée, un nouvel onglet n'a pas de bouton retour. */}
+                      <Link
                         href={`/print/invoice/${s.id}`}
-                        target="_blank"
-                        rel="noreferrer"
                         className="rounded-xl border border-slate-200 px-3 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50"
                       >
                         {s.remainingAmount > 0 ? 'Facture' : 'Reçu'}
-                      </a>
+                      </Link>
                       {s.remainingAmount > 0 && (
                         <Button className="px-3 py-1 text-xs" onClick={() => setPaying(s)}>Paiement</Button>
                       )}

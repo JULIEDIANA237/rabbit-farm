@@ -1,14 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { gql } from '@apollo/client';
 import { useApolloClient, useQuery } from '@apollo/client/react';
-import { FileSpreadsheet, Printer } from 'lucide-react';
+import { Download, FileSpreadsheet } from 'lucide-react';
 
 import { Button, Card, ErrorBox, Field, Grid, Input, Loading, PageHeader, Stat, Table } from '@/components/ui/kit';
 import { formatMoney, formatNumber, formatPercent, fromDateInput, toDateInput } from '@/lib/format';
 import { EXPENSE_CATEGORY, PAYMENT_METHOD, PURPOSE, RABBIT_STATUS, SALE_STATUS, SEX, label } from '@/lib/labels';
 import { downloadExcel, excelDate, type ExcelSheet } from '@/lib/export-excel';
+import { downloadPdf } from '@/lib/export-pdf';
 
 const STATS = gql`
   query FarmStatistics($from: DateTime, $to: DateTime) {
@@ -274,6 +275,21 @@ export default function StatisticsPage() {
   const client = useApolloClient();
   const [exporting, setExporting] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
+  const [pdfing, setPdfing] = useState(false);
+  const pageRef = useRef<HTMLDivElement>(null);
+
+  async function exportPdf() {
+    if (!pageRef.current) return;
+    setPdfing(true);
+    setExportError(null);
+    try {
+      await downloadPdf(pageRef.current, `rabbitfarm-statistiques-${from}-au-${to}.pdf`);
+    } catch (caught) {
+      setExportError(caught instanceof Error ? caught.message : 'Le PDF n’a pas pu être créé.');
+    } finally {
+      setPdfing(false);
+    }
+  }
 
   async function exportExcel() {
     if (!s) return;
@@ -291,19 +307,19 @@ export default function StatisticsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div ref={pageRef} className="space-y-6 bg-slate-50">
       <PageHeader
         eyebrow="Statistiques"
         title="Performances de l'élevage"
         description="Indicateurs techniques, génétiques et financiers sur la période choisie."
         actions={
           <div className="flex flex-wrap items-end gap-2">
-            <div className="flex gap-2 print:hidden">
+            <div data-pdf-hidden className="flex gap-2 print:hidden">
               <Button variant="secondary" loading={exporting} disabled={!s} onClick={() => void exportExcel()}>
                 <FileSpreadsheet size={16} /> Excel
               </Button>
-              <Button variant="secondary" disabled={!s} onClick={() => window.print()}>
-                <Printer size={16} /> PDF
+              <Button variant="secondary" loading={pdfing} disabled={!s} onClick={() => void exportPdf()}>
+                <Download size={16} /> PDF
               </Button>
             </div>
             <Field label="Du">
