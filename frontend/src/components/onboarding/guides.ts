@@ -17,7 +17,7 @@ const GUIDES: Array<{ prefix: string; guide: ModuleGuide }> = [
       title: 'Bienvenue sur RabbitFarm',
       steps: [
         'Cette page résume ta ferme : lapins actifs, tâches du jour, alertes de stock et santé.',
-        'Commence par créer tes sections et cages (menu Ferme), puis enregistre tes lapins.',
+        'Commence par créer tes blocs et tes cages (menu Cages), puis enregistre tes lapins.',
         'Les tâches (palpation, nid, sevrage…) se créent toutes seules à partir de tes saisies.',
         'Le bouton + en bas de l’écran ouvre les saisies rapides sur téléphone.',
       ],

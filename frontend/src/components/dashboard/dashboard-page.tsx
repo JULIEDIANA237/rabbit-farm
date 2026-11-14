@@ -27,6 +27,7 @@ import { WeaningCard } from './weaning-card';
 import { StockAlerts } from './stock-alerts';
 import { ExpenseChart } from './expense-chart';
 import { BriefingCard } from '@/components/assistant/briefing-card';
+import { PushPrompt } from './push-prompt';
 
 function DashboardSkeleton() {
   return (
@@ -149,6 +150,8 @@ export function DashboardPage() {
           ) : null}
         </div>
       </header>
+
+      <PushPrompt />
 
       <BriefingCard />
 
