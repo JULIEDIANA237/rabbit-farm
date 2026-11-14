@@ -37,15 +37,15 @@ function base64ToBytes(base64: string) {
   return Uint8Array.from(raw, (char) => char.charCodeAt(0));
 }
 
-type State = 'loading' | 'unsupported' | 'denied' | 'off' | 'on';
+export type PushState = 'loading' | 'unsupported' | 'denied' | 'off' | 'on';
 
-/** Active les rappels du matin (tâches du jour, retards, mises bas proches). */
-export function NotificationsCard() {
+/** État et actions des rappels du jour sur cet appareil (réglages + tableau de bord). */
+export function usePushNotifications() {
   const { data } = useQuery<{ pushConfig: { enabled: boolean; publicKey: string | null } }>(PUSH_CONFIG);
   const [subscribe] = useMutation(SUBSCRIBE);
   const [unsubscribe] = useMutation(UNSUBSCRIBE);
   const [sendTest] = useMutation<{ sendTestPush: number }>(SEND_TEST);
-  const [state, setState] = useState<State>('loading');
+  const [state, setState] = useState<PushState>('loading');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
@@ -114,24 +114,35 @@ export function NotificationsCard() {
     }
   }
 
-  const configured = data?.pushConfig.enabled;
+  async function test() {
+    const r = await sendTest();
+    setInfo(r.data?.sendTestPush ? 'Notification d’essai envoyée.' : 'Aucun appareil atteint.');
+  }
+
+  return { configured: data?.pushConfig.enabled, loaded: !!data, state, busy, error, info, enable, disable, test };
+}
+
+/** Active les rappels du matin (tâches du jour, retards, mises bas proches). */
+export function NotificationsCard() {
+  const { configured, loaded, state, busy, error, info, enable, disable, test } = usePushNotifications();
+
 
   return (
     <Card title="Rappels du jour" subtitle="Une notification chaque matin vers 6 h : tâches du jour, retards et mises bas proches.">
       <div className="space-y-3 text-sm text-slate-600">
-        {data && !configured && <p>Les notifications ne sont pas encore configurées sur le serveur (clés VAPID manquantes).</p>}
+        {loaded && !configured && <p>Les notifications ne sont pas encore configurées sur le serveur (clés VAPID manquantes).</p>}
         {configured && state === 'unsupported' && (
           <p>Ce navigateur ne gère pas les notifications. Sur iPhone, installe d’abord l’app sur l’écran d’accueil.</p>
         )}
         {configured && state === 'denied' && (
-          <p>Les notifications sont bloquées pour ce site. Autorise-les dans les réglages du navigateur, puis recharge la page.</p>
+          <p>Les notifications sont bloquées pour RabbitFarm sur cet appareil. Sur Android : appui long sur l’icône de l’app → Infos sur l’appli → Notifications → activer (ou, dans Chrome : menu ⋮ → Paramètres → Paramètres des sites → Notifications). Recharge ensuite la page.</p>
         )}
         {configured && state === 'on' && (
           <div className="flex flex-wrap items-center gap-3">
             <span className="inline-flex items-center gap-2 font-medium text-emerald-700">
               <Bell size={16} /> Activés sur cet appareil
             </span>
-            <Button variant="secondary" onClick={() => void sendTest().then((r) => setInfo(r.data?.sendTestPush ? 'Notification d’essai envoyée.' : 'Aucun appareil atteint.'))}>
+            <Button variant="secondary" onClick={() => void test()}>
               Envoyer un essai
             </Button>
             <Button variant="secondary" loading={busy} onClick={() => void disable()}>

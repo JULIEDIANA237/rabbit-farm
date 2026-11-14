@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { RefreshCw, X } from 'lucide-react';
 
 const CURRENT = process.env.NEXT_PUBLIC_BUILD_ID ?? 'dev';
-const CHECK_EVERY_MS = 10 * 60_000;
+const CHECK_EVERY_MS = 2 * 60_000;
 
 /** Recharge l'application en récupérant la dernière version (service worker compris). */
 export async function reloadApp() {
@@ -29,7 +29,8 @@ export function UpdateBanner() {
   const check = useCallback(async () => {
     if (CURRENT === 'dev' || !navigator.onLine) return;
     try {
-      const response = await fetch('/api/version', { cache: 'no-store' });
+      // Paramètre unique : ni le navigateur, ni le service worker, ni un proxy ne resservent une ancienne réponse.
+      const response = await fetch(`/api/version?t=${Date.now()}`, { cache: 'no-store' });
       if (!response.ok) return;
       const { version } = (await response.json()) as { version?: string };
       if (version && version !== CURRENT) setAvailable(true);
@@ -39,16 +40,25 @@ export function UpdateBanner() {
   }, []);
 
   useEffect(() => {
-    const first = setTimeout(check, 5_000);
+    const first = setTimeout(check, 3_000);
     const timer = setInterval(check, CHECK_EVERY_MS);
     const onVisible = () => {
       if (document.visibilityState === 'visible') void check();
     };
+    // Sur téléphone, l'app installée revient souvent du fond sans être rechargée :
+    // on vérifie à chaque retour (visibilité, focus, reprise du réseau, page restaurée).
+    const onFocus = () => void check();
     document.addEventListener('visibilitychange', onVisible);
+    window.addEventListener('focus', onFocus);
+    window.addEventListener('online', onFocus);
+    window.addEventListener('pageshow', onFocus);
     return () => {
       clearTimeout(first);
       clearInterval(timer);
       document.removeEventListener('visibilitychange', onVisible);
+      window.removeEventListener('focus', onFocus);
+      window.removeEventListener('online', onFocus);
+      window.removeEventListener('pageshow', onFocus);
     };
   }, [check]);
 
