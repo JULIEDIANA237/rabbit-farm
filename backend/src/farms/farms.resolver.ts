@@ -14,6 +14,7 @@ import { FarmModel } from './models/farm.model.js';
 import { CreateFarmInput } from './dto/create-farm.input.js';
 import { UpdateFarmInput } from './dto/update-farm.input.js';
 import { MeModel } from '../auth/models/me.model.js';
+import { FarmResetCountModel } from './models/farm-reset-count.model.js';
 
 import { FarmsService } from './farms.service.js';
 
@@ -112,5 +113,24 @@ export class FarmsResolver {
     user: CurrentUserType,
   ) {
     return this.farmsService.updateCurrent(input, user);
+  }
+
+  /** Aperçu de ce que la réinitialisation effacerait. */
+  @Query(() => [FarmResetCountModel])
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(FarmRole.ADMIN)
+  async farmResetPreview(@CurrentUser() user: CurrentUserType) {
+    return this.farmsService.resetPreview(user);
+  }
+
+  /** Remet l'élevage à zéro (lapins, tâches, stock et dépenses gardés). */
+  @Mutation(() => [FarmResetCountModel])
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(FarmRole.ADMIN)
+  async resetFarmData(
+    @Args('confirmation') confirmation: string,
+    @CurrentUser() user: CurrentUserType,
+  ) {
+    return this.farmsService.reset(confirmation, user);
   }
 }
