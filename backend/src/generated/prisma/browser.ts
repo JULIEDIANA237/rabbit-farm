@@ -208,3 +208,8 @@ export type LotCageMovement = Prisma.LotCageMovementModel
  * (dans l'unité de l'article, ex. kg).
  */
 export type FeedRation = Prisma.FeedRationModel
+/**
+ * Model CareRecord
+ * 
+ */
+export type CareRecord = Prisma.CareRecordModel

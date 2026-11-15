@@ -88,7 +88,8 @@ export const ModelName = {
   NestInstallation: 'NestInstallation',
   MortalityRecord: 'MortalityRecord',
   LotCageMovement: 'LotCageMovement',
-  FeedRation: 'FeedRation'
+  FeedRation: 'FeedRation',
+  CareRecord: 'CareRecord'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -162,6 +163,8 @@ export const FarmScalarFieldEnum = {
   description: 'description',
   location: 'location',
   inbreedingPolicy: 'inbreedingPolicy',
+  saleMinAgeDays: 'saleMinAgeDays',
+  saleMinWeightKg: 'saleMinWeightKg',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -253,6 +256,15 @@ export const RabbitScalarFieldEnum = {
   originalCode: 'originalCode',
   exitDate: 'exitDate',
   exitCause: 'exitCause',
+  origin: 'origin',
+  previousLitters: 'previousLitters',
+  previousKitsBorn: 'previousKitsBorn',
+  lastBirthDate: 'lastBirthDate',
+  maternalBehavior: 'maternalBehavior',
+  previousMatings: 'previousMatings',
+  healthHistory: 'healthHistory',
+  readyForSale: 'readyForSale',
+  readyForSaleAt: 'readyForSaleAt',
   birthLitterId: 'birthLitterId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -577,6 +589,8 @@ export const InventoryItemScalarFieldEnum = {
   currentStock: 'currentStock',
   minimumStock: 'minimumStock',
   unitPrice: 'unitPrice',
+  packageName: 'packageName',
+  packageSize: 'packageSize',
   rationsAppliedUntil: 'rationsAppliedUntil',
   description: 'description',
   createdAt: 'createdAt',
@@ -679,6 +693,29 @@ export const FeedRationScalarFieldEnum = {
 } as const
 
 export type FeedRationScalarFieldEnum = (typeof FeedRationScalarFieldEnum)[keyof typeof FeedRationScalarFieldEnum]
+
+
+export const CareRecordScalarFieldEnum = {
+  id: 'id',
+  farmId: 'farmId',
+  date: 'date',
+  careType: 'careType',
+  scope: 'scope',
+  sectionId: 'sectionId',
+  cageId: 'cageId',
+  lotId: 'lotId',
+  rabbitId: 'rabbitId',
+  product: 'product',
+  dose: 'dose',
+  animalCount: 'animalCount',
+  notes: 'notes',
+  nextDate: 'nextDate',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CareRecordScalarFieldEnum = (typeof CareRecordScalarFieldEnum)[keyof typeof CareRecordScalarFieldEnum]
 
 
 export const SortOrder = {

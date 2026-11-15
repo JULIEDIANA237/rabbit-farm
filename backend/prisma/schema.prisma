@@ -273,6 +273,12 @@ model Farm {
   /// et aux ancêtres communs éloignés (§18).
   inbreedingPolicy InbreedingPolicy @default(WARN)
 
+  /// Critères « prêt pour la vente » : âge minimum (jours) et poids minimum (kg).
+  saleMinAgeDays  Int   @default(90)
+  saleMinWeightKg Float @default(2.5)
+
+  careRecords CareRecord[]
+
   memberships FarmMembership[]
   sections    Section[]
   cages       Cage[]
@@ -345,6 +351,8 @@ model Section {
   farm  Farm   @relation(fields: [farmId], references: [id], onDelete: Cascade)
   cages Cage[]
 
+  careRecords CareRecord[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -372,6 +380,8 @@ model Cage {
 
   rabbitMovements RabbitCageMovement[]
   lotMovements    LotCageMovement[]
+
+  careRecords CareRecord[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -465,6 +475,22 @@ model Rabbit {
   /// Sortie de l'élevage (décès, réforme...)
   exitDate  DateTime?
   exitCause String?
+
+  /// Passé du lapin à son arrivée (questions posées à la création).
+  origin           String?
+  previousLitters  Int?
+  previousKitsBorn Int?
+  lastBirthDate    DateTime?
+  /// GOOD, AVERAGE ou POOR
+  maternalBehavior String?
+  previousMatings  Int?
+  healthHistory    String?
+
+  /// Choisi à la main par l'éleveur pour la vente.
+  readyForSale   Boolean   @default(false)
+  readyForSaleAt DateTime?
+
+  careRecords CareRecord[]
 
   farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)
 
@@ -826,6 +852,8 @@ model FatteningLot {
   mortalities   MortalityRecord[]
   saleItems     SaleItem[]
 
+  careRecords CareRecord[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -1063,6 +1091,10 @@ model InventoryItem {
   /// Prix unitaire de référence (dernier prix d'achat ou saisi).
   unitPrice Decimal?
 
+  /// Conditionnement d'achat : ex. « sac » de 25 (unités de stock, kg).
+  packageName String?
+  packageSize Float?
+
   /// Date jusqu'à laquelle les rations journalières ont été déduites du stock.
   rationsAppliedUntil DateTime?
 
@@ -1260,4 +1292,52 @@ model FeedRation {
 
   @@unique([inventoryItemId, category])
   @@index([farmId])
+}
+
+// ============================================================
+// SOINS (saisis librement par l'éleveur)
+// ============================================================
+
+enum CareScope {
+  FARM
+  SECTION
+  CAGE
+  LOT
+  RABBIT
+}
+
+model CareRecord {
+  id     String @id @default(uuid())
+  farmId String
+
+  date DateTime
+  /// Libellé libre : Nettoyage, Vermifuge, Vitamines…
+  careType String
+
+  scope     CareScope @default(FARM)
+  sectionId String?
+  cageId    String?
+  lotId     String?
+  rabbitId  String?
+
+  product     String?
+  dose        String?
+  animalCount Int?
+  notes       String?
+
+  nextDate DateTime?
+
+  createdById String?
+
+  farm    Farm          @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  section Section?      @relation(fields: [sectionId], references: [id], onDelete: SetNull)
+  cage    Cage?         @relation(fields: [cageId], references: [id], onDelete: SetNull)
+  lot     FatteningLot? @relation(fields: [lotId], references: [id], onDelete: SetNull)
+  rabbit  Rabbit?       @relation(fields: [rabbitId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([farmId])
+  @@index([date])
 }

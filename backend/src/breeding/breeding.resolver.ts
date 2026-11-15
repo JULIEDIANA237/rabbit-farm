@@ -15,6 +15,7 @@ import { RecordNestInstallationInput } from './inputs/record-nest-installation.i
 import { UpdateBreedingInput } from './inputs/update-breeding.input.js';
 import { CancelBreedingInput } from './inputs/cancel-breeding.input.js';
 import { BreedingStatus } from './graphql/breeding-status.enum.js';
+import { ReproductionProfileModel } from './models/reproduction-profile.model.js';
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
 import { RolesGuard } from '../auth/guards/roles.guard.js';
@@ -30,6 +31,14 @@ export class BreedingResolver {
   constructor(
     private readonly breedingService: BreedingService,
   ) {}
+
+  @Query(() => ReproductionProfileModel, { description: 'Résumé d’un reproducteur avant une saillie' })
+  async reproductionProfile(
+    @Args('rabbitId', { type: () => ID }) rabbitId: string,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.breedingService.reproductionProfile(rabbitId, currentUser);
+  }
 
   @Query(() => [BreedingModel])
   async breedings(

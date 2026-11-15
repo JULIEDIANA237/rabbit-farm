@@ -11,6 +11,7 @@ import { FeedingPlanCard } from '@/components/stock/feeding-plan';
 import { toFloat, useForm } from '@/hooks/use-form';
 import { CURRENCY, clean, cleanEdit, formatDate, formatMoney, formatNumber, fromDateInput, toDateInput } from '@/lib/format';
 import { INVENTORY_TYPE, STOCK_MOVEMENT, label, options } from '@/lib/labels';
+import { hasPackage, inPackages, packageLabel, packagePrice, priceLabel } from '@/lib/packaging';
 
 const ITEMS = gql`
   query InventoryItems {
@@ -22,6 +23,8 @@ const ITEMS = gql`
       currentStock
       minimumStock
       unitPrice
+      packageName
+      packageSize
       stockValue
       description
       isBelowMinimum
@@ -55,6 +58,8 @@ interface Item {
   currentStock: number;
   minimumStock?: number | null;
   unitPrice?: number | null;
+  packageName?: string | null;
+  packageSize?: number | null;
   stockValue?: number | null;
   description?: string | null;
   isBelowMinimum: boolean;
@@ -115,10 +120,11 @@ export default function InventoryPage() {
               cell: (i) => (
                 <span className={i.isBelowMinimum ? 'font-semibold text-red-600' : ''}>
                   {formatNumber(i.currentStock, 2)} {i.unit}
+                  {hasPackage(i) && <span className="block text-xs font-normal text-slate-500">soit {inPackages(i, i.currentStock)}</span>}
                 </span>
               ),
             },
-            { header: 'Prix unitaire', cell: (i) => (i.unitPrice != null ? `${formatMoney(i.unitPrice)} / ${i.unit}` : '—') },
+            { header: 'Prix d’achat', cell: (i) => priceLabel(i) },
             { header: 'Valeur', cell: (i) => (i.stockValue != null ? <strong>{formatMoney(i.stockValue)}</strong> : '—') },
             { header: 'Minimum', cell: (i) => (i.minimumStock != null ? `${i.minimumStock} ${i.unit}` : '—') },
             { header: 'Conso. / jour', cell: (i) => (i.averageDailyConsumption ? `${formatNumber(i.averageDailyConsumption, 2)} ${i.unit}` : '—') },
@@ -167,8 +173,14 @@ export default function InventoryPage() {
             columns={[
               { header: 'Date', cell: (m) => formatDate(m.date) },
               { header: 'Type', cell: (m) => label(STOCK_MOVEMENT, m.type) },
-              { header: 'Quantité', cell: (m) => `${m.quantity} ${history.unit}` },
-              { header: 'Coût unitaire', cell: (m) => (m.unitCost != null ? formatMoney(m.unitCost) : '—') },
+              {
+                header: 'Quantité',
+                cell: (m) => {
+                  const packs = inPackages(history, Math.abs(m.quantity));
+                  return `${formatNumber(m.quantity, 2)} ${history.unit}${packs ? ` (${packs})` : ''}`;
+                },
+              },
+              { header: 'Prix', cell: (m) => (m.unitCost != null ? priceLabel({ ...history, unitPrice: m.unitCost }) : '—') },
               { header: 'Description', cell: (m) => m.description ?? '—' },
               {
                 header: '',
@@ -189,10 +201,15 @@ export default function InventoryPage() {
 }
 
 function ItemModal({ onClose, editing }: { onClose: () => void; editing?: Item }) {
+  const editingPackaged = editing ? hasPackage(editing) : true;
   const { bind, values } = useForm({
     name: editing?.name ?? '',
     type: editing?.type ?? 'FEED',
     unit: editing?.unit ?? 'kg',
+    buyMode: editingPackaged ? 'package' : 'unit',
+    packageName: editing?.packageName ?? 'sac',
+    packageSize: editing?.packageSize != null ? String(editing.packageSize) : '',
+    packagePrice: editing && packagePrice(editing) != null ? String(packagePrice(editing)) : '',
     minimumStock: editing?.minimumStock != null ? String(editing.minimumStock) : '',
     unitPrice: editing?.unitPrice != null ? String(editing.unitPrice) : '',
     description: editing?.description ?? '',
@@ -200,8 +217,26 @@ function ItemModal({ onClose, editing }: { onClose: () => void; editing?: Item }
     initialStockDate: toDateInput(),
   });
   const [save, { loading, error }] = useMutation(editing ? UPDATE_ITEM : CREATE_ITEM, { refetchQueries });
-  const { initialStock, initialStockDate, ...fields } = values;
-  const payload = { ...fields, minimumStock: toFloat(values.minimumStock), unitPrice: toFloat(values.unitPrice) };
+  const packaged = values.buyMode === 'package';
+  const size = toFloat(values.packageSize);
+  const pack = values.packageName.trim() || 'sac';
+  const priceOfPackage = toFloat(values.packagePrice);
+  // Au sac : le prix au kg (ou à l'unité de stock) est déduit du prix du sac.
+  const unitPrice = packaged
+    ? priceOfPackage != null && size ? Math.round((priceOfPackage / size) * 100) / 100 : undefined
+    : toFloat(values.unitPrice);
+  const initialQuantity = toFloat(values.initialStock);
+  const initialStock = initialQuantity != null && packaged && size ? initialQuantity * size : initialQuantity;
+  const payload = {
+    name: values.name,
+    type: values.type,
+    unit: values.unit,
+    description: values.description,
+    minimumStock: toFloat(values.minimumStock),
+    unitPrice,
+  };
+  const packagePayload = packaged && size ? { packageName: pack, packageSize: size } : { packageName: null, packageSize: null };
+  const { initialStockDate } = values;
   const submit = () =>
     save({
       variables: {
@@ -209,12 +244,14 @@ function ItemModal({ onClose, editing }: { onClose: () => void; editing?: Item }
           ? {
               id: editing.id,
               ...cleanEdit(payload, ['description']),
+              ...packagePayload,
               minimumStock: payload.minimumStock ?? null,
               unitPrice: payload.unitPrice ?? null,
             }
           : clean({
               ...payload,
-              initialStock: toFloat(initialStock),
+              ...(packaged && size ? packagePayload : {}),
+              initialStock,
               initialStockDate: initialStock ? fromDateInput(initialStockDate) : undefined,
             }),
       },
@@ -229,7 +266,7 @@ function ItemModal({ onClose, editing }: { onClose: () => void; editing?: Item }
       footer={
         <>
           <Button variant="secondary" onClick={onClose}>Annuler</Button>
-          <Button loading={loading} disabled={!values.name || !values.unit} onClick={submit}>
+          <Button loading={loading} disabled={!values.name || !values.unit || (packaged && !size)} onClick={submit}>
             {editing ? 'Enregistrer' : 'Créer'}
           </Button>
         </>
@@ -242,18 +279,47 @@ function ItemModal({ onClose, editing }: { onClose: () => void; editing?: Item }
         <Field label="Type">
           <Select options={options(INVENTORY_TYPE)} {...bind('type')} />
         </Field>
-        <Field label="Unité">
-          <Input placeholder="kg, sac, dose, flacon…" {...bind('unit')} />
+        <Field label="Unité de stock" hint="Les rations sont déduites dans cette unité (kg pour la provende)">
+          <Input placeholder="kg, dose, flacon…" {...bind('unit')} />
         </Field>
-        <Field label={`Prix unitaire (${CURRENCY} par ${values.unit || 'unité'})`} hint="Mis à jour automatiquement à chaque achat avec un coût">
-          <Input inputMode="decimal" {...bind('unitPrice')} />
+        <Field label="Comment tu l’achètes ?">
+          <Select
+            options={[
+              { value: 'package', label: 'En gros : sac, carton, bidon…' },
+              { value: 'unit', label: `Au détail, par ${values.unit || 'unité'}` },
+            ]}
+            {...bind('buyMode')}
+          />
         </Field>
-        <Field label="Stock minimum" hint="Une tâche de réapprovisionnement est créée en dessous">
+        {packaged ? (
+          <>
+            <Field label="Conditionnement" hint="Ex. sac, carton, bidon">
+              <Input {...bind('packageName')} />
+            </Field>
+            <Field label={`Contenu d’un ${pack} (${values.unit || 'unité'})`} hint="Ex. 25 ou 50 pour un sac de provende">
+              <Input inputMode="decimal" placeholder="ex. 50" {...bind('packageSize')} />
+            </Field>
+            <Field
+              label={`Prix d’un ${pack} (${CURRENCY})`}
+              hint={unitPrice != null ? `Soit ${formatMoney(unitPrice)} par ${values.unit}. Mis à jour à chaque achat.` : 'Mis à jour à chaque achat'}
+            >
+              <Input inputMode="decimal" placeholder="ex. 50000" {...bind('packagePrice')} />
+            </Field>
+          </>
+        ) : (
+          <Field label={`Prix (${CURRENCY} par ${values.unit || 'unité'})`} hint="Mis à jour automatiquement à chaque achat avec un coût">
+            <Input inputMode="decimal" {...bind('unitPrice')} />
+          </Field>
+        )}
+        <Field label={`Stock minimum (${values.unit || 'unité'})`} hint="Une tâche de réapprovisionnement est créée en dessous">
           <Input inputMode="decimal" {...bind('minimumStock')} />
         </Field>
         {!editing && (
           <>
-            <Field label={`Stock initial (${values.unit || 'unité'})`} hint="Quantité disponible au départ">
+            <Field
+              label={packaged && size ? `Stock initial (nombre de ${pack}s)` : `Stock initial (${values.unit || 'unité'})`}
+              hint={packaged && size && initialStock ? `Soit ${formatNumber(initialStock, 2)} ${values.unit}` : 'Quantité disponible au départ'}
+            >
               <Input inputMode="decimal" {...bind('initialStock')} />
             </Field>
             <Field label="Date du stock initial">
@@ -276,15 +342,29 @@ function ItemModal({ onClose, editing }: { onClose: () => void; editing?: Item }
 }
 
 function MovementModal({ item, onClose }: { item: Item; onClose: () => void }) {
+  const packaged = hasPackage(item);
   const { bind, values } = useForm({
-    type: 'CONSUMPTION',
+    type: packaged ? 'PURCHASE' : 'CONSUMPTION',
     quantity: '',
+    inPacks: packaged ? 'yes' : 'no',
     date: toDateInput(),
     unitCost: item.unitPrice != null ? String(item.unitPrice) : '',
+    packCost: packagePrice(item) != null ? String(packagePrice(item)) : '',
     description: '',
     reference: '',
   });
   const [move, { loading, error }] = useMutation(MOVE, { refetchQueries });
+  const usePacks = packaged && values.inPacks === 'yes';
+  const isPurchase = values.type === 'PURCHASE' || values.type === 'INITIAL';
+  const typed = toFloat(values.quantity);
+  // Saisie en sacs : convertie dans l'unité de stock (kg) avant l'envoi.
+  const quantity = typed != null && usePacks ? typed * item.packageSize! : typed;
+  const packCost = toFloat(values.packCost);
+  const unitCost = usePacks
+    ? packCost != null ? Math.round((packCost / item.packageSize!) * 100) / 100 : undefined
+    : toFloat(values.unitCost);
+  const total = isPurchase && quantity != null && unitCost != null ? quantity * unitCost : null;
+  const unitName = usePacks ? `${item.packageName}s` : item.unit;
   return (
     <Modal
       open
@@ -300,12 +380,13 @@ function MovementModal({ item, onClose }: { item: Item; onClose: () => void }) {
               move({
                 variables: {
                   input: clean({
-                    ...values,
+                    type: values.type,
+                    description: values.description,
+                    reference: values.reference,
                     inventoryItemId: item.id,
                     date: fromDateInput(values.date),
-                    quantity: toFloat(values.quantity),
-                    unitCost:
-                      values.type === 'PURCHASE' || values.type === 'INITIAL' ? toFloat(values.unitCost) : undefined,
+                    quantity,
+                    unitCost: isPurchase ? unitCost : undefined,
                   }),
                 },
               })
@@ -322,17 +403,42 @@ function MovementModal({ item, onClose }: { item: Item; onClose: () => void }) {
         <Field label="Type de mouvement">
           <Select options={options(STOCK_MOVEMENT)} {...bind('type')} />
         </Field>
-        <Field label={`Quantité (${item.unit})`} hint={values.type === 'ADJUSTMENT' ? 'Variation signée : +5 ou -3' : undefined}>
+        {packaged && (
+          <Field label="Saisir en">
+            <Select
+              options={[
+                { value: 'yes', label: `${item.packageName}s (${packageLabel(item)})` },
+                { value: 'no', label: item.unit },
+              ]}
+              {...bind('inPacks')}
+            />
+          </Field>
+        )}
+        <Field
+          label={`Quantité (${unitName})`}
+          hint={
+            values.type === 'ADJUSTMENT'
+              ? 'Variation signée : +5 ou -3'
+              : usePacks && quantity != null
+                ? `Soit ${formatNumber(quantity, 2)} ${item.unit}`
+                : undefined
+          }
+        >
           <Input inputMode="decimal" {...bind('quantity')} />
         </Field>
         <Field label="Date">
           <Input type="date" {...bind('date')} />
         </Field>
-        {(values.type === 'PURCHASE' || values.type === 'INITIAL') && (
-          <Field label={`Coût unitaire (${CURRENCY})`}>
-            <Input inputMode="decimal" {...bind('unitCost')} />
-          </Field>
-        )}
+        {isPurchase &&
+          (usePacks ? (
+            <Field label={`Prix d’un ${item.packageName} (${CURRENCY})`} hint={total != null ? `Total payé : ${formatMoney(total)}` : undefined}>
+              <Input inputMode="decimal" {...bind('packCost')} />
+            </Field>
+          ) : (
+            <Field label={`Prix par ${item.unit} (${CURRENCY})`} hint={total != null ? `Total payé : ${formatMoney(total)}` : undefined}>
+              <Input inputMode="decimal" {...bind('unitCost')} />
+            </Field>
+          ))}
         <Field label="Description">
           <Input {...bind('description')} />
         </Field>

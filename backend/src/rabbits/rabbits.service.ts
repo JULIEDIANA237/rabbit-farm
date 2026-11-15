@@ -46,6 +46,44 @@ export function mapRabbit<T extends RabbitWithRelations>(rabbit: T) {
   };
 }
 
+const MATERNAL_BEHAVIORS = ['GOOD', 'AVERAGE', 'POOR'];
+
+/** Champs « passé du lapin » ; undefined = inchangé, null = effacé. */
+export function historyData(input: {
+  origin?: string | null;
+  previousLitters?: number | null;
+  previousKitsBorn?: number | null;
+  lastBirthDate?: Date | null;
+  maternalBehavior?: string | null;
+  previousMatings?: number | null;
+  healthHistory?: string | null;
+}) {
+  const text = (value: string | null | undefined) =>
+    value === undefined ? undefined : value?.trim() || null;
+  const count = (value: number | null | undefined, label: string) => {
+    if (value == null) return value;
+    if (!Number.isInteger(value) || value < 0) {
+      throw new BadRequestException(`${label} doit être un nombre entier positif.`);
+    }
+    return value;
+  };
+  if (input.maternalBehavior && !MATERNAL_BEHAVIORS.includes(input.maternalBehavior)) {
+    throw new BadRequestException('Comportement de mère inconnu.');
+  }
+  if (input.lastBirthDate && new Date(input.lastBirthDate) > new Date()) {
+    throw new BadRequestException('La dernière mise bas ne peut pas être dans le futur.');
+  }
+  return {
+    origin: text(input.origin),
+    previousLitters: count(input.previousLitters, 'Le nombre de mises bas'),
+    previousKitsBorn: count(input.previousKitsBorn, 'Le nombre de lapereaux'),
+    lastBirthDate: input.lastBirthDate,
+    maternalBehavior: input.maternalBehavior === undefined ? undefined : input.maternalBehavior || null,
+    previousMatings: count(input.previousMatings, 'Le nombre de saillies'),
+    healthHistory: text(input.healthHistory),
+  };
+}
+
 @Injectable()
 export class RabbitsService {
   constructor(
@@ -571,11 +609,27 @@ export class RabbitsService {
 
           observations:
             input.observations,
+
+          ...historyData(input),
         },
 
         include:
           this.rabbitInclude,
       });
+
+    // Les antécédents de santé apparaissent aussi dans le suivi sanitaire.
+    if (input.healthHistory?.trim()) {
+      await this.prisma.healthRecord.create({
+        data: {
+          farmId: currentUser.farmId,
+          rabbitId: rabbit.id,
+          type: 'OBSERVATION',
+          date: new Date(),
+          observation: `Antécédents à l'arrivée : ${input.healthHistory.trim()}`,
+          createdById: currentUser.userId ?? null,
+        },
+      });
+    }
 
     return mapRabbit(rabbit);
   }
@@ -686,6 +740,8 @@ export class RabbitsService {
 
           observations:
             input.observations,
+
+          ...historyData(input),
         },
 
         include:

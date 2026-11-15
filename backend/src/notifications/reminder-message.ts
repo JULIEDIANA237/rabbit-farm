@@ -2,6 +2,7 @@ export interface ReminderCounts {
   dueToday: number;
   overdue: number;
   birthsSoon: number;
+  readyForSale?: number;
 }
 
 const plural = (count: number, one: string, many: string) => `${count} ${count > 1 ? many : one}`;
@@ -12,6 +13,7 @@ export function reminderMessage(counts: ReminderCounts): { title: string; body: 
   if (counts.dueToday > 0) parts.push(plural(counts.dueToday, 'tâche prévue aujourd’hui', 'tâches prévues aujourd’hui'));
   if (counts.overdue > 0) parts.push(plural(counts.overdue, 'tâche en retard', 'tâches en retard'));
   if (counts.birthsSoon > 0) parts.push(plural(counts.birthsSoon, 'mise bas attendue sous 2 jours', 'mises bas attendues sous 2 jours'));
+  if (counts.readyForSale) parts.push(plural(counts.readyForSale, 'lapin prêt pour la vente', 'lapins prêts pour la vente'));
   if (parts.length === 0) return null;
   return { title: 'RabbitFarm : ta journée', body: `${parts.join(', ')}.` };
 }

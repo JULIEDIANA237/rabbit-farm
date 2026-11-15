@@ -6,6 +6,7 @@ import type { CurrentUserType } from '../auth/types/current-user.type.js';
 
 import { readPushConfig, sendPush, type PushPayload, type PushResult } from './push-sender.js';
 import { reminderMessage } from './reminder-message.js';
+import { SaleReadinessService } from '../sales/readiness/sale-readiness.service.js';
 import type { PushSubscriptionInput } from './notifications.inputs.js';
 
 const DAY = 86_400_000;
@@ -14,7 +15,10 @@ const DAY = 86_400_000;
 export class NotificationsService {
   private readonly logger = new Logger('Notifications');
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly readiness: SaleReadinessService,
+  ) {}
 
   config() {
     return readPushConfig();
@@ -62,7 +66,7 @@ export class NotificationsService {
 
     let sent = 0;
     for (const [farmId, farmSubscriptions] of byFarm) {
-      const [dueToday, overdue, birthsSoon] = await Promise.all([
+      const [dueToday, overdue, birthsSoon, readyForSale] = await Promise.all([
         this.prisma.task.count({ where: { farmId, status: open, dueDate: { gte: start, lt: end } } }),
         this.prisma.task.count({ where: { farmId, status: open, dueDate: { lt: start } } }),
         this.prisma.breeding.count({
@@ -72,10 +76,12 @@ export class NotificationsService {
             expectedBirthStartDate: { gte: start, lt: new Date(start.getTime() + 2 * DAY) },
           },
         }),
+        this.readiness.readyCount(farmId).catch(() => 0),
       ]);
-      const message = reminderMessage({ dueToday, overdue, birthsSoon });
+      const message = reminderMessage({ dueToday, overdue, birthsSoon, readyForSale });
       if (!message) continue;
-      const results = await this.deliver(farmSubscriptions, { ...message, url: '/tasks' });
+      const onlySales = readyForSale > 0 && dueToday + overdue + birthsSoon === 0;
+      const results = await this.deliver(farmSubscriptions, { ...message, url: onlySales ? '/sales/ready' : '/tasks' });
       sent += results.filter((result) => result === 'sent').length;
     }
 

@@ -200,6 +200,7 @@ export type SectionWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Section"> | Date | string
   farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
   cages?: Prisma.CageListRelationFilter
+  careRecords?: Prisma.CareRecordListRelationFilter
 }
 
 export type SectionOrderByWithRelationInput = {
@@ -212,6 +213,7 @@ export type SectionOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   farm?: Prisma.FarmOrderByWithRelationInput
   cages?: Prisma.CageOrderByRelationAggregateInput
+  careRecords?: Prisma.CareRecordOrderByRelationAggregateInput
 }
 
 export type SectionWhereUniqueInput = Prisma.AtLeast<{
@@ -228,6 +230,7 @@ export type SectionWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Section"> | Date | string
   farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
   cages?: Prisma.CageListRelationFilter
+  careRecords?: Prisma.CareRecordListRelationFilter
 }, "id" | "farmId_name">
 
 export type SectionOrderByWithAggregationInput = {
@@ -265,6 +268,7 @@ export type SectionCreateInput = {
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutSectionsInput
   cages?: Prisma.CageCreateNestedManyWithoutSectionInput
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutSectionInput
 }
 
 export type SectionUncheckedCreateInput = {
@@ -276,6 +280,7 @@ export type SectionUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutSectionInput
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutSectionInput
 }
 
 export type SectionUpdateInput = {
@@ -287,6 +292,7 @@ export type SectionUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutSectionsNestedInput
   cages?: Prisma.CageUpdateManyWithoutSectionNestedInput
+  careRecords?: Prisma.CareRecordUpdateManyWithoutSectionNestedInput
 }
 
 export type SectionUncheckedUpdateInput = {
@@ -298,6 +304,7 @@ export type SectionUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cages?: Prisma.CageUncheckedUpdateManyWithoutSectionNestedInput
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutSectionNestedInput
 }
 
 export type SectionCreateManyInput = {
@@ -379,6 +386,11 @@ export type SectionScalarRelationFilter = {
   isNot?: Prisma.SectionWhereInput
 }
 
+export type SectionNullableScalarRelationFilter = {
+  is?: Prisma.SectionWhereInput | null
+  isNot?: Prisma.SectionWhereInput | null
+}
+
 export type SectionCreateNestedManyWithoutFarmInput = {
   create?: Prisma.XOR<Prisma.SectionCreateWithoutFarmInput, Prisma.SectionUncheckedCreateWithoutFarmInput> | Prisma.SectionCreateWithoutFarmInput[] | Prisma.SectionUncheckedCreateWithoutFarmInput[]
   connectOrCreate?: Prisma.SectionCreateOrConnectWithoutFarmInput | Prisma.SectionCreateOrConnectWithoutFarmInput[]
@@ -439,6 +451,22 @@ export type SectionUpdateOneRequiredWithoutCagesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SectionUpdateToOneWithWhereWithoutCagesInput, Prisma.SectionUpdateWithoutCagesInput>, Prisma.SectionUncheckedUpdateWithoutCagesInput>
 }
 
+export type SectionCreateNestedOneWithoutCareRecordsInput = {
+  create?: Prisma.XOR<Prisma.SectionCreateWithoutCareRecordsInput, Prisma.SectionUncheckedCreateWithoutCareRecordsInput>
+  connectOrCreate?: Prisma.SectionCreateOrConnectWithoutCareRecordsInput
+  connect?: Prisma.SectionWhereUniqueInput
+}
+
+export type SectionUpdateOneWithoutCareRecordsNestedInput = {
+  create?: Prisma.XOR<Prisma.SectionCreateWithoutCareRecordsInput, Prisma.SectionUncheckedCreateWithoutCareRecordsInput>
+  connectOrCreate?: Prisma.SectionCreateOrConnectWithoutCareRecordsInput
+  upsert?: Prisma.SectionUpsertWithoutCareRecordsInput
+  disconnect?: Prisma.SectionWhereInput | boolean
+  delete?: Prisma.SectionWhereInput | boolean
+  connect?: Prisma.SectionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SectionUpdateToOneWithWhereWithoutCareRecordsInput, Prisma.SectionUpdateWithoutCareRecordsInput>, Prisma.SectionUncheckedUpdateWithoutCareRecordsInput>
+}
+
 export type SectionCreateWithoutFarmInput = {
   id?: string
   name: string
@@ -447,6 +475,7 @@ export type SectionCreateWithoutFarmInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   cages?: Prisma.CageCreateNestedManyWithoutSectionInput
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutSectionInput
 }
 
 export type SectionUncheckedCreateWithoutFarmInput = {
@@ -457,6 +486,7 @@ export type SectionUncheckedCreateWithoutFarmInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutSectionInput
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutSectionInput
 }
 
 export type SectionCreateOrConnectWithoutFarmInput = {
@@ -506,6 +536,7 @@ export type SectionCreateWithoutCagesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   farm: Prisma.FarmCreateNestedOneWithoutSectionsInput
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutSectionInput
 }
 
 export type SectionUncheckedCreateWithoutCagesInput = {
@@ -516,6 +547,7 @@ export type SectionUncheckedCreateWithoutCagesInput = {
   description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutSectionInput
 }
 
 export type SectionCreateOrConnectWithoutCagesInput = {
@@ -542,6 +574,7 @@ export type SectionUpdateWithoutCagesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   farm?: Prisma.FarmUpdateOneRequiredWithoutSectionsNestedInput
+  careRecords?: Prisma.CareRecordUpdateManyWithoutSectionNestedInput
 }
 
 export type SectionUncheckedUpdateWithoutCagesInput = {
@@ -552,6 +585,67 @@ export type SectionUncheckedUpdateWithoutCagesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutSectionNestedInput
+}
+
+export type SectionCreateWithoutCareRecordsInput = {
+  id?: string
+  name: string
+  type: $Enums.SectionType
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  farm: Prisma.FarmCreateNestedOneWithoutSectionsInput
+  cages?: Prisma.CageCreateNestedManyWithoutSectionInput
+}
+
+export type SectionUncheckedCreateWithoutCareRecordsInput = {
+  id?: string
+  farmId: string
+  name: string
+  type: $Enums.SectionType
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  cages?: Prisma.CageUncheckedCreateNestedManyWithoutSectionInput
+}
+
+export type SectionCreateOrConnectWithoutCareRecordsInput = {
+  where: Prisma.SectionWhereUniqueInput
+  create: Prisma.XOR<Prisma.SectionCreateWithoutCareRecordsInput, Prisma.SectionUncheckedCreateWithoutCareRecordsInput>
+}
+
+export type SectionUpsertWithoutCareRecordsInput = {
+  update: Prisma.XOR<Prisma.SectionUpdateWithoutCareRecordsInput, Prisma.SectionUncheckedUpdateWithoutCareRecordsInput>
+  create: Prisma.XOR<Prisma.SectionCreateWithoutCareRecordsInput, Prisma.SectionUncheckedCreateWithoutCareRecordsInput>
+  where?: Prisma.SectionWhereInput
+}
+
+export type SectionUpdateToOneWithWhereWithoutCareRecordsInput = {
+  where?: Prisma.SectionWhereInput
+  data: Prisma.XOR<Prisma.SectionUpdateWithoutCareRecordsInput, Prisma.SectionUncheckedUpdateWithoutCareRecordsInput>
+}
+
+export type SectionUpdateWithoutCareRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumSectionTypeFieldUpdateOperationsInput | $Enums.SectionType
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  farm?: Prisma.FarmUpdateOneRequiredWithoutSectionsNestedInput
+  cages?: Prisma.CageUpdateManyWithoutSectionNestedInput
+}
+
+export type SectionUncheckedUpdateWithoutCareRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumSectionTypeFieldUpdateOperationsInput | $Enums.SectionType
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  cages?: Prisma.CageUncheckedUpdateManyWithoutSectionNestedInput
 }
 
 export type SectionCreateManyFarmInput = {
@@ -571,6 +665,7 @@ export type SectionUpdateWithoutFarmInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cages?: Prisma.CageUpdateManyWithoutSectionNestedInput
+  careRecords?: Prisma.CareRecordUpdateManyWithoutSectionNestedInput
 }
 
 export type SectionUncheckedUpdateWithoutFarmInput = {
@@ -581,6 +676,7 @@ export type SectionUncheckedUpdateWithoutFarmInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cages?: Prisma.CageUncheckedUpdateManyWithoutSectionNestedInput
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutSectionNestedInput
 }
 
 export type SectionUncheckedUpdateManyWithoutFarmInput = {
@@ -599,10 +695,12 @@ export type SectionUncheckedUpdateManyWithoutFarmInput = {
 
 export type SectionCountOutputType = {
   cages: number
+  careRecords: number
 }
 
 export type SectionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   cages?: boolean | SectionCountOutputTypeCountCagesArgs
+  careRecords?: boolean | SectionCountOutputTypeCountCareRecordsArgs
 }
 
 /**
@@ -622,6 +720,13 @@ export type SectionCountOutputTypeCountCagesArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.CageWhereInput
 }
 
+/**
+ * SectionCountOutputType without action
+ */
+export type SectionCountOutputTypeCountCareRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CareRecordWhereInput
+}
+
 
 export type SectionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -633,6 +738,7 @@ export type SectionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   updatedAt?: boolean
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   cages?: boolean | Prisma.Section$cagesArgs<ExtArgs>
+  careRecords?: boolean | Prisma.Section$careRecordsArgs<ExtArgs>
   _count?: boolean | Prisma.SectionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["section"]>
 
@@ -672,6 +778,7 @@ export type SectionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 export type SectionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   cages?: boolean | Prisma.Section$cagesArgs<ExtArgs>
+  careRecords?: boolean | Prisma.Section$careRecordsArgs<ExtArgs>
   _count?: boolean | Prisma.SectionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SectionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -686,6 +793,7 @@ export type $SectionPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   objects: {
     farm: Prisma.$FarmPayload<ExtArgs>
     cages: Prisma.$CagePayload<ExtArgs>[]
+    careRecords: Prisma.$CareRecordPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1091,6 +1199,7 @@ export interface Prisma__SectionClient<T, Null = never, ExtArgs extends runtime.
   readonly [Symbol.toStringTag]: "PrismaPromise"
   farm<T extends Prisma.FarmDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FarmDefaultArgs<ExtArgs>>): Prisma.Prisma__FarmClient<runtime.Types.Result.GetResult<Prisma.$FarmPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   cages<T extends Prisma.Section$cagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Section$cagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  careRecords<T extends Prisma.Section$careRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Section$careRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CareRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1549,6 +1658,30 @@ export type Section$cagesArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.CageScalarFieldEnum | Prisma.CageScalarFieldEnum[]
+}
+
+/**
+ * Section.careRecords
+ */
+export type Section$careRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CareRecord
+   */
+  select?: Prisma.CareRecordSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CareRecord
+   */
+  omit?: Prisma.CareRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CareRecordInclude<ExtArgs> | null
+  where?: Prisma.CareRecordWhereInput
+  orderBy?: Prisma.CareRecordOrderByWithRelationInput | Prisma.CareRecordOrderByWithRelationInput[]
+  cursor?: Prisma.CareRecordWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CareRecordScalarFieldEnum | Prisma.CareRecordScalarFieldEnum[]
 }
 
 /**

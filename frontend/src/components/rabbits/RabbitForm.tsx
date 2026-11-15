@@ -19,6 +19,12 @@ import type {
   CreateRabbitInput,
   RabbitSex,
 } from '@/types/rabbit';
+import {
+  RabbitHistoryFields,
+  emptyHistory,
+  historyPayload,
+  type RabbitHistoryValues,
+} from './RabbitHistoryFields';
 
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
@@ -44,7 +50,13 @@ export function RabbitForm() {
     color: '',
     weight: undefined,
     observations: '',
+    purpose: 'BREEDER',
   });
+  const [history, setHistory] = useState<RabbitHistoryValues>(emptyHistory);
+  const [pregnantNow, setPregnantNow] = useState(false);
+  // Tant que l'éleveur n'a pas choisi le sexe, le code le devine : F… = femelle, M… = mâle.
+  const [sexTouched, setSexTouched] = useState(false);
+  const isBreeder = form.purpose === 'BREEDER' || form.purpose === 'FUTURE_BREEDER';
 
   const updateField = <K extends keyof CreateRabbitInput>(
     field: K,
@@ -219,6 +231,13 @@ export function RabbitForm() {
           !Number.isNaN(form.weight)
             ? Number(form.weight)
             : undefined,
+
+        ...(isBreeder || history.healthHistory.trim()
+          ? historyPayload(
+              isBreeder ? history : { ...emptyHistory, healthHistory: history.healthHistory },
+              form.sex,
+            )
+          : {}),
       };
 
       console.log(
@@ -260,6 +279,11 @@ export function RabbitForm() {
        * On va directement sur la fiche
        * du nouveau lapin.
        */
+      if (pregnantNow && form.sex === 'FEMALE' && !photoFailed) {
+        // Femelle déjà gestante : on enchaîne sur l'enregistrement de sa saillie.
+        router.push(`/breeding?new=1&prefill=${encodeURIComponent(JSON.stringify({ femaleId: rabbitId }))}`);
+        return;
+      }
       router.push(`/rabbits/${rabbitId}${photoFailed ? '?photo=echec' : ''}`);
       router.refresh();
     } catch (submitError) {
@@ -422,12 +446,15 @@ export function RabbitForm() {
 
               <input
                 value={form.code}
-                onChange={(event) =>
-                  updateField(
-                    'code',
-                    event.target.value,
-                  )
-                }
+                onChange={(event) => {
+                  const code = event.target.value;
+                  updateField('code', code);
+                  if (!sexTouched) {
+                    const first = code.trim().charAt(0).toUpperCase();
+                    if (first === 'F') updateField('sex', 'FEMALE');
+                    if (first === 'M') updateField('sex', 'MALE');
+                  }
+                }}
                 placeholder="Ex : F03"
                 className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                 required
@@ -442,12 +469,13 @@ export function RabbitForm() {
 
               <select
                 value={form.sex}
-                onChange={(event) =>
+                onChange={(event) => {
+                  setSexTouched(true);
                   updateField(
                     'sex',
                     event.target.value as RabbitSex,
-                  )
-                }
+                  );
+                }}
                 className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
               >
                 <option value="FEMALE">
@@ -461,6 +489,24 @@ export function RabbitForm() {
                 <option value="UNKNOWN">
                   Sexe inconnu
                 </option>
+              </select>
+            </div>
+
+            {/* Usage */}
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-700">
+                Usage *
+              </label>
+
+              <select
+                value={form.purpose}
+                onChange={(event) => updateField('purpose', event.target.value)}
+                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+              >
+                <option value="BREEDER">Reproducteur</option>
+                <option value="FUTURE_BREEDER">Futur reproducteur</option>
+                <option value="FATTENING">Engraissement (pour la vente)</option>
+                <option value="REFORM">Réformé</option>
               </select>
             </div>
 
@@ -526,6 +572,27 @@ export function RabbitForm() {
               />
             </div>
           </div>
+
+          {isBreeder ? (
+            <RabbitHistoryFields sex={form.sex} values={history} onChange={setHistory} />
+          ) : null}
+
+          {isBreeder && form.sex === 'FEMALE' && (
+            <label className="flex items-start gap-3 rounded-xl border border-slate-200 p-4 text-sm">
+              <input
+                type="checkbox"
+                className="mt-1"
+                checked={pregnantNow}
+                onChange={(event) => setPregnantNow(event.target.checked)}
+              />
+              <span>
+                <span className="font-medium text-slate-800">Elle est gestante en ce moment</span>
+                <span className="block text-xs text-slate-500">
+                  Après l’enregistrement, je t’ouvre la saillie pour noter le mâle et la date : les rappels de palpation et de mise bas suivront.
+                </span>
+              </span>
+            </label>
+          )}
 
           {/* Observations */}
           <div>

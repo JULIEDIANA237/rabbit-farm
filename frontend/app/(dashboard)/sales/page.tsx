@@ -108,10 +108,17 @@ function initialLotId() {
   return new URLSearchParams(window.location.search).get('lotId') ?? '';
 }
 
+/** Lapins à vendre passés par l'URL (depuis « Prêts pour la vente »). */
+function initialRabbitIds() {
+  if (typeof window === 'undefined') return [] as string[];
+  return (new URLSearchParams(window.location.search).get('rabbitIds') ?? '').split(',').filter(Boolean);
+}
+
 export default function SalesPage() {
   const [tab, setTab] = useState<'sales' | 'customers'>('sales');
   const [creating, setCreating] = useState(false);
   const [lotId] = useState(initialLotId);
+  const [rabbitIds] = useState(initialRabbitIds);
   const [paying, setPaying] = useState<Sale | null>(null);
   const [newCustomer, setNewCustomer] = useState(false);
   const [editingSale, setEditingSale] = useState<Sale | null>(null);
@@ -254,7 +261,7 @@ export default function SalesPage() {
         />
       )}
 
-      <SaleModal open={creating} initialLotId={lotId} onClose={() => setCreating(false)} />
+      <SaleModal open={creating} initialLotId={lotId} initialRabbitIds={rabbitIds} onClose={() => setCreating(false)} />
       {paying && <PaymentModal sale={paying} onClose={() => setPaying(null)} />}
       <CustomerModal open={newCustomer} onClose={() => setNewCustomer(false)} />
       {editingCustomer && <CustomerModal key={editingCustomer.id} open editing={editingCustomer} onClose={() => setEditingCustomer(null)} />}
@@ -290,12 +297,24 @@ function lineTotal(l: Line) {
   return (toInt(l.quantity) ?? 1) * (toFloat(l.unitPrice) ?? 0);
 }
 
-function SaleModal({ open, initialLotId, onClose }: { open: boolean; initialLotId: string; onClose: () => void }) {
+function SaleModal({
+  open,
+  initialLotId,
+  initialRabbitIds = [],
+  onClose,
+}: {
+  open: boolean;
+  initialLotId: string;
+  initialRabbitIds?: string[];
+  onClose: () => void;
+}) {
   const rabbits = useRabbitOptions();
   const lots = useLotOptions();
   const customers = useCustomerOptions();
   const { bind, values, reset } = useForm({ saleDate: toDateInput(), customerId: '', observation: '' });
-  const [lines, setLines] = useState<Line[]>([emptyLine(initialLotId)]);
+  const [lines, setLines] = useState<Line[]>(() =>
+    initialRabbitIds.length ? initialRabbitIds.map((rabbitId) => ({ ...emptyLine(), rabbitId })) : [emptyLine(initialLotId)],
+  );
   const [create, { loading, error, reset: resetMutation }] = useMutation(CREATE_SALE, { refetchQueries });
 
   const update = (index: number, patch: Partial<Line>) => setLines((ls) => ls.map((l, i) => (i === index ? { ...l, ...patch } : l)));

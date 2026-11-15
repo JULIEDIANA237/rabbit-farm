@@ -19,6 +19,14 @@ import type {
 } from '@/types/rabbit';
 
 import {
+  RabbitHistoryFields,
+  emptyHistory,
+  historyFromRabbit,
+  historyPayload,
+  type RabbitHistoryValues,
+} from '@/components/rabbits/RabbitHistoryFields';
+
+import {
   getRabbitSexLabel,
   getRabbitStatusLabel,
 } from '@/lib/rabbits/rabbit-labels';
@@ -68,6 +76,9 @@ function EditRabbitForm({
   const [observations, setObservations] =
     useState('');
 
+  const [history, setHistory] =
+    useState<RabbitHistoryValues>(emptyHistory);
+
   const [initialized, setInitialized] =
     useState(false);
 
@@ -84,6 +95,7 @@ function EditRabbitForm({
     setObservations(
       rabbit.observations ?? '',
     );
+    setHistory(historyFromRabbit(rabbit));
 
     setInitialized(true);
   }
@@ -109,6 +121,7 @@ function EditRabbitForm({
           : undefined,
         observations:
           observations.trim() || undefined,
+        ...historyPayload(history, sex, true),
       });
 
       router.push(`/rabbits/${rabbit.id}`);
@@ -292,6 +305,10 @@ function EditRabbitForm({
             </Field>
           </div>
         </section>
+
+        {(rabbit.purpose === 'BREEDER' || rabbit.purpose === 'FUTURE_BREEDER' || sex !== 'UNKNOWN') && (
+          <RabbitHistoryFields sex={sex} values={history} onChange={setHistory} />
+        )}
 
         <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
           <Link

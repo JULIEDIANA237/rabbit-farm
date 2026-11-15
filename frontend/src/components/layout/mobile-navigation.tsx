@@ -7,16 +7,18 @@ import { useEffect, useRef, useState } from 'react';
 import {
   BarChart3,
   Baby,
-  ClipboardList,
+  Calculator,
   DollarSign,
   HeartPulse,
   Home,
-  Package,
   Plus,
   Rabbit,
   Sprout,
+  Wrench,
   X,
 } from 'lucide-react';
+
+import { TOOL_LINKS } from './tool-links';
 
 const mainItems = [
   {
@@ -59,52 +61,15 @@ const actionItems = [
   },
 ];
 
+// Le menu ☰ du haut donne déjà accès à tous les modules : ce bouton ouvre
+// la boîte à outils (calculs et raccourcis du quotidien).
 const menuItems = [
   {
-    label: 'Lapereaux',
-    href: '/kits',
-    icon: Sprout,
+    label: 'Calculs : dates, provende',
+    href: '/tools',
+    icon: Calculator,
   },
-  {
-    label: 'Reproduction',
-    href: '/breeding',
-    icon: HeartPulse,
-  },
-  {
-    label: 'Naissances',
-    href: '/births',
-    icon: Baby,
-  },
-  {
-    label: 'Sevrage',
-    href: '/weaning',
-    icon: Sprout,
-  },
-  {
-    label: 'Engraissement',
-    href: '/fattening',
-    icon: Rabbit,
-  },
-  {
-    label: 'Santé',
-    href: '/health',
-    icon: HeartPulse,
-  },
-  {
-    label: 'Ventes',
-    href: '/sales',
-    icon: DollarSign,
-  },
-  {
-    label: 'Opérations',
-    href: '/operations',
-    icon: Package,
-  },
-  {
-    label: 'Tâches',
-    href: '/tasks',
-    icon: ClipboardList,
-  },
+  ...TOOL_LINKS,
 ];
 
 export function MobileNavigation() {
@@ -322,11 +287,11 @@ export function MobileNavigation() {
         >
           <div className="mb-2 px-2">
             <p className="text-sm font-semibold text-slate-900">
-              Navigation
+              Boîte à outils
             </p>
 
             <p className="text-xs text-slate-500">
-              Accéder aux modules de l&apos;élevage
+              Calculs et raccourcis du quotidien
             </p>
           </div>
 
@@ -339,6 +304,7 @@ export function MobileNavigation() {
                 <button
                   key={item.href}
                   type="button"
+                  data-tool={item.href}
                   onClick={() => navigate(item.href)}
                   className={`
                     flex
@@ -470,7 +436,7 @@ export function MobileNavigation() {
 
         <button
           type="button"
-          aria-label="Ouvrir le menu"
+          aria-label="Ouvrir la boîte à outils"
           aria-expanded={menuOpen}
           onClick={toggleMenu}
           className={`
@@ -488,11 +454,9 @@ export function MobileNavigation() {
             }
           `}
         >
-          <span className="flex h-5 items-center text-lg leading-none">
-            •••
-          </span>
+          <Wrench size={20} />
 
-          Menu
+          Outils
         </button>
       </div>
     </nav>

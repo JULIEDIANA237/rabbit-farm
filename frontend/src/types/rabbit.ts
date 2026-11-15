@@ -33,6 +33,14 @@ export interface Rabbit {
   color?: string | null;
   weight?: number | null;
   observations?: string | null;
+  origin?: string | null;
+  previousLitters?: number | null;
+  previousKitsBorn?: number | null;
+  lastBirthDate?: string | null;
+  maternalBehavior?: string | null;
+  previousMatings?: number | null;
+  healthHistory?: string | null;
+  readyForSale?: boolean;
 
   breedId?: string | null;
   crossBreedId?: string | null;
@@ -71,6 +79,15 @@ export interface CreateRabbitInput {
   weight?: number;
 
   observations?: string;
+
+  purpose?: string;
+  origin?: string | null;
+  previousLitters?: number | null;
+  previousKitsBorn?: number | null;
+  lastBirthDate?: string | null;
+  maternalBehavior?: string | null;
+  previousMatings?: number | null;
+  healthHistory?: string | null;
 }
 
 
@@ -112,6 +129,13 @@ export interface UpdateRabbitInput {
   color?: string;
   weight?: number;
   observations?: string;
+  origin?: string | null;
+  previousLitters?: number | null;
+  previousKitsBorn?: number | null;
+  lastBirthDate?: string | null;
+  maternalBehavior?: string | null;
+  previousMatings?: number | null;
+  healthHistory?: string | null;
 }
 
 export const RABBIT_SEX_LABELS: Record<
