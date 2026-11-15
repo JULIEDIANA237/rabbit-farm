@@ -12,6 +12,10 @@ type TraceEvent = {
   title: string;
   detail?: string | null;
   referenceId?: string | null;
+  /** Ligne d'historique à modifier ou supprimer (voir RabbitHistoryService). */
+  recordId?: string | null;
+  note?: string | null;
+  weightKg?: number | null;
 };
 
 const BREEDING_LABELS: Record<string, string> = {
@@ -130,6 +134,8 @@ export class TraceabilityService {
           .filter(Boolean)
           .join(' · ') || null,
         referenceId: m.cageId,
+        recordId: m.id,
+        note: m.observation,
       });
     }
 
@@ -139,6 +145,7 @@ export class TraceabilityService {
         type: 'LOT',
         title: `Entrée dans le lot ${lm.lot.code}`,
         referenceId: lm.lotId,
+        recordId: lm.id,
       });
       if (lm.leftAt) {
         events.push({
@@ -158,6 +165,7 @@ export class TraceabilityService {
         title: 'Sevrage',
         detail: w.weight != null ? `${Number(w.weight)} kg` : null,
         referenceId: w.weaningId,
+        recordId: w.id,
       });
     }
 
@@ -168,6 +176,7 @@ export class TraceabilityService {
         title: `Adoption ${a.adoption.sourceLitter.code} → ${a.adoption.destinationLitter.code}`,
         detail: a.adoption.reason,
         referenceId: a.adoptionId,
+        recordId: a.id,
       });
     }
 
@@ -179,6 +188,9 @@ export class TraceabilityService {
         title: `Pesée : ${Number(weight.toFixed(3))} kg`,
         detail: w.ageInDays != null ? `${w.ageInDays} jours` : null,
         referenceId: w.id,
+        recordId: w.id,
+        note: w.observation,
+        weightKg: Number(weight.toFixed(3)),
       });
     }
 
@@ -189,6 +201,7 @@ export class TraceabilityService {
         title: HEALTH_LABELS[h.type] ?? h.type,
         detail: [h.diagnosis, h.treatment, h.medication].filter(Boolean).join(' · ') || h.observation,
         referenceId: h.id,
+        recordId: h.id,
       });
     }
 
@@ -254,6 +267,8 @@ export class TraceabilityService {
         type: 'EXIT',
         title: EXIT_LABELS[rabbit.status] ?? rabbit.status,
         detail: rabbit.exitCause,
+        recordId: rabbit.id,
+        note: rabbit.exitCause,
       });
     }
 

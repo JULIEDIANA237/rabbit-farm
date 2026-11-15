@@ -15,7 +15,7 @@ import { MoveRabbitInput } from './inputs/move-rabbit.input.js';
 import { UpdateRabbitInput } from './inputs/update-rabbit.input.js';
 import { RabbitsPaginationInput } from './inputs/rabbits-pagination.input.js';
 import { normalizeMovementReason } from '../common/constants/movement-reasons.js';
-import { rabbitDeletionBlockers } from '../common/utils/rabbit-history.js';
+import { purgeRabbitRecords, rabbitDeletionBlockers } from '../common/utils/rabbit-history.js';
 
 type RabbitWithRelations = {
   photos?: unknown[] | null;
@@ -1177,6 +1177,24 @@ export class RabbitsService {
    * Suppression définitive d'un lapin saisi par erreur.
    * Refusée dès qu'il a un historique : on enregistre alors une sortie.
    */
+  /**
+   * Ce qui sera effacé avec le lapin (affiché avant de confirmer).
+   */
+  async deletionImpact(id: string, currentUser: CurrentUserType) {
+    const rabbit = await this.prisma.rabbit.findFirst({
+      where: { id, farmId: currentUser.farmId },
+      select: { id: true },
+    });
+    if (!rabbit) {
+      throw new NotFoundException('Lapin introuvable.');
+    }
+    return rabbitDeletionBlockers(this.prisma, [rabbit.id]);
+  }
+
+  /**
+   * Suppression définitive : tout ce qui est lié au lapin est effacé
+   * avec lui (voir purgeRabbitRecords).
+   */
   async remove(id: string, currentUser: CurrentUserType) {
     const rabbit = await this.prisma.rabbit.findFirst({
       where: { id, farmId: currentUser.farmId },
@@ -1185,14 +1203,8 @@ export class RabbitsService {
     if (!rabbit) {
       throw new NotFoundException('Lapin introuvable.');
     }
-    const blockers = await rabbitDeletionBlockers(this.prisma, [rabbit.id]);
-    if (blockers.length) {
-      throw new ConflictException(
-        `${rabbit.code} a déjà ${blockers.join(', ')} : il ne peut pas être supprimé. Enregistre plutôt une sortie (décès, réforme, transfert).`,
-      );
-    }
     await this.prisma.$transaction(async (tx) => {
-      await tx.task.deleteMany({ where: { rabbitId: rabbit.id } });
+      await purgeRabbitRecords(tx, currentUser.farmId, [rabbit.id]);
       await tx.rabbit.delete({ where: { id: rabbit.id } });
       if (rabbit.birthLitterId && rabbit.status === 'ACTIVE') {
         const litter = await tx.litter.findUnique({ where: { id: rabbit.birthLitterId } });

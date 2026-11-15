@@ -130,6 +130,29 @@ export function MobileNavigation() {
     };
   }, []);
 
+  /*
+   * Sur iPhone, une barre fixée en bas remonte au milieu de l'écran
+   * quand le clavier s'ouvre : on la cache pendant la saisie.
+   */
+  const [typing, setTyping] = useState(false);
+  useEffect(() => {
+    const isField = (target: EventTarget | null) =>
+      target instanceof HTMLElement &&
+      (target.isContentEditable ||
+        target.tagName === 'TEXTAREA' ||
+        target.tagName === 'SELECT' ||
+        (target.tagName === 'INPUT' &&
+          !['checkbox', 'radio', 'button', 'submit', 'file', 'range', 'color'].includes((target as HTMLInputElement).type)));
+    const onFocusIn = (event: FocusEvent) => setTyping(isField(event.target));
+    const onFocusOut = () => setTyping(false);
+    document.addEventListener('focusin', onFocusIn);
+    document.addEventListener('focusout', onFocusOut);
+    return () => {
+      document.removeEventListener('focusin', onFocusIn);
+      document.removeEventListener('focusout', onFocusOut);
+    };
+  }, []);
+
   function toggleActions() {
     setActionsOpen((current) => !current);
     setMenuOpen(false);
@@ -156,15 +179,16 @@ export function MobileNavigation() {
   return (
     <nav
       ref={navigationRef}
-      className="
+      className={`
         fixed inset-x-0 bottom-0 z-50
+        ${typing ? 'hidden' : ''}
         border-t border-slate-200
         bg-white/95
         px-2
         pb-[env(safe-area-inset-bottom)]
         backdrop-blur
         lg:hidden
-      "
+      `}
     >
       {/* ========================================================= */}
       {/* MENU ACTIONS RAPIDES                                      */}

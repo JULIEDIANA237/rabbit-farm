@@ -30,6 +30,8 @@ import { RabbitIdentificationModel } from './models/rabbit-identification.model.
 
 import { RabbitsService } from './rabbits.service.js';
 import { TraceabilityService } from './traceability.service.js';
+import { RabbitHistoryService } from './rabbit-history.service.js';
+import { UpdateRabbitHistoryInput } from './inputs/update-rabbit-history.input.js';
 import { RabbitTraceabilityModel } from './models/traceability.model.js';
 import { RabbitsPaginationInput } from './inputs/rabbits-pagination.input.js';
 import { RabbitPageModel } from './models/paginated-rabbits.model.js';
@@ -44,7 +46,32 @@ export class RabbitsResolver {
   constructor(
     private readonly rabbitsService: RabbitsService,
     private readonly traceability: TraceabilityService,
+    private readonly history: RabbitHistoryService,
   ) {}
+
+  @Mutation(() => Boolean, {
+    description: 'Corrige la date ou l’observation d’un événement de l’historique (cage, lot, sortie)',
+  })
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  updateRabbitHistoryEvent(
+    @Args('input') input: UpdateRabbitHistoryInput,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.history.update(input, currentUser);
+  }
+
+  @Mutation(() => Boolean, {
+    description: 'Supprime un événement de l’historique saisi par erreur (cage, lot, sevrage, adoption)',
+  })
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
+  deleteRabbitHistoryEvent(
+    @Args('rabbitId', { type: () => ID }) rabbitId: string,
+    @Args('type') type: string,
+    @Args('recordId', { type: () => ID }) recordId: string,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.history.remove(rabbitId, type, recordId, currentUser);
+  }
 
   /**
    * Traçabilité complète d'un lapin (§54).
@@ -236,8 +263,18 @@ async rabbitsPaginated(
 }
   
 
+  @Query(() => [String], {
+    description: 'Types d’historique effacés si on supprime ce lapin',
+  })
+  rabbitDeletionImpact(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.rabbitsService.deletionImpact(id, currentUser);
+  }
+
   @Mutation(() => Boolean, {
-    description: 'Supprime un lapin saisi par erreur (sans historique).',
+    description: 'Supprime définitivement un lapin et tout ce qui lui est lié.',
   })
   @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
   deleteRabbit(

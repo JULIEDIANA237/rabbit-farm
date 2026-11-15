@@ -1250,8 +1250,13 @@ type Mutation {
   deletePayment(id: ID!): Boolean!
   deletePregnancyCheck(id: ID!): Boolean!
 
-  """Supprime un lapin saisi par erreur (sans historique)."""
+  """Supprime définitivement un lapin et tout ce qui lui est lié."""
   deleteRabbit(id: ID!): Boolean!
+
+  """
+  Supprime un événement de l’historique saisi par erreur (cage, lot, sevrage, adoption)
+  """
+  deleteRabbitHistoryEvent(rabbitId: ID!, recordId: ID!, type: String!): Boolean!
   deleteSale(id: ID!): Boolean!
   deleteSection(id: ID!): SectionModel!
   deleteStockMovement(id: ID!): Boolean!
@@ -1312,6 +1317,11 @@ type Mutation {
   updateHealthRecord(input: UpdateHealthRecordInput!): HealthRecordModel!
   updateInventoryItem(input: UpdateInventoryItemInput!): InventoryItemModel!
   updateRabbit(input: UpdateRabbitInput!): RabbitModel!
+
+  """
+  Corrige la date ou l’observation d’un événement de l’historique (cage, lot, sortie)
+  """
+  updateRabbitHistoryEvent(input: UpdateRabbitHistoryInput!): Boolean!
   updateSale(input: UpdateSaleInput!): SaleModel!
   updateSaleCriteria(minAgeDays: Int!, minWeightKg: Float!): SaleCriteriaModel!
   updateSection(input: UpdateSectionInput!): SectionModel!
@@ -1459,6 +1469,9 @@ type Query {
   pushConfig: PushConfigModel!
   rabbit(id: ID!): RabbitModel!
   rabbitCageMovements(rabbitId: ID!): [RabbitCageMovementModel!]!
+
+  """Types d’historique effacés si on supprime ce lapin"""
+  rabbitDeletionImpact(id: ID!): [String!]!
   rabbitDescendants(generations: Int! = 3, rabbitId: ID!): [DescendantModel!]!
   rabbitIdentifications(rabbitId: ID!): [RabbitIdentificationModel!]!
   rabbitPedigree(generations: Int! = 3, rabbitId: ID!): PedigreeNodeModel!
@@ -1975,6 +1988,12 @@ type TechnicalStatisticsModel {
 type TraceEventModel {
   date: DateTime!
   detail: String
+
+  """Observation ou cause modifiable"""
+  note: String
+
+  """Ligne d’historique modifiable ou supprimable"""
+  recordId: ID
   referenceId: ID
   title: String!
 
@@ -1982,6 +2001,7 @@ type TraceEventModel {
   BIRTH, CAGE, LOT, WEANING, ADOPTION, WEIGHING, HEALTH, BREEDING, SALE, EXIT
   """
   type: String!
+  weightKg: Float
 }
 
 type TrackingSheetModel {
@@ -2133,6 +2153,20 @@ input UpdateInventoryItemInput {
 input UpdateMemberRoleInput {
   membershipId: ID!
   role: FarmRole!
+}
+
+input UpdateRabbitHistoryInput {
+  date: DateTime!
+
+  """Observation (cage) ou cause (sortie)"""
+  note: String
+  rabbitId: ID!
+
+  """recordId de l’événement"""
+  recordId: ID!
+
+  """CAGE, LOT ou EXIT"""
+  type: String!
 }
 
 input UpdateRabbitInput {
