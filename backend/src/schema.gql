@@ -811,6 +811,11 @@ type FarmModel {
   updatedAt: DateTime!
 }
 
+type FarmResetCountModel {
+  count: Int!
+  label: String!
+}
+
 enum FarmRole {
   ADMIN
   BREEDING_MANAGER
@@ -1295,6 +1300,7 @@ type Mutation {
 
   """Envoie un lien de réinitialisation du mot de passe par e-mail."""
   requestPasswordReset(input: RequestPasswordResetInput!): Boolean!
+  resetFarmData(confirmation: String!): [FarmResetCountModel!]!
 
   """Choisit un nouveau mot de passe à partir du lien reçu."""
   resetPassword(input: ResetPasswordInput!): Boolean!
@@ -1447,6 +1453,7 @@ type Query {
   expenses: [ExpenseModel!]!
   farm(id: ID!): FarmModel
   farmMembers: [FarmMembershipModel!]!
+  farmResetPreview: [FarmResetCountModel!]!
   farmStatistics(from: DateTime, to: DateTime): FarmStatisticsModel!
   farms: [FarmModel!]!
   fatteningLot(id: ID!): FatteningLotModel!

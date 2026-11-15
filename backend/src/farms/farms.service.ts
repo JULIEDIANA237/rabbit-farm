@@ -6,6 +6,7 @@ import { CreateFarmInput } from './dto/create-farm.input.js';
 import { UpdateFarmInput } from './dto/update-farm.input.js';
 
 import { CurrentUserType } from '../auth/types/current-user.type.js';
+import { farmResetCounts, resetFarmRecords } from './farm-reset.js';
 
 @Injectable()
 export class FarmsService {
@@ -118,5 +119,25 @@ export class FarmsService {
       role: membership.role,
       farm: membership.farm,
     };
+  }
+
+  /** Ce que le bouton « Réinitialiser » effacerait, avec les nombres. */
+  async resetPreview(user: CurrentUserType) {
+    return farmResetCounts(this.prisma, user.farmId);
+  }
+
+  /**
+   * Remet l'élevage à zéro : tout est effacé sauf les lapins adultes,
+   * les tâches, le stock et les dépenses (voir resetFarmRecords).
+   * Il faut taper « RÉINITIALISER » pour confirmer.
+   */
+  async reset(confirmation: string, user: CurrentUserType) {
+    const typed = confirmation.normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toUpperCase();
+    if (typed !== 'REINITIALISER') {
+      throw new BadRequestException('Tape RÉINITIALISER pour confirmer.');
+    }
+    const counts = await farmResetCounts(this.prisma, user.farmId);
+    await this.prisma.$transaction((tx) => resetFarmRecords(tx, user.farmId), { timeout: 60_000 });
+    return counts;
   }
 }
