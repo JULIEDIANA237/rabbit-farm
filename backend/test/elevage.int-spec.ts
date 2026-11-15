@@ -135,6 +135,46 @@ describe('Élevage au quotidien (intégration)', () => {
     expect(await prisma.task.count({ where: { sourceId: care.id } })).toBe(0);
   });
 
+  it('sevrage resté sans lot : le lot s’affiche après « Mettre en engraissement »', async () => {
+    const make = async (code: string, sex: string) =>
+      (
+        await run(`mutation ($input: CreateRabbitInput!) { createRabbit(input: $input) { id } }`, {
+          input: { code, sex, purpose: 'BREEDER', birthDate: daysAgo(400) },
+        })
+      ).createRabbit.id as string;
+    const female = await make('F-ANCIEN', 'FEMALE');
+    const male = await make('M-ANCIEN', 'MALE');
+    const { createBreeding } = await run(`mutation ($input: CreateBreedingInput!) { createBreeding(input: $input) { id } }`, {
+      input: { femaleId: female, maleId: male, breedingDate: daysAgo(70) },
+    });
+    await run(`mutation ($input: CreatePregnancyCheckInput!) { createPregnancyCheck(input: $input) { id } }`, {
+      input: { breedingId: createBreeding.id, checkedDate: daysAgo(58), result: 'PREGNANT' },
+    });
+    const { createBirth } = await run(`mutation ($input: CreateBirthInput!) { createBirth(input: $input) { litterId litterCode } }`, {
+      input: { breedingId: createBreeding.id, birthDate: daysAgo(38), liveBorn: 4, stillBorn: 0 },
+    });
+    // Sevrage réalisé sans engraissement, comme avant la correction.
+    const { createWeaning } = await run(
+      `mutation ($input: CreateWeaningInput!) { createWeaning(input: $input) { id fatteningLotCode } }`,
+      { input: { litterId: createBirth.litterId, plannedDate: daysAgo(3), actualDate: daysAgo(3), quantity: 4, averageWeight: 0.75 } },
+    );
+    expect(createWeaning.fatteningLotCode).toBeNull();
+
+    const { sendWeaningToFattening } = await run(
+      `mutation ($id: ID!) { sendWeaningToFattening(weaningId: $id) { fatteningLotCode } }`,
+      { id: createWeaning.id },
+    );
+    expect(sendWeaningToFattening.fatteningLotCode).toBe(`LOT-${createBirth.litterCode}`);
+    const { weanings } = await run(`{ weanings { id fatteningLotCode } }`);
+    expect(weanings.find((w: { id: string }) => w.id === createWeaning.id).fatteningLotCode).toBe(`LOT-${createBirth.litterCode}`);
+    const lot = await prisma.fatteningLot.findFirstOrThrow({
+      where: { code: `LOT-${createBirth.litterCode}` },
+      include: { memberships: true, weighings: true },
+    });
+    expect(lot.memberships).toHaveLength(4);
+    expect(lot.weighings[0]).toMatchObject({ animalCount: 4, averageWeight: 0.75 });
+  });
+
   async function gqlOkFails(query: string) {
     try {
       await run(query);

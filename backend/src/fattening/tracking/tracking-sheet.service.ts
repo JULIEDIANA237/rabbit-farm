@@ -81,7 +81,7 @@ export class TrackingSheetService {
       for (const a of litter.destinationAdoptions) events.push({ date: a.adoptedAt, label: `${a.quantity} lapereau(x) adopté(s)` });
       for (const m of litter.mortalities) events.push({ date: m.date, label: `${m.count} mort(s)${m.cause ? ` : ${m.cause}` : ''}` });
       for (const w of litter.weanings) {
-        const avg = w.averageWeight != null ? `, ${String(Number(w.averageWeight)).replace(".", ",")} kg en moyenne` : '';
+        const avg = w.averageWeight != null ? `, ${Math.round(Number(w.averageWeight) * 1000)} g en moyenne` : '';
         events.push({ date: w.actualDate!, label: `Sevrage de ${w.quantity} lapereau(x)${avg}` });
       }
 
