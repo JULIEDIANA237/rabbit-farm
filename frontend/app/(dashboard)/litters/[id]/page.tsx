@@ -348,7 +348,7 @@ function LitterActionModal({
             actualDate: date,
             quantity: hasKits ? selected.length : toInt(values.quantity) ?? litterCount,
             rabbitIds: hasKits ? selected : undefined,
-            averageWeight: toFloat(values.averageWeight),
+            averageWeight: values.averageWeight ? (toFloat(values.averageWeight) ?? 0) / 1000 : undefined,
             totalWeight: toFloat(values.totalWeight),
             fatteningLotId: values.fatteningLotId === '__new__' ? undefined : values.fatteningLotId,
             createFatteningLot: values.fatteningLotId === '__new__' ? true : undefined,
@@ -425,8 +425,8 @@ function LitterActionModal({
                 <Input type="number" min={1} placeholder={String(litterCount)} {...bind('quantity')} />
               </Field>
             )}
-            <Field label="Poids moyen d’un lapereau (kg)" hint="Poids d’UN lapereau. Saisis l’un ou l’autre, l’app calcule le second.">
-              <Input inputMode="decimal" placeholder="ex. 0,8" {...bind('averageWeight')} />
+            <Field label="Poids moyen d’un lapereau (g)" hint="Poids d’UN lapereau, en grammes (ex. 800). Saisis l’un ou l’autre, l’app calcule le second.">
+              <Input inputMode="decimal" placeholder="ex. 800" {...bind('averageWeight')} />
             </Field>
             <Field label="Poids total des lapereaux sevrés (kg)" hint="Tous les lapereaux sevrés pesés ensemble.">
               <Input inputMode="decimal" {...bind('totalWeight')} />

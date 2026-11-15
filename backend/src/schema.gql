@@ -1285,6 +1285,9 @@ type Mutation {
   Envoie une notification d’essai ; renvoie le nombre d’appareils atteints.
   """
   sendTestPush: Int!
+
+  """Met en engraissement un sevrage réalisé resté sans lot"""
+  sendWeaningToFattening(fatteningLotId: ID, weaningId: ID!): WeaningModel!
   setFeedRations(input: SetFeedRationsInput!): FeedingItemPlanModel!
 
   """Marque (ou retire) des lapins comme prêts pour la vente"""

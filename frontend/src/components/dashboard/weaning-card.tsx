@@ -57,7 +57,7 @@ export function WeaningCard({ weanings }: Props) {
 
                 {weaning.averageWeight != null && (
                   <p className="text-xs text-slate-500">
-                    {weaning.averageWeight.toFixed(2)} kg
+                    {Math.round(weaning.averageWeight * 1000)} g
                   </p>
                 )}
               </div>

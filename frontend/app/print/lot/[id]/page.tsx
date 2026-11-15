@@ -183,7 +183,7 @@ function TrackingSheet({ lotId }: { lotId: string }) {
                     <Row k="Sevrage" v={l.weaningDate ? `${formatDate(l.weaningDate)} (${l.weaningAgeDays} j)` : null} />
                     <Row
                       k="Sevrés · poids moyen"
-                      v={`${l.weaned}${l.weaningAverageWeight != null ? ` · ${formatNumber(l.weaningAverageWeight, 3)} kg` : ''}`}
+                      v={`${l.weaned}${l.weaningAverageWeight != null ? ` · ${formatNumber(l.weaningAverageWeight * 1000, 0)} g par lapereau` : ''}`}
                     />
                   </div>
                 </div>

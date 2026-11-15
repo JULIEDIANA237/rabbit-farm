@@ -27,7 +27,6 @@ const weaningInclude = {
       rabbit: {
         select: {
           lotMemberships: {
-            where: { reason: 'Sevrage' },
             select: { lot: { select: { id: true, code: true } } },
             orderBy: { joinedAt: 'desc' as const },
             take: 1,
@@ -36,10 +35,26 @@ const weaningInclude = {
       },
     },
   },
-  litter: { select: { code: true } },
+  litter: {
+    select: {
+      code: true,
+      // Sevrages sans lapereaux rattachés (saisis avant la correction) :
+      // on retrouve le lot par les lapereaux de la portée.
+      rabbits: {
+        select: {
+          lotMemberships: {
+            select: { lot: { select: { id: true, code: true } } },
+            orderBy: { joinedAt: 'desc' as const },
+            take: 1,
+          },
+        },
+      },
+    },
+  },
 } as const;
 
-type WeaningRabbitWithLot = { rabbit?: { lotMemberships: Array<{ lot: { id: string; code: string } }> } };
+type LotRef = { lotMemberships: Array<{ lot: { id: string; code: string } }> };
+type WeaningRabbitWithLot = { rabbit?: LotRef };
 
 @Injectable()
 export class WeaningService {
@@ -50,14 +65,16 @@ export class WeaningService {
 
   private toModel<
     T extends {
-      litter?: { code: string } | null;
+      litter?: { code: string; rabbits?: LotRef[] } | null;
       totalWeight?: unknown;
       averageWeight?: unknown;
       rabbits?: Array<WeaningRabbitWithLot & object>;
     },
   >(weaning: T) {
     const { litter, ...rest } = weaning;
-    const lot = weaning.rabbits?.map((r) => r.rabbit?.lotMemberships[0]?.lot).find(Boolean);
+    const lot =
+      weaning.rabbits?.map((r) => r.rabbit?.lotMemberships[0]?.lot).find(Boolean) ??
+      litter?.rabbits?.map((r) => r.lotMemberships[0]?.lot).find(Boolean);
     return {
       ...rest,
       rabbits: (weaning.rabbits ?? []).map(({ rabbit: _rabbit, ...r }) => r),
@@ -101,6 +118,25 @@ export class WeaningService {
 
     await this.tasks.onWeaningCompleted(params.farmId, litter.birthId, tx);
 
+    await this.enterFattening(tx, { ...params, litter });
+  }
+
+  /** Place les lapereaux sevrés dans un lot (existant ou créé) et note la pesée d'entrée. */
+  private async enterFattening(
+    tx: Prisma.TransactionClient,
+    params: {
+      farmId: string;
+      litter: { code: string; birthDate: Date };
+      quantity: number;
+      date: Date;
+      rabbitIds: string[];
+      fatteningLotId?: string;
+      createFatteningLot?: boolean;
+      totalWeight?: number | null;
+      averageWeight?: number | null;
+    },
+  ) {
+    const { litter } = params;
     let lotId = params.fatteningLotId;
     if (!lotId && params.createFatteningLot) {
       lotId = (await this.createLotForLitter(tx, params.farmId, litter.code, params.date)).id;
@@ -370,6 +406,53 @@ export class WeaningService {
         averageWeight: input.averageWeight ?? (weaning.averageWeight != null ? Number(weaning.averageWeight) : null),
       });
       return this.toModel(await tx.weaning.findUniqueOrThrow({ where: { id: updated.id }, include: weaningInclude }));
+    });
+  }
+
+  /**
+   * Met en engraissement les lapereaux d'un sevrage déjà réalisé
+   * qui n'est relié à aucun lot (sevrages saisis avant la correction).
+   */
+  async sendToFattening(weaningId: string, fatteningLotId: string | undefined, currentUser: CurrentUserType) {
+    const weaning = await this.prisma.weaning.findFirst({
+      where: { id: weaningId, farmId: currentUser.farmId },
+      include: { rabbits: true, litter: true },
+    });
+    if (!weaning) throw new NotFoundException('Sevrage introuvable.');
+    if (!weaning.actualDate) {
+      throw new BadRequestException('Enregistre d’abord le sevrage comme réalisé.');
+    }
+    const linked = weaning.rabbits.map((r) => r.rabbitId);
+    const free = linked.length
+      ? (
+          await this.prisma.rabbit.findMany({
+            where: { id: { in: linked }, status: RabbitStatus.ACTIVE, lotMemberships: { none: { leftAt: null } } },
+            select: { id: true },
+          })
+        ).map((r) => r.id)
+      : await this.resolveWeanedRabbits(currentUser.farmId, weaning.litterId, [], weaning.quantity);
+    if (!free.length) {
+      throw new BadRequestException(
+        'Aucun lapereau de cette portée n’est disponible : ils sont déjà dans un lot, vendus ou morts.',
+      );
+    }
+    const date = weaning.actualDate;
+    return this.prisma.$transaction(async (tx) => {
+      if (!linked.length) {
+        await tx.weaningRabbit.createMany({ data: free.map((rabbitId) => ({ weaningId: weaning.id, rabbitId })) });
+      }
+      await this.enterFattening(tx, {
+        farmId: currentUser.farmId,
+        litter: weaning.litter,
+        quantity: free.length,
+        date,
+        rabbitIds: free,
+        fatteningLotId,
+        createFatteningLot: !fatteningLotId,
+        totalWeight: weaning.averageWeight == null && weaning.totalWeight != null ? Number(weaning.totalWeight) : null,
+        averageWeight: weaning.averageWeight != null ? Number(weaning.averageWeight) : null,
+      });
+      return this.toModel(await tx.weaning.findUniqueOrThrow({ where: { id: weaning.id }, include: weaningInclude }));
     });
   }
 

@@ -33,6 +33,16 @@ export class WeaningResolver {
     return this.weaningService.create(input, currentUser);
   }
 
+  @Mutation(() => WeaningModel, { description: 'Met en engraissement un sevrage réalisé resté sans lot' })
+  @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER, FarmRole.EMPLOYEE)
+  sendWeaningToFattening(
+    @Args('weaningId', { type: () => ID }) weaningId: string,
+    @Args('fatteningLotId', { type: () => ID, nullable: true }) fatteningLotId: string | undefined,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.weaningService.sendToFattening(weaningId, fatteningLotId, currentUser);
+  }
+
   @Mutation(() => WeaningModel)
   @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER, FarmRole.EMPLOYEE)
   completeWeaning(

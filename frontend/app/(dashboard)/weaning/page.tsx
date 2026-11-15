@@ -62,10 +62,21 @@ type WeaningResult = { id: string; fatteningLotId?: string | null; fatteningLotC
 
 const refetchQueries = ['Weanings', 'Dashboard', 'LitterOptions', 'FatteningLots', 'LotOptions', 'RabbitsPaginated'];
 
+const SEND_TO_FATTENING = gql`
+  mutation SendWeaningToFattening($weaningId: ID!) {
+    sendWeaningToFattening(weaningId: $weaningId) { id fatteningLotId fatteningLotCode }
+  }
+`;
+
 const NEW_LOT = '__new__';
-const AVG_LABEL = 'Poids moyen d’un lapereau (kg)';
+/** Le poids d'un lapereau se saisit en grammes ; l'API le stocke en kg. */
+const gramsToKg = (value: string) => {
+  const grams = toFloat(value);
+  return grams == null ? undefined : Math.round(grams) / 1000;
+};
+const AVG_LABEL = 'Poids moyen d’un lapereau (g)';
 const TOTAL_LABEL = 'Poids total des lapereaux sevrés (kg)';
-const AVG_HINT = 'Poids d’UN lapereau. Saisis l’un ou l’autre, l’app calcule le second.';
+const AVG_HINT = 'Poids d’UN lapereau, en grammes (ex. 800). Saisis l’un ou l’autre, l’app calcule le second.';
 const TOTAL_HINT = 'Tous les lapereaux sevrés pesés ensemble.';
 
 export default function WeaningPage() {
@@ -74,6 +85,10 @@ export default function WeaningPage() {
   const [completing, setCompleting] = useState<Weaning | null>(null);
   const [editing, setEditing] = useState<Weaning | null>(null);
   const [lastLot, setLastLot] = useState<{ id: string; code: string } | null>(null);
+  // Sevrages réalisés avant la correction : restés sans lot d'engraissement.
+  const [sendToFattening] = useMutation<{ sendWeaningToFattening: WeaningResult }>(SEND_TO_FATTENING, { refetchQueries });
+  const [sending, setSending] = useState<string | null>(null);
+  const [sendError, setSendError] = useState<Error | null>(null);
   const showLot = (r?: WeaningResult | null) => {
     if (r?.fatteningLotId && r.fatteningLotCode) {
       setLastLot({ id: r.fatteningLotId, code: r.fatteningLotCode });
@@ -122,6 +137,7 @@ export default function WeaningPage() {
         </div>
       )}
       <ErrorBox error={error} onRetry={() => refetch()} />
+      <ErrorBox error={sendError} />
       {loading && !data ? (
         <Loading />
       ) : (
@@ -136,7 +152,7 @@ export default function WeaningPage() {
             { header: 'Prévu le', cell: (w) => formatDate(w.plannedDate) },
             { header: 'Réalisé le', cell: (w) => (w.actualDate ? <Badge tone="green">{formatDate(w.actualDate)}</Badge> : '—') },
             { header: 'Quantité', cell: (w) => w.quantity },
-            { header: 'Poids moyen', cell: (w) => (w.averageWeight != null ? `${formatNumber(w.averageWeight, 3)} kg` : '—') },
+            { header: 'Poids moyen', cell: (w) => (w.averageWeight != null ? `${formatNumber(w.averageWeight * 1000, 0)} g` : '—') },
             {
               header: 'Lot',
               cell: (w) =>
@@ -147,6 +163,21 @@ export default function WeaningPage() {
                       <FileText size={16} />
                     </Link>
                   </span>
+                ) : w.actualDate ? (
+                  <Button
+                    variant="secondary"
+                    className="px-3 py-1 text-xs"
+                    loading={sending === w.id}
+                    onClick={() => {
+                      setSending(w.id);
+                      sendToFattening({ variables: { weaningId: w.id } })
+                        .then((res) => showLot(res.data?.sendWeaningToFattening))
+                        .catch((e: Error) => setSendError(e))
+                        .finally(() => setSending(null));
+                    }}
+                  >
+                    Mettre en engraissement
+                  </Button>
                 ) : (
                   '—'
                 ),
@@ -183,7 +214,7 @@ function EditWeaningModal({ weaning, onClose }: { weaning: Weaning; onClose: () 
   const { bind, values } = useForm({
     plannedDate: toDateInput(weaning.plannedDate),
     actualDate: weaning.actualDate ? toDateInput(weaning.actualDate) : '',
-    averageWeight: weaning.averageWeight != null ? String(weaning.averageWeight) : '',
+    averageWeight: weaning.averageWeight != null ? String(Math.round(weaning.averageWeight * 1000)) : '',
     totalWeight: weaning.totalWeight != null ? String(weaning.totalWeight) : '',
     observation: weaning.observation ?? '',
   });
@@ -206,7 +237,7 @@ function EditWeaningModal({ weaning, onClose }: { weaning: Weaning; onClose: () 
                       id: weaning.id,
                       plannedDate: fromDateInput(values.plannedDate),
                       actualDate: values.actualDate ? fromDateInput(values.actualDate) : undefined,
-                      averageWeight: toFloat(values.averageWeight),
+                      averageWeight: gramsToKg(values.averageWeight),
                       totalWeight: toFloat(values.totalWeight),
                     }),
                     observation: values.observation,
@@ -289,15 +320,15 @@ function WeaningModal({
     const avg = toFloat(values.averageWeight);
     const total = toFloat(values.totalWeight);
     if (!count) return null;
-    if (field === 'avg' && !avg && total) return `Calculé : ${formatNumber(total / count, 3)} kg par lapereau`;
-    if (field === 'total' && !total && avg) return `Calculé : ${formatNumber(avg * count, 2)} kg pour ${count} lapereaux`;
+    if (field === 'avg' && !avg && total) return `Calculé : ${formatNumber((total / count) * 1000, 0)} g par lapereau`;
+    if (field === 'total' && !total && avg) return `Calculé : ${formatNumber((avg / 1000) * count, 2)} kg pour ${count} lapereaux`;
     return null;
   };
 
   async function submit() {
     const common = {
       quantity: toInt(values.quantity),
-      averageWeight: toFloat(values.averageWeight),
+      averageWeight: gramsToKg(values.averageWeight),
       totalWeight: toFloat(values.totalWeight),
       fatteningLotId: values.fatteningLotId === NEW_LOT ? undefined : values.fatteningLotId,
       createFatteningLot: values.fatteningLotId === NEW_LOT ? true : undefined,
@@ -360,7 +391,7 @@ function WeaningModal({
         {done && (
           <>
             <Field label={AVG_LABEL} hint={weightHint('avg') ?? AVG_HINT}>
-              <Input inputMode="decimal" placeholder="ex. 0,8" {...bind('averageWeight')} />
+              <Input inputMode="decimal" placeholder="ex. 800" {...bind('averageWeight')} />
             </Field>
             <Field label={TOTAL_LABEL} hint={weightHint('total') ?? TOTAL_HINT}>
               <Input inputMode="decimal" {...bind('totalWeight')} />

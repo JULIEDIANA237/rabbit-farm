@@ -255,7 +255,7 @@ describe('Corrections et rations (intégration)', () => {
       'Saillie de F-SEVRAGE par M-SEVRAGE',
       'Palpation positive',
       'Mise bas : 6 vivant(s)',
-      'Sevrage de 5 lapereau(x), 0,8 kg en moyenne',
+      'Sevrage de 5 lapereau(x), 800 g en moyenne',
     ]);
   });
 });
