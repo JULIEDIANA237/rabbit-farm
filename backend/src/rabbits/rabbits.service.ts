@@ -23,6 +23,7 @@ type RabbitWithRelations = {
   cageMovements?: Array<{ cage: { id: string; code: string } }>;
   breed?: { name: string } | null;
   crossBreed?: { name: string } | null;
+  mother?: { code: string } | null;
   weight?: { toString(): string } | number | null;
   [key: string]: unknown;
 };
@@ -32,7 +33,7 @@ type RabbitWithRelations = {
  * (localisation actuelle, race lisible, poids numérique).
  */
 export function mapRabbit<T extends RabbitWithRelations>(rabbit: T) {
-  const { cageMovements, breed, crossBreed, ...rest } = rabbit;
+  const { cageMovements, breed, crossBreed, mother, ...rest } = rabbit;
   const currentCage = cageMovements?.[0]?.cage ?? null;
 
   return {
@@ -43,6 +44,7 @@ export function mapRabbit<T extends RabbitWithRelations>(rabbit: T) {
     currentCageId: currentCage?.id ?? null,
     currentCageCode: currentCage?.code ?? null,
     breedName: crossBreed?.name ?? breed?.name ?? null,
+    motherCode: mother?.code ?? null,
   };
 }
 
@@ -107,6 +109,7 @@ export class RabbitsService {
     photos: true,
     breed: { select: { name: true } },
     crossBreed: { select: { name: true } },
+    mother: { select: { code: true } },
     cageMovements: {
       where: { endedAt: null },
       include: { cage: { select: { id: true, code: true } } },
