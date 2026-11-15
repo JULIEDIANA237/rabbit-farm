@@ -71,4 +71,13 @@ export class ReproductionProfileModel {
 
   @Field(() => [String], { description: 'Points à vérifier avant la saillie' })
   warnings: string[];
+
+  @Field(() => Int, { nullable: true, description: 'Lapereaux perdus avant son arrivée' })
+  previousKitsLost?: number | null;
+
+  @Field(() => Int, { nullable: true, description: 'Cas de cannibalisme avant son arrivée' })
+  cannibalismCases?: number | null;
+
+  @Field(() => Int, { nullable: true, description: 'Femelles saillies avant son arrivée (mâle)' })
+  previousFemales?: number | null;
 }

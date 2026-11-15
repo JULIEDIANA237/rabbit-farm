@@ -10,6 +10,7 @@ export interface ProfileFacts {
   maternalBehavior: string | null;
   recentHealthCount: number;
   activeBreedingStatus: string | null;
+  cannibalismCases?: number | null;
 }
 
 /** Repères usuels en élevage de lapins de chair. */
@@ -47,6 +48,9 @@ export function profileWarnings(facts: ProfileFacts): string[] {
       warnings.push(`Mise bas il y a ${facts.daysSinceLastBirth} jour(s) : attends au moins ${g.minDaysAfterBirth} jours.`);
     }
     if (facts.maternalBehavior === 'POOR') warnings.push('Notée comme mauvaise mère.');
+    if (facts.cannibalismCases) {
+      warnings.push(`Cannibalisme déjà constaté (${facts.cannibalismCases} fois) : surveille le nid après la mise bas.`);
+    }
   } else if (facts.matingsLast7Days >= g.maxMatingsPerWeek) {
     warnings.push(`Déjà ${facts.matingsLast7Days} saillies cette semaine : laisse-le se reposer.`);
   }

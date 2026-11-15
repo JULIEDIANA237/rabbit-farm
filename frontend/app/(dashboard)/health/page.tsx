@@ -20,6 +20,7 @@ const RECORDS = gql`
       id
       rabbitId
       rabbitCode
+      isKit
       type
       date
       symptoms
@@ -35,6 +36,7 @@ const RECORDS = gql`
       id
       rabbitId
       rabbitCode
+      isKit
       type
       medication
       treatment
@@ -45,12 +47,18 @@ const RECORDS = gql`
 
 interface HealthRecord extends EditableHealthRecord {
   rabbitCode?: string | null;
+  isKit?: boolean | null;
 }
+
+type Zone = 'ADULT' | 'KIT';
 
 const TYPE_TONE = { OBSERVATION: 'slate', TREATMENT: 'amber', VACCINATION: 'blue', ANALYSIS: 'pink', CONTROL: 'green' } as const;
 
 export default function HealthPage() {
   const [type, setType] = useState<string>('ALL');
+  // Deux zones séparées : adultes et lapereaux, pour ne pas mélanger.
+  const [zone, setZone] = useState<Zone>('ADULT');
+  const inZone = (r: HealthRecord) => (zone === 'KIT' ? Boolean(r.isKit) : !r.isKit);
   const creating = useCreateModal();
   const [editing, setEditing] = useState<HealthRecord | null>(null);
   const remove = useDeleteAction(DELETE_HEALTH_RECORD, { refetchQueries: ['HealthRecords', 'Dashboard', 'RabbitHealth', 'Tasks'] });
@@ -60,6 +68,10 @@ export default function HealthPage() {
   }>(RECORDS, { variables: { type: type === 'ALL' ? undefined : type } });
 
   const now = useNow();
+  const all = data?.healthRecords ?? [];
+  const rows = all.filter(inZone);
+  const upcoming = (data?.upcomingHealthActions ?? []).filter(inZone);
+  const kitCount = all.filter((r) => r.isKit).length;
 
   return (
     <div className="space-y-6">
@@ -74,12 +86,21 @@ export default function HealthPage() {
         }
       />
 
-      <Card title="À faire (14 prochains jours)">
-        {(data?.upcomingHealthActions ?? []).length === 0 ? (
+      <Tabs
+        value={zone}
+        onChange={setZone}
+        tabs={[
+          { value: 'ADULT', label: `Adultes (${all.length - kitCount})` },
+          { value: 'KIT', label: `Lapereaux (${kitCount})` },
+        ]}
+      />
+
+      <Card title={`À faire (14 prochains jours) · ${zone === 'KIT' ? 'lapereaux' : 'adultes'}`}>
+        {upcoming.length === 0 ? (
           <p className="text-sm text-slate-500">Aucune échéance.</p>
         ) : (
           <ul className="grid gap-2 sm:grid-cols-2">
-            {data?.upcomingHealthActions.map((a) => {
+            {upcoming.map((a) => {
               const overdue = a.nextDueDate && new Date(a.nextDueDate).getTime() < now;
               return (
                 <li key={a.id} className={`flex justify-between rounded-xl p-3 text-sm ${overdue ? 'bg-red-50' : 'bg-slate-50'}`}>
@@ -102,11 +123,11 @@ export default function HealthPage() {
         <Loading />
       ) : (
         <Table
-          rows={data?.healthRecords ?? []}
-          empty="Aucun enregistrement"
+          rows={rows}
+          empty={zone === 'KIT' ? 'Aucun enregistrement pour les lapereaux' : 'Aucun enregistrement pour les adultes'}
           columns={[
             { header: 'Date', cell: (r) => formatDate(r.date) },
-            { header: 'Lapin', cell: (r) => <Link className="font-semibold text-emerald-700" href={`/rabbits/${r.rabbitId}`}>{r.rabbitCode}</Link> },
+            { header: zone === 'KIT' ? 'Lapereau' : 'Lapin', cell: (r) => <Link className="font-semibold text-emerald-700" href={`/rabbits/${r.rabbitId}`}>{r.rabbitCode}</Link> },
             { header: 'Type', cell: (r) => <Badge tone={TYPE_TONE[r.type as keyof typeof TYPE_TONE]}>{label(HEALTH_TYPE, r.type)}</Badge> },
             { header: 'Symptômes / diagnostic', cell: (r) => [r.symptoms, r.diagnosis].filter(Boolean).join(' · ') || '—' },
             { header: 'Traitement', cell: (r) => [r.treatment, r.medication, r.dosage].filter(Boolean).join(' · ') || '—' },

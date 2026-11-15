@@ -485,6 +485,11 @@ model Rabbit {
   maternalBehavior String?
   previousMatings  Int?
   healthHistory    String?
+  /// Lapereaux perdus et cas de cannibalisme avant l'enregistrement (femelle).
+  previousKitsLost Int?
+  cannibalismCases Int?
+  /// Femelles différentes déjà saillies avant l'enregistrement (mâle).
+  previousFemales  Int?
 
   /// Choisi à la main par l'éleveur pour la vente.
   readyForSale   Boolean   @default(false)

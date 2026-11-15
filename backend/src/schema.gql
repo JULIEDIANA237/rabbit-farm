@@ -413,7 +413,8 @@ input CreateFarmInput {
 }
 
 input CreateFatteningLotInput {
-  code: String!
+  """Laissé vide : LOT-01, LOT-02… généré"""
+  code: String
   entryDate: DateTime!
   observation: String
 }
@@ -486,6 +487,9 @@ input CreatePregnancyCheckInput {
 input CreateRabbitInput {
   birthDate: DateTime
   breedId: ID
+
+  """Cas de cannibalisme avant son arrivée (femelle)"""
+  cannibalismCases: Int
   code: String!
   color: String
   crossBreedId: ID
@@ -505,8 +509,14 @@ input CreateRabbitInput {
   """Provenance : née ici, achetée…"""
   origin: String
 
+  """Femelles déjà saillies avant son arrivée (mâle)"""
+  previousFemales: Int
+
   """Lapereaux nés vivants avant son arrivée"""
   previousKitsBorn: Int
+
+  """Lapereaux perdus avant son arrivée (femelle)"""
+  previousKitsLost: Int
 
   """Mises bas faites avant son arrivée"""
   previousLitters: Int
@@ -954,6 +964,9 @@ type HealthRecordModel {
   dosage: String
   farmId: ID!
   id: ID!
+
+  """Lapereau (né à la ferme, en engraissement) ou adulte"""
+  isKit: Boolean
   medication: String
   nextDueDate: DateTime
   observation: String
@@ -1539,6 +1552,9 @@ type RabbitModel {
   birthLitterId: ID
   breedId: String
   breedName: String
+
+  """Cas de cannibalisme avant son arrivée (femelle)"""
+  cannibalismCases: Int
   code: String!
   color: String
   createdAt: DateTime!
@@ -1572,8 +1588,14 @@ type RabbitModel {
   originalCode: String
   photos: [RabbitPhotoModel!]!
 
+  """Femelles déjà saillies avant son arrivée (mâle)"""
+  previousFemales: Int
+
   """Lapereaux nés vivants avant son arrivée"""
   previousKitsBorn: Int
+
+  """Lapereaux perdus avant son arrivée (femelle)"""
+  previousKitsLost: Int
 
   """Mises bas faites avant son arrivée"""
   previousLitters: Int
@@ -1712,6 +1734,9 @@ type ReproductionProfileModel {
   activeBreedingStatus: String
   ageDays: Int
   averageLiveBorn: Float
+
+  """Cas de cannibalisme avant son arrivée"""
+  cannibalismCases: Int
   code: String!
   daysSinceLastBirth: Int
   healthHistory: String
@@ -1724,6 +1749,12 @@ type ReproductionProfileModel {
 
   """Lapereaux encore sous la mère"""
   nursingKits: Int!
+
+  """Femelles saillies avant son arrivée (mâle)"""
+  previousFemales: Int
+
+  """Lapereaux perdus avant son arrivée"""
+  previousKitsLost: Int
   recentHealth: [ProfileHealthNote!]!
   sex: String!
 
@@ -2112,6 +2143,7 @@ input UpdateFarmInput {
 }
 
 input UpdateFatteningLotInput {
+  """Laissé vide : LOT-01, LOT-02… généré"""
   code: String
   entryDate: DateTime
   id: ID!
@@ -2172,6 +2204,9 @@ input UpdateRabbitHistoryInput {
 input UpdateRabbitInput {
   birthDate: DateTime
   breedId: ID
+
+  """Cas de cannibalisme avant son arrivée (femelle)"""
+  cannibalismCases: Int
   code: String
   color: String
   crossBreedId: ID
@@ -2192,8 +2227,14 @@ input UpdateRabbitInput {
   """Provenance : née ici, achetée…"""
   origin: String
 
+  """Femelles déjà saillies avant son arrivée (mâle)"""
+  previousFemales: Int
+
   """Lapereaux nés vivants avant son arrivée"""
   previousKitsBorn: Int
+
+  """Lapereaux perdus avant son arrivée (femelle)"""
+  previousKitsLost: Int
 
   """Mises bas faites avant son arrivée"""
   previousLitters: Int

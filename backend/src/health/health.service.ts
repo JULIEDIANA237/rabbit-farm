@@ -11,9 +11,12 @@ import { TaskAutomationService } from '../operations/automation/task-automation.
 import { HealthRecordType, TaskSourceType } from '../generated/prisma/client.js';
 import { UpdateHealthRecordInput } from './inputs/update-health-record.input.js';
 
-const recordInclude = { rabbit: { select: { code: true } } } as const;
+const recordInclude = { rabbit: { select: { code: true, birthLitterId: true, purpose: true } } } as const;
 
-type RecordWithRabbit = { rabbit?: { code: string } | null; [key: string]: unknown };
+type RecordWithRabbit = {
+  rabbit?: { code: string; birthLitterId?: string | null; purpose?: string } | null;
+  [key: string]: unknown;
+};
 
 /**
  * Module santé (§38-40). Distingue symptôme observé, suspicion
@@ -28,7 +31,12 @@ export class HealthService {
 
   private toModel<T extends RecordWithRabbit>(record: T) {
     const { rabbit, ...rest } = record;
-    return { ...rest, rabbitCode: rabbit?.code ?? null };
+    return {
+      ...rest,
+      rabbitCode: rabbit?.code ?? null,
+      // Même règle que la liste « Lapereaux » : né à la ferme et en engraissement.
+      isKit: Boolean(rabbit?.birthLitterId) && rabbit?.purpose === 'FATTENING',
+    };
   }
 
   async create(input: CreateHealthRecordInput, currentUser: CurrentUserType) {

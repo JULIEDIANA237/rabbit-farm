@@ -7,7 +7,8 @@ import Link from 'next/link';
 import { Plus, Users } from 'lucide-react';
 
 import { Badge, Button, Card, ErrorBox, Field, FormGrid, Input, Loading, Modal, PageHeader, Select } from '@/components/ui/kit';
-import { toInt, useForm } from '@/hooks/use-form';
+import { toInt, useForm, useUrlCommand } from '@/hooks/use-form';
+import { useRouter } from 'next/navigation';
 import { clean, cleanEdit, fromDateInput, toDateInput } from '@/lib/format';
 import { RowActions, useDeleteAction } from '@/components/ui/row-actions';
 import { CAGE_STATUS, SEX, SECTION_TYPE, label, options } from '@/lib/labels';
@@ -68,8 +69,38 @@ const BLOC_COLORS = [
   { top: 'border-t-indigo-500', dot: 'bg-indigo-500', card: 'border-indigo-200 border-l-indigo-500 bg-indigo-50', text: 'text-indigo-800' },
 ];
 
+const LOT_TO_HOUSE = gql`
+  query LotToHouse($id: ID!) { fatteningLot(id: $id) { id code activeMemberCount currentCageCode } }
+`;
+const HOUSE_LOT = gql`
+  mutation HouseLot($input: MoveFatteningLotInput!) { moveFatteningLot(input: $input) { id } }
+`;
+
 export default function FarmPage() {
   const { data, loading, error, refetch } = useQuery<{ sections: Section[]; cages: Cage[] }>(FARM);
+  // Arrivée depuis un lot d'engraissement (?lot=…) : choisir la cage où le loger.
+  const router = useRouter();
+  const [lotId, setLotId] = useState<string | null>(null);
+  useUrlCommand((params) => {
+    const id = params.get('lot');
+    if (id) setLotId(id);
+    return false;
+  });
+  const lotQuery = useQuery<{ fatteningLot: { id: string; code: string; activeMemberCount: number; currentCageCode?: string | null } }>(
+    LOT_TO_HOUSE,
+    { variables: { id: lotId ?? '' }, skip: !lotId },
+  );
+  const lotToHouse = lotId ? lotQuery.data?.fatteningLot : undefined;
+  const [houseLot, houseState] = useMutation(HOUSE_LOT, { refetchQueries: [...refetchQueries, 'FatteningLot', 'FatteningLots'] });
+  const [housing, setHousing] = useState<string | null>(null);
+  const house = (cage: Cage) => {
+    if (!lotToHouse) return;
+    setHousing(cage.id);
+    houseLot({ variables: { input: { lotId: lotToHouse.id, cageId: cage.id, reason: 'FATTENING' } } })
+      .then(() => router.push(`/fattening/${lotToHouse.id}`))
+      .catch(() => undefined)
+      .finally(() => setHousing(null));
+  };
   const [modal, setModal] = useState<'section' | { sectionId: string } | null>(null);
   const [editingSection, setEditingSection] = useState<Section | null>(null);
   const [editingCage, setEditingCage] = useState<Cage | null>(null);
@@ -96,6 +127,16 @@ export default function FarmPage() {
         }
       />
       <ErrorBox error={error} onRetry={() => refetch()} />
+      {lotToHouse && (
+        <div className="rounded-2xl border border-emerald-300 bg-emerald-50 p-4 text-sm text-emerald-900">
+          <p>
+            <strong>Loger le lot {lotToHouse.code}</strong> ({lotToHouse.activeMemberCount} lapereau(x)) : touche « Loger ici » sur une
+            cage d’engraissement. Pas encore de cage ? Ajoute-la avec « + Cage » dans ton bloc Engraissement
+            {(data?.sections ?? []).some((s) => s.type === 'FATTENING') ? '' : ' (crée d’abord le bloc avec « Nouveau bloc »)'}.
+          </p>
+          <ErrorBox error={houseState.error} />
+        </div>
+      )}
       {(data?.sections ?? []).map((section, index) => {
         const color = BLOC_COLORS[index % BLOC_COLORS.length];
         return (
@@ -175,6 +216,21 @@ export default function FarmPage() {
                         />
                       </div>
                       {c.type && <p className="mt-1 text-xs text-slate-500">{c.type}</p>}
+                      {lotToHouse && !inactive && (
+                        <Button
+                          className="mt-2 w-full px-2 py-1 text-xs"
+                          loading={housing === c.id}
+                          disabled={c.capacity - c.rabbitCount < lotToHouse.activeMemberCount}
+                          title={
+                            c.capacity - c.rabbitCount < lotToHouse.activeMemberCount
+                              ? `Pas assez de place (${c.capacity - c.rabbitCount} libre(s))`
+                              : undefined
+                          }
+                          onClick={() => house(c)}
+                        >
+                          Loger ici
+                        </Button>
+                      )}
                       <button
                         type="button"
                         onClick={() => setOccupants(c)}

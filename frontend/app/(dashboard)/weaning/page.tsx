@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useRef, useState } from 'react';
 import { gql } from '@apollo/client';
 import { useMutation, useQuery } from '@apollo/client/react';
 import { FileText, Plus } from 'lucide-react';
@@ -68,6 +69,10 @@ const SEND_TO_FATTENING = gql`
   }
 `;
 
+const LITTER_DEATHS = gql`
+  mutation WeaningLitterDeaths($input: RecordLitterMortalityInput!) { recordLitterMortality(input: $input) { id } }
+`;
+
 const NEW_LOT = '__new__';
 /** Le poids d'un lapereau se saisit en grammes ; l'API le stocke en kg. */
 const gramsToKg = (value: string) => {
@@ -89,11 +94,17 @@ export default function WeaningPage() {
   const [sendToFattening] = useMutation<{ sendWeaningToFattening: WeaningResult }>(SEND_TO_FATTENING, { refetchQueries });
   const [sending, setSending] = useState<string | null>(null);
   const [sendError, setSendError] = useState<Error | null>(null);
+  const router = useRouter();
   const showLot = (r?: WeaningResult | null) => {
     if (r?.fatteningLotId && r.fatteningLotCode) {
       setLastLot({ id: r.fatteningLotId, code: r.fatteningLotCode });
       setTab('done');
     }
+  };
+  /** Sevrage réalisé : direction le lot d'engraissement, puis les cages. */
+  const goToLot = (r?: WeaningResult | null) => {
+    if (r?.fatteningLotId) router.push(`/fattening/${r.fatteningLotId}?weaned=1`);
+    else showLot(r);
   };
   const remove = useDeleteAction(DELETE, { refetchQueries: [...refetchQueries, 'Litters', 'Tasks', 'HeaderTasks'] });
   useOpenFromQuery(() => setCreating(true));
@@ -202,8 +213,8 @@ export default function WeaningPage() {
           ]}
         />
       )}
-      <WeaningModal open={creating} onClose={() => setCreating(false)} onSaved={showLot} />
-      {completing && <WeaningModal open weaning={completing} onClose={() => setCompleting(null)} onSaved={showLot} />}
+      <WeaningModal open={creating} onClose={() => setCreating(false)} onSaved={goToLot} />
+      {completing && <WeaningModal open weaning={completing} onClose={() => setCompleting(null)} onSaved={goToLot} />}
       {editing && <EditWeaningModal key={editing.id} weaning={editing} onClose={() => setEditing(null)} />}
       {remove.dialog}
     </div>
@@ -300,21 +311,30 @@ function WeaningModal({
     totalWeight: '',
     fatteningLotId: NEW_LOT,
     observation: '',
+    deaths: '',
+    deathCount: '',
+    deathCause: '',
   });
   const [create, c] = useMutation<{ createWeaning: WeaningResult }>(CREATE, { refetchQueries });
+  const [recordDeaths, d] = useMutation(LITTER_DEATHS, { refetchQueries: ['LitterOptions', 'Litters', 'RabbitsPaginated'] });
   const [complete, k] = useMutation<{ completeWeaning: WeaningResult }>(COMPLETE, { refetchQueries });
   const mutation = weaning ? k : c;
+  const deathCount = values.deaths === 'yes' ? toInt(values.deathCount) ?? 0 : 0;
+  const deathsSaved = useRef(false);
 
   const close = () => {
     reset();
     c.reset();
     k.reset();
+    d.reset();
+    deathsSaved.current = false;
     onClose();
   };
 
   const selectedLitter = litters.litters.find((l) => l.id === values.litterId);
   const done = weaning || values.done === 'yes';
-  const count = toInt(values.quantity) ?? (weaning ? weaning.quantity : selectedLitter?.currentCount) ?? 0;
+  const litterCount = weaning ? weaning.quantity : selectedLitter?.currentCount;
+  const count = toInt(values.quantity) ?? (litterCount != null ? Math.max(0, litterCount - deathCount) : 0);
   /** Affiche le poids calculé à partir de l'autre champ. */
   const weightHint = (field: 'avg' | 'total') => {
     const avg = toFloat(values.averageWeight);
@@ -326,8 +346,19 @@ function WeaningModal({
   };
 
   async function submit() {
+    // Morts depuis la naissance : enregistrés sur la portée avant le sevrage.
+    const litterId = weaning?.litterId ?? values.litterId;
+    if (done && deathCount > 0 && litterId && !deathsSaved.current) {
+      await recordDeaths({
+        variables: {
+          input: clean({ litterId, date: fromDateInput(values.actualDate), count: deathCount, cause: values.deathCause }),
+        },
+      });
+      // Pas de double enregistrement si le sevrage échoue et qu'on réessaie.
+      deathsSaved.current = true;
+    }
     const common = {
-      quantity: toInt(values.quantity),
+      quantity: toInt(values.quantity) ?? (done && deathCount > 0 ? count : undefined),
       averageWeight: gramsToKg(values.averageWeight),
       totalWeight: toFloat(values.totalWeight),
       fatteningLotId: values.fatteningLotId === NEW_LOT ? undefined : values.fatteningLotId,
@@ -345,7 +376,7 @@ function WeaningModal({
             plannedDate: fromDateInput(values.plannedDate),
             actualDate: done ? fromDateInput(values.actualDate) : undefined,
             ...common,
-            quantity: common.quantity ?? selectedLitter?.currentCount ?? 0,
+            quantity: common.quantity ?? (selectedLitter ? Math.max(0, selectedLitter.currentCount - deathCount) : 0),
           }),
         },
       });
@@ -385,8 +416,30 @@ function WeaningModal({
             <Input type="date" {...bind('actualDate')} />
           </Field>
         )}
-        <Field label="Nombre de lapereaux">
-          <Input type="number" min={1} placeholder={selectedLitter ? String(selectedLitter.currentCount) : ''} {...bind('quantity')} />
+        {done && (
+          <Field label="Des lapereaux sont-ils morts depuis la naissance ?" hint="Ils sont retirés de la portée avant le sevrage.">
+            <Select
+              placeholder="Choisir…"
+              options={[
+                { value: 'no', label: 'Non, aucun mort' },
+                { value: 'yes', label: 'Oui' },
+              ]}
+              {...bind('deaths')}
+            />
+          </Field>
+        )}
+        {done && values.deaths === 'yes' && (
+          <>
+            <Field label="Combien de morts ?">
+              <Input type="number" min={1} placeholder="ex. 2" {...bind('deathCount')} />
+            </Field>
+            <Field label="Cause (si connue)">
+              <Input placeholder="ex. écrasés, froid, diarrhée" {...bind('deathCause')} />
+            </Field>
+          </>
+        )}
+        <Field label="Nombre de lapereaux sevrés" hint={done && litterCount != null ? `Portée : ${litterCount}${deathCount ? ` − ${deathCount} mort(s) = ${Math.max(0, litterCount - deathCount)}` : ''}` : undefined}>
+          <Input type="number" min={1} placeholder={litterCount != null ? String(Math.max(0, litterCount - deathCount)) : ''} {...bind('quantity')} />
         </Field>
         {done && (
           <>
@@ -421,7 +474,7 @@ function WeaningModal({
       <Field label="Observation">
         <Textarea {...bind('observation')} />
       </Field>
-      <ErrorBox error={mutation.error} />
+      <ErrorBox error={d.error ?? mutation.error} />
     </Modal>
   );
 }

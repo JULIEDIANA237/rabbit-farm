@@ -343,4 +343,54 @@ describe('Corrections et rations (intégration)', () => {
       'Sevrage de 5 lapereau(x), 800 g en moyenne',
     ]);
   });
+
+  it('morts d’une portée identifiée : les derniers lapereaux passent en « mort », et reviennent si on annule', async () => {
+    const female = await rabbit('F-MORTS', 'FEMALE');
+    const male = await rabbit('M-MORTS', 'MALE');
+    const { createBreeding } = await run(
+      `mutation ($input: CreateBreedingInput!) { createBreeding(input: $input) { id } }`,
+      { input: { femaleId: female, maleId: male, breedingDate: daysAgo(60) } },
+    );
+    await run(
+      `mutation ($input: CreatePregnancyCheckInput!) { createPregnancyCheck(input: $input) { id } }`,
+      { input: { breedingId: createBreeding.id, checkedDate: daysAgo(48), result: 'PREGNANT' } },
+    );
+    const { createBirth } = await run(
+      `mutation ($input: CreateBirthInput!) { createBirth(input: $input) { litterId } }`,
+      { input: { breedingId: createBreeding.id, birthDate: daysAgo(30), liveBorn: 4, stillBorn: 0 } },
+    );
+    const { recordLitterMortality } = await run(
+      `mutation ($input: RecordLitterMortalityInput!) { recordLitterMortality(input: $input) { id } }`,
+      { input: { litterId: createBirth.litterId, date: daysAgo(10), count: 1, cause: 'Écrasé' } },
+    );
+    const kits = await prisma.rabbit.findMany({ where: { birthLitterId: createBirth.litterId }, orderBy: { code: 'asc' } });
+    expect(kits.map((k) => k.status)).toEqual(['ACTIVE', 'ACTIVE', 'ACTIVE', 'DEAD']);
+
+    await run(`mutation ($id: ID!) { deleteMortalityRecord(id: $id) }`, { id: recordLitterMortality.id });
+    expect(await prisma.rabbit.count({ where: { birthLitterId: createBirth.litterId, status: 'ACTIVE' } })).toBe(4);
+  });
+
+  it('lot d’engraissement : code donné automatiquement', async () => {
+    const lot = async () =>
+      (await run(`mutation ($input: CreateFatteningLotInput!) { createFatteningLot(input: $input) { code } }`, { input: { entryDate: daysAgo(1) } }))
+        .createFatteningLot.code as string;
+    const first = await lot();
+    const second = await lot();
+    expect(first).toMatch(/^LOT-\d{2}$/);
+    expect(Number(second.slice(4))).toBe(Number(first.slice(4)) + 1);
+  });
+
+  it('passé d’une femelle : pertes et cannibalisme, signalés avant la saillie', async () => {
+    const female = await rabbit('F-CANNIBALE', 'FEMALE', { previousLitters: 3, previousKitsLost: 4, cannibalismCases: 2 });
+    await run(
+      `mutation ($input: UpdateRabbitInput!) { updateRabbit(input: $input) { id } }`,
+      { input: { id: female, cannibalismCases: 1 } },
+    );
+    const { reproductionProfile } = await run(
+      `query ($id: ID!) { reproductionProfile(rabbitId: $id) { previousKitsLost cannibalismCases warnings } }`,
+      { id: female },
+    );
+    expect(reproductionProfile).toMatchObject({ previousKitsLost: 4, cannibalismCases: 1 });
+    expect(reproductionProfile.warnings).toEqual(expect.arrayContaining([expect.stringContaining('Cannibalisme')]));
+  });
 });

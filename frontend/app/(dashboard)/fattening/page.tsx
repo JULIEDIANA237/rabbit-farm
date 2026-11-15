@@ -126,7 +126,7 @@ function LotModal({ onClose, editing }: { onClose: () => void; editing?: Lot }) 
           <Button variant="secondary" onClick={onClose}>Annuler</Button>
           <Button
             loading={c.loading}
-            disabled={!values.code}
+            disabled={Boolean(editing) && !values.code}
             onClick={() =>
               save({ variables: { input: editing ? { id: editing.id, ...payload } : clean(payload) } })
                 .then(onClose)
@@ -139,8 +139,8 @@ function LotModal({ onClose, editing }: { onClose: () => void; editing?: Lot }) 
       }
     >
       <FormGrid>
-        <Field label="Code du lot">
-          <Input placeholder="LOT-2026-01" {...bind('code')} />
+        <Field label="Code du lot" hint={editing ? undefined : 'Laisse vide : le code est donné automatiquement (LOT-01, LOT-02…).'}>
+          <Input placeholder={editing ? '' : 'Automatique'} {...bind('code')} />
         </Field>
         <Field label="Date d'entrée">
           <Input type="date" {...bind('entryDate')} />

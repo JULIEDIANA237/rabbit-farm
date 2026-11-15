@@ -59,6 +59,9 @@ export function historyData(input: {
   maternalBehavior?: string | null;
   previousMatings?: number | null;
   healthHistory?: string | null;
+  previousKitsLost?: number | null;
+  cannibalismCases?: number | null;
+  previousFemales?: number | null;
 }) {
   const text = (value: string | null | undefined) =>
     value === undefined ? undefined : value?.trim() || null;
@@ -83,6 +86,9 @@ export function historyData(input: {
     maternalBehavior: input.maternalBehavior === undefined ? undefined : input.maternalBehavior || null,
     previousMatings: count(input.previousMatings, 'Le nombre de saillies'),
     healthHistory: text(input.healthHistory),
+    previousKitsLost: count(input.previousKitsLost, 'Le nombre de lapereaux perdus'),
+    cannibalismCases: count(input.cannibalismCases, 'Le nombre de cas de cannibalisme'),
+    previousFemales: count(input.previousFemales, 'Le nombre de femelles saillies'),
   };
 }
 
@@ -1135,9 +1141,11 @@ export class RabbitsService {
         take:
           pageSize,
 
-        orderBy: {
-          createdAt: 'desc',
-        },
+        // Lapereaux rangés par mère puis par code (L003-01, L003-02…).
+        orderBy:
+          input.category === 'KIT'
+            ? [{ mother: { code: 'asc' as const } }, { code: 'asc' as const }]
+            : { createdAt: 'desc' as const },
       }),
 
       this.prisma.rabbit.count({

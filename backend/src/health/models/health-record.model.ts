@@ -16,6 +16,9 @@ export class HealthRecordModel {
   @Field(() => String, { nullable: true })
   rabbitCode?: string | null;
 
+  @Field(() => Boolean, { nullable: true, description: 'Lapereau (né à la ferme, en engraissement) ou adulte' })
+  isKit?: boolean | null;
+
   @Field(() => HealthRecordType)
   type: HealthRecordType;
 

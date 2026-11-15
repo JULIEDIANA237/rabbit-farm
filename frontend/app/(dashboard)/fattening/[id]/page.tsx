@@ -10,7 +10,7 @@ import {
   Badge, Button, Card, ErrorBox, Field, FormGrid, Grid, Input, Loading, Modal, PageHeader, Select, Stat, Table, Textarea,
 } from '@/components/ui/kit';
 import { useCageOptions, useRabbitOptions } from '@/graphql/options';
-import { toFloat, toInt, useForm } from '@/hooks/use-form';
+import { toFloat, toInt, useForm, useUrlCommand } from '@/hooks/use-form';
 import { clean, formatDate, formatNumber, fromDateInput, toDateInput } from '@/lib/format';
 import { RowActions, useDeleteAction } from '@/components/ui/row-actions';
 import { LOT_STATUS, MOVEMENT_REASON, label, options } from '@/lib/labels';
@@ -79,6 +79,12 @@ export default function LotPage({ params }: { params: Promise<{ id: string }> })
   const { id } = use(params);
   const { data, loading, error, refetch } = useQuery<LotData>(LOT, { variables: { id } });
   const [kind, setKind] = useState<Kind>(null);
+  // Arrivée juste après un sevrage (?weaned=1).
+  const [fromWeaning, setFromWeaning] = useState(false);
+  useUrlCommand((params) => {
+    if (params.get('weaned') === '1') setFromWeaning(true);
+    return false;
+  });
   const [remove] = useMutation(REMOVE, { refetchQueries: ['FatteningLot'] });
   const removeWeighing = useDeleteAction(DELETE_WEIGHING, { refetchQueries: ['FatteningLot', 'FatteningLots'] });
 
@@ -123,6 +129,28 @@ export default function LotPage({ params }: { params: Promise<{ id: string }> })
           </>
         }
       />
+
+      {lot.status === 'ACTIVE' && (fromWeaning || !lot.currentCageCode) && (
+        <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-emerald-300 bg-emerald-50 p-4 text-sm text-emerald-900">
+          <p className="flex-1">
+            {fromWeaning && (
+              <>
+                Le lot <strong>{lot.code}</strong> a été créé automatiquement par le sevrage. Complète ses informations (pesée,
+                observation) si besoin,{' '}
+              </>
+            )}
+            {lot.currentCageCode
+              ? `puis vérifie sa cage : il est en ${lot.currentCageCode}.`
+              : `${fromWeaning ? 'puis l' : 'L'}oge les ${lot.activeMemberCount} lapereau(x) dans une cage d’engraissement.`}
+          </p>
+          {fromWeaning && (
+            <Button variant="secondary" onClick={() => setKind('weigh')}>Pesée</Button>
+          )}
+          <Link href={`/farm?lot=${lot.id}`}>
+            <Button>{lot.currentCageCode ? 'Changer de cage' : 'Loger dans une cage'}</Button>
+          </Link>
+        </div>
+      )}
 
       <Grid>
         <Stat label="Lapins présents" value={lot.activeMemberCount} tone="info" />

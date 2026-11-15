@@ -13,6 +13,7 @@ import { useBreedOptions, useRabbitOptions } from '@/graphql/options';
 import { useForm } from '@/hooks/use-form';
 import { clean } from '@/lib/format';
 import { COMPATIBILITY, label } from '@/lib/labels';
+import { missingSuggestions } from '@/lib/breeds';
 
 const GENETICS = gql`
   query Genetics {
@@ -116,6 +117,24 @@ function BreedsTab() {
             </li>
           ))}
         </ul>
+        {missingSuggestions((data?.breeds ?? []).map((b) => b.name)).map((g) => (
+          <div key={g.group} className="mb-4">
+            <p className="mb-2 text-xs font-semibold uppercase text-slate-500">{g.group} proposées</p>
+            <div className="flex flex-wrap gap-2">
+              {g.names.map((name) => (
+                <button
+                  key={name}
+                  type="button"
+                  disabled={cb.loading}
+                  onClick={() => createBreed({ variables: { input: { name } } }).catch((e) => window.alert(e.message))}
+                  className="rounded-full border border-emerald-200 bg-white px-3 py-1 text-sm text-emerald-800 hover:bg-emerald-50 disabled:opacity-50"
+                >
+                  + {name}
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
         <FormGrid>
           <Field label="Nouvelle race">
             <Input placeholder="Néo-zélandais, Californien…" {...breedForm.bind('name')} />

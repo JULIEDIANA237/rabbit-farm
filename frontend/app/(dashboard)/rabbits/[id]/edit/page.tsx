@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FormEvent, use, useState } from 'react';
 
+import { BreedSelect } from '@/components/genetics/BreedSelect';
 import { useRabbit } from '@/hooks/rabbits/useRabbits';
 import { useUpdateRabbit } from '@/hooks/rabbits/useUpdateRabbit';
 
@@ -72,6 +73,7 @@ function EditRabbitForm({
     useState<RabbitStatus>('ACTIVE');
 
   const [color, setColor] = useState('');
+  const [breedId, setBreedId] = useState('');
   const [weight, setWeight] = useState('');
   const [observations, setObservations] =
     useState('');
@@ -87,6 +89,7 @@ function EditRabbitForm({
     setSex(rabbit.sex);
     setStatus(rabbit.status ?? 'ACTIVE');
     setColor(rabbit.color ?? '');
+    setBreedId(rabbit.breedId ?? '');
     setWeight(
       rabbit.weight != null
         ? String(rabbit.weight)
@@ -116,6 +119,7 @@ function EditRabbitForm({
         sex,
         status,
         color: color.trim() || undefined,
+        breedId: breedId || undefined,
         weight: weight
           ? Number(weight)
           : undefined,
@@ -276,6 +280,10 @@ function EditRabbitForm({
                 }
                 className="input"
               />
+            </Field>
+
+            <Field label="Race">
+              <BreedSelect value={breedId} onChange={setBreedId} className="input" />
             </Field>
 
             <Field label="Poids (kg)">

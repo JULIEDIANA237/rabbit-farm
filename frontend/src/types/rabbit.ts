@@ -29,6 +29,7 @@ export interface Rabbit {
 
   birthDate?: string | null;
   birthLitterId?: string | null;
+  motherCode?: string | null;
 
   color?: string | null;
   weight?: number | null;
@@ -40,6 +41,9 @@ export interface Rabbit {
   maternalBehavior?: string | null;
   previousMatings?: number | null;
   healthHistory?: string | null;
+  previousKitsLost?: number | null;
+  cannibalismCases?: number | null;
+  previousFemales?: number | null;
   readyForSale?: boolean;
 
   breedId?: string | null;
@@ -88,6 +92,9 @@ export interface CreateRabbitInput {
   maternalBehavior?: string | null;
   previousMatings?: number | null;
   healthHistory?: string | null;
+  previousKitsLost?: number | null;
+  cannibalismCases?: number | null;
+  previousFemales?: number | null;
 }
 
 
@@ -136,6 +143,9 @@ export interface UpdateRabbitInput {
   maternalBehavior?: string | null;
   previousMatings?: number | null;
   healthHistory?: string | null;
+  previousKitsLost?: number | null;
+  cannibalismCases?: number | null;
+  previousFemales?: number | null;
 }
 
 export const RABBIT_SEX_LABELS: Record<

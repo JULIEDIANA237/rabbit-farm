@@ -31,6 +31,9 @@ export type RabbitAvgAggregateOutputType = {
   previousLitters: number | null
   previousKitsBorn: number | null
   previousMatings: number | null
+  previousKitsLost: number | null
+  cannibalismCases: number | null
+  previousFemales: number | null
 }
 
 export type RabbitSumAggregateOutputType = {
@@ -38,6 +41,9 @@ export type RabbitSumAggregateOutputType = {
   previousLitters: number | null
   previousKitsBorn: number | null
   previousMatings: number | null
+  previousKitsLost: number | null
+  cannibalismCases: number | null
+  previousFemales: number | null
 }
 
 export type RabbitMinAggregateOutputType = {
@@ -65,6 +71,9 @@ export type RabbitMinAggregateOutputType = {
   maternalBehavior: string | null
   previousMatings: number | null
   healthHistory: string | null
+  previousKitsLost: number | null
+  cannibalismCases: number | null
+  previousFemales: number | null
   readyForSale: boolean | null
   readyForSaleAt: Date | null
   birthLitterId: string | null
@@ -97,6 +106,9 @@ export type RabbitMaxAggregateOutputType = {
   maternalBehavior: string | null
   previousMatings: number | null
   healthHistory: string | null
+  previousKitsLost: number | null
+  cannibalismCases: number | null
+  previousFemales: number | null
   readyForSale: boolean | null
   readyForSaleAt: Date | null
   birthLitterId: string | null
@@ -129,6 +141,9 @@ export type RabbitCountAggregateOutputType = {
   maternalBehavior: number
   previousMatings: number
   healthHistory: number
+  previousKitsLost: number
+  cannibalismCases: number
+  previousFemales: number
   readyForSale: number
   readyForSaleAt: number
   birthLitterId: number
@@ -143,6 +158,9 @@ export type RabbitAvgAggregateInputType = {
   previousLitters?: true
   previousKitsBorn?: true
   previousMatings?: true
+  previousKitsLost?: true
+  cannibalismCases?: true
+  previousFemales?: true
 }
 
 export type RabbitSumAggregateInputType = {
@@ -150,6 +168,9 @@ export type RabbitSumAggregateInputType = {
   previousLitters?: true
   previousKitsBorn?: true
   previousMatings?: true
+  previousKitsLost?: true
+  cannibalismCases?: true
+  previousFemales?: true
 }
 
 export type RabbitMinAggregateInputType = {
@@ -177,6 +198,9 @@ export type RabbitMinAggregateInputType = {
   maternalBehavior?: true
   previousMatings?: true
   healthHistory?: true
+  previousKitsLost?: true
+  cannibalismCases?: true
+  previousFemales?: true
   readyForSale?: true
   readyForSaleAt?: true
   birthLitterId?: true
@@ -209,6 +233,9 @@ export type RabbitMaxAggregateInputType = {
   maternalBehavior?: true
   previousMatings?: true
   healthHistory?: true
+  previousKitsLost?: true
+  cannibalismCases?: true
+  previousFemales?: true
   readyForSale?: true
   readyForSaleAt?: true
   birthLitterId?: true
@@ -241,6 +268,9 @@ export type RabbitCountAggregateInputType = {
   maternalBehavior?: true
   previousMatings?: true
   healthHistory?: true
+  previousKitsLost?: true
+  cannibalismCases?: true
+  previousFemales?: true
   readyForSale?: true
   readyForSaleAt?: true
   birthLitterId?: true
@@ -360,6 +390,9 @@ export type RabbitGroupByOutputType = {
   maternalBehavior: string | null
   previousMatings: number | null
   healthHistory: string | null
+  previousKitsLost: number | null
+  cannibalismCases: number | null
+  previousFemales: number | null
   readyForSale: boolean
   readyForSaleAt: Date | null
   birthLitterId: string | null
@@ -415,6 +448,9 @@ export type RabbitWhereInput = {
   maternalBehavior?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   previousMatings?: Prisma.IntNullableFilter<"Rabbit"> | number | null
   healthHistory?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  previousKitsLost?: Prisma.IntNullableFilter<"Rabbit"> | number | null
+  cannibalismCases?: Prisma.IntNullableFilter<"Rabbit"> | number | null
+  previousFemales?: Prisma.IntNullableFilter<"Rabbit"> | number | null
   readyForSale?: Prisma.BoolFilter<"Rabbit"> | boolean
   readyForSaleAt?: Prisma.DateTimeNullableFilter<"Rabbit"> | Date | string | null
   birthLitterId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
@@ -472,6 +508,9 @@ export type RabbitOrderByWithRelationInput = {
   maternalBehavior?: Prisma.SortOrderInput | Prisma.SortOrder
   previousMatings?: Prisma.SortOrderInput | Prisma.SortOrder
   healthHistory?: Prisma.SortOrderInput | Prisma.SortOrder
+  previousKitsLost?: Prisma.SortOrderInput | Prisma.SortOrder
+  cannibalismCases?: Prisma.SortOrderInput | Prisma.SortOrder
+  previousFemales?: Prisma.SortOrderInput | Prisma.SortOrder
   readyForSale?: Prisma.SortOrder
   readyForSaleAt?: Prisma.SortOrderInput | Prisma.SortOrder
   birthLitterId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -533,6 +572,9 @@ export type RabbitWhereUniqueInput = Prisma.AtLeast<{
   maternalBehavior?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   previousMatings?: Prisma.IntNullableFilter<"Rabbit"> | number | null
   healthHistory?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  previousKitsLost?: Prisma.IntNullableFilter<"Rabbit"> | number | null
+  cannibalismCases?: Prisma.IntNullableFilter<"Rabbit"> | number | null
+  previousFemales?: Prisma.IntNullableFilter<"Rabbit"> | number | null
   readyForSale?: Prisma.BoolFilter<"Rabbit"> | boolean
   readyForSaleAt?: Prisma.DateTimeNullableFilter<"Rabbit"> | Date | string | null
   birthLitterId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
@@ -590,6 +632,9 @@ export type RabbitOrderByWithAggregationInput = {
   maternalBehavior?: Prisma.SortOrderInput | Prisma.SortOrder
   previousMatings?: Prisma.SortOrderInput | Prisma.SortOrder
   healthHistory?: Prisma.SortOrderInput | Prisma.SortOrder
+  previousKitsLost?: Prisma.SortOrderInput | Prisma.SortOrder
+  cannibalismCases?: Prisma.SortOrderInput | Prisma.SortOrder
+  previousFemales?: Prisma.SortOrderInput | Prisma.SortOrder
   readyForSale?: Prisma.SortOrder
   readyForSaleAt?: Prisma.SortOrderInput | Prisma.SortOrder
   birthLitterId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -630,6 +675,9 @@ export type RabbitScalarWhereWithAggregatesInput = {
   maternalBehavior?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
   previousMatings?: Prisma.IntNullableWithAggregatesFilter<"Rabbit"> | number | null
   healthHistory?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
+  previousKitsLost?: Prisma.IntNullableWithAggregatesFilter<"Rabbit"> | number | null
+  cannibalismCases?: Prisma.IntNullableWithAggregatesFilter<"Rabbit"> | number | null
+  previousFemales?: Prisma.IntNullableWithAggregatesFilter<"Rabbit"> | number | null
   readyForSale?: Prisma.BoolWithAggregatesFilter<"Rabbit"> | boolean
   readyForSaleAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Rabbit"> | Date | string | null
   birthLitterId?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
@@ -657,6 +705,9 @@ export type RabbitCreateInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -713,6 +764,9 @@ export type RabbitUncheckedCreateInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -759,6 +813,9 @@ export type RabbitUpdateInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -815,6 +872,9 @@ export type RabbitUncheckedUpdateInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -866,6 +926,9 @@ export type RabbitCreateManyInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -893,6 +956,9 @@ export type RabbitUpdateManyMutationInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -924,6 +990,9 @@ export type RabbitUncheckedUpdateManyInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -976,6 +1045,9 @@ export type RabbitCountOrderByAggregateInput = {
   maternalBehavior?: Prisma.SortOrder
   previousMatings?: Prisma.SortOrder
   healthHistory?: Prisma.SortOrder
+  previousKitsLost?: Prisma.SortOrder
+  cannibalismCases?: Prisma.SortOrder
+  previousFemales?: Prisma.SortOrder
   readyForSale?: Prisma.SortOrder
   readyForSaleAt?: Prisma.SortOrder
   birthLitterId?: Prisma.SortOrder
@@ -988,6 +1060,9 @@ export type RabbitAvgOrderByAggregateInput = {
   previousLitters?: Prisma.SortOrder
   previousKitsBorn?: Prisma.SortOrder
   previousMatings?: Prisma.SortOrder
+  previousKitsLost?: Prisma.SortOrder
+  cannibalismCases?: Prisma.SortOrder
+  previousFemales?: Prisma.SortOrder
 }
 
 export type RabbitMaxOrderByAggregateInput = {
@@ -1015,6 +1090,9 @@ export type RabbitMaxOrderByAggregateInput = {
   maternalBehavior?: Prisma.SortOrder
   previousMatings?: Prisma.SortOrder
   healthHistory?: Prisma.SortOrder
+  previousKitsLost?: Prisma.SortOrder
+  cannibalismCases?: Prisma.SortOrder
+  previousFemales?: Prisma.SortOrder
   readyForSale?: Prisma.SortOrder
   readyForSaleAt?: Prisma.SortOrder
   birthLitterId?: Prisma.SortOrder
@@ -1047,6 +1125,9 @@ export type RabbitMinOrderByAggregateInput = {
   maternalBehavior?: Prisma.SortOrder
   previousMatings?: Prisma.SortOrder
   healthHistory?: Prisma.SortOrder
+  previousKitsLost?: Prisma.SortOrder
+  cannibalismCases?: Prisma.SortOrder
+  previousFemales?: Prisma.SortOrder
   readyForSale?: Prisma.SortOrder
   readyForSaleAt?: Prisma.SortOrder
   birthLitterId?: Prisma.SortOrder
@@ -1059,6 +1140,9 @@ export type RabbitSumOrderByAggregateInput = {
   previousLitters?: Prisma.SortOrder
   previousKitsBorn?: Prisma.SortOrder
   previousMatings?: Prisma.SortOrder
+  previousKitsLost?: Prisma.SortOrder
+  cannibalismCases?: Prisma.SortOrder
+  previousFemales?: Prisma.SortOrder
 }
 
 export type RabbitScalarRelationFilter = {
@@ -1648,6 +1732,9 @@ export type RabbitCreateWithoutFarmInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -1702,6 +1789,9 @@ export type RabbitUncheckedCreateWithoutFarmInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -1782,6 +1872,9 @@ export type RabbitScalarWhereInput = {
   maternalBehavior?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   previousMatings?: Prisma.IntNullableFilter<"Rabbit"> | number | null
   healthHistory?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  previousKitsLost?: Prisma.IntNullableFilter<"Rabbit"> | number | null
+  cannibalismCases?: Prisma.IntNullableFilter<"Rabbit"> | number | null
+  previousFemales?: Prisma.IntNullableFilter<"Rabbit"> | number | null
   readyForSale?: Prisma.BoolFilter<"Rabbit"> | boolean
   readyForSaleAt?: Prisma.DateTimeNullableFilter<"Rabbit"> | Date | string | null
   birthLitterId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
@@ -1809,6 +1902,9 @@ export type RabbitCreateWithoutBreedInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -1863,6 +1959,9 @@ export type RabbitUncheckedCreateWithoutBreedInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -1935,6 +2034,9 @@ export type RabbitCreateWithoutCrossBreedInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -1989,6 +2091,9 @@ export type RabbitUncheckedCreateWithoutCrossBreedInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -2061,6 +2166,9 @@ export type RabbitCreateWithoutChildrenAsFatherInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -2116,6 +2224,9 @@ export type RabbitUncheckedCreateWithoutChildrenAsFatherInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -2166,6 +2277,9 @@ export type RabbitCreateWithoutChildrenAsMotherInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -2221,6 +2335,9 @@ export type RabbitUncheckedCreateWithoutChildrenAsMotherInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -2271,6 +2388,9 @@ export type RabbitCreateWithoutFatherInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -2325,6 +2445,9 @@ export type RabbitUncheckedCreateWithoutFatherInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -2381,6 +2504,9 @@ export type RabbitCreateWithoutMotherInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -2435,6 +2561,9 @@ export type RabbitUncheckedCreateWithoutMotherInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -2502,6 +2631,9 @@ export type RabbitUpdateWithoutChildrenAsFatherInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2557,6 +2689,9 @@ export type RabbitUncheckedUpdateWithoutChildrenAsFatherInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2613,6 +2748,9 @@ export type RabbitUpdateWithoutChildrenAsMotherInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2668,6 +2806,9 @@ export type RabbitUncheckedUpdateWithoutChildrenAsMotherInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2745,6 +2886,9 @@ export type RabbitCreateWithoutPhotosInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -2800,6 +2944,9 @@ export type RabbitUncheckedCreateWithoutPhotosInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -2861,6 +3008,9 @@ export type RabbitUpdateWithoutPhotosInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2916,6 +3066,9 @@ export type RabbitUncheckedUpdateWithoutPhotosInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2961,6 +3114,9 @@ export type RabbitCreateWithoutIdentificationsInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -3016,6 +3172,9 @@ export type RabbitUncheckedCreateWithoutIdentificationsInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -3077,6 +3236,9 @@ export type RabbitUpdateWithoutIdentificationsInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3132,6 +3294,9 @@ export type RabbitUncheckedUpdateWithoutIdentificationsInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3177,6 +3342,9 @@ export type RabbitCreateWithoutCageMovementsInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -3232,6 +3400,9 @@ export type RabbitUncheckedCreateWithoutCageMovementsInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -3293,6 +3464,9 @@ export type RabbitUpdateWithoutCageMovementsInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3348,6 +3522,9 @@ export type RabbitUncheckedUpdateWithoutCageMovementsInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3393,6 +3570,9 @@ export type RabbitCreateWithoutBreedingsAsFemaleInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -3448,6 +3628,9 @@ export type RabbitUncheckedCreateWithoutBreedingsAsFemaleInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -3498,6 +3681,9 @@ export type RabbitCreateWithoutBreedingsAsMaleInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -3553,6 +3739,9 @@ export type RabbitUncheckedCreateWithoutBreedingsAsMaleInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -3614,6 +3803,9 @@ export type RabbitUpdateWithoutBreedingsAsFemaleInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3669,6 +3861,9 @@ export type RabbitUncheckedUpdateWithoutBreedingsAsFemaleInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3725,6 +3920,9 @@ export type RabbitUpdateWithoutBreedingsAsMaleInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3780,6 +3978,9 @@ export type RabbitUncheckedUpdateWithoutBreedingsAsMaleInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3825,6 +4026,9 @@ export type RabbitCreateWithoutMotherBirthsInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -3880,6 +4084,9 @@ export type RabbitUncheckedCreateWithoutMotherBirthsInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -3941,6 +4148,9 @@ export type RabbitUpdateWithoutMotherBirthsInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3996,6 +4206,9 @@ export type RabbitUncheckedUpdateWithoutMotherBirthsInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4041,6 +4254,9 @@ export type RabbitCreateWithoutMotherLittersInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -4096,6 +4312,9 @@ export type RabbitUncheckedCreateWithoutMotherLittersInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -4146,6 +4365,9 @@ export type RabbitCreateWithoutFatherLittersInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -4201,6 +4423,9 @@ export type RabbitUncheckedCreateWithoutFatherLittersInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -4251,6 +4476,9 @@ export type RabbitCreateWithoutBirthLitterInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -4306,6 +4534,9 @@ export type RabbitUncheckedCreateWithoutBirthLitterInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -4372,6 +4603,9 @@ export type RabbitUpdateWithoutMotherLittersInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4427,6 +4661,9 @@ export type RabbitUncheckedUpdateWithoutMotherLittersInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4483,6 +4720,9 @@ export type RabbitUpdateWithoutFatherLittersInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4538,6 +4778,9 @@ export type RabbitUncheckedUpdateWithoutFatherLittersInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4599,6 +4842,9 @@ export type RabbitCreateWithoutAdoptionHistoryInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -4654,6 +4900,9 @@ export type RabbitUncheckedCreateWithoutAdoptionHistoryInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -4715,6 +4964,9 @@ export type RabbitUpdateWithoutAdoptionHistoryInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4770,6 +5022,9 @@ export type RabbitUncheckedUpdateWithoutAdoptionHistoryInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4815,6 +5070,9 @@ export type RabbitCreateWithoutWeaningHistoryInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -4870,6 +5128,9 @@ export type RabbitUncheckedCreateWithoutWeaningHistoryInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -4931,6 +5192,9 @@ export type RabbitUpdateWithoutWeaningHistoryInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4986,6 +5250,9 @@ export type RabbitUncheckedUpdateWithoutWeaningHistoryInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5031,6 +5298,9 @@ export type RabbitCreateWithoutLotMembershipsInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -5086,6 +5356,9 @@ export type RabbitUncheckedCreateWithoutLotMembershipsInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -5147,6 +5420,9 @@ export type RabbitUpdateWithoutLotMembershipsInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -5202,6 +5478,9 @@ export type RabbitUncheckedUpdateWithoutLotMembershipsInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5247,6 +5526,9 @@ export type RabbitCreateWithoutWeighingsInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -5302,6 +5584,9 @@ export type RabbitUncheckedCreateWithoutWeighingsInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -5363,6 +5648,9 @@ export type RabbitUpdateWithoutWeighingsInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -5418,6 +5706,9 @@ export type RabbitUncheckedUpdateWithoutWeighingsInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5463,6 +5754,9 @@ export type RabbitCreateWithoutHealthRecordsInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -5518,6 +5812,9 @@ export type RabbitUncheckedCreateWithoutHealthRecordsInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -5579,6 +5876,9 @@ export type RabbitUpdateWithoutHealthRecordsInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -5634,6 +5934,9 @@ export type RabbitUncheckedUpdateWithoutHealthRecordsInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5679,6 +5982,9 @@ export type RabbitCreateWithoutSaleItemsInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -5734,6 +6040,9 @@ export type RabbitUncheckedCreateWithoutSaleItemsInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -5795,6 +6104,9 @@ export type RabbitUpdateWithoutSaleItemsInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -5850,6 +6162,9 @@ export type RabbitUncheckedUpdateWithoutSaleItemsInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5895,6 +6210,9 @@ export type RabbitCreateWithoutTasksInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -5950,6 +6268,9 @@ export type RabbitUncheckedCreateWithoutTasksInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -6011,6 +6332,9 @@ export type RabbitUpdateWithoutTasksInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -6066,6 +6390,9 @@ export type RabbitUncheckedUpdateWithoutTasksInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6111,6 +6438,9 @@ export type RabbitCreateWithoutMortalitiesInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -6166,6 +6496,9 @@ export type RabbitUncheckedCreateWithoutMortalitiesInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -6227,6 +6560,9 @@ export type RabbitUpdateWithoutMortalitiesInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -6282,6 +6618,9 @@ export type RabbitUncheckedUpdateWithoutMortalitiesInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6327,6 +6666,9 @@ export type RabbitCreateWithoutCareRecordsInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -6382,6 +6724,9 @@ export type RabbitUncheckedCreateWithoutCareRecordsInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -6443,6 +6788,9 @@ export type RabbitUpdateWithoutCareRecordsInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -6498,6 +6846,9 @@ export type RabbitUncheckedUpdateWithoutCareRecordsInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6547,6 +6898,9 @@ export type RabbitCreateManyFarmInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -6574,6 +6928,9 @@ export type RabbitUpdateWithoutFarmInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -6628,6 +6985,9 @@ export type RabbitUncheckedUpdateWithoutFarmInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6678,6 +7038,9 @@ export type RabbitUncheckedUpdateManyWithoutFarmInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6709,6 +7072,9 @@ export type RabbitCreateManyBreedInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -6736,6 +7102,9 @@ export type RabbitUpdateWithoutBreedInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -6790,6 +7159,9 @@ export type RabbitUncheckedUpdateWithoutBreedInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6840,6 +7212,9 @@ export type RabbitUncheckedUpdateManyWithoutBreedInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6871,6 +7246,9 @@ export type RabbitCreateManyCrossBreedInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -6898,6 +7276,9 @@ export type RabbitUpdateWithoutCrossBreedInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -6952,6 +7333,9 @@ export type RabbitUncheckedUpdateWithoutCrossBreedInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7002,6 +7386,9 @@ export type RabbitUncheckedUpdateManyWithoutCrossBreedInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7033,6 +7420,9 @@ export type RabbitCreateManyFatherInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -7064,6 +7454,9 @@ export type RabbitCreateManyMotherInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
@@ -7091,6 +7484,9 @@ export type RabbitUpdateWithoutFatherInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -7145,6 +7541,9 @@ export type RabbitUncheckedUpdateWithoutFatherInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7195,6 +7594,9 @@ export type RabbitUncheckedUpdateManyWithoutFatherInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7222,6 +7624,9 @@ export type RabbitUpdateWithoutMotherInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -7276,6 +7681,9 @@ export type RabbitUncheckedUpdateWithoutMotherInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7326,6 +7734,9 @@ export type RabbitUncheckedUpdateManyWithoutMotherInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7358,6 +7769,9 @@ export type RabbitCreateManyBirthLitterInput = {
   maternalBehavior?: string | null
   previousMatings?: number | null
   healthHistory?: string | null
+  previousKitsLost?: number | null
+  cannibalismCases?: number | null
+  previousFemales?: number | null
   readyForSale?: boolean
   readyForSaleAt?: Date | string | null
   createdAt?: Date | string
@@ -7384,6 +7798,9 @@ export type RabbitUpdateWithoutBirthLitterInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -7439,6 +7856,9 @@ export type RabbitUncheckedUpdateWithoutBirthLitterInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -7489,6 +7909,9 @@ export type RabbitUncheckedUpdateManyWithoutBirthLitterInput = {
   maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousKitsLost?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  cannibalismCases?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousFemales?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
   readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -7713,6 +8136,9 @@ export type RabbitSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   maternalBehavior?: boolean
   previousMatings?: boolean
   healthHistory?: boolean
+  previousKitsLost?: boolean
+  cannibalismCases?: boolean
+  previousFemales?: boolean
   readyForSale?: boolean
   readyForSaleAt?: boolean
   birthLitterId?: boolean
@@ -7771,6 +8197,9 @@ export type RabbitSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   maternalBehavior?: boolean
   previousMatings?: boolean
   healthHistory?: boolean
+  previousKitsLost?: boolean
+  cannibalismCases?: boolean
+  previousFemales?: boolean
   readyForSale?: boolean
   readyForSaleAt?: boolean
   birthLitterId?: boolean
@@ -7809,6 +8238,9 @@ export type RabbitSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   maternalBehavior?: boolean
   previousMatings?: boolean
   healthHistory?: boolean
+  previousKitsLost?: boolean
+  cannibalismCases?: boolean
+  previousFemales?: boolean
   readyForSale?: boolean
   readyForSaleAt?: boolean
   birthLitterId?: boolean
@@ -7847,6 +8279,9 @@ export type RabbitSelectScalar = {
   maternalBehavior?: boolean
   previousMatings?: boolean
   healthHistory?: boolean
+  previousKitsLost?: boolean
+  cannibalismCases?: boolean
+  previousFemales?: boolean
   readyForSale?: boolean
   readyForSaleAt?: boolean
   birthLitterId?: boolean
@@ -7854,7 +8289,7 @@ export type RabbitSelectScalar = {
   updatedAt?: boolean
 }
 
-export type RabbitOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "code" | "sex" | "status" | "purpose" | "breedId" | "crossBreedId" | "fatherId" | "motherId" | "birthDate" | "color" | "weight" | "observations" | "originalCode" | "exitDate" | "exitCause" | "origin" | "previousLitters" | "previousKitsBorn" | "lastBirthDate" | "maternalBehavior" | "previousMatings" | "healthHistory" | "readyForSale" | "readyForSaleAt" | "birthLitterId" | "createdAt" | "updatedAt", ExtArgs["result"]["rabbit"]>
+export type RabbitOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "code" | "sex" | "status" | "purpose" | "breedId" | "crossBreedId" | "fatherId" | "motherId" | "birthDate" | "color" | "weight" | "observations" | "originalCode" | "exitDate" | "exitCause" | "origin" | "previousLitters" | "previousKitsBorn" | "lastBirthDate" | "maternalBehavior" | "previousMatings" | "healthHistory" | "previousKitsLost" | "cannibalismCases" | "previousFemales" | "readyForSale" | "readyForSaleAt" | "birthLitterId" | "createdAt" | "updatedAt", ExtArgs["result"]["rabbit"]>
 export type RabbitInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   careRecords?: boolean | Prisma.Rabbit$careRecordsArgs<ExtArgs>
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
@@ -7967,6 +8402,15 @@ export type $RabbitPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     maternalBehavior: string | null
     previousMatings: number | null
     healthHistory: string | null
+    /**
+     * Lapereaux perdus et cas de cannibalisme avant l'enregistrement (femelle).
+     */
+    previousKitsLost: number | null
+    cannibalismCases: number | null
+    /**
+     * Femelles différentes déjà saillies avant l'enregistrement (mâle).
+     */
+    previousFemales: number | null
     /**
      * Choisi à la main par l'éleveur pour la vente.
      */
@@ -8447,6 +8891,9 @@ export interface RabbitFieldRefs {
   readonly maternalBehavior: Prisma.FieldRef<"Rabbit", 'String'>
   readonly previousMatings: Prisma.FieldRef<"Rabbit", 'Int'>
   readonly healthHistory: Prisma.FieldRef<"Rabbit", 'String'>
+  readonly previousKitsLost: Prisma.FieldRef<"Rabbit", 'Int'>
+  readonly cannibalismCases: Prisma.FieldRef<"Rabbit", 'Int'>
+  readonly previousFemales: Prisma.FieldRef<"Rabbit", 'Int'>
   readonly readyForSale: Prisma.FieldRef<"Rabbit", 'Boolean'>
   readonly readyForSaleAt: Prisma.FieldRef<"Rabbit", 'DateTime'>
   readonly birthLitterId: Prisma.FieldRef<"Rabbit", 'String'>
