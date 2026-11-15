@@ -9,6 +9,7 @@ import { Badge, Button, Card, ErrorBox, Field, FormGrid, Input, Loading, Modal, 
 import { PedigreeTree } from '@/components/genetics/pedigree-tree';
 import { DELETE_HEALTH_RECORD, HealthRecordModal, type EditableHealthRecord } from '@/components/health/health-record-modal';
 import { RowActions, useDeleteAction } from '@/components/ui/row-actions';
+import { HistoryEventActions, type HistoryEvent } from './HistoryEventActions';
 import { useCageOptions } from '@/graphql/options';
 import { parsePrefill, useForm, useUrlCommand, type Prefill } from '@/hooks/use-form';
 import { AiFill } from '@/components/assistant/ai-fill';
@@ -21,7 +22,7 @@ const TRACE = gql`
       birthLitterCode
       father { id code }
       mother { id code }
-      events { date type title detail referenceId }
+      events { date type title detail referenceId recordId note weightKg }
     }
     rabbitDescendants(rabbitId: $id, generations: 2) { id code sex status generation birthDate }
   }
@@ -112,7 +113,7 @@ interface TraceData {
     birthLitterCode?: string | null;
     father?: { id: string; code: string } | null;
     mother?: { id: string; code: string } | null;
-    events: Array<{ date: string; type: string; title: string; detail?: string | null; referenceId?: string | null }>;
+    events: HistoryEvent[];
   };
   rabbitDescendants: Array<{ id: string; code: string; sex: string; status: string; generation: number; birthDate?: string | null }>;
 }
@@ -141,10 +142,14 @@ function TraceTab({ rabbitId }: { rabbitId: string }) {
           {t.events.map((e, i) => (
             <li key={`${e.type}-${i}`} className="flex gap-3 border-l-2 border-emerald-200 pl-3">
               <span className="w-24 shrink-0 text-sm text-slate-500">{formatDate(e.date)}</span>
-              <div className="text-sm">
+              <div className="min-w-0 flex-1 text-sm">
                 <Badge tone={EVENT_TONE[e.type as keyof typeof EVENT_TONE] ?? 'slate'}>{EVENT_LABEL[e.type] ?? e.type}</Badge>{' '}
                 <span className="font-medium text-slate-900">{e.title}</span>
                 {e.detail && <p className="text-slate-500">{e.detail}</p>}
+                {e.note && e.type === 'CAGE' && <p className="text-slate-500">{e.note}</p>}
+              </div>
+              <div className="shrink-0">
+                <HistoryEventActions rabbitId={rabbitId} event={e} />
               </div>
             </li>
           ))}

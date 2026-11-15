@@ -145,7 +145,7 @@ export function Sidebar({
           fixed inset-y-0 left-0 z-50 flex w-72 flex-col
           border-r border-slate-200 bg-white
           transition-transform duration-300
-          lg:static lg:z-auto lg:translate-x-0
+          lg:sticky lg:top-0 lg:z-auto lg:h-screen lg:translate-x-0
           ${open ? 'translate-x-0' : '-translate-x-full'}
         `}
       >

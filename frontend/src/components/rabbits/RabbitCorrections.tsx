@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { gql } from '@apollo/client';
-import { useMutation } from '@apollo/client/react';
+import { useApolloClient, useMutation } from '@apollo/client/react';
 import { RotateCcw } from 'lucide-react';
 
 import { Button } from '@/components/ui/kit';
@@ -10,6 +10,9 @@ import { RowActions, useDeleteAction } from '@/components/ui/row-actions';
 
 const DELETE_RABBIT = gql`
   mutation DeleteRabbit($id: ID!) { deleteRabbit(id: $id) }
+`;
+const DELETION_IMPACT = gql`
+  query RabbitDeletionImpact($id: ID!) { rabbitDeletionImpact(id: $id) }
 `;
 const CANCEL_EXIT = gql`
   mutation CancelRabbitExit($rabbitId: ID!) { cancelRabbitExit(rabbitId: $rabbitId) { id status } }
@@ -19,7 +22,7 @@ const EXIT_STATUSES = ['DEAD', 'CULLED', 'TRANSFERRED'];
 
 /**
  * Corrections d'une fiche : annuler une sortie saisie par erreur,
- * ou supprimer un lapin créé par erreur (sans historique).
+ * ou supprimer un lapin avec tout ce qui lui est lié.
  */
 export function RabbitCorrections({
   rabbit,
@@ -27,6 +30,7 @@ export function RabbitCorrections({
   rabbit: { id: string; code: string; status?: string | null; birthLitterId?: string | null; purpose?: string | null };
 }) {
   const router = useRouter();
+  const client = useApolloClient();
   const isKit = Boolean(rabbit.birthLitterId) && rabbit.purpose === 'FATTENING';
   const remove = useDeleteAction(DELETE_RABBIT, {
     refetchQueries: ['Rabbits', 'RabbitsPaginated', 'RabbitOptions', 'Dashboard'],
@@ -51,15 +55,38 @@ export function RabbitCorrections({
         </Button>
       )}
       <RowActions
-        onDelete={() =>
-          remove.ask(
-            rabbit.id,
-            `le lapin ${rabbit.code}`,
-            'Réservé aux lapins créés par erreur. Un lapin qui a un historique (portées, soins, pesées, vente…) ne peut pas être supprimé : enregistre plutôt sa sortie.',
-          )
-        }
+        onDelete={async () => {
+          let impact: string[] = [];
+          try {
+            const { data } = await client.query<{ rabbitDeletionImpact: string[] }>({
+              query: DELETION_IMPACT,
+              variables: { id: rabbit.id },
+              fetchPolicy: 'network-only',
+            });
+            impact = data?.rabbitDeletionImpact ?? [];
+          } catch {
+            // L'aperçu est un confort : la suppression reste possible.
+          }
+          remove.ask(rabbit.id, `le lapin ${rabbit.code}`, deletionWarning(impact));
+        }}
       />
       {remove.dialog}
     </>
   );
+}
+
+/** Ce qui part avec le lapin, et ce qui reste. */
+function deletionWarning(impact: string[]) {
+  const lines = [
+    impact.length
+      ? `Seront aussi effacés : ${impact.filter((i) => i !== 'des descendants' && i !== 'une vente').join(', ') || 'son historique'}, ainsi que ses cages, tâches et photos.`
+      : 'Ses cages, tâches et photos seront aussi effacées.',
+  ];
+  if (impact.includes('des accouplements ou portées')) {
+    lines.push('Pour une femelle, ses mises bas et ses portées sont effacées ; pour un mâle, ses saillies.');
+  }
+  if (impact.includes('des descendants')) lines.push('Ses petits restent dans l’élevage, sans lien vers ce parent.');
+  if (impact.includes('une vente')) lines.push('Ses ventes restent enregistrées avec leur montant.');
+  lines.push('Pour un lapin mort, vendu ou réformé, enregistre plutôt sa sortie : son historique est gardé.');
+  return lines.join(' ');
 }

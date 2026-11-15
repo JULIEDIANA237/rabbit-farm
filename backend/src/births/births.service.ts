@@ -134,11 +134,25 @@ export class BirthsService {
     let litterCode = input.litterCode?.trim().toUpperCase();
 
     if (!litterCode) {
-      const existing = await this.prisma.litter.findMany({
-        where: { farmId: currentUser.farmId },
-        select: { code: true },
-      });
-      litterCode = nextLitterCode(existing.map((litter) => litter.code));
+      const [existing, kits] = await Promise.all([
+        this.prisma.litter.findMany({
+          where: { farmId: currentUser.farmId },
+          select: { code: true },
+        }),
+        // Lapereaux restés sans portée (mère supprimée) : leur code
+        // L001-03 réserve encore le numéro L001.
+        this.prisma.rabbit.findMany({
+          where: {
+            farmId: currentUser.farmId,
+            OR: [{ code: { startsWith: 'L' } }, { originalCode: { startsWith: 'L' } }],
+          },
+          select: { code: true, originalCode: true },
+        }),
+      ]);
+      litterCode = nextLitterCode([
+        ...existing.map((litter) => litter.code),
+        ...kits.flatMap((kit) => [kit.code, kit.originalCode ?? '']).map((code) => code.split('-')[0]),
+      ]);
     } else {
       const duplicate = await this.prisma.litter.findFirst({
         where: { farmId: currentUser.farmId, code: litterCode },

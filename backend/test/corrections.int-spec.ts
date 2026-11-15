@@ -116,18 +116,103 @@ describe('Corrections et rations (intégration)', () => {
     expect(await prisma.payment.count({ where: { saleId: createSale.id } })).toBe(0);
   });
 
-  it('un lapin avec historique ne peut pas être supprimé, un lapin créé par erreur oui', async () => {
-    const withHistory = await prisma.rabbit.findFirstOrThrow({ where: { code: 'F-RATION' } });
+  it('supprimer un lapin efface tout ce qui lui est lié, ses petits et ses ventes restent', async () => {
+    const mother = await rabbit('F-EFFACEE', 'FEMALE');
+    const father = await rabbit('M-GARDE', 'MALE');
     await run(
       `mutation ($input: CreateHealthRecordInput!) { createHealthRecord(input: $input) { id } }`,
-      { input: { rabbitId: withHistory.id, date: daysAgo(1), symptoms: 'Toux' } },
+      { input: { rabbitId: mother, date: daysAgo(1), symptoms: 'Toux' } },
     );
-    const refused = await gql(app, `mutation ($id: ID!) { deleteRabbit(id: $id) }`, { id: withHistory.id }, token);
-    expect(refused.errors?.[0]?.message).toMatch(/sortie/);
+    const { createBreeding } = await run(
+      `mutation ($input: CreateBreedingInput!) { createBreeding(input: $input) { id } }`,
+      { input: { femaleId: mother, maleId: father, breedingDate: daysAgo(50) } },
+    );
+    await run(
+      `mutation ($input: CreatePregnancyCheckInput!) { createPregnancyCheck(input: $input) { id } }`,
+      { input: { breedingId: createBreeding.id, checkedDate: daysAgo(38), result: 'PREGNANT' } },
+    );
+    const { createBirth } = await run(
+      `mutation ($input: CreateBirthInput!) { createBirth(input: $input) { litterId } }`,
+      { input: { breedingId: createBreeding.id, birthDate: daysAgo(18), liveBorn: 3, stillBorn: 0 } },
+    );
+    const kits = await prisma.rabbit.findMany({ where: { birthLitterId: createBirth.litterId } });
+    expect(kits).toHaveLength(3);
+    const { createSale } = await run(
+      `mutation ($input: CreateSaleInput!) { createSale(input: $input) { id } }`,
+      { input: { saleDate: daysAgo(1), items: [{ rabbitId: kits[0].id, unitPrice: 4000 }] } },
+    );
 
-    const mistake = await rabbit('ERREUR', 'MALE');
-    await run(`mutation ($id: ID!) { deleteRabbit(id: $id) }`, { id: mistake });
-    expect(await prisma.rabbit.count({ where: { id: mistake } })).toBe(0);
+    const { rabbitDeletionImpact } = await run(`query ($id: ID!) { rabbitDeletionImpact(id: $id) }`, { id: mother });
+    expect(rabbitDeletionImpact).toEqual(
+      expect.arrayContaining(['des descendants', 'des accouplements ou portées', 'des fiches santé']),
+    );
+
+    await run(`mutation ($id: ID!) { deleteRabbit(id: $id) }`, { id: mother });
+    expect(await prisma.rabbit.count({ where: { id: mother } })).toBe(0);
+    expect(await prisma.breeding.count({ where: { id: createBreeding.id } })).toBe(0);
+    expect(await prisma.litter.count({ where: { id: createBirth.litterId } })).toBe(0);
+    expect(await prisma.task.count({ where: { sourceId: createBreeding.id } })).toBe(0);
+    // Les petits restent, sans mère ; le père et la vente aussi.
+    const remaining = await prisma.rabbit.findMany({ where: { id: { in: kits.map((k) => k.id) } } });
+    expect(remaining).toHaveLength(3);
+    expect(remaining.every((k) => k.motherId === null && k.fatherId === father)).toBe(true);
+    expect(await prisma.rabbit.count({ where: { id: father } })).toBe(1);
+    expect(await prisma.sale.count({ where: { id: createSale.id } })).toBe(1);
+
+    // Un mâle avec des saillies se supprime aussi ; ses petits gardent leur mère.
+    await run(`mutation ($id: ID!) { deleteRabbit(id: $id) }`, { id: father });
+    expect(await prisma.rabbit.count({ where: { fatherId: father } })).toBe(0);
+  });
+
+  it('historique : corriger la date d’entrée en cage, effacer un placement par erreur', async () => {
+    const { createSection } = await run(
+      `mutation ($input: CreateSectionInput!) { createSection(input: $input) { id } }`,
+      { input: { name: 'Bloc historique', type: 'FATTENING' } },
+    );
+    const cage = async (code: string) =>
+      (
+        await run(`mutation ($input: CreateCageInput!) { createCage(input: $input) { id } }`, {
+          input: { sectionId: createSection.id, code, capacity: 2 },
+        })
+      ).createCage.id as string;
+    const first = await cage('H-01');
+    const wrong = await cage('H-02');
+    const r = await rabbit('R-HISTO', 'MALE');
+    const move = `mutation ($input: MoveRabbitInput!) { moveRabbit(input: $input) { id } }`;
+    await run(move, { input: { rabbitId: r, cageId: first, movedAt: daysAgo(10) } });
+    await run(move, { input: { rabbitId: r, cageId: wrong, movedAt: daysAgo(2) } });
+
+    const trace = async () =>
+      (
+        await run(`query ($id: ID!) { rabbitTraceability(rabbitId: $id) { events { type recordId date note } } }`, { id: r })
+      ).rabbitTraceability.events.filter((e: { type: string }) => e.type === 'CAGE');
+    const [firstEvent, wrongEvent] = await trace();
+
+    await run(
+      `mutation ($input: UpdateRabbitHistoryInput!) { updateRabbitHistoryEvent(input: $input) }`,
+      { input: { rabbitId: r, type: 'CAGE', recordId: wrongEvent.recordId, date: daysAgo(3), note: 'Corrigé' } },
+    );
+    const moved = await prisma.rabbitCageMovement.findUniqueOrThrow({ where: { id: wrongEvent.recordId } });
+    expect(moved.observation).toBe('Corrigé');
+    // La cage précédente se termine à la nouvelle date.
+    const previous = await prisma.rabbitCageMovement.findUniqueOrThrow({ where: { id: firstEvent.recordId } });
+    expect(previous.endedAt?.toISOString()).toBe(moved.startedAt.toISOString());
+
+    const future = await gql(
+      app,
+      `mutation ($input: UpdateRabbitHistoryInput!) { updateRabbitHistoryEvent(input: $input) }`,
+      { input: { rabbitId: r, type: 'CAGE', recordId: wrongEvent.recordId, date: daysAgo(-3) } },
+      token,
+    );
+    expect(future.errors?.[0]?.message).toMatch(/futur/);
+
+    await run(
+      `mutation ($r: ID!, $id: ID!) { deleteRabbitHistoryEvent(rabbitId: $r, type: "CAGE", recordId: $id) }`,
+      { r, id: wrongEvent.recordId },
+    );
+    // Le lapin retourne dans sa première cage.
+    const current = await prisma.rabbitCageMovement.findMany({ where: { rabbitId: r, endedAt: null } });
+    expect(current.map((m) => m.cageId)).toEqual([first]);
   });
 
   it('annuler un décès saisi par erreur', async () => {

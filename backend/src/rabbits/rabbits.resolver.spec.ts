@@ -6,6 +6,7 @@ import { PrismaService } from '../prisma/prisma.service.js';
 import { RabbitsResolver } from './rabbits.resolver.js';
 import { RabbitsService } from './rabbits.service.js';
 import { TraceabilityService } from './traceability.service.js';
+import { RabbitHistoryService } from './rabbit-history.service.js';
 
 describe('RabbitsResolver', () => {
   let resolver: RabbitsResolver;
@@ -17,6 +18,7 @@ describe('RabbitsResolver', () => {
         RabbitsResolver,
         RabbitsService,
         TraceabilityService,
+        RabbitHistoryService,
         { provide: PrismaService, useValue: {} },
       ],
     }).compile();

@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, Float, ID, ObjectType } from '@nestjs/graphql';
 
 import { RabbitModel } from './rabbit.model.js';
 import { RabbitSummaryModel } from '../../common/models/rabbit-summary.model.js';
@@ -19,6 +19,15 @@ export class TraceEventModel {
 
   @Field(() => ID, { nullable: true })
   referenceId?: string | null;
+
+  @Field(() => ID, { nullable: true, description: 'Ligne d’historique modifiable ou supprimable' })
+  recordId?: string | null;
+
+  @Field(() => String, { nullable: true, description: 'Observation ou cause modifiable' })
+  note?: string | null;
+
+  @Field(() => Float, { nullable: true })
+  weightKg?: number | null;
 }
 
 @ObjectType()
