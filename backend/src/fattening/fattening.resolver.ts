@@ -10,6 +10,8 @@ import { UpdateWeighingInput } from './inputs/update-weighing.input.js';
 import { UseGuards } from '@nestjs/common';
 
 import { FatteningService } from './fattening.service.js';
+import { TrackingSheetService } from './tracking/tracking-sheet.service.js';
+import { TrackingSheetModel } from './tracking/tracking-sheet.model.js';
 import { FatteningLotModel } from './models/fattening-lot.model.js';
 import { LotMembershipModel } from './models/lot-membership.model.js';
 import { WeighingModel } from './models/weighing.model.js';
@@ -30,7 +32,15 @@ import { FarmRole } from '../generated/prisma/client.js';
 @Resolver(() => FatteningLotModel)
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class FatteningResolver {
-  constructor(private readonly fatteningService: FatteningService) {}
+  constructor(
+    private readonly fatteningService: FatteningService,
+    private readonly trackingSheet: TrackingSheetService,
+  ) {}
+
+  @Query(() => TrackingSheetModel, { description: 'Fiche de suivi : de la saillie des mères jusqu’à l’engraissement du lot.' })
+  lotTrackingSheet(@Args('lotId', { type: () => ID }) lotId: string, @CurrentUser() currentUser: CurrentUserType) {
+    return this.trackingSheet.forLot(lotId, currentUser);
+  }
 
   @Query(() => [FatteningLotModel])
   fatteningLots(@CurrentUser() currentUser: CurrentUserType) {

@@ -300,11 +300,11 @@ function LitterActionModal({
     cause: '',
     averageWeight: '',
     totalWeight: '',
-    fatteningLotId: '',
+    fatteningLotId: '__new__',
     observation: '',
   });
 
-  const opts = { refetchQueries: ['LitterDetail', 'Litters', 'Dashboard'] };
+  const opts = { refetchQueries: ['LitterDetail', 'Litters', 'Dashboard', 'FatteningLots', 'LotOptions', 'RabbitsPaginated'] };
   const [assign, a] = useMutation(ASSIGN, opts);
   const [adopt, ad] = useMutation(ADOPT, opts);
   const [mortality, m] = useMutation(MORTALITY, opts);
@@ -350,7 +350,8 @@ function LitterActionModal({
             rabbitIds: hasKits ? selected : undefined,
             averageWeight: toFloat(values.averageWeight),
             totalWeight: toFloat(values.totalWeight),
-            fatteningLotId: values.fatteningLotId,
+            fatteningLotId: values.fatteningLotId === '__new__' ? undefined : values.fatteningLotId,
+            createFatteningLot: values.fatteningLotId === '__new__' ? true : undefined,
             observation,
           }),
         },
@@ -424,14 +425,21 @@ function LitterActionModal({
                 <Input type="number" min={1} placeholder={String(litterCount)} {...bind('quantity')} />
               </Field>
             )}
-            <Field label="Poids moyen (kg)">
-              <Input inputMode="decimal" {...bind('averageWeight')} />
+            <Field label="Poids moyen d’un lapereau (kg)" hint="Poids d’UN lapereau. Saisis l’un ou l’autre, l’app calcule le second.">
+              <Input inputMode="decimal" placeholder="ex. 0,8" {...bind('averageWeight')} />
             </Field>
-            <Field label="Poids total (kg)">
+            <Field label="Poids total des lapereaux sevrés (kg)" hint="Tous les lapereaux sevrés pesés ensemble.">
               <Input inputMode="decimal" {...bind('totalWeight')} />
             </Field>
-            <Field label="Lot d’engraissement" hint="Les lapereaux y sont ajoutés directement">
-              <Select placeholder="Aucun" options={lots.options} {...bind('fatteningLotId')} />
+            <Field label="Engraissement" hint="Les lapereaux sevrés y sont placés directement, visibles dans Engraissement.">
+              <Select
+                options={[
+                  { value: '__new__', label: 'Créer un nouveau lot (recommandé)' },
+                  ...lots.options.map((o) => ({ ...o, label: `Ajouter au lot ${o.label}` })),
+                  { value: '', label: 'Ne pas mettre en engraissement' },
+                ]}
+                {...bind('fatteningLotId')}
+              />
             </Field>
           </>
         )}

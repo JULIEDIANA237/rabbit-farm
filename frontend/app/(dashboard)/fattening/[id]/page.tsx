@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { use, useState } from 'react';
 import { gql } from '@apollo/client';
 import { useMutation, useQuery } from '@apollo/client/react';
+import { FileText } from 'lucide-react';
 
 import {
   Badge, Button, Card, ErrorBox, Field, FormGrid, Grid, Input, Loading, Modal, PageHeader, Select, Stat, Table, Textarea,
@@ -102,7 +103,13 @@ export default function LotPage({ params }: { params: Promise<{ id: string }> })
         title={lot.code}
         description={`Entré le ${formatDate(lot.entryDate)}${lot.currentCageCode ? ` · cage ${lot.currentCageCode}` : ''}`}
         actions={
-          lot.status === 'ACTIVE' && (
+          <>
+            <Link href={`/print/lot/${lot.id}`}>
+              <Button variant="secondary">
+                <FileText size={16} /> Fiche de suivi
+              </Button>
+            </Link>
+            {lot.status === 'ACTIVE' && (
             <>
               <Button variant="secondary" onClick={() => setKind('add')}>Ajouter des lapins</Button>
               <Button variant="secondary" onClick={() => setKind('move')}>Déplacer</Button>
@@ -112,7 +119,8 @@ export default function LotPage({ params }: { params: Promise<{ id: string }> })
               </Link>
               <Button variant="ghost" onClick={() => setKind('complete')}>Clôturer</Button>
             </>
-          )
+            )}
+          </>
         }
       />
 

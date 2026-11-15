@@ -261,6 +261,11 @@ input CompleteWeaningInput {
   averageWeight: Float
 
   """
+  Crée un lot d'engraissement pour les lapereaux sevrés (si aucun lot n'est choisi).
+  """
+  createFatteningLot: Boolean
+
+  """
   Lot d'engraissement dans lequel placer les lapereaux sevrés (§34 : sevrage → engraissement).
   """
   fatteningLotId: ID
@@ -487,6 +492,11 @@ input CreateTaskInput {
 input CreateWeaningInput {
   actualDate: DateTime
   averageWeight: Float
+
+  """
+  Crée un lot d'engraissement pour les lapereaux sevrés (si aucun lot n'est choisi).
+  """
+  createFatteningLot: Boolean
 
   """
   Lot d'engraissement dans lequel placer les lapereaux sevrés (§34 : sevrage → engraissement).
@@ -1330,6 +1340,11 @@ type Query {
   litters: [LitterModel!]!
   lotCageMovements(lotId: ID!): [LotCageMovementModel!]!
   lotMemberships(lotId: ID!): [LotMembershipModel!]!
+
+  """
+  Fiche de suivi : de la saillie des mères jusqu’à l’engraissement du lot.
+  """
+  lotTrackingSheet(lotId: ID!): TrackingSheetModel!
   me: MeModel!
   mortalities(from: DateTime, to: DateTime): [MortalityModel!]!
   pregnancies: [PregnancyModel!]!
@@ -1615,6 +1630,52 @@ input SetFeedRationsInput {
   startDate: DateTime
 }
 
+type SheetEventModel {
+  date: DateTime!
+  label: String!
+}
+
+type SheetLitterModel {
+  birthDate: DateTime!
+  breedingDate: DateTime
+  code: String!
+
+  """Morts entre la naissance et le sevrage"""
+  deathsBeforeWeaning: Int!
+
+  """Toutes les étapes, dans l’ordre"""
+  events: [SheetEventModel!]!
+  fatherCode: String
+
+  """Jours entre la saillie et la mise bas"""
+  gestationDays: Int
+  id: ID!
+  liveBorn: Int!
+  motherCode: String
+  nestDate: DateTime
+
+  """Première palpation positive"""
+  pregnancyConfirmedDate: DateTime
+  stillBorn: Int!
+  weaned: Int!
+
+  """Âge des lapereaux au sevrage (jours)"""
+  weaningAgeDays: Int
+  weaningAverageWeight: Float
+  weaningDate: DateTime
+}
+
+type SheetWeighingModel {
+  ageInDays: Int
+  animalCount: Int!
+  averageWeight: Float
+
+  """Gain moyen quotidien depuis la pesée précédente (g/jour)"""
+  dailyGainGrams: Float
+  date: DateTime!
+  totalWeight: Float!
+}
+
 type StockMovementModel {
   createdAt: DateTime!
   date: DateTime!
@@ -1720,6 +1781,29 @@ type TraceEventModel {
   BIRTH, CAGE, LOT, WEANING, ADOPTION, WEIGHING, HEALTH, BREEDING, SALE, EXIT
   """
   type: String!
+}
+
+type TrackingSheetModel {
+  activeCount: Int!
+  currentCageCode: String
+  deadInLot: Int!
+  enteredCount: Int!
+  entryDate: DateTime!
+  exitDate: DateTime
+  litters: [SheetLitterModel!]!
+  lotCode: String!
+
+  """Mortalités, déplacements et ventes du lot"""
+  lotEvents: [SheetEventModel!]!
+  lotId: ID!
+  lotStatus: String!
+
+  """GMQ global depuis la première pesée (g/jour)"""
+  overallDailyGainGrams: Float
+  salesAmount: Float
+  soldCount: Int!
+  soldWeight: Float
+  weighings: [SheetWeighingModel!]!
 }
 
 input UpdateBirthInput {
@@ -1904,6 +1988,10 @@ type WeaningModel {
   averageWeight: Float
   createdAt: DateTime!
   farmId: ID!
+  fatteningLotCode: String
+
+  """Lot d'engraissement où le sevrage a placé les lapereaux"""
+  fatteningLotId: ID
   id: ID!
   litterCode: String
   litterId: ID!

@@ -115,16 +115,43 @@ export function usePushNotifications() {
   }
 
   async function test() {
+    setError(null);
     const r = await sendTest();
-    setInfo(r.data?.sendTestPush ? 'Notification d’essai envoyée.' : 'Aucun appareil atteint.');
+    setInfo(
+      r.data?.sendTestPush
+        ? 'Le serveur a envoyé une notification. Si rien n’apparaît dans la barre de notifications d’ici une minute, fais le « Test du téléphone ».'
+        : 'Le serveur n’a atteint aucun appareil : désactive puis réactive les notifications.',
+    );
   }
 
-  return { configured: data?.pushConfig.enabled, loaded: !!data, state, busy, error, info, enable, disable, test };
+  /**
+   * Affiche une notification directement depuis le téléphone, sans le serveur.
+   * Si elle n'apparaît pas, le blocage vient des réglages du téléphone.
+   */
+  async function testLocal() {
+    setError(null);
+    try {
+      const registration = await navigator.serviceWorker.ready;
+      await registration.showNotification('RabbitFarm · test du téléphone', {
+        body: 'Si tu lis ceci dans la barre de notifications, ton téléphone affiche bien les rappels.',
+        icon: '/icons/icon-192.png',
+        badge: '/icons/icon-192.png',
+        tag: 'rabbitfarm-test-local',
+      });
+      setInfo(
+        'Notification affichée par le téléphone. Si elle n’est pas dans la barre de notifications, active les notifications de Chrome (ou de l’app RabbitFarm) dans les réglages Android → Applications → Notifications.',
+      );
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : 'Le téléphone a refusé d’afficher la notification.');
+    }
+  }
+
+  return { configured: data?.pushConfig.enabled, loaded: !!data, state, busy, error, info, enable, disable, test, testLocal };
 }
 
 /** Active les rappels du matin (tâches du jour, retards, mises bas proches). */
 export function NotificationsCard() {
-  const { configured, loaded, state, busy, error, info, enable, disable, test } = usePushNotifications();
+  const { configured, loaded, state, busy, error, info, enable, disable, test, testLocal } = usePushNotifications();
 
 
   return (
@@ -143,7 +170,10 @@ export function NotificationsCard() {
               <Bell size={16} /> Activés sur cet appareil
             </span>
             <Button variant="secondary" onClick={() => void test()}>
-              Envoyer un essai
+              Essai depuis le serveur
+            </Button>
+            <Button variant="secondary" onClick={() => void testLocal()}>
+              Test du téléphone
             </Button>
             <Button variant="secondary" loading={busy} onClick={() => void disable()}>
               <BellOff size={16} /> Désactiver
