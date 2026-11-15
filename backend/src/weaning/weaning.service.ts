@@ -58,6 +58,9 @@ export class WeaningService {
       date: Date;
       rabbitIds: string[];
       fatteningLotId?: string;
+      createFatteningLot?: boolean;
+      totalWeight?: number | null;
+      averageWeight?: number | null;
     },
   ) {
     const litter = await tx.litter.update({
@@ -74,9 +77,14 @@ export class WeaningService {
 
     await this.tasks.onWeaningCompleted(params.farmId, litter.birthId, tx);
 
-    if (params.fatteningLotId) {
+    let lotId = params.fatteningLotId;
+    if (!lotId && params.createFatteningLot) {
+      lotId = (await this.createLotForLitter(tx, params.farmId, litter.code, params.date)).id;
+    }
+
+    if (lotId) {
       const lot = await tx.fatteningLot.findFirst({
-        where: { id: params.fatteningLotId, farmId: params.farmId },
+        where: { id: lotId, farmId: params.farmId },
       });
 
       if (!lot || lot.status !== FatteningLotStatus.ACTIVE) {
@@ -107,7 +115,57 @@ export class WeaningService {
           data: { purpose: RabbitPurpose.FATTENING },
         });
       }
+
+      // Pesée d'entrée : le poids du sevrage devient le point de départ
+      // du suivi de croissance du lot (GMQ).
+      const weights = weaningWeights(params.quantity, params.totalWeight, params.averageWeight);
+      if (weights) {
+        await tx.weighing.create({
+          data: {
+            lotId: lot.id,
+            date: params.date,
+            totalWeight: weights.totalWeight,
+            animalCount: params.quantity,
+            averageWeight: weights.averageWeight,
+            ageInDays: Math.max(0, Math.round((params.date.getTime() - litter.birthDate.getTime()) / 86_400_000)),
+            observation: 'Pesée au sevrage',
+          },
+        });
+      }
     }
+  }
+
+  /** Lot d'engraissement créé au sevrage, nommé d’après la portée (LOT-L012, LOT-L012-2…). */
+  private async createLotForLitter(tx: Prisma.TransactionClient, farmId: string, litterCode: string, date: Date) {
+    const base = `LOT-${litterCode}`;
+    let code = base;
+    for (let i = 2; await tx.fatteningLot.findFirst({ where: { farmId, code }, select: { id: true } }); i += 1) {
+      code = `${base}-${i}`;
+    }
+    return tx.fatteningLot.create({
+      data: { farmId, code, entryDate: date, observation: `Créé au sevrage de la portée ${litterCode}` },
+    });
+  }
+
+  /**
+   * Lapereaux concernés par un sevrage réalisé. Si aucun n'est choisi,
+   * on prend les lapereaux encore actifs de la portée (dans l'ordre des codes),
+   * jusqu'au nombre sevré, pour qu'ils rejoignent bien le lot d'engraissement.
+   */
+  private async resolveWeanedRabbits(farmId: string, litterId: string, provided: string[], quantity: number) {
+    if (provided.length > 0) return provided;
+    const kits = await this.prisma.rabbit.findMany({
+      where: {
+        farmId,
+        birthLitterId: litterId,
+        status: RabbitStatus.ACTIVE,
+        lotMemberships: { none: { leftAt: null } },
+      },
+      orderBy: { code: 'asc' },
+      select: { id: true },
+      take: quantity,
+    });
+    return kits.map((k) => k.id);
   }
 
   private validateQuantity(quantity: number) {
@@ -143,7 +201,7 @@ export class WeaningService {
       );
     }
 
-    const rabbitIds = [...new Set(input.rabbitIds ?? [])];
+    let rabbitIds = [...new Set(input.rabbitIds ?? [])];
     if (rabbitIds.length > input.quantity) {
       throw new BadRequestException(
         'Le nombre de lapins sélectionnés dépasse la quantité prévue.',
@@ -167,6 +225,10 @@ export class WeaningService {
       }
     }
 
+    if (input.actualDate) {
+      rabbitIds = await this.resolveWeanedRabbits(currentUser.farmId, input.litterId, rabbitIds, input.quantity);
+    }
+
     return this.prisma.$transaction(async (tx) => {
       const weaning = await tx.weaning.create({
         data: {
@@ -174,8 +236,7 @@ export class WeaningService {
           litterId: input.litterId,
           plannedDate,
           quantity: input.quantity,
-          totalWeight: input.totalWeight,
-          averageWeight: input.averageWeight,
+          ...(weaningWeights(input.quantity, input.totalWeight, input.averageWeight) ?? {}),
           observation: input.observation?.trim() || null,
           actualDate: input.actualDate
             ? new Date(input.actualDate)
@@ -194,6 +255,9 @@ export class WeaningService {
           date: new Date(input.actualDate),
           rabbitIds,
           fatteningLotId: input.fatteningLotId,
+          createFatteningLot: input.createFatteningLot,
+          totalWeight: input.totalWeight,
+          averageWeight: input.averageWeight,
         });
       }
       return this.toModel(weaning);
@@ -226,7 +290,12 @@ export class WeaningService {
       );
     }
 
-    const rabbitIds = [...new Set(input.rabbitIds ?? weaning.rabbits.map((rabbit) => rabbit.rabbitId))];
+    const rabbitIds = await this.resolveWeanedRabbits(
+      currentUser.farmId,
+      weaning.litterId,
+      [...new Set(input.rabbitIds ?? weaning.rabbits.map((rabbit) => rabbit.rabbitId))],
+      quantity,
+    );
     if (rabbitIds.length > quantity) {
       throw new BadRequestException(
         'Le nombre de lapins sélectionnés dépasse la quantité sevrée.',
@@ -254,8 +323,7 @@ export class WeaningService {
         data: {
           actualDate,
           quantity,
-          totalWeight: input.totalWeight ?? undefined,
-          averageWeight: input.averageWeight ?? undefined,
+          ...(weaningWeights(quantity, input.totalWeight, input.averageWeight) ?? {}),
           observation: input.observation?.trim() || undefined,
           rabbits: {
             deleteMany: {},
@@ -271,6 +339,9 @@ export class WeaningService {
         date: actualDate,
         rabbitIds,
         fatteningLotId: input.fatteningLotId,
+        createFatteningLot: input.createFatteningLot,
+        totalWeight: input.totalWeight ?? (weaning.totalWeight != null ? Number(weaning.totalWeight) : null),
+        averageWeight: input.averageWeight ?? (weaning.averageWeight != null ? Number(weaning.averageWeight) : null),
       });
       return this.toModel(updated);
     });
@@ -414,4 +485,19 @@ export class WeaningService {
     });
     return true;
   }
+}
+
+/**
+ * Poids d'un sevrage : on peut saisir le poids total (toute la portée sevrée
+ * pesée ensemble) OU le poids moyen (un lapereau) ; l'autre se calcule.
+ */
+export function weaningWeights(quantity: number, totalWeight?: number | null, averageWeight?: number | null) {
+  const round = (v: number) => Math.round(v * 1000) / 1000;
+  if (totalWeight != null && totalWeight > 0) {
+    return { totalWeight: round(totalWeight), averageWeight: quantity > 0 ? round(totalWeight / quantity) : null };
+  }
+  if (averageWeight != null && averageWeight > 0) {
+    return { totalWeight: round(averageWeight * quantity), averageWeight: round(averageWeight) };
+  }
+  return null;
 }

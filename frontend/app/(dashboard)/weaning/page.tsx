@@ -54,7 +54,13 @@ interface Weaning {
   observation?: string | null;
 }
 
-const refetchQueries = ['Weanings', 'Dashboard', 'LitterOptions'];
+const refetchQueries = ['Weanings', 'Dashboard', 'LitterOptions', 'FatteningLots', 'LotOptions', 'RabbitsPaginated'];
+
+const NEW_LOT = '__new__';
+const AVG_LABEL = 'Poids moyen d’un lapereau (kg)';
+const TOTAL_LABEL = 'Poids total des lapereaux sevrés (kg)';
+const AVG_HINT = 'Poids d’UN lapereau. Saisis l’un ou l’autre, l’app calcule le second.';
+const TOTAL_HINT = 'Tous les lapereaux sevrés pesés ensemble.';
 
 export default function WeaningPage() {
   const [tab, setTab] = useState<'planned' | 'done'>('planned');
@@ -183,10 +189,10 @@ function EditWeaningModal({ weaning, onClose }: { weaning: Weaning; onClose: () 
             <Input type="date" {...bind('actualDate')} />
           </Field>
         )}
-        <Field label="Poids moyen (kg)">
+        <Field label={AVG_LABEL} hint={AVG_HINT}>
           <Input inputMode="decimal" {...bind('averageWeight')} />
         </Field>
-        <Field label="Poids total (kg)">
+        <Field label={TOTAL_LABEL} hint={TOTAL_HINT}>
           <Input inputMode="decimal" {...bind('totalWeight')} />
         </Field>
       </FormGrid>
@@ -209,7 +215,7 @@ function WeaningModal({ open, weaning, onClose }: { open: boolean; weaning?: Wea
     quantity: weaning ? String(weaning.quantity) : '',
     averageWeight: '',
     totalWeight: '',
-    fatteningLotId: '',
+    fatteningLotId: NEW_LOT,
     observation: '',
   });
   const [create, c] = useMutation(CREATE, { refetchQueries });
@@ -225,13 +231,24 @@ function WeaningModal({ open, weaning, onClose }: { open: boolean; weaning?: Wea
 
   const selectedLitter = litters.litters.find((l) => l.id === values.litterId);
   const done = weaning || values.done === 'yes';
+  const count = toInt(values.quantity) ?? (weaning ? weaning.quantity : selectedLitter?.currentCount) ?? 0;
+  /** Affiche le poids calculé à partir de l'autre champ. */
+  const weightHint = (field: 'avg' | 'total') => {
+    const avg = toFloat(values.averageWeight);
+    const total = toFloat(values.totalWeight);
+    if (!count) return null;
+    if (field === 'avg' && !avg && total) return `Calculé : ${formatNumber(total / count, 3)} kg par lapereau`;
+    if (field === 'total' && !total && avg) return `Calculé : ${formatNumber(avg * count, 2)} kg pour ${count} lapereaux`;
+    return null;
+  };
 
   async function submit() {
     const common = {
       quantity: toInt(values.quantity),
       averageWeight: toFloat(values.averageWeight),
       totalWeight: toFloat(values.totalWeight),
-      fatteningLotId: values.fatteningLotId,
+      fatteningLotId: values.fatteningLotId === NEW_LOT ? undefined : values.fatteningLotId,
+      createFatteningLot: values.fatteningLotId === NEW_LOT ? true : undefined,
       observation: values.observation,
     };
     if (weaning) {
@@ -288,14 +305,30 @@ function WeaningModal({ open, weaning, onClose }: { open: boolean; weaning?: Wea
         </Field>
         {done && (
           <>
-            <Field label="Poids moyen (kg)">
-              <Input inputMode="decimal" {...bind('averageWeight')} />
+            <Field label={AVG_LABEL} hint={weightHint('avg') ?? AVG_HINT}>
+              <Input inputMode="decimal" placeholder="ex. 0,8" {...bind('averageWeight')} />
             </Field>
-            <Field label="Poids total (kg)">
+            <Field label={TOTAL_LABEL} hint={weightHint('total') ?? TOTAL_HINT}>
               <Input inputMode="decimal" {...bind('totalWeight')} />
             </Field>
-            <Field label="Lot d’engraissement">
-              <Select placeholder="Aucun" options={lots.options} {...bind('fatteningLotId')} />
+            <Field
+              label="Engraissement"
+              hint={
+                values.fatteningLotId === NEW_LOT
+                  ? 'Les lapereaux sevrés iront dans un nouveau lot, visible dans Engraissement.'
+                  : values.fatteningLotId
+                    ? 'Les lapereaux sevrés rejoignent ce lot.'
+                    : 'Les lapereaux restent sans lot.'
+              }
+            >
+              <Select
+                options={[
+                  { value: NEW_LOT, label: 'Créer un nouveau lot (recommandé)' },
+                  ...lots.options.map((o) => ({ ...o, label: `Ajouter au lot ${o.label}` })),
+                  { value: '', label: 'Ne pas mettre en engraissement' },
+                ]}
+                {...bind('fatteningLotId')}
+              />
             </Field>
           </>
         )}

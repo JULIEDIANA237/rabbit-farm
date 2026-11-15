@@ -27,6 +27,12 @@ export class CompleteWeaningInput {
   })
   fatteningLotId?: string;
 
+  @Field({
+    nullable: true,
+    description: "Crée un lot d'engraissement pour les lapereaux sevrés (si aucun lot n'est choisi).",
+  })
+  createFatteningLot?: boolean;
+
   @Field({ nullable: true })
   observation?: string;
 }

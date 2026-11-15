@@ -186,4 +186,44 @@ describe('Corrections et rations (intégration)', () => {
     expect(history.errors?.[0]?.message).toMatch(/historique/);
     expect(await prisma.rabbitCageMovement.count({ where: { cageId: used } })).toBe(1);
   });
+  it('sevrage : crée le lot d’engraissement, y place les lapereaux et enregistre la pesée', async () => {
+    const female = await rabbit('F-SEVRAGE', 'FEMALE');
+    const male = await rabbit('M-SEVRAGE', 'MALE');
+    const { createBreeding } = await run(
+      `mutation ($input: CreateBreedingInput!) { createBreeding(input: $input) { id } }`,
+      { input: { femaleId: female, maleId: male, breedingDate: daysAgo(70) } },
+    );
+    await run(
+      `mutation ($input: CreatePregnancyCheckInput!) { createPregnancyCheck(input: $input) { id } }`,
+      { input: { breedingId: createBreeding.id, checkedDate: daysAgo(58), result: 'PREGNANT' } },
+    );
+    const { createBirth } = await run(
+      `mutation ($input: CreateBirthInput!) { createBirth(input: $input) { litterId litterCode } }`,
+      { input: { breedingId: createBreeding.id, birthDate: daysAgo(38), liveBorn: 6, stillBorn: 0 } },
+    );
+
+    // Aucun lapereau choisi à la main, seul le poids moyen est saisi.
+    const { createWeaning } = await run(
+      `mutation ($input: CreateWeaningInput!) { createWeaning(input: $input) { id totalWeight averageWeight } }`,
+      {
+        input: {
+          litterId: createBirth.litterId,
+          plannedDate: daysAgo(3),
+          actualDate: daysAgo(3),
+          quantity: 5,
+          averageWeight: 0.8,
+          createFatteningLot: true,
+        },
+      },
+    );
+    expect(createWeaning).toMatchObject({ totalWeight: 4, averageWeight: 0.8 });
+
+    const { fatteningLots } = await run(`query { fatteningLots { code activeMemberCount latestAverageWeight } }`);
+    const lot = fatteningLots.find((l: { code: string }) => l.code === `LOT-${createBirth.litterCode}`);
+    expect(lot).toEqual({ code: `LOT-${createBirth.litterCode}`, activeMemberCount: 5, latestAverageWeight: 0.8 });
+
+    // Le 6e lapereau, non sevré, reste avec la mère (hors du lot).
+    const inLot = await prisma.lotMembership.count({ where: { leftAt: null, rabbit: { birthLitterId: createBirth.litterId } } });
+    expect(inLot).toBe(5);
+  });
 });
