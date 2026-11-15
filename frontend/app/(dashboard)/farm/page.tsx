@@ -197,7 +197,14 @@ export default function FarmPage() {
       )}
 
       {modal === 'section' && <SectionModal onClose={() => setModal(null)} />}
-      {modal && modal !== 'section' && <CageModal sectionId={modal.sectionId} onClose={() => setModal(null)} />}
+      {modal && modal !== 'section' && (
+        <CageModal
+          sectionId={modal.sectionId}
+          sections={data?.sections ?? []}
+          cages={data?.cages ?? []}
+          onClose={() => setModal(null)}
+        />
+      )}
       {editingSection && <SectionModal key={editingSection.id} editing={editingSection} onClose={() => setEditingSection(null)} />}
       {editingCage && (
         <CageModal
@@ -205,6 +212,7 @@ export default function FarmPage() {
           sectionId={editingCage.sectionId}
           editing={editingCage}
           sections={data?.sections ?? []}
+          cages={data?.cages ?? []}
           onClose={() => setEditingCage(null)}
         />
       )}
@@ -261,21 +269,55 @@ function SectionModal({ onClose, editing }: { onClose: () => void; editing?: Sec
   );
 }
 
+/** Types de cage proposés (le bloc donne le type par défaut). */
+const CAGE_TYPES = ['Maternité', 'Engraissement', 'Reproduction', 'Quarantaine'];
+const CAGE_TYPE_BY_SECTION: Record<string, string> = {
+  MATERNITY: 'Maternité',
+  FATTENING: 'Engraissement',
+  REPRODUCTION: 'Reproduction',
+  QUARANTINE: 'Quarantaine',
+};
+
+/**
+ * Code proposé pour une nouvelle cage : on prolonge la numérotation du bloc
+ * (E01, E02 → E03). Bloc vide : initiale du bloc + 01. Jamais un code déjà pris.
+ */
+function nextCageCode(section: Section | undefined, cages: Cage[]) {
+  const taken = new Set(cages.map((c) => c.code.toUpperCase()));
+  const inSection = cages.filter((c) => c.sectionId === section?.id);
+  const parsed = inSection
+    .map((c) => /^(.*?)(\d+)$/.exec(c.code))
+    .filter((m): m is RegExpExecArray => !!m);
+  const initial = (section?.name.normalize('NFD').replace(/[^A-Za-z0-9]/g, '').charAt(0) || 'C').toUpperCase();
+  const prefix = parsed.length ? parsed[parsed.length - 1][1] : initial;
+  const width = parsed.length ? Math.max(...parsed.map((m) => m[2].length)) : 2;
+  let n = parsed.filter((m) => m[1] === prefix).reduce((max, m) => Math.max(max, Number(m[2])), 0) + 1;
+  let code = `${prefix}${String(n).padStart(width, '0')}`;
+  while (taken.has(code.toUpperCase())) {
+    n += 1;
+    code = `${prefix}${String(n).padStart(width, '0')}`;
+  }
+  return code;
+}
+
 function CageModal({
   sectionId,
   onClose,
   editing,
   sections = [],
+  cages = [],
 }: {
   sectionId: string;
   onClose: () => void;
   editing?: Cage;
   sections?: Section[];
+  cages?: Cage[];
 }) {
+  const section = sections.find((s) => s.id === sectionId);
   const { bind, values } = useForm({
-    code: editing?.code ?? '',
+    code: editing?.code ?? nextCageCode(section, cages),
     capacity: editing ? String(editing.capacity) : '1',
-    type: editing?.type ?? '',
+    type: editing?.type ?? CAGE_TYPE_BY_SECTION[section?.type ?? ''] ?? '',
     sectionId,
     status: editing?.status ?? 'ACTIVE',
   });
@@ -315,14 +357,22 @@ function CageModal({
       }
     >
       <FormGrid>
-        <Field label="Code">
+        <Field label="Code" hint={editing ? undefined : 'Proposé automatiquement, tu peux le changer'}>
           <Input placeholder="C01" {...bind('code')} />
         </Field>
         <Field label="Capacité">
           <Input type="number" min={1} {...bind('capacity')} />
         </Field>
         <Field label="Type">
-          <Input placeholder="Maternité, engraissement…" {...bind('type')} />
+          <Select
+            placeholder="Choisir…"
+            options={[
+              ...CAGE_TYPES.map((t) => ({ value: t, label: t })),
+              // Ancien type saisi librement : on le garde visible.
+              ...(values.type && !CAGE_TYPES.includes(values.type) ? [{ value: values.type, label: values.type }] : []),
+            ]}
+            {...bind('type')}
+          />
         </Field>
         {editing && (
           <>
