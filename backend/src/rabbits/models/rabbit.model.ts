@@ -79,6 +79,9 @@ export class RabbitModel {
   @Field(() => String, { nullable: true })
   breedName?: string | null;
 
+  @Field(() => String, { nullable: true, description: 'Code de la mère' })
+  motherCode?: string | null;
+
   @Field(() => [RabbitIdentificationModel])
   identifications: RabbitIdentificationModel[];
 

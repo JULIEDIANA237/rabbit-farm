@@ -399,7 +399,7 @@ const CAGE_RABBITS = gql`
   query CageRabbits($cageId: ID!) {
     rabbitsPaginated(input: { cageId: $cageId, status: ACTIVE, pageSize: 200 }) {
       total
-      items { id code sex purpose }
+      items { id code sex purpose motherId motherCode }
     }
   }
 `;
@@ -422,6 +422,56 @@ interface PlacedRabbit {
   purpose: string;
   currentCageId?: string | null;
   currentCageCode?: string | null;
+  motherId?: string | null;
+  motherCode?: string | null;
+}
+
+interface MotherGroup {
+  motherId: string;
+  motherCode: string;
+  /** La mère elle-même, si elle est dans la cage. */
+  mother?: PlacedRabbit;
+  kits: PlacedRabbit[];
+}
+
+/**
+ * Range les occupants d'une cage : chaque lapereau sous sa mère,
+ * les autres lapins (sans mère connue ni petit dans la cage) à part.
+ */
+function groupByMother(rabbits: PlacedRabbit[]) {
+  const byId = new Map(rabbits.map((r) => [r.id, r]));
+  const groups = new Map<string, MotherGroup>();
+  for (const r of rabbits) {
+    if (!r.motherId) continue;
+    const group = groups.get(r.motherId) ?? {
+      motherId: r.motherId,
+      motherCode: r.motherCode ?? byId.get(r.motherId)?.code ?? '?',
+      mother: byId.get(r.motherId),
+      kits: [],
+    };
+    group.kits.push(r);
+    groups.set(r.motherId, group);
+  }
+  const grouped = new Set<string>();
+  for (const g of groups.values()) {
+    if (g.mother) grouped.add(g.mother.id);
+    g.kits.forEach((k) => grouped.add(k.id));
+  }
+  const others = rabbits.filter((r) => !grouped.has(r.id));
+  const sorted = [...groups.values()].sort((a, b) => a.motherCode.localeCompare(b.motherCode, 'fr', { numeric: true }));
+  sorted.forEach((g) => g.kits.sort((a, b) => a.code.localeCompare(b.code, 'fr', { numeric: true })));
+  return { groups: sorted, others };
+}
+
+function RabbitChip({ rabbit }: { rabbit: PlacedRabbit }) {
+  return (
+    <Link
+      href={`/rabbits/${rabbit.id}`}
+      className="rounded-full border border-slate-200 bg-white px-3 py-1 text-sm hover:bg-slate-50"
+    >
+      {rabbit.code} · {label(SEX, rabbit.sex)}
+    </Link>
+  );
 }
 
 /**
@@ -447,6 +497,7 @@ function CageRabbitsModal({ cage, onClose }: { cage: Cage; onClose: () => void }
   const client = useApolloClient();
 
   const occupants = inside.data?.rabbitsPaginated.items ?? [];
+  const occupantGroups = groupByMother(occupants);
   const free = Math.max(0, cage.capacity - cage.rabbitCount);
   const list = (candidates.data?.rabbitsPaginated.items ?? []).filter((r) => r.currentCageId !== cage.id);
   const toggle = (id: string) =>
@@ -491,15 +542,34 @@ function CageRabbitsModal({ cage, onClose }: { cage: Cage; onClose: () => void }
         {occupants.length === 0 ? (
           <p className="text-sm text-slate-500">{inside.loading ? 'Chargement…' : 'Aucun lapin enregistré dans cette cage.'}</p>
         ) : (
-          <div className="flex flex-wrap gap-2">
-            {occupants.map((r) => (
-              <Link
-                key={r.id}
-                href={`/rabbits/${r.id}`}
-                className="rounded-full border border-slate-200 px-3 py-1 text-sm hover:bg-slate-50"
-              >
-                {r.code} · {label(SEX, r.sex)}
-              </Link>
+          <div className="space-y-3">
+            {occupantGroups.others.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {occupantGroups.others.map((r) => (
+                  <RabbitChip key={r.id} rabbit={r} />
+                ))}
+              </div>
+            )}
+            {occupantGroups.groups.map((g) => (
+              <div key={g.motherId} className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                <div className="flex flex-wrap items-center gap-2 text-sm">
+                  {g.mother ? (
+                    <RabbitChip rabbit={g.mother} />
+                  ) : (
+                    <Link href={`/rabbits/${g.motherId}`} className="font-semibold text-slate-800 hover:underline">
+                      Mère {g.motherCode}
+                    </Link>
+                  )}
+                  <span className="text-xs text-slate-500">
+                    {g.kits.length} petit(s){g.mother ? '' : ' · mère dans une autre cage'}
+                  </span>
+                </div>
+                <div className="mt-2 ml-3 flex flex-wrap gap-2 border-l-2 border-slate-200 pl-3">
+                  {g.kits.map((k) => (
+                    <RabbitChip key={k.id} rabbit={k} />
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         )}

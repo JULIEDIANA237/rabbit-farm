@@ -1546,6 +1546,9 @@ type RabbitModel {
 
   """Comportement de mère : GOOD, AVERAGE, POOR"""
   maternalBehavior: String
+
+  """Code de la mère"""
+  motherCode: String
   motherId: String
   observations: String
 
