@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { gql } from '@apollo/client';
 import { useMutation, useQuery } from '@apollo/client/react';
-import { Plus } from 'lucide-react';
+import { FileText, Plus } from 'lucide-react';
 
 import {
   Badge, Button, ErrorBox, Field, FormGrid, Input, Loading, Modal, PageHeader, Select, Table, Tabs, Textarea,
@@ -26,11 +26,13 @@ const WEANINGS = gql`
       averageWeight
       totalWeight
       observation
+      fatteningLotId
+      fatteningLotCode
     }
   }
 `;
 const CREATE = gql`
-  mutation CreateWeaning($input: CreateWeaningInput!) { createWeaning(input: $input) { id } }
+  mutation CreateWeaning($input: CreateWeaningInput!) { createWeaning(input: $input) { id fatteningLotId fatteningLotCode } }
 `;
 const UPDATE = gql`
   mutation UpdateWeaning($input: UpdateWeaningInput!) { updateWeaning(input: $input) { id } }
@@ -39,7 +41,7 @@ const DELETE = gql`
   mutation DeleteWeaning($id: ID!) { deleteWeaning(id: $id) }
 `;
 const COMPLETE = gql`
-  mutation CompleteWeaning($input: CompleteWeaningInput!) { completeWeaning(input: $input) { id } }
+  mutation CompleteWeaning($input: CompleteWeaningInput!) { completeWeaning(input: $input) { id fatteningLotId fatteningLotCode } }
 `;
 
 interface Weaning {
@@ -52,7 +54,11 @@ interface Weaning {
   averageWeight?: number | null;
   totalWeight?: number | null;
   observation?: string | null;
+  fatteningLotId?: string | null;
+  fatteningLotCode?: string | null;
 }
+
+type WeaningResult = { id: string; fatteningLotId?: string | null; fatteningLotCode?: string | null };
 
 const refetchQueries = ['Weanings', 'Dashboard', 'LitterOptions', 'FatteningLots', 'LotOptions', 'RabbitsPaginated'];
 
@@ -67,6 +73,13 @@ export default function WeaningPage() {
   const [creating, setCreating] = useState(false);
   const [completing, setCompleting] = useState<Weaning | null>(null);
   const [editing, setEditing] = useState<Weaning | null>(null);
+  const [lastLot, setLastLot] = useState<{ id: string; code: string } | null>(null);
+  const showLot = (r?: WeaningResult | null) => {
+    if (r?.fatteningLotId && r.fatteningLotCode) {
+      setLastLot({ id: r.fatteningLotId, code: r.fatteningLotCode });
+      setTab('done');
+    }
+  };
   const remove = useDeleteAction(DELETE, { refetchQueries: [...refetchQueries, 'Litters', 'Tasks', 'HeaderTasks'] });
   useOpenFromQuery(() => setCreating(true));
 
@@ -93,6 +106,21 @@ export default function WeaningPage() {
           { value: 'done', label: 'Réalisés' },
         ]}
       />
+      {lastLot && (
+        <div className="mb-4 flex flex-wrap items-center gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+          <p className="flex-1">
+            Les lapereaux sevrés sont dans le lot <strong>{lastLot.code}</strong> (Engraissement).
+          </p>
+          <Link href={`/print/lot/${lastLot.id}`}>
+            <Button>
+              <FileText size={16} /> Fiche de suivi
+            </Button>
+          </Link>
+          <Link href={`/fattening/${lastLot.id}`}>
+            <Button variant="secondary">Voir le lot</Button>
+          </Link>
+        </div>
+      )}
       <ErrorBox error={error} onRetry={() => refetch()} />
       {loading && !data ? (
         <Loading />
@@ -109,6 +137,20 @@ export default function WeaningPage() {
             { header: 'Réalisé le', cell: (w) => (w.actualDate ? <Badge tone="green">{formatDate(w.actualDate)}</Badge> : '—') },
             { header: 'Quantité', cell: (w) => w.quantity },
             { header: 'Poids moyen', cell: (w) => (w.averageWeight != null ? `${formatNumber(w.averageWeight, 3)} kg` : '—') },
+            {
+              header: 'Lot',
+              cell: (w) =>
+                w.fatteningLotId ? (
+                  <span className="flex items-center gap-2">
+                    <Link className="font-semibold text-emerald-700" href={`/fattening/${w.fatteningLotId}`}>{w.fatteningLotCode}</Link>
+                    <Link href={`/print/lot/${w.fatteningLotId}`} title="Fiche de suivi" aria-label="Fiche de suivi" className="text-slate-500 hover:text-emerald-700">
+                      <FileText size={16} />
+                    </Link>
+                  </span>
+                ) : (
+                  '—'
+                ),
+            },
             {
               header: '',
               cell: (w) => (
@@ -129,8 +171,8 @@ export default function WeaningPage() {
           ]}
         />
       )}
-      <WeaningModal open={creating} onClose={() => setCreating(false)} />
-      {completing && <WeaningModal open weaning={completing} onClose={() => setCompleting(null)} />}
+      <WeaningModal open={creating} onClose={() => setCreating(false)} onSaved={showLot} />
+      {completing && <WeaningModal open weaning={completing} onClose={() => setCompleting(null)} onSaved={showLot} />}
       {editing && <EditWeaningModal key={editing.id} weaning={editing} onClose={() => setEditing(null)} />}
       {remove.dialog}
     </div>
@@ -204,7 +246,17 @@ function EditWeaningModal({ weaning, onClose }: { weaning: Weaning; onClose: () 
   );
 }
 
-function WeaningModal({ open, weaning, onClose }: { open: boolean; weaning?: Weaning; onClose: () => void }) {
+function WeaningModal({
+  open,
+  weaning,
+  onClose,
+  onSaved,
+}: {
+  open: boolean;
+  weaning?: Weaning;
+  onClose: () => void;
+  onSaved?: (result?: WeaningResult | null) => void;
+}) {
   const litters = useLitterOptions();
   const lots = useLotOptions();
   const { bind, values, reset } = useForm({
@@ -218,8 +270,8 @@ function WeaningModal({ open, weaning, onClose }: { open: boolean; weaning?: Wea
     fatteningLotId: NEW_LOT,
     observation: '',
   });
-  const [create, c] = useMutation(CREATE, { refetchQueries });
-  const [complete, k] = useMutation(COMPLETE, { refetchQueries });
+  const [create, c] = useMutation<{ createWeaning: WeaningResult }>(CREATE, { refetchQueries });
+  const [complete, k] = useMutation<{ completeWeaning: WeaningResult }>(COMPLETE, { refetchQueries });
   const mutation = weaning ? k : c;
 
   const close = () => {
@@ -252,9 +304,10 @@ function WeaningModal({ open, weaning, onClose }: { open: boolean; weaning?: Wea
       observation: values.observation,
     };
     if (weaning) {
-      await complete({ variables: { input: clean({ id: weaning.id, actualDate: fromDateInput(values.actualDate), ...common }) } });
+      const r = await complete({ variables: { input: clean({ id: weaning.id, actualDate: fromDateInput(values.actualDate), ...common }) } });
+      onSaved?.(r.data?.completeWeaning);
     } else {
-      await create({
+      const r = await create({
         variables: {
           input: clean({
             litterId: values.litterId,
@@ -265,6 +318,7 @@ function WeaningModal({ open, weaning, onClose }: { open: boolean; weaning?: Wea
           }),
         },
       });
+      onSaved?.(r.data?.createWeaning);
     }
     close();
   }

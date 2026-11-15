@@ -204,7 +204,7 @@ describe('Corrections et rations (intégration)', () => {
 
     // Aucun lapereau choisi à la main, seul le poids moyen est saisi.
     const { createWeaning } = await run(
-      `mutation ($input: CreateWeaningInput!) { createWeaning(input: $input) { id totalWeight averageWeight } }`,
+      `mutation ($input: CreateWeaningInput!) { createWeaning(input: $input) { id totalWeight averageWeight fatteningLotCode } }`,
       {
         input: {
           litterId: createBirth.litterId,
@@ -216,7 +216,7 @@ describe('Corrections et rations (intégration)', () => {
         },
       },
     );
-    expect(createWeaning).toMatchObject({ totalWeight: 4, averageWeight: 0.8 });
+    expect(createWeaning).toMatchObject({ totalWeight: 4, averageWeight: 0.8, fatteningLotCode: `LOT-${createBirth.litterCode}` });
 
     const { fatteningLots } = await run(`query { fatteningLots { code activeMemberCount latestAverageWeight } }`);
     const lot = fatteningLots.find((l: { code: string }) => l.code === `LOT-${createBirth.litterCode}`);
@@ -225,5 +225,37 @@ describe('Corrections et rations (intégration)', () => {
     // Le 6e lapereau, non sevré, reste avec la mère (hors du lot).
     const inLot = await prisma.lotMembership.count({ where: { leftAt: null, rabbit: { birthLitterId: createBirth.litterId } } });
     expect(inLot).toBe(5);
+
+    // Fiche de suivi : de la saillie au lot.
+    const lotId = (await prisma.fatteningLot.findFirstOrThrow({ where: { code: `LOT-${createBirth.litterCode}` } })).id;
+    const { lotTrackingSheet: sheet } = await run(
+      `query ($id: ID!) { lotTrackingSheet(lotId: $id) {
+        lotCode enteredCount activeCount
+        litters { code motherCode fatherCode gestationDays liveBorn weaned weaningAgeDays weaningAverageWeight events { label } }
+        weighings { animalCount averageWeight }
+      } }`,
+      { id: lotId },
+    );
+    expect(sheet).toMatchObject({
+      lotCode: `LOT-${createBirth.litterCode}`,
+      enteredCount: 5,
+      activeCount: 5,
+      weighings: [{ animalCount: 5, averageWeight: 0.8 }],
+    });
+    expect(sheet.litters[0]).toMatchObject({
+      motherCode: 'F-SEVRAGE',
+      fatherCode: 'M-SEVRAGE',
+      gestationDays: 32,
+      liveBorn: 6,
+      weaned: 5,
+      weaningAgeDays: 35,
+      weaningAverageWeight: 0.8,
+    });
+    expect(sheet.litters[0].events.map((e: { label: string }) => e.label)).toEqual([
+      'Saillie de F-SEVRAGE par M-SEVRAGE',
+      'Palpation positive',
+      'Mise bas : 6 vivant(s)',
+      'Sevrage de 5 lapereau(x), 0,8 kg en moyenne',
+    ]);
   });
 });

@@ -41,4 +41,10 @@ export class WeaningModel {
 
 	@Field(() => [WeaningRabbitModel])
 	rabbits: WeaningRabbitModel[];
+
+	@Field(() => ID, { nullable: true, description: "Lot d'engraissement où le sevrage a placé les lapereaux" })
+	fatteningLotId?: string | null;
+
+	@Field(() => String, { nullable: true })
+	fatteningLotCode?: string | null;
 }

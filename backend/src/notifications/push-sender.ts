@@ -38,6 +38,8 @@ export async function sendPush(target: PushTarget, payload: PushPayload, env: No
       JSON.stringify(payload),
       {
         TTL: 12 * 3600,
+        // « high » : Android réveille le téléphone et affiche tout de suite (sinon, mode économie = retard).
+        urgency: 'high',
         vapidDetails: {
           subject: env.VAPID_SUBJECT?.trim() || 'mailto:contact@rabbitfarm.app',
           publicKey: env.VAPID_PUBLIC_KEY!.trim(),

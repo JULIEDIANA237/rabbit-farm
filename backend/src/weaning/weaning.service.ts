@@ -22,9 +22,24 @@ import {
 } from '../generated/prisma/client.js';
 
 const weaningInclude = {
-  rabbits: true,
+  rabbits: {
+    include: {
+      rabbit: {
+        select: {
+          lotMemberships: {
+            where: { reason: 'Sevrage' },
+            select: { lot: { select: { id: true, code: true } } },
+            orderBy: { joinedAt: 'desc' as const },
+            take: 1,
+          },
+        },
+      },
+    },
+  },
   litter: { select: { code: true } },
 } as const;
+
+type WeaningRabbitWithLot = { rabbit?: { lotMemberships: Array<{ lot: { id: string; code: string } }> } };
 
 @Injectable()
 export class WeaningService {
@@ -33,12 +48,21 @@ export class WeaningService {
     private readonly tasks: TaskAutomationService,
   ) {}
 
-  private toModel<T extends { litter?: { code: string } | null; totalWeight?: unknown; averageWeight?: unknown }>(
-    weaning: T,
-  ) {
+  private toModel<
+    T extends {
+      litter?: { code: string } | null;
+      totalWeight?: unknown;
+      averageWeight?: unknown;
+      rabbits?: Array<WeaningRabbitWithLot & object>;
+    },
+  >(weaning: T) {
     const { litter, ...rest } = weaning;
+    const lot = weaning.rabbits?.map((r) => r.rabbit?.lotMemberships[0]?.lot).find(Boolean);
     return {
       ...rest,
+      rabbits: (weaning.rabbits ?? []).map(({ rabbit: _rabbit, ...r }) => r),
+      fatteningLotId: lot?.id ?? null,
+      fatteningLotCode: lot?.code ?? null,
       litterCode: litter?.code ?? null,
       totalWeight: weaning.totalWeight != null ? Number(weaning.totalWeight) : null,
       averageWeight: weaning.averageWeight != null ? Number(weaning.averageWeight) : null,
@@ -259,6 +283,8 @@ export class WeaningService {
           totalWeight: input.totalWeight,
           averageWeight: input.averageWeight,
         });
+        // Relire pour renvoyer le lot créé par le sevrage.
+        return this.toModel(await tx.weaning.findUniqueOrThrow({ where: { id: weaning.id }, include: weaningInclude }));
       }
       return this.toModel(weaning);
     });
@@ -343,7 +369,7 @@ export class WeaningService {
         totalWeight: input.totalWeight ?? (weaning.totalWeight != null ? Number(weaning.totalWeight) : null),
         averageWeight: input.averageWeight ?? (weaning.averageWeight != null ? Number(weaning.averageWeight) : null),
       });
-      return this.toModel(updated);
+      return this.toModel(await tx.weaning.findUniqueOrThrow({ where: { id: updated.id }, include: weaningInclude }));
     });
   }
 
