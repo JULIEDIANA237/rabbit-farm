@@ -30,12 +30,14 @@ export type InventoryItemAvgAggregateOutputType = {
   currentStock: number | null
   minimumStock: number | null
   unitPrice: runtime.Decimal | null
+  packageSize: number | null
 }
 
 export type InventoryItemSumAggregateOutputType = {
   currentStock: number | null
   minimumStock: number | null
   unitPrice: runtime.Decimal | null
+  packageSize: number | null
 }
 
 export type InventoryItemMinAggregateOutputType = {
@@ -47,6 +49,8 @@ export type InventoryItemMinAggregateOutputType = {
   currentStock: number | null
   minimumStock: number | null
   unitPrice: runtime.Decimal | null
+  packageName: string | null
+  packageSize: number | null
   rationsAppliedUntil: Date | null
   description: string | null
   createdAt: Date | null
@@ -62,6 +66,8 @@ export type InventoryItemMaxAggregateOutputType = {
   currentStock: number | null
   minimumStock: number | null
   unitPrice: runtime.Decimal | null
+  packageName: string | null
+  packageSize: number | null
   rationsAppliedUntil: Date | null
   description: string | null
   createdAt: Date | null
@@ -77,6 +83,8 @@ export type InventoryItemCountAggregateOutputType = {
   currentStock: number
   minimumStock: number
   unitPrice: number
+  packageName: number
+  packageSize: number
   rationsAppliedUntil: number
   description: number
   createdAt: number
@@ -89,12 +97,14 @@ export type InventoryItemAvgAggregateInputType = {
   currentStock?: true
   minimumStock?: true
   unitPrice?: true
+  packageSize?: true
 }
 
 export type InventoryItemSumAggregateInputType = {
   currentStock?: true
   minimumStock?: true
   unitPrice?: true
+  packageSize?: true
 }
 
 export type InventoryItemMinAggregateInputType = {
@@ -106,6 +116,8 @@ export type InventoryItemMinAggregateInputType = {
   currentStock?: true
   minimumStock?: true
   unitPrice?: true
+  packageName?: true
+  packageSize?: true
   rationsAppliedUntil?: true
   description?: true
   createdAt?: true
@@ -121,6 +133,8 @@ export type InventoryItemMaxAggregateInputType = {
   currentStock?: true
   minimumStock?: true
   unitPrice?: true
+  packageName?: true
+  packageSize?: true
   rationsAppliedUntil?: true
   description?: true
   createdAt?: true
@@ -136,6 +150,8 @@ export type InventoryItemCountAggregateInputType = {
   currentStock?: true
   minimumStock?: true
   unitPrice?: true
+  packageName?: true
+  packageSize?: true
   rationsAppliedUntil?: true
   description?: true
   createdAt?: true
@@ -238,6 +254,8 @@ export type InventoryItemGroupByOutputType = {
   currentStock: number
   minimumStock: number | null
   unitPrice: runtime.Decimal | null
+  packageName: string | null
+  packageSize: number | null
   rationsAppliedUntil: Date | null
   description: string | null
   createdAt: Date
@@ -276,6 +294,8 @@ export type InventoryItemWhereInput = {
   currentStock?: Prisma.FloatFilter<"InventoryItem"> | number
   minimumStock?: Prisma.FloatNullableFilter<"InventoryItem"> | number | null
   unitPrice?: Prisma.DecimalNullableFilter<"InventoryItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: Prisma.StringNullableFilter<"InventoryItem"> | string | null
+  packageSize?: Prisma.FloatNullableFilter<"InventoryItem"> | number | null
   rationsAppliedUntil?: Prisma.DateTimeNullableFilter<"InventoryItem"> | Date | string | null
   description?: Prisma.StringNullableFilter<"InventoryItem"> | string | null
   createdAt?: Prisma.DateTimeFilter<"InventoryItem"> | Date | string
@@ -294,6 +314,8 @@ export type InventoryItemOrderByWithRelationInput = {
   currentStock?: Prisma.SortOrder
   minimumStock?: Prisma.SortOrderInput | Prisma.SortOrder
   unitPrice?: Prisma.SortOrderInput | Prisma.SortOrder
+  packageName?: Prisma.SortOrderInput | Prisma.SortOrder
+  packageSize?: Prisma.SortOrderInput | Prisma.SortOrder
   rationsAppliedUntil?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -316,6 +338,8 @@ export type InventoryItemWhereUniqueInput = Prisma.AtLeast<{
   currentStock?: Prisma.FloatFilter<"InventoryItem"> | number
   minimumStock?: Prisma.FloatNullableFilter<"InventoryItem"> | number | null
   unitPrice?: Prisma.DecimalNullableFilter<"InventoryItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: Prisma.StringNullableFilter<"InventoryItem"> | string | null
+  packageSize?: Prisma.FloatNullableFilter<"InventoryItem"> | number | null
   rationsAppliedUntil?: Prisma.DateTimeNullableFilter<"InventoryItem"> | Date | string | null
   description?: Prisma.StringNullableFilter<"InventoryItem"> | string | null
   createdAt?: Prisma.DateTimeFilter<"InventoryItem"> | Date | string
@@ -334,6 +358,8 @@ export type InventoryItemOrderByWithAggregationInput = {
   currentStock?: Prisma.SortOrder
   minimumStock?: Prisma.SortOrderInput | Prisma.SortOrder
   unitPrice?: Prisma.SortOrderInput | Prisma.SortOrder
+  packageName?: Prisma.SortOrderInput | Prisma.SortOrder
+  packageSize?: Prisma.SortOrderInput | Prisma.SortOrder
   rationsAppliedUntil?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -357,6 +383,8 @@ export type InventoryItemScalarWhereWithAggregatesInput = {
   currentStock?: Prisma.FloatWithAggregatesFilter<"InventoryItem"> | number
   minimumStock?: Prisma.FloatNullableWithAggregatesFilter<"InventoryItem"> | number | null
   unitPrice?: Prisma.DecimalNullableWithAggregatesFilter<"InventoryItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: Prisma.StringNullableWithAggregatesFilter<"InventoryItem"> | string | null
+  packageSize?: Prisma.FloatNullableWithAggregatesFilter<"InventoryItem"> | number | null
   rationsAppliedUntil?: Prisma.DateTimeNullableWithAggregatesFilter<"InventoryItem"> | Date | string | null
   description?: Prisma.StringNullableWithAggregatesFilter<"InventoryItem"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"InventoryItem"> | Date | string
@@ -371,6 +399,8 @@ export type InventoryItemCreateInput = {
   currentStock?: number
   minimumStock?: number | null
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: string | null
+  packageSize?: number | null
   rationsAppliedUntil?: Date | string | null
   description?: string | null
   createdAt?: Date | string
@@ -389,6 +419,8 @@ export type InventoryItemUncheckedCreateInput = {
   currentStock?: number
   minimumStock?: number | null
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: string | null
+  packageSize?: number | null
   rationsAppliedUntil?: Date | string | null
   description?: string | null
   createdAt?: Date | string
@@ -405,6 +437,8 @@ export type InventoryItemUpdateInput = {
   currentStock?: Prisma.FloatFieldUpdateOperationsInput | number
   minimumStock?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  packageSize?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   rationsAppliedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -423,6 +457,8 @@ export type InventoryItemUncheckedUpdateInput = {
   currentStock?: Prisma.FloatFieldUpdateOperationsInput | number
   minimumStock?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  packageSize?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   rationsAppliedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -440,6 +476,8 @@ export type InventoryItemCreateManyInput = {
   currentStock?: number
   minimumStock?: number | null
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: string | null
+  packageSize?: number | null
   rationsAppliedUntil?: Date | string | null
   description?: string | null
   createdAt?: Date | string
@@ -454,6 +492,8 @@ export type InventoryItemUpdateManyMutationInput = {
   currentStock?: Prisma.FloatFieldUpdateOperationsInput | number
   minimumStock?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  packageSize?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   rationsAppliedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -469,6 +509,8 @@ export type InventoryItemUncheckedUpdateManyInput = {
   currentStock?: Prisma.FloatFieldUpdateOperationsInput | number
   minimumStock?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  packageSize?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   rationsAppliedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -499,6 +541,8 @@ export type InventoryItemCountOrderByAggregateInput = {
   currentStock?: Prisma.SortOrder
   minimumStock?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
+  packageName?: Prisma.SortOrder
+  packageSize?: Prisma.SortOrder
   rationsAppliedUntil?: Prisma.SortOrder
   description?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -509,6 +553,7 @@ export type InventoryItemAvgOrderByAggregateInput = {
   currentStock?: Prisma.SortOrder
   minimumStock?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
+  packageSize?: Prisma.SortOrder
 }
 
 export type InventoryItemMaxOrderByAggregateInput = {
@@ -520,6 +565,8 @@ export type InventoryItemMaxOrderByAggregateInput = {
   currentStock?: Prisma.SortOrder
   minimumStock?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
+  packageName?: Prisma.SortOrder
+  packageSize?: Prisma.SortOrder
   rationsAppliedUntil?: Prisma.SortOrder
   description?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -535,6 +582,8 @@ export type InventoryItemMinOrderByAggregateInput = {
   currentStock?: Prisma.SortOrder
   minimumStock?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
+  packageName?: Prisma.SortOrder
+  packageSize?: Prisma.SortOrder
   rationsAppliedUntil?: Prisma.SortOrder
   description?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -545,6 +594,7 @@ export type InventoryItemSumOrderByAggregateInput = {
   currentStock?: Prisma.SortOrder
   minimumStock?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
+  packageSize?: Prisma.SortOrder
 }
 
 export type InventoryItemScalarRelationFilter = {
@@ -634,6 +684,8 @@ export type InventoryItemCreateWithoutFarmInput = {
   currentStock?: number
   minimumStock?: number | null
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: string | null
+  packageSize?: number | null
   rationsAppliedUntil?: Date | string | null
   description?: string | null
   createdAt?: Date | string
@@ -650,6 +702,8 @@ export type InventoryItemUncheckedCreateWithoutFarmInput = {
   currentStock?: number
   minimumStock?: number | null
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: string | null
+  packageSize?: number | null
   rationsAppliedUntil?: Date | string | null
   description?: string | null
   createdAt?: Date | string
@@ -696,6 +750,8 @@ export type InventoryItemScalarWhereInput = {
   currentStock?: Prisma.FloatFilter<"InventoryItem"> | number
   minimumStock?: Prisma.FloatNullableFilter<"InventoryItem"> | number | null
   unitPrice?: Prisma.DecimalNullableFilter<"InventoryItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: Prisma.StringNullableFilter<"InventoryItem"> | string | null
+  packageSize?: Prisma.FloatNullableFilter<"InventoryItem"> | number | null
   rationsAppliedUntil?: Prisma.DateTimeNullableFilter<"InventoryItem"> | Date | string | null
   description?: Prisma.StringNullableFilter<"InventoryItem"> | string | null
   createdAt?: Prisma.DateTimeFilter<"InventoryItem"> | Date | string
@@ -710,6 +766,8 @@ export type InventoryItemCreateWithoutMovementsInput = {
   currentStock?: number
   minimumStock?: number | null
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: string | null
+  packageSize?: number | null
   rationsAppliedUntil?: Date | string | null
   description?: string | null
   createdAt?: Date | string
@@ -727,6 +785,8 @@ export type InventoryItemUncheckedCreateWithoutMovementsInput = {
   currentStock?: number
   minimumStock?: number | null
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: string | null
+  packageSize?: number | null
   rationsAppliedUntil?: Date | string | null
   description?: string | null
   createdAt?: Date | string
@@ -758,6 +818,8 @@ export type InventoryItemUpdateWithoutMovementsInput = {
   currentStock?: Prisma.FloatFieldUpdateOperationsInput | number
   minimumStock?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  packageSize?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   rationsAppliedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -775,6 +837,8 @@ export type InventoryItemUncheckedUpdateWithoutMovementsInput = {
   currentStock?: Prisma.FloatFieldUpdateOperationsInput | number
   minimumStock?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  packageSize?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   rationsAppliedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -790,6 +854,8 @@ export type InventoryItemCreateWithoutRationsInput = {
   currentStock?: number
   minimumStock?: number | null
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: string | null
+  packageSize?: number | null
   rationsAppliedUntil?: Date | string | null
   description?: string | null
   createdAt?: Date | string
@@ -807,6 +873,8 @@ export type InventoryItemUncheckedCreateWithoutRationsInput = {
   currentStock?: number
   minimumStock?: number | null
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: string | null
+  packageSize?: number | null
   rationsAppliedUntil?: Date | string | null
   description?: string | null
   createdAt?: Date | string
@@ -838,6 +906,8 @@ export type InventoryItemUpdateWithoutRationsInput = {
   currentStock?: Prisma.FloatFieldUpdateOperationsInput | number
   minimumStock?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  packageSize?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   rationsAppliedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -855,6 +925,8 @@ export type InventoryItemUncheckedUpdateWithoutRationsInput = {
   currentStock?: Prisma.FloatFieldUpdateOperationsInput | number
   minimumStock?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  packageSize?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   rationsAppliedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -870,6 +942,8 @@ export type InventoryItemCreateManyFarmInput = {
   currentStock?: number
   minimumStock?: number | null
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: string | null
+  packageSize?: number | null
   rationsAppliedUntil?: Date | string | null
   description?: string | null
   createdAt?: Date | string
@@ -884,6 +958,8 @@ export type InventoryItemUpdateWithoutFarmInput = {
   currentStock?: Prisma.FloatFieldUpdateOperationsInput | number
   minimumStock?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  packageSize?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   rationsAppliedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -900,6 +976,8 @@ export type InventoryItemUncheckedUpdateWithoutFarmInput = {
   currentStock?: Prisma.FloatFieldUpdateOperationsInput | number
   minimumStock?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  packageSize?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   rationsAppliedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -916,6 +994,8 @@ export type InventoryItemUncheckedUpdateManyWithoutFarmInput = {
   currentStock?: Prisma.FloatFieldUpdateOperationsInput | number
   minimumStock?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  packageName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  packageSize?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   rationsAppliedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -971,6 +1051,8 @@ export type InventoryItemSelect<ExtArgs extends runtime.Types.Extensions.Interna
   currentStock?: boolean
   minimumStock?: boolean
   unitPrice?: boolean
+  packageName?: boolean
+  packageSize?: boolean
   rationsAppliedUntil?: boolean
   description?: boolean
   createdAt?: boolean
@@ -990,6 +1072,8 @@ export type InventoryItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   currentStock?: boolean
   minimumStock?: boolean
   unitPrice?: boolean
+  packageName?: boolean
+  packageSize?: boolean
   rationsAppliedUntil?: boolean
   description?: boolean
   createdAt?: boolean
@@ -1006,6 +1090,8 @@ export type InventoryItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   currentStock?: boolean
   minimumStock?: boolean
   unitPrice?: boolean
+  packageName?: boolean
+  packageSize?: boolean
   rationsAppliedUntil?: boolean
   description?: boolean
   createdAt?: boolean
@@ -1022,13 +1108,15 @@ export type InventoryItemSelectScalar = {
   currentStock?: boolean
   minimumStock?: boolean
   unitPrice?: boolean
+  packageName?: boolean
+  packageSize?: boolean
   rationsAppliedUntil?: boolean
   description?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type InventoryItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "name" | "type" | "unit" | "currentStock" | "minimumStock" | "unitPrice" | "rationsAppliedUntil" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["inventoryItem"]>
+export type InventoryItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "name" | "type" | "unit" | "currentStock" | "minimumStock" | "unitPrice" | "packageName" | "packageSize" | "rationsAppliedUntil" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["inventoryItem"]>
 export type InventoryItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   rations?: boolean | Prisma.InventoryItem$rationsArgs<ExtArgs>
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
@@ -1061,6 +1149,11 @@ export type $InventoryItemPayload<ExtArgs extends runtime.Types.Extensions.Inter
      * Prix unitaire de référence (dernier prix d'achat ou saisi).
      */
     unitPrice: runtime.Decimal | null
+    /**
+     * Conditionnement d'achat : ex. « sac » de 25 (unités de stock, kg).
+     */
+    packageName: string | null
+    packageSize: number | null
     /**
      * Date jusqu'à laquelle les rations journalières ont été déduites du stock.
      */
@@ -1502,6 +1595,8 @@ export interface InventoryItemFieldRefs {
   readonly currentStock: Prisma.FieldRef<"InventoryItem", 'Float'>
   readonly minimumStock: Prisma.FieldRef<"InventoryItem", 'Float'>
   readonly unitPrice: Prisma.FieldRef<"InventoryItem", 'Decimal'>
+  readonly packageName: Prisma.FieldRef<"InventoryItem", 'String'>
+  readonly packageSize: Prisma.FieldRef<"InventoryItem", 'Float'>
   readonly rationsAppliedUntil: Prisma.FieldRef<"InventoryItem", 'DateTime'>
   readonly description: Prisma.FieldRef<"InventoryItem", 'String'>
   readonly createdAt: Prisma.FieldRef<"InventoryItem", 'DateTime'>

@@ -273,6 +273,9 @@ export class OperationsService {
     if (input.unitPrice != null && input.unitPrice < 0) {
       throw new BadRequestException('Le prix unitaire ne peut pas être négatif.');
     }
+    if (input.packageSize != null && input.packageSize <= 0) {
+      throw new BadRequestException('Le contenu du sac (ou du conditionnement) doit être supérieur à zéro.');
+    }
 
     const existing =
       await this.prisma.inventoryItem.findUnique({
@@ -306,6 +309,8 @@ export class OperationsService {
           unit,
           minimumStock: input.minimumStock,
           unitPrice: input.unitPrice ?? null,
+          packageName: input.packageName?.trim() || null,
+          packageSize: input.packageSize ?? null,
           currentStock: initialStock,
           // Les rations journalières se calculent à partir du stock initial.
           rationsAppliedUntil: initialStock > 0 ? startOfDay(initialDate) : null,
@@ -904,6 +909,9 @@ export class OperationsService {
     if (input.unitPrice != null && input.unitPrice < 0) {
       throw new BadRequestException('Le prix unitaire ne peut pas être négatif.');
     }
+    if (input.packageSize != null && input.packageSize <= 0) {
+      throw new BadRequestException('Le contenu du sac (ou du conditionnement) doit être supérieur à zéro.');
+    }
     if (name && name !== item.name) {
       const duplicate = await this.prisma.inventoryItem.findUnique({
         where: { farmId_name: { farmId: currentUser.farmId, name } },
@@ -920,6 +928,8 @@ export class OperationsService {
         unit: input.unit?.trim(),
         minimumStock: input.minimumStock,
         unitPrice: input.unitPrice,
+        packageName: input.packageName === undefined ? undefined : input.packageName?.trim() || null,
+        packageSize: input.packageSize,
         description: this.optionalText(input.description),
       },
       include: { movements: { orderBy: { date: 'desc' } } },

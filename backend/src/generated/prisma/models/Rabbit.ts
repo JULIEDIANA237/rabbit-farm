@@ -28,10 +28,16 @@ export type AggregateRabbit = {
 
 export type RabbitAvgAggregateOutputType = {
   weight: runtime.Decimal | null
+  previousLitters: number | null
+  previousKitsBorn: number | null
+  previousMatings: number | null
 }
 
 export type RabbitSumAggregateOutputType = {
   weight: runtime.Decimal | null
+  previousLitters: number | null
+  previousKitsBorn: number | null
+  previousMatings: number | null
 }
 
 export type RabbitMinAggregateOutputType = {
@@ -52,6 +58,15 @@ export type RabbitMinAggregateOutputType = {
   originalCode: string | null
   exitDate: Date | null
   exitCause: string | null
+  origin: string | null
+  previousLitters: number | null
+  previousKitsBorn: number | null
+  lastBirthDate: Date | null
+  maternalBehavior: string | null
+  previousMatings: number | null
+  healthHistory: string | null
+  readyForSale: boolean | null
+  readyForSaleAt: Date | null
   birthLitterId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -75,6 +90,15 @@ export type RabbitMaxAggregateOutputType = {
   originalCode: string | null
   exitDate: Date | null
   exitCause: string | null
+  origin: string | null
+  previousLitters: number | null
+  previousKitsBorn: number | null
+  lastBirthDate: Date | null
+  maternalBehavior: string | null
+  previousMatings: number | null
+  healthHistory: string | null
+  readyForSale: boolean | null
+  readyForSaleAt: Date | null
   birthLitterId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -98,6 +122,15 @@ export type RabbitCountAggregateOutputType = {
   originalCode: number
   exitDate: number
   exitCause: number
+  origin: number
+  previousLitters: number
+  previousKitsBorn: number
+  lastBirthDate: number
+  maternalBehavior: number
+  previousMatings: number
+  healthHistory: number
+  readyForSale: number
+  readyForSaleAt: number
   birthLitterId: number
   createdAt: number
   updatedAt: number
@@ -107,10 +140,16 @@ export type RabbitCountAggregateOutputType = {
 
 export type RabbitAvgAggregateInputType = {
   weight?: true
+  previousLitters?: true
+  previousKitsBorn?: true
+  previousMatings?: true
 }
 
 export type RabbitSumAggregateInputType = {
   weight?: true
+  previousLitters?: true
+  previousKitsBorn?: true
+  previousMatings?: true
 }
 
 export type RabbitMinAggregateInputType = {
@@ -131,6 +170,15 @@ export type RabbitMinAggregateInputType = {
   originalCode?: true
   exitDate?: true
   exitCause?: true
+  origin?: true
+  previousLitters?: true
+  previousKitsBorn?: true
+  lastBirthDate?: true
+  maternalBehavior?: true
+  previousMatings?: true
+  healthHistory?: true
+  readyForSale?: true
+  readyForSaleAt?: true
   birthLitterId?: true
   createdAt?: true
   updatedAt?: true
@@ -154,6 +202,15 @@ export type RabbitMaxAggregateInputType = {
   originalCode?: true
   exitDate?: true
   exitCause?: true
+  origin?: true
+  previousLitters?: true
+  previousKitsBorn?: true
+  lastBirthDate?: true
+  maternalBehavior?: true
+  previousMatings?: true
+  healthHistory?: true
+  readyForSale?: true
+  readyForSaleAt?: true
   birthLitterId?: true
   createdAt?: true
   updatedAt?: true
@@ -177,6 +234,15 @@ export type RabbitCountAggregateInputType = {
   originalCode?: true
   exitDate?: true
   exitCause?: true
+  origin?: true
+  previousLitters?: true
+  previousKitsBorn?: true
+  lastBirthDate?: true
+  maternalBehavior?: true
+  previousMatings?: true
+  healthHistory?: true
+  readyForSale?: true
+  readyForSaleAt?: true
   birthLitterId?: true
   createdAt?: true
   updatedAt?: true
@@ -287,6 +353,15 @@ export type RabbitGroupByOutputType = {
   originalCode: string | null
   exitDate: Date | null
   exitCause: string | null
+  origin: string | null
+  previousLitters: number | null
+  previousKitsBorn: number | null
+  lastBirthDate: Date | null
+  maternalBehavior: string | null
+  previousMatings: number | null
+  healthHistory: string | null
+  readyForSale: boolean
+  readyForSaleAt: Date | null
   birthLitterId: string | null
   createdAt: Date
   updatedAt: Date
@@ -333,9 +408,19 @@ export type RabbitWhereInput = {
   originalCode?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   exitDate?: Prisma.DateTimeNullableFilter<"Rabbit"> | Date | string | null
   exitCause?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  origin?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  previousLitters?: Prisma.IntNullableFilter<"Rabbit"> | number | null
+  previousKitsBorn?: Prisma.IntNullableFilter<"Rabbit"> | number | null
+  lastBirthDate?: Prisma.DateTimeNullableFilter<"Rabbit"> | Date | string | null
+  maternalBehavior?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  previousMatings?: Prisma.IntNullableFilter<"Rabbit"> | number | null
+  healthHistory?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  readyForSale?: Prisma.BoolFilter<"Rabbit"> | boolean
+  readyForSaleAt?: Prisma.DateTimeNullableFilter<"Rabbit"> | Date | string | null
   birthLitterId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Rabbit"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Rabbit"> | Date | string
+  careRecords?: Prisma.CareRecordListRelationFilter
   farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
   breed?: Prisma.XOR<Prisma.BreedNullableScalarRelationFilter, Prisma.BreedWhereInput> | null
   crossBreed?: Prisma.XOR<Prisma.CrossBreedNullableScalarRelationFilter, Prisma.CrossBreedWhereInput> | null
@@ -380,9 +465,19 @@ export type RabbitOrderByWithRelationInput = {
   originalCode?: Prisma.SortOrderInput | Prisma.SortOrder
   exitDate?: Prisma.SortOrderInput | Prisma.SortOrder
   exitCause?: Prisma.SortOrderInput | Prisma.SortOrder
+  origin?: Prisma.SortOrderInput | Prisma.SortOrder
+  previousLitters?: Prisma.SortOrderInput | Prisma.SortOrder
+  previousKitsBorn?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastBirthDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  maternalBehavior?: Prisma.SortOrderInput | Prisma.SortOrder
+  previousMatings?: Prisma.SortOrderInput | Prisma.SortOrder
+  healthHistory?: Prisma.SortOrderInput | Prisma.SortOrder
+  readyForSale?: Prisma.SortOrder
+  readyForSaleAt?: Prisma.SortOrderInput | Prisma.SortOrder
   birthLitterId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  careRecords?: Prisma.CareRecordOrderByRelationAggregateInput
   farm?: Prisma.FarmOrderByWithRelationInput
   breed?: Prisma.BreedOrderByWithRelationInput
   crossBreed?: Prisma.CrossBreedOrderByWithRelationInput
@@ -431,9 +526,19 @@ export type RabbitWhereUniqueInput = Prisma.AtLeast<{
   originalCode?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   exitDate?: Prisma.DateTimeNullableFilter<"Rabbit"> | Date | string | null
   exitCause?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  origin?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  previousLitters?: Prisma.IntNullableFilter<"Rabbit"> | number | null
+  previousKitsBorn?: Prisma.IntNullableFilter<"Rabbit"> | number | null
+  lastBirthDate?: Prisma.DateTimeNullableFilter<"Rabbit"> | Date | string | null
+  maternalBehavior?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  previousMatings?: Prisma.IntNullableFilter<"Rabbit"> | number | null
+  healthHistory?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  readyForSale?: Prisma.BoolFilter<"Rabbit"> | boolean
+  readyForSaleAt?: Prisma.DateTimeNullableFilter<"Rabbit"> | Date | string | null
   birthLitterId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Rabbit"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Rabbit"> | Date | string
+  careRecords?: Prisma.CareRecordListRelationFilter
   farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
   breed?: Prisma.XOR<Prisma.BreedNullableScalarRelationFilter, Prisma.BreedWhereInput> | null
   crossBreed?: Prisma.XOR<Prisma.CrossBreedNullableScalarRelationFilter, Prisma.CrossBreedWhereInput> | null
@@ -478,6 +583,15 @@ export type RabbitOrderByWithAggregationInput = {
   originalCode?: Prisma.SortOrderInput | Prisma.SortOrder
   exitDate?: Prisma.SortOrderInput | Prisma.SortOrder
   exitCause?: Prisma.SortOrderInput | Prisma.SortOrder
+  origin?: Prisma.SortOrderInput | Prisma.SortOrder
+  previousLitters?: Prisma.SortOrderInput | Prisma.SortOrder
+  previousKitsBorn?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastBirthDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  maternalBehavior?: Prisma.SortOrderInput | Prisma.SortOrder
+  previousMatings?: Prisma.SortOrderInput | Prisma.SortOrder
+  healthHistory?: Prisma.SortOrderInput | Prisma.SortOrder
+  readyForSale?: Prisma.SortOrder
+  readyForSaleAt?: Prisma.SortOrderInput | Prisma.SortOrder
   birthLitterId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -509,6 +623,15 @@ export type RabbitScalarWhereWithAggregatesInput = {
   originalCode?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
   exitDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Rabbit"> | Date | string | null
   exitCause?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
+  origin?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
+  previousLitters?: Prisma.IntNullableWithAggregatesFilter<"Rabbit"> | number | null
+  previousKitsBorn?: Prisma.IntNullableWithAggregatesFilter<"Rabbit"> | number | null
+  lastBirthDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Rabbit"> | Date | string | null
+  maternalBehavior?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
+  previousMatings?: Prisma.IntNullableWithAggregatesFilter<"Rabbit"> | number | null
+  healthHistory?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
+  readyForSale?: Prisma.BoolWithAggregatesFilter<"Rabbit"> | boolean
+  readyForSaleAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Rabbit"> | Date | string | null
   birthLitterId?: Prisma.StringNullableWithAggregatesFilter<"Rabbit"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Rabbit"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Rabbit"> | Date | string
@@ -527,8 +650,18 @@ export type RabbitCreateInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -573,9 +706,19 @@ export type RabbitUncheckedCreateInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
@@ -609,8 +752,18 @@ export type RabbitUpdateInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -655,9 +808,19 @@ export type RabbitUncheckedUpdateInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
@@ -696,6 +859,15 @@ export type RabbitCreateManyInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -714,6 +886,15 @@ export type RabbitUpdateManyMutationInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -736,6 +917,15 @@ export type RabbitUncheckedUpdateManyInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -779,6 +969,15 @@ export type RabbitCountOrderByAggregateInput = {
   originalCode?: Prisma.SortOrder
   exitDate?: Prisma.SortOrder
   exitCause?: Prisma.SortOrder
+  origin?: Prisma.SortOrder
+  previousLitters?: Prisma.SortOrder
+  previousKitsBorn?: Prisma.SortOrder
+  lastBirthDate?: Prisma.SortOrder
+  maternalBehavior?: Prisma.SortOrder
+  previousMatings?: Prisma.SortOrder
+  healthHistory?: Prisma.SortOrder
+  readyForSale?: Prisma.SortOrder
+  readyForSaleAt?: Prisma.SortOrder
   birthLitterId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -786,6 +985,9 @@ export type RabbitCountOrderByAggregateInput = {
 
 export type RabbitAvgOrderByAggregateInput = {
   weight?: Prisma.SortOrder
+  previousLitters?: Prisma.SortOrder
+  previousKitsBorn?: Prisma.SortOrder
+  previousMatings?: Prisma.SortOrder
 }
 
 export type RabbitMaxOrderByAggregateInput = {
@@ -806,6 +1008,15 @@ export type RabbitMaxOrderByAggregateInput = {
   originalCode?: Prisma.SortOrder
   exitDate?: Prisma.SortOrder
   exitCause?: Prisma.SortOrder
+  origin?: Prisma.SortOrder
+  previousLitters?: Prisma.SortOrder
+  previousKitsBorn?: Prisma.SortOrder
+  lastBirthDate?: Prisma.SortOrder
+  maternalBehavior?: Prisma.SortOrder
+  previousMatings?: Prisma.SortOrder
+  healthHistory?: Prisma.SortOrder
+  readyForSale?: Prisma.SortOrder
+  readyForSaleAt?: Prisma.SortOrder
   birthLitterId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -829,6 +1040,15 @@ export type RabbitMinOrderByAggregateInput = {
   originalCode?: Prisma.SortOrder
   exitDate?: Prisma.SortOrder
   exitCause?: Prisma.SortOrder
+  origin?: Prisma.SortOrder
+  previousLitters?: Prisma.SortOrder
+  previousKitsBorn?: Prisma.SortOrder
+  lastBirthDate?: Prisma.SortOrder
+  maternalBehavior?: Prisma.SortOrder
+  previousMatings?: Prisma.SortOrder
+  healthHistory?: Prisma.SortOrder
+  readyForSale?: Prisma.SortOrder
+  readyForSaleAt?: Prisma.SortOrder
   birthLitterId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -836,6 +1056,9 @@ export type RabbitMinOrderByAggregateInput = {
 
 export type RabbitSumOrderByAggregateInput = {
   weight?: Prisma.SortOrder
+  previousLitters?: Prisma.SortOrder
+  previousKitsBorn?: Prisma.SortOrder
+  previousMatings?: Prisma.SortOrder
 }
 
 export type RabbitScalarRelationFilter = {
@@ -1027,6 +1250,14 @@ export type NullableDecimalFieldUpdateOperationsInput = {
   decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
   divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
+}
+
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type RabbitUpdateOneWithoutChildrenAsFatherNestedInput = {
@@ -1381,6 +1612,22 @@ export type RabbitUpdateOneWithoutMortalitiesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.RabbitUpdateToOneWithWhereWithoutMortalitiesInput, Prisma.RabbitUpdateWithoutMortalitiesInput>, Prisma.RabbitUncheckedUpdateWithoutMortalitiesInput>
 }
 
+export type RabbitCreateNestedOneWithoutCareRecordsInput = {
+  create?: Prisma.XOR<Prisma.RabbitCreateWithoutCareRecordsInput, Prisma.RabbitUncheckedCreateWithoutCareRecordsInput>
+  connectOrCreate?: Prisma.RabbitCreateOrConnectWithoutCareRecordsInput
+  connect?: Prisma.RabbitWhereUniqueInput
+}
+
+export type RabbitUpdateOneWithoutCareRecordsNestedInput = {
+  create?: Prisma.XOR<Prisma.RabbitCreateWithoutCareRecordsInput, Prisma.RabbitUncheckedCreateWithoutCareRecordsInput>
+  connectOrCreate?: Prisma.RabbitCreateOrConnectWithoutCareRecordsInput
+  upsert?: Prisma.RabbitUpsertWithoutCareRecordsInput
+  disconnect?: Prisma.RabbitWhereInput | boolean
+  delete?: Prisma.RabbitWhereInput | boolean
+  connect?: Prisma.RabbitWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.RabbitUpdateToOneWithWhereWithoutCareRecordsInput, Prisma.RabbitUpdateWithoutCareRecordsInput>, Prisma.RabbitUncheckedUpdateWithoutCareRecordsInput>
+}
+
 export type RabbitCreateWithoutFarmInput = {
   id?: string
   code: string
@@ -1394,8 +1641,18 @@ export type RabbitCreateWithoutFarmInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
   father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
@@ -1438,9 +1695,19 @@ export type RabbitUncheckedCreateWithoutFarmInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
@@ -1508,6 +1775,15 @@ export type RabbitScalarWhereInput = {
   originalCode?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   exitDate?: Prisma.DateTimeNullableFilter<"Rabbit"> | Date | string | null
   exitCause?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  origin?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  previousLitters?: Prisma.IntNullableFilter<"Rabbit"> | number | null
+  previousKitsBorn?: Prisma.IntNullableFilter<"Rabbit"> | number | null
+  lastBirthDate?: Prisma.DateTimeNullableFilter<"Rabbit"> | Date | string | null
+  maternalBehavior?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  previousMatings?: Prisma.IntNullableFilter<"Rabbit"> | number | null
+  healthHistory?: Prisma.StringNullableFilter<"Rabbit"> | string | null
+  readyForSale?: Prisma.BoolFilter<"Rabbit"> | boolean
+  readyForSaleAt?: Prisma.DateTimeNullableFilter<"Rabbit"> | Date | string | null
   birthLitterId?: Prisma.StringNullableFilter<"Rabbit"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Rabbit"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Rabbit"> | Date | string
@@ -1526,8 +1802,18 @@ export type RabbitCreateWithoutBreedInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
   father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
@@ -1570,9 +1856,19 @@ export type RabbitUncheckedCreateWithoutBreedInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
@@ -1632,8 +1928,18 @@ export type RabbitCreateWithoutCrossBreedInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
@@ -1676,9 +1982,19 @@ export type RabbitUncheckedCreateWithoutCrossBreedInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
@@ -1738,8 +2054,18 @@ export type RabbitCreateWithoutChildrenAsFatherInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -1783,9 +2109,19 @@ export type RabbitUncheckedCreateWithoutChildrenAsFatherInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
@@ -1823,8 +2159,18 @@ export type RabbitCreateWithoutChildrenAsMotherInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -1868,9 +2214,19 @@ export type RabbitUncheckedCreateWithoutChildrenAsMotherInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
@@ -1908,8 +2264,18 @@ export type RabbitCreateWithoutFatherInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -1952,9 +2318,19 @@ export type RabbitUncheckedCreateWithoutFatherInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
@@ -1998,8 +2374,18 @@ export type RabbitCreateWithoutMotherInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -2042,9 +2428,19 @@ export type RabbitUncheckedCreateWithoutMotherInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
@@ -2099,8 +2495,18 @@ export type RabbitUpdateWithoutChildrenAsFatherInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -2144,9 +2550,19 @@ export type RabbitUncheckedUpdateWithoutChildrenAsFatherInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
@@ -2190,8 +2606,18 @@ export type RabbitUpdateWithoutChildrenAsMotherInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -2235,9 +2661,19 @@ export type RabbitUncheckedUpdateWithoutChildrenAsMotherInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
@@ -2302,8 +2738,18 @@ export type RabbitCreateWithoutPhotosInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -2347,9 +2793,19 @@ export type RabbitUncheckedCreateWithoutPhotosInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
@@ -2398,8 +2854,18 @@ export type RabbitUpdateWithoutPhotosInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -2443,9 +2909,19 @@ export type RabbitUncheckedUpdateWithoutPhotosInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
@@ -2478,8 +2954,18 @@ export type RabbitCreateWithoutIdentificationsInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -2523,9 +3009,19 @@ export type RabbitUncheckedCreateWithoutIdentificationsInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
@@ -2574,8 +3070,18 @@ export type RabbitUpdateWithoutIdentificationsInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -2619,9 +3125,19 @@ export type RabbitUncheckedUpdateWithoutIdentificationsInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
@@ -2654,8 +3170,18 @@ export type RabbitCreateWithoutCageMovementsInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -2699,9 +3225,19 @@ export type RabbitUncheckedCreateWithoutCageMovementsInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
@@ -2750,8 +3286,18 @@ export type RabbitUpdateWithoutCageMovementsInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -2795,9 +3341,19 @@ export type RabbitUncheckedUpdateWithoutCageMovementsInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
@@ -2830,8 +3386,18 @@ export type RabbitCreateWithoutBreedingsAsFemaleInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -2875,9 +3441,19 @@ export type RabbitUncheckedCreateWithoutBreedingsAsFemaleInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
@@ -2915,8 +3491,18 @@ export type RabbitCreateWithoutBreedingsAsMaleInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -2960,9 +3546,19 @@ export type RabbitUncheckedCreateWithoutBreedingsAsMaleInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
@@ -3011,8 +3607,18 @@ export type RabbitUpdateWithoutBreedingsAsFemaleInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -3056,9 +3662,19 @@ export type RabbitUncheckedUpdateWithoutBreedingsAsFemaleInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
@@ -3102,8 +3718,18 @@ export type RabbitUpdateWithoutBreedingsAsMaleInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -3147,9 +3773,19 @@ export type RabbitUncheckedUpdateWithoutBreedingsAsMaleInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
@@ -3182,8 +3818,18 @@ export type RabbitCreateWithoutMotherBirthsInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -3227,9 +3873,19 @@ export type RabbitUncheckedCreateWithoutMotherBirthsInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
@@ -3278,8 +3934,18 @@ export type RabbitUpdateWithoutMotherBirthsInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -3323,9 +3989,19 @@ export type RabbitUncheckedUpdateWithoutMotherBirthsInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
@@ -3358,8 +4034,18 @@ export type RabbitCreateWithoutMotherLittersInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -3403,9 +4089,19 @@ export type RabbitUncheckedCreateWithoutMotherLittersInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
@@ -3443,8 +4139,18 @@ export type RabbitCreateWithoutFatherLittersInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -3488,9 +4194,19 @@ export type RabbitUncheckedCreateWithoutFatherLittersInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
@@ -3528,8 +4244,18 @@ export type RabbitCreateWithoutBirthLitterInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -3573,8 +4299,18 @@ export type RabbitUncheckedCreateWithoutBirthLitterInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
@@ -3629,8 +4365,18 @@ export type RabbitUpdateWithoutMotherLittersInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -3674,9 +4420,19 @@ export type RabbitUncheckedUpdateWithoutMotherLittersInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
@@ -3720,8 +4476,18 @@ export type RabbitUpdateWithoutFatherLittersInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -3765,9 +4531,19 @@ export type RabbitUncheckedUpdateWithoutFatherLittersInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
@@ -3816,8 +4592,18 @@ export type RabbitCreateWithoutAdoptionHistoryInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -3861,9 +4647,19 @@ export type RabbitUncheckedCreateWithoutAdoptionHistoryInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
@@ -3912,8 +4708,18 @@ export type RabbitUpdateWithoutAdoptionHistoryInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -3957,9 +4763,19 @@ export type RabbitUncheckedUpdateWithoutAdoptionHistoryInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
@@ -3992,8 +4808,18 @@ export type RabbitCreateWithoutWeaningHistoryInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -4037,9 +4863,19 @@ export type RabbitUncheckedCreateWithoutWeaningHistoryInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
@@ -4088,8 +4924,18 @@ export type RabbitUpdateWithoutWeaningHistoryInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -4133,9 +4979,19 @@ export type RabbitUncheckedUpdateWithoutWeaningHistoryInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
@@ -4168,8 +5024,18 @@ export type RabbitCreateWithoutLotMembershipsInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -4213,9 +5079,19 @@ export type RabbitUncheckedCreateWithoutLotMembershipsInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
@@ -4264,8 +5140,18 @@ export type RabbitUpdateWithoutLotMembershipsInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -4309,9 +5195,19 @@ export type RabbitUncheckedUpdateWithoutLotMembershipsInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
@@ -4344,8 +5240,18 @@ export type RabbitCreateWithoutWeighingsInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -4389,9 +5295,19 @@ export type RabbitUncheckedCreateWithoutWeighingsInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
@@ -4440,8 +5356,18 @@ export type RabbitUpdateWithoutWeighingsInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -4485,9 +5411,19 @@ export type RabbitUncheckedUpdateWithoutWeighingsInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
@@ -4520,8 +5456,18 @@ export type RabbitCreateWithoutHealthRecordsInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -4565,9 +5511,19 @@ export type RabbitUncheckedCreateWithoutHealthRecordsInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
@@ -4616,8 +5572,18 @@ export type RabbitUpdateWithoutHealthRecordsInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -4661,9 +5627,19 @@ export type RabbitUncheckedUpdateWithoutHealthRecordsInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
@@ -4696,8 +5672,18 @@ export type RabbitCreateWithoutSaleItemsInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -4741,9 +5727,19 @@ export type RabbitUncheckedCreateWithoutSaleItemsInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
@@ -4792,8 +5788,18 @@ export type RabbitUpdateWithoutSaleItemsInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -4837,9 +5843,19 @@ export type RabbitUncheckedUpdateWithoutSaleItemsInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
@@ -4872,8 +5888,18 @@ export type RabbitCreateWithoutTasksInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -4917,9 +5943,19 @@ export type RabbitUncheckedCreateWithoutTasksInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
@@ -4968,8 +6004,18 @@ export type RabbitUpdateWithoutTasksInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -5013,9 +6059,19 @@ export type RabbitUncheckedUpdateWithoutTasksInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
@@ -5048,8 +6104,18 @@ export type RabbitCreateWithoutMortalitiesInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutRabbitInput
   farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
   breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
   crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
@@ -5093,9 +6159,19 @@ export type RabbitUncheckedCreateWithoutMortalitiesInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutRabbitInput
   childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
   childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
   photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
@@ -5144,8 +6220,18 @@ export type RabbitUpdateWithoutMortalitiesInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -5189,6 +6275,231 @@ export type RabbitUncheckedUpdateWithoutMortalitiesInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
+  childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
+  photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
+  identifications?: Prisma.RabbitIdentificationUncheckedUpdateManyWithoutRabbitNestedInput
+  cageMovements?: Prisma.RabbitCageMovementUncheckedUpdateManyWithoutRabbitNestedInput
+  adoptionHistory?: Prisma.AdoptionRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  weaningHistory?: Prisma.WeaningRabbitUncheckedUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutRabbitNestedInput
+  breedingsAsFemale?: Prisma.BreedingUncheckedUpdateManyWithoutFemaleNestedInput
+  breedingsAsMale?: Prisma.BreedingUncheckedUpdateManyWithoutMaleNestedInput
+  motherBirths?: Prisma.BirthUncheckedUpdateManyWithoutMotherNestedInput
+  motherLitters?: Prisma.LitterUncheckedUpdateManyWithoutMotherNestedInput
+  fatherLitters?: Prisma.LitterUncheckedUpdateManyWithoutFatherNestedInput
+  lotMemberships?: Prisma.LotMembershipUncheckedUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+}
+
+export type RabbitCreateWithoutCareRecordsInput = {
+  id?: string
+  code: string
+  sex: $Enums.RabbitSex
+  status?: $Enums.RabbitStatus
+  purpose?: $Enums.RabbitPurpose
+  birthDate?: Date | string | null
+  color?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  farm: Prisma.FarmCreateNestedOneWithoutRabbitsInput
+  breed?: Prisma.BreedCreateNestedOneWithoutRabbitsInput
+  crossBreed?: Prisma.CrossBreedCreateNestedOneWithoutRabbitsInput
+  father?: Prisma.RabbitCreateNestedOneWithoutChildrenAsFatherInput
+  mother?: Prisma.RabbitCreateNestedOneWithoutChildrenAsMotherInput
+  childrenAsFather?: Prisma.RabbitCreateNestedManyWithoutFatherInput
+  childrenAsMother?: Prisma.RabbitCreateNestedManyWithoutMotherInput
+  photos?: Prisma.RabbitPhotoCreateNestedManyWithoutRabbitInput
+  identifications?: Prisma.RabbitIdentificationCreateNestedManyWithoutRabbitInput
+  cageMovements?: Prisma.RabbitCageMovementCreateNestedManyWithoutRabbitInput
+  adoptionHistory?: Prisma.AdoptionRabbitCreateNestedManyWithoutRabbitInput
+  weaningHistory?: Prisma.WeaningRabbitCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutRabbitInput
+  breedingsAsFemale?: Prisma.BreedingCreateNestedManyWithoutFemaleInput
+  breedingsAsMale?: Prisma.BreedingCreateNestedManyWithoutMaleInput
+  motherBirths?: Prisma.BirthCreateNestedManyWithoutMotherInput
+  motherLitters?: Prisma.LitterCreateNestedManyWithoutMotherInput
+  fatherLitters?: Prisma.LitterCreateNestedManyWithoutFatherInput
+  birthLitter?: Prisma.LitterCreateNestedOneWithoutRabbitsInput
+  lotMemberships?: Prisma.LotMembershipCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutRabbitInput
+}
+
+export type RabbitUncheckedCreateWithoutCareRecordsInput = {
+  id?: string
+  farmId: string
+  code: string
+  sex: $Enums.RabbitSex
+  status?: $Enums.RabbitStatus
+  purpose?: $Enums.RabbitPurpose
+  breedId?: string | null
+  crossBreedId?: string | null
+  fatherId?: string | null
+  motherId?: string | null
+  birthDate?: Date | string | null
+  color?: string | null
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: string | null
+  originalCode?: string | null
+  exitDate?: Date | string | null
+  exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
+  birthLitterId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  childrenAsFather?: Prisma.RabbitUncheckedCreateNestedManyWithoutFatherInput
+  childrenAsMother?: Prisma.RabbitUncheckedCreateNestedManyWithoutMotherInput
+  photos?: Prisma.RabbitPhotoUncheckedCreateNestedManyWithoutRabbitInput
+  identifications?: Prisma.RabbitIdentificationUncheckedCreateNestedManyWithoutRabbitInput
+  cageMovements?: Prisma.RabbitCageMovementUncheckedCreateNestedManyWithoutRabbitInput
+  adoptionHistory?: Prisma.AdoptionRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  weaningHistory?: Prisma.WeaningRabbitUncheckedCreateNestedManyWithoutRabbitInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutRabbitInput
+  breedingsAsFemale?: Prisma.BreedingUncheckedCreateNestedManyWithoutFemaleInput
+  breedingsAsMale?: Prisma.BreedingUncheckedCreateNestedManyWithoutMaleInput
+  motherBirths?: Prisma.BirthUncheckedCreateNestedManyWithoutMotherInput
+  motherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutMotherInput
+  fatherLitters?: Prisma.LitterUncheckedCreateNestedManyWithoutFatherInput
+  lotMemberships?: Prisma.LotMembershipUncheckedCreateNestedManyWithoutRabbitInput
+  weighings?: Prisma.WeighingUncheckedCreateNestedManyWithoutRabbitInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutRabbitInput
+  saleItems?: Prisma.SaleItemUncheckedCreateNestedManyWithoutRabbitInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutRabbitInput
+}
+
+export type RabbitCreateOrConnectWithoutCareRecordsInput = {
+  where: Prisma.RabbitWhereUniqueInput
+  create: Prisma.XOR<Prisma.RabbitCreateWithoutCareRecordsInput, Prisma.RabbitUncheckedCreateWithoutCareRecordsInput>
+}
+
+export type RabbitUpsertWithoutCareRecordsInput = {
+  update: Prisma.XOR<Prisma.RabbitUpdateWithoutCareRecordsInput, Prisma.RabbitUncheckedUpdateWithoutCareRecordsInput>
+  create: Prisma.XOR<Prisma.RabbitCreateWithoutCareRecordsInput, Prisma.RabbitUncheckedCreateWithoutCareRecordsInput>
+  where?: Prisma.RabbitWhereInput
+}
+
+export type RabbitUpdateToOneWithWhereWithoutCareRecordsInput = {
+  where?: Prisma.RabbitWhereInput
+  data: Prisma.XOR<Prisma.RabbitUpdateWithoutCareRecordsInput, Prisma.RabbitUncheckedUpdateWithoutCareRecordsInput>
+}
+
+export type RabbitUpdateWithoutCareRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
+  status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
+  purpose?: Prisma.EnumRabbitPurposeFieldUpdateOperationsInput | $Enums.RabbitPurpose
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
+  breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
+  crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
+  father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
+  mother?: Prisma.RabbitUpdateOneWithoutChildrenAsMotherNestedInput
+  childrenAsFather?: Prisma.RabbitUpdateManyWithoutFatherNestedInput
+  childrenAsMother?: Prisma.RabbitUpdateManyWithoutMotherNestedInput
+  photos?: Prisma.RabbitPhotoUpdateManyWithoutRabbitNestedInput
+  identifications?: Prisma.RabbitIdentificationUpdateManyWithoutRabbitNestedInput
+  cageMovements?: Prisma.RabbitCageMovementUpdateManyWithoutRabbitNestedInput
+  adoptionHistory?: Prisma.AdoptionRabbitUpdateManyWithoutRabbitNestedInput
+  weaningHistory?: Prisma.WeaningRabbitUpdateManyWithoutRabbitNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutRabbitNestedInput
+  breedingsAsFemale?: Prisma.BreedingUpdateManyWithoutFemaleNestedInput
+  breedingsAsMale?: Prisma.BreedingUpdateManyWithoutMaleNestedInput
+  motherBirths?: Prisma.BirthUpdateManyWithoutMotherNestedInput
+  motherLitters?: Prisma.LitterUpdateManyWithoutMotherNestedInput
+  fatherLitters?: Prisma.LitterUpdateManyWithoutFatherNestedInput
+  birthLitter?: Prisma.LitterUpdateOneWithoutRabbitsNestedInput
+  lotMemberships?: Prisma.LotMembershipUpdateManyWithoutRabbitNestedInput
+  weighings?: Prisma.WeighingUpdateManyWithoutRabbitNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutRabbitNestedInput
+  saleItems?: Prisma.SaleItemUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutRabbitNestedInput
+}
+
+export type RabbitUncheckedUpdateWithoutCareRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  sex?: Prisma.EnumRabbitSexFieldUpdateOperationsInput | $Enums.RabbitSex
+  status?: Prisma.EnumRabbitStatusFieldUpdateOperationsInput | $Enums.RabbitStatus
+  purpose?: Prisma.EnumRabbitPurposeFieldUpdateOperationsInput | $Enums.RabbitPurpose
+  breedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  crossBreedId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fatherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  motherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  observations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -5209,6 +6520,7 @@ export type RabbitUncheckedUpdateWithoutMortalitiesInput = {
   weighings?: Prisma.WeighingUncheckedUpdateManyWithoutRabbitNestedInput
   healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutRabbitNestedInput
   saleItems?: Prisma.SaleItemUncheckedUpdateManyWithoutRabbitNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutRabbitNestedInput
 }
 
 export type RabbitCreateManyFarmInput = {
@@ -5228,6 +6540,15 @@ export type RabbitCreateManyFarmInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -5246,8 +6567,18 @@ export type RabbitUpdateWithoutFarmInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
   father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
@@ -5290,9 +6621,19 @@ export type RabbitUncheckedUpdateWithoutFarmInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
@@ -5330,6 +6671,15 @@ export type RabbitUncheckedUpdateManyWithoutFarmInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -5352,6 +6702,15 @@ export type RabbitCreateManyBreedInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -5370,8 +6729,18 @@ export type RabbitUpdateWithoutBreedInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
   father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
@@ -5414,9 +6783,19 @@ export type RabbitUncheckedUpdateWithoutBreedInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
@@ -5454,6 +6833,15 @@ export type RabbitUncheckedUpdateManyWithoutBreedInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -5476,6 +6864,15 @@ export type RabbitCreateManyCrossBreedInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -5494,8 +6891,18 @@ export type RabbitUpdateWithoutCrossBreedInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   father?: Prisma.RabbitUpdateOneWithoutChildrenAsFatherNestedInput
@@ -5538,9 +6945,19 @@ export type RabbitUncheckedUpdateWithoutCrossBreedInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
@@ -5578,6 +6995,15 @@ export type RabbitUncheckedUpdateManyWithoutCrossBreedInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -5600,6 +7026,15 @@ export type RabbitCreateManyFatherInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -5622,6 +7057,15 @@ export type RabbitCreateManyMotherInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   birthLitterId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -5640,8 +7084,18 @@ export type RabbitUpdateWithoutFatherInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -5684,9 +7138,19 @@ export type RabbitUncheckedUpdateWithoutFatherInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
@@ -5724,6 +7188,15 @@ export type RabbitUncheckedUpdateManyWithoutFatherInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -5742,8 +7215,18 @@ export type RabbitUpdateWithoutMotherInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -5786,9 +7269,19 @@ export type RabbitUncheckedUpdateWithoutMotherInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
@@ -5826,6 +7319,15 @@ export type RabbitUncheckedUpdateManyWithoutMotherInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthLitterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -5849,6 +7351,15 @@ export type RabbitCreateManyBirthLitterInput = {
   originalCode?: string | null
   exitDate?: Date | string | null
   exitCause?: string | null
+  origin?: string | null
+  previousLitters?: number | null
+  previousKitsBorn?: number | null
+  lastBirthDate?: Date | string | null
+  maternalBehavior?: string | null
+  previousMatings?: number | null
+  healthHistory?: string | null
+  readyForSale?: boolean
+  readyForSaleAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -5866,8 +7377,18 @@ export type RabbitUpdateWithoutBirthLitterInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutRabbitNestedInput
   farm?: Prisma.FarmUpdateOneRequiredWithoutRabbitsNestedInput
   breed?: Prisma.BreedUpdateOneWithoutRabbitsNestedInput
   crossBreed?: Prisma.CrossBreedUpdateOneWithoutRabbitsNestedInput
@@ -5911,8 +7432,18 @@ export type RabbitUncheckedUpdateWithoutBirthLitterInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutRabbitNestedInput
   childrenAsFather?: Prisma.RabbitUncheckedUpdateManyWithoutFatherNestedInput
   childrenAsMother?: Prisma.RabbitUncheckedUpdateManyWithoutMotherNestedInput
   photos?: Prisma.RabbitPhotoUncheckedUpdateManyWithoutRabbitNestedInput
@@ -5951,6 +7482,15 @@ export type RabbitUncheckedUpdateManyWithoutBirthLitterInput = {
   originalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exitDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   exitCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  origin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousLitters?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  previousKitsBorn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastBirthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  maternalBehavior?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  previousMatings?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  healthHistory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readyForSale?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  readyForSaleAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -5961,6 +7501,7 @@ export type RabbitUncheckedUpdateManyWithoutBirthLitterInput = {
  */
 
 export type RabbitCountOutputType = {
+  careRecords: number
   childrenAsFather: number
   childrenAsMother: number
   photos: number
@@ -5982,6 +7523,7 @@ export type RabbitCountOutputType = {
 }
 
 export type RabbitCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  careRecords?: boolean | RabbitCountOutputTypeCountCareRecordsArgs
   childrenAsFather?: boolean | RabbitCountOutputTypeCountChildrenAsFatherArgs
   childrenAsMother?: boolean | RabbitCountOutputTypeCountChildrenAsMotherArgs
   photos?: boolean | RabbitCountOutputTypeCountPhotosArgs
@@ -6010,6 +7552,13 @@ export type RabbitCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exten
    * Select specific fields to fetch from the RabbitCountOutputType
    */
   select?: Prisma.RabbitCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * RabbitCountOutputType without action
+ */
+export type RabbitCountOutputTypeCountCareRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CareRecordWhereInput
 }
 
 /**
@@ -6157,9 +7706,19 @@ export type RabbitSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   originalCode?: boolean
   exitDate?: boolean
   exitCause?: boolean
+  origin?: boolean
+  previousLitters?: boolean
+  previousKitsBorn?: boolean
+  lastBirthDate?: boolean
+  maternalBehavior?: boolean
+  previousMatings?: boolean
+  healthHistory?: boolean
+  readyForSale?: boolean
+  readyForSaleAt?: boolean
   birthLitterId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  careRecords?: boolean | Prisma.Rabbit$careRecordsArgs<ExtArgs>
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   breed?: boolean | Prisma.Rabbit$breedArgs<ExtArgs>
   crossBreed?: boolean | Prisma.Rabbit$crossBreedArgs<ExtArgs>
@@ -6205,6 +7764,15 @@ export type RabbitSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   originalCode?: boolean
   exitDate?: boolean
   exitCause?: boolean
+  origin?: boolean
+  previousLitters?: boolean
+  previousKitsBorn?: boolean
+  lastBirthDate?: boolean
+  maternalBehavior?: boolean
+  previousMatings?: boolean
+  healthHistory?: boolean
+  readyForSale?: boolean
+  readyForSaleAt?: boolean
   birthLitterId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -6234,6 +7802,15 @@ export type RabbitSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   originalCode?: boolean
   exitDate?: boolean
   exitCause?: boolean
+  origin?: boolean
+  previousLitters?: boolean
+  previousKitsBorn?: boolean
+  lastBirthDate?: boolean
+  maternalBehavior?: boolean
+  previousMatings?: boolean
+  healthHistory?: boolean
+  readyForSale?: boolean
+  readyForSaleAt?: boolean
   birthLitterId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -6263,13 +7840,23 @@ export type RabbitSelectScalar = {
   originalCode?: boolean
   exitDate?: boolean
   exitCause?: boolean
+  origin?: boolean
+  previousLitters?: boolean
+  previousKitsBorn?: boolean
+  lastBirthDate?: boolean
+  maternalBehavior?: boolean
+  previousMatings?: boolean
+  healthHistory?: boolean
+  readyForSale?: boolean
+  readyForSaleAt?: boolean
   birthLitterId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type RabbitOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "code" | "sex" | "status" | "purpose" | "breedId" | "crossBreedId" | "fatherId" | "motherId" | "birthDate" | "color" | "weight" | "observations" | "originalCode" | "exitDate" | "exitCause" | "birthLitterId" | "createdAt" | "updatedAt", ExtArgs["result"]["rabbit"]>
+export type RabbitOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "code" | "sex" | "status" | "purpose" | "breedId" | "crossBreedId" | "fatherId" | "motherId" | "birthDate" | "color" | "weight" | "observations" | "originalCode" | "exitDate" | "exitCause" | "origin" | "previousLitters" | "previousKitsBorn" | "lastBirthDate" | "maternalBehavior" | "previousMatings" | "healthHistory" | "readyForSale" | "readyForSaleAt" | "birthLitterId" | "createdAt" | "updatedAt", ExtArgs["result"]["rabbit"]>
 export type RabbitInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  careRecords?: boolean | Prisma.Rabbit$careRecordsArgs<ExtArgs>
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   breed?: boolean | Prisma.Rabbit$breedArgs<ExtArgs>
   crossBreed?: boolean | Prisma.Rabbit$crossBreedArgs<ExtArgs>
@@ -6316,6 +7903,7 @@ export type RabbitIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type $RabbitPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Rabbit"
   objects: {
+    careRecords: Prisma.$CareRecordPayload<ExtArgs>[]
     farm: Prisma.$FarmPayload<ExtArgs>
     breed: Prisma.$BreedPayload<ExtArgs> | null
     crossBreed: Prisma.$CrossBreedPayload<ExtArgs> | null
@@ -6366,6 +7954,24 @@ export type $RabbitPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
      */
     exitDate: Date | null
     exitCause: string | null
+    /**
+     * Passé du lapin à son arrivée (questions posées à la création).
+     */
+    origin: string | null
+    previousLitters: number | null
+    previousKitsBorn: number | null
+    lastBirthDate: Date | null
+    /**
+     * GOOD, AVERAGE ou POOR
+     */
+    maternalBehavior: string | null
+    previousMatings: number | null
+    healthHistory: string | null
+    /**
+     * Choisi à la main par l'éleveur pour la vente.
+     */
+    readyForSale: boolean
+    readyForSaleAt: Date | null
     birthLitterId: string | null
     createdAt: Date
     updatedAt: Date
@@ -6763,6 +8369,7 @@ readonly fields: RabbitFieldRefs;
  */
 export interface Prisma__RabbitClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  careRecords<T extends Prisma.Rabbit$careRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$careRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CareRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   farm<T extends Prisma.FarmDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FarmDefaultArgs<ExtArgs>>): Prisma.Prisma__FarmClient<runtime.Types.Result.GetResult<Prisma.$FarmPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   breed<T extends Prisma.Rabbit$breedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$breedArgs<ExtArgs>>): Prisma.Prisma__BreedClient<runtime.Types.Result.GetResult<Prisma.$BreedPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   crossBreed<T extends Prisma.Rabbit$crossBreedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rabbit$crossBreedArgs<ExtArgs>>): Prisma.Prisma__CrossBreedClient<runtime.Types.Result.GetResult<Prisma.$CrossBreedPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -6833,6 +8440,15 @@ export interface RabbitFieldRefs {
   readonly originalCode: Prisma.FieldRef<"Rabbit", 'String'>
   readonly exitDate: Prisma.FieldRef<"Rabbit", 'DateTime'>
   readonly exitCause: Prisma.FieldRef<"Rabbit", 'String'>
+  readonly origin: Prisma.FieldRef<"Rabbit", 'String'>
+  readonly previousLitters: Prisma.FieldRef<"Rabbit", 'Int'>
+  readonly previousKitsBorn: Prisma.FieldRef<"Rabbit", 'Int'>
+  readonly lastBirthDate: Prisma.FieldRef<"Rabbit", 'DateTime'>
+  readonly maternalBehavior: Prisma.FieldRef<"Rabbit", 'String'>
+  readonly previousMatings: Prisma.FieldRef<"Rabbit", 'Int'>
+  readonly healthHistory: Prisma.FieldRef<"Rabbit", 'String'>
+  readonly readyForSale: Prisma.FieldRef<"Rabbit", 'Boolean'>
+  readonly readyForSaleAt: Prisma.FieldRef<"Rabbit", 'DateTime'>
   readonly birthLitterId: Prisma.FieldRef<"Rabbit", 'String'>
   readonly createdAt: Prisma.FieldRef<"Rabbit", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Rabbit", 'DateTime'>
@@ -7234,6 +8850,30 @@ export type RabbitDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many Rabbits to delete.
    */
   limit?: number
+}
+
+/**
+ * Rabbit.careRecords
+ */
+export type Rabbit$careRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CareRecord
+   */
+  select?: Prisma.CareRecordSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CareRecord
+   */
+  omit?: Prisma.CareRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CareRecordInclude<ExtArgs> | null
+  where?: Prisma.CareRecordWhereInput
+  orderBy?: Prisma.CareRecordOrderByWithRelationInput | Prisma.CareRecordOrderByWithRelationInput[]
+  cursor?: Prisma.CareRecordWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CareRecordScalarFieldEnum | Prisma.CareRecordScalarFieldEnum[]
 }
 
 /**

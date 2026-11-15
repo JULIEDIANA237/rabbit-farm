@@ -10,9 +10,9 @@ import {
   type BadgeTone,
 } from '@/components/ui/kit';
 import { useRabbitOptions } from '@/graphql/options';
-import { parsePrefill, toInt, useCreateModal, useForm, useUrlCommand, type Prefill } from '@/hooks/use-form';
+import { parsePrefill, toFloat, toInt, useCreateModal, useForm, useUrlCommand, type Prefill } from '@/hooks/use-form';
 import { AiFill } from '@/components/assistant/ai-fill';
-import { clean, formatDate, fromDateInput, toDateInput } from '@/lib/format';
+import { clean, formatDate, formatNumber, fromDateInput, toDateInput } from '@/lib/format';
 import { RowActions, useDeleteAction } from '@/components/ui/row-actions';
 import { BREEDING_STATUS, COMPATIBILITY, PREGNANCY_RESULT, label, options } from '@/lib/labels';
 
@@ -46,6 +46,111 @@ const COMPATIBILITY_QUERY = gql`
     }
   }
 `;
+
+const PROFILE = gql`
+  query ReproductionProfile($id: ID!) {
+    reproductionProfile(rabbitId: $id) {
+      id
+      code
+      sex
+      ageDays
+      weight
+      totalLitters
+      kitsBornAlive
+      averageLiveBorn
+      lastBirthDate
+      daysSinceLastBirth
+      nursingKits
+      maternalBehavior
+      healthHistory
+      totalMatings
+      matingsLast7Days
+      lastMatingDate
+      successRate
+      recentHealth { date text }
+      warnings
+    }
+  }
+`;
+
+interface Profile {
+  id: string;
+  code: string;
+  sex: string;
+  ageDays: number | null;
+  weight: number | null;
+  totalLitters: number;
+  kitsBornAlive: number;
+  averageLiveBorn: number | null;
+  lastBirthDate: string | null;
+  daysSinceLastBirth: number | null;
+  nursingKits: number;
+  maternalBehavior: string | null;
+  healthHistory: string | null;
+  totalMatings: number;
+  matingsLast7Days: number;
+  lastMatingDate: string | null;
+  successRate: number | null;
+  recentHealth: Array<{ date: string; text: string }>;
+  warnings: string[];
+}
+
+const MOTHER = { GOOD: 'bonne mère', AVERAGE: 'mère moyenne', POOR: 'mauvaise mère' } as Record<string, string>;
+const age = (days: number | null) =>
+  days == null ? 'âge inconnu' : days < 60 ? `${days} jours` : `${Math.floor(days / 30)} mois`;
+
+/** Ce que l'on sait d'un reproducteur, affiché avant la saillie. */
+function ProfileCard({ id }: { id: string }) {
+  const { data, loading } = useQuery<{ reproductionProfile: Profile }>(PROFILE, { variables: { id }, fetchPolicy: 'cache-and-network' });
+  const p = data?.reproductionProfile;
+  if (!p) return loading ? <Loading label="Chargement de la fiche…" /> : null;
+  const female = p.sex === 'FEMALE';
+  const facts = [
+    age(p.ageDays),
+    p.weight != null ? `${formatNumber(p.weight, 2)} kg` : 'poids inconnu',
+    ...(female
+      ? [
+          `${p.totalLitters} mise(s) bas`,
+          p.averageLiveBorn != null ? `${formatNumber(p.averageLiveBorn)} petits vivants en moyenne` : null,
+          p.daysSinceLastBirth != null ? `dernière mise bas il y a ${p.daysSinceLastBirth} j` : null,
+          p.nursingKits ? `${p.nursingKits} lapereau(x) sous elle` : null,
+          p.maternalBehavior ? MOTHER[p.maternalBehavior] : null,
+        ]
+      : [
+          `${p.totalMatings} saillie(s)`,
+          p.matingsLast7Days ? `${p.matingsLast7Days} cette semaine` : null,
+          p.lastMatingDate ? `dernière le ${formatDate(p.lastMatingDate)}` : null,
+        ]),
+    p.successRate != null ? `${p.successRate} % de réussite` : null,
+  ].filter(Boolean);
+  return (
+    <div className={`rounded-2xl border p-3 text-sm ${p.warnings.length ? 'border-amber-200 bg-amber-50' : 'border-emerald-200 bg-emerald-50'}`}>
+      <p className="font-semibold text-slate-900">
+        {female ? '♀' : '♂'} {p.code}
+      </p>
+      <p className="mt-1 text-slate-700">{facts.join(' · ')}</p>
+      {p.healthHistory && <p className="mt-1 text-slate-600">Antécédents : {p.healthHistory}</p>}
+      {p.recentHealth.length > 0 && (
+        <p className="mt-1 text-slate-600">
+          Santé récente : {p.recentHealth.map((h) => `${formatDate(h.date)} ${h.text}`).join(' ; ')}
+        </p>
+      )}
+      {p.warnings.length > 0 && (
+        <ul className="mt-2 list-disc space-y-0.5 pl-5 text-amber-900">
+          {p.warnings.map((w) => (
+            <li key={w}>{w}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+const YES_NO = [
+  { value: 'oui', label: 'Oui' },
+  { value: 'non', label: 'Non' },
+  { value: '', label: 'Je ne sais pas' },
+];
 
 const CREATE = gql`
   mutation CreateBreeding($input: CreateBreedingInput!) { createBreeding(input: $input) { id } }
@@ -246,9 +351,22 @@ function CreateBreedingModal({ open, onClose, prefill }: { open: boolean; onClos
     maleId: '',
     breedingDate: toDateInput(),
     observation: '',
+    femaleWeight: '',
+    maleWeight: '',
+    femaleHeat: '',
+    femaleHealthy: 'oui',
+    maleHealthy: 'oui',
+    matingSeen: '',
     ...prefill,
   });
   const [acknowledge, setAcknowledge] = useState(false);
+  const answers = [
+    values.femaleHeat && `Femelle en chaleur : ${values.femaleHeat}`,
+    values.femaleHealthy && `Femelle en bonne santé : ${values.femaleHealthy}`,
+    values.maleHealthy && `Mâle en forme : ${values.maleHealthy}`,
+    values.matingSeen && `Saillie réussie : ${values.matingSeen}`,
+  ].filter(Boolean);
+  const unhealthy = values.femaleHealthy === 'non' || values.maleHealthy === 'non';
 
   const [check, { data: compat, loading: checking }] = useLazyQuery<{
     breedingCompatibility: {
@@ -299,7 +417,9 @@ function CreateBreedingModal({ open, onClose, prefill }: { open: boolean; onClos
           femaleId: values.femaleId,
           maleId: values.maleId,
           breedingDate: fromDateInput(values.breedingDate),
-          observation: values.observation,
+          observation: [answers.join(' · '), values.observation.trim()].filter(Boolean).join('\n'),
+          femaleWeight: toFloat(values.femaleWeight),
+          maleWeight: toFloat(values.maleWeight),
           acknowledgeWarnings: acknowledge,
         }),
       },
@@ -385,6 +505,49 @@ function CreateBreedingModal({ open, onClose, prefill }: { open: boolean; onClos
               <input type="checkbox" checked={acknowledge} onChange={(e) => setAcknowledge(e.target.checked)} />
               Je confirme cet accouplement malgré le risque
             </label>
+          )}
+        </div>
+      )}
+
+      {(values.femaleId || values.maleId) && (
+        <div className="grid gap-3 sm:grid-cols-2">
+          {values.femaleId ? <ProfileCard key={values.femaleId} id={values.femaleId} /> : <div />}
+          {values.maleId ? <ProfileCard key={values.maleId} id={values.maleId} /> : <div />}
+        </div>
+      )}
+
+      {values.femaleId && values.maleId && (
+        <div className="space-y-3 rounded-2xl border border-slate-200 p-4">
+          <p className="text-sm font-semibold text-slate-900">Quelques questions avant d’enregistrer</p>
+          <FormGrid>
+            <Field label="La femelle est-elle en chaleur ?" hint="Vulve rouge ou violacée, elle se laisse monter">
+              <Select options={YES_NO} {...bind('femaleHeat')} />
+            </Field>
+            <Field label="La femelle est-elle en bonne santé ?">
+              <Select options={YES_NO} {...bind('femaleHealthy')} />
+            </Field>
+            <Field label="Poids de la femelle aujourd’hui (kg)" hint="Facultatif : met à jour sa fiche">
+              <Input inputMode="decimal" placeholder="ex. 3,8" {...bind('femaleWeight')} />
+            </Field>
+            <Field label="Le mâle est-il en forme ?" hint="Actif, mange bien, pas malade">
+              <Select options={YES_NO} {...bind('maleHealthy')} />
+            </Field>
+            <Field label="Poids du mâle aujourd’hui (kg)" hint="Facultatif : met à jour sa fiche">
+              <Input inputMode="decimal" placeholder="ex. 4,2" {...bind('maleWeight')} />
+            </Field>
+            <Field label="La saillie a-t-elle réussi ?" hint="Le mâle tombe sur le côté après l’accouplement">
+              <Select options={YES_NO} {...bind('matingSeen')} />
+            </Field>
+          </FormGrid>
+          {unhealthy && (
+            <p className="rounded-xl bg-amber-50 p-3 text-sm text-amber-900">
+              Un lapin malade donne souvent une saillie ratée ou une portée faible. Mieux vaut le soigner avant.
+            </p>
+          )}
+          {values.matingSeen === 'non' && (
+            <p className="rounded-xl bg-amber-50 p-3 text-sm text-amber-900">
+              Si la saillie n’a pas réussi, tu peux la retenter plus tard dans la journée ou le lendemain.
+            </p>
           )}
         </div>
       )}

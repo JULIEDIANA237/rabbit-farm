@@ -237,6 +237,37 @@ input CancelSaleInput {
   reason: String
 }
 
+type CareRecordModel {
+  animalCount: Int
+  cageId: ID
+  careType: String!
+  createdAt: DateTime!
+  date: DateTime!
+  dose: String
+  id: ID!
+  lotId: ID
+  nextDate: DateTime
+  notes: String
+  product: String
+  rabbitId: ID
+  scope: CareScope!
+  sectionId: ID
+
+  """Libellé de la cible (ex. « Cage C-03 », « Toute la ferme »)"""
+  targetLabel: String!
+}
+
+"""
+À qui le soin a été donné : toute la ferme, un bloc, une cage, un lot ou un lapin
+"""
+enum CareScope {
+  CAGE
+  FARM
+  LOT
+  RABBIT
+  SECTION
+}
+
 """Résultat du contrôle généalogique avant accouplement."""
 enum CompatibilityLevel {
   BLOCKED
@@ -314,7 +345,13 @@ input CreateBreedingInput {
   acknowledgeWarnings: Boolean = false
   breedingDate: DateTime!
   femaleId: ID!
+
+  """Poids de la femelle le jour de la saillie (kg)"""
+  femaleWeight: Float
   maleId: ID!
+
+  """Poids du mâle le jour de la saillie (kg)"""
+  maleWeight: Float
   observation: String
 }
 
@@ -324,6 +361,23 @@ input CreateCageInput {
   sectionId: ID!
   status: CageStatus
   type: String
+}
+
+input CreateCareRecordInput {
+  animalCount: Int
+  cageId: ID
+  careType: String!
+  date: DateTime!
+  dose: String
+  lotId: ID
+
+  """Prochain soin : une tâche est créée ce jour-là"""
+  nextDate: DateTime
+  notes: String
+  product: String
+  rabbitId: ID
+  scope: CareScope! = FARM
+  sectionId: ID
 }
 
 input CreateCrossBreedInput {
@@ -388,6 +442,12 @@ input CreateInventoryItemInput {
   initialStockDate: DateTime
   minimumStock: Float
   name: String!
+
+  """Conditionnement d’achat (ex. sac)"""
+  packageName: String
+
+  """Contenu d’un conditionnement, en unité de stock (ex. 25 kg)"""
+  packageSize: Float
   type: InventoryItemType!
   unit: String!
 
@@ -430,8 +490,29 @@ input CreateRabbitInput {
   color: String
   crossBreedId: ID
   fatherId: ID
+
+  """Maladies et problèmes de santé passés"""
+  healthHistory: String
+
+  """Date de sa dernière mise bas avant son arrivée"""
+  lastBirthDate: DateTime
+
+  """Comportement de mère : GOOD, AVERAGE, POOR"""
+  maternalBehavior: String
   motherId: ID
   observations: String
+
+  """Provenance : née ici, achetée…"""
+  origin: String
+
+  """Lapereaux nés vivants avant son arrivée"""
+  previousKitsBorn: Int
+
+  """Mises bas faites avant son arrivée"""
+  previousLitters: Int
+
+  """Saillies faites avant son arrivée (mâle)"""
+  previousMatings: Int
   purpose: RabbitPurpose
   sex: RabbitSex!
   weight: Float
@@ -919,6 +1000,12 @@ type InventoryItemModel {
   movements: [StockMovementModel!]!
   name: String!
 
+  """Conditionnement d’achat (ex. sac)"""
+  packageName: String
+
+  """Contenu d’un conditionnement, en unité de stock"""
+  packageSize: Float
+
   """Valeur du stock (stock × prix unitaire)"""
   stockValue: Float
   type: InventoryItemType!
@@ -1130,6 +1217,7 @@ type Mutation {
   createBreed(input: CreateBreedInput!): BreedModel!
   createBreeding(input: CreateBreedingInput!): BreedingModel!
   createCage(input: CreateCageInput!): CageModel!
+  createCareRecord(input: CreateCareRecordInput!): CareRecordModel!
   createCrossBreed(input: CreateCrossBreedInput!): CrossBreedModel!
   createCustomer(input: CreateCustomerInput!): CustomerModel!
   createExpense(input: CreateExpenseInput!): ExpenseModel!
@@ -1151,6 +1239,7 @@ type Mutation {
   deleteBreed(id: ID!): Boolean!
   deleteBreeding(id: ID!): Boolean!
   deleteCage(id: ID!): CageModel!
+  deleteCareRecord(id: ID!): Boolean!
   deleteCrossBreed(id: ID!): Boolean!
   deleteCustomer(id: ID!): Boolean!
   deleteExpense(id: ID!): Boolean!
@@ -1198,6 +1287,9 @@ type Mutation {
   sendTestPush: Int!
   setFeedRations(input: SetFeedRationsInput!): FeedingItemPlanModel!
 
+  """Marque (ou retire) des lapins comme prêts pour la vente"""
+  setRabbitsReadyForSale(rabbitIds: [ID!]!, ready: Boolean!): Int!
+
   """Abonne cet appareil aux rappels du jour."""
   subscribePush(input: PushSubscriptionInput!): Boolean!
 
@@ -1207,6 +1299,7 @@ type Mutation {
   updateBreed(input: UpdateBreedInput!): BreedModel!
   updateBreeding(input: UpdateBreedingInput!): BreedingModel!
   updateCage(input: UpdateCageInput!): CageModel!
+  updateCareRecord(input: UpdateCareRecordInput!): CareRecordModel!
   updateCrossBreed(input: UpdateCrossBreedInput!): CrossBreedModel!
   updateCustomer(input: UpdateCustomerInput!): CustomerModel!
   updateExpense(input: UpdateExpenseInput!): ExpenseModel!
@@ -1217,6 +1310,7 @@ type Mutation {
   updateInventoryItem(input: UpdateInventoryItemInput!): InventoryItemModel!
   updateRabbit(input: UpdateRabbitInput!): RabbitModel!
   updateSale(input: UpdateSaleInput!): SaleModel!
+  updateSaleCriteria(minAgeDays: Int!, minWeightKg: Float!): SaleCriteriaModel!
   updateSection(input: UpdateSectionInput!): SectionModel!
   updateTask(input: UpdateTaskInput!): TaskModel!
   updateWeaning(input: UpdateWeaningInput!): WeaningModel!
@@ -1282,6 +1376,11 @@ enum PregnancyResult {
   PREGNANT
 }
 
+type ProfileHealthNote {
+  date: DateTime!
+  text: String!
+}
+
 type PushConfigModel {
   """Les notifications sont configurées côté serveur (clés VAPID)."""
   enabled: Boolean!
@@ -1308,6 +1407,9 @@ type Query {
   breeds: [BreedModel!]!
   cage(id: ID!): CageModel!
   cages: [CageModel!]!
+
+  """Soins saisis par l’éleveur"""
+  careRecords(from: DateTime): [CareRecordModel!]!
   crossBreed(id: ID!): CrossBreedModel!
   crossBreeds: [CrossBreedModel!]!
   customer(id: ID!): CustomerModel!
@@ -1360,8 +1462,14 @@ type Query {
   rabbitTraceability(rabbitId: ID!): RabbitTraceabilityModel!
   rabbits(limit: Int = 10, page: Int = 1, search: String): RabbitPageModel!
   rabbitsPaginated(input: RabbitsPaginationInput): RabbitPageModel!
+
+  """Résumé d’un reproducteur avant une saillie"""
+  reproductionProfile(rabbitId: ID!): ReproductionProfileModel!
   riskyBreedingPairs(limit: Int! = 50): [BreedingCompatibilityModel!]!
   sale(id: ID!): SaleModel!
+
+  """Lapins prêts pour la vente"""
+  saleReadiness: SaleReadinessModel!
   sales(customerId: ID): [SaleModel!]!
   section(id: ID!): SectionModel!
   sections: [SectionModel!]!
@@ -1424,15 +1532,40 @@ type RabbitModel {
   exitCause: String
   exitDate: DateTime
   fatherId: String
+
+  """Maladies et problèmes de santé passés"""
+  healthHistory: String
   id: ID!
   identifications: [RabbitIdentificationModel!]!
+
+  """Date de sa dernière mise bas avant son arrivée"""
+  lastBirthDate: DateTime
+
+  """Comportement de mère : GOOD, AVERAGE, POOR"""
+  maternalBehavior: String
   motherId: String
   observations: String
+
+  """Provenance : née ici, achetée…"""
+  origin: String
 
   """Code temporaire d’origine (ex. L001-07)"""
   originalCode: String
   photos: [RabbitPhotoModel!]!
+
+  """Lapereaux nés vivants avant son arrivée"""
+  previousKitsBorn: Int
+
+  """Mises bas faites avant son arrivée"""
+  previousLitters: Int
+
+  """Saillies faites avant son arrivée (mâle)"""
+  previousMatings: Int
   purpose: RabbitPurpose!
+
+  """Choisi à la main pour la vente"""
+  readyForSale: Boolean!
+  readyForSaleAt: DateTime
   sex: RabbitSex!
   status: RabbitStatus!
   updatedAt: DateTime!
@@ -1556,6 +1689,39 @@ input RemoveLotMembersInput {
   reason: String
 }
 
+type ReproductionProfileModel {
+  activeBreedingStatus: String
+  ageDays: Int
+  averageLiveBorn: Float
+  code: String!
+  daysSinceLastBirth: Int
+  healthHistory: String
+  id: ID!
+  kitsBornAlive: Int!
+  lastBirthDate: DateTime
+  lastMatingDate: DateTime
+  maternalBehavior: String
+  matingsLast7Days: Int!
+
+  """Lapereaux encore sous la mère"""
+  nursingKits: Int!
+  recentHealth: [ProfileHealthNote!]!
+  sex: String!
+
+  """Part des saillies suivies d’une mise bas (%)"""
+  successRate: Float
+
+  """Mises bas (avant son arrivée + dans l’application)"""
+  totalLitters: Int!
+
+  """Saillies (avant son arrivée + dans l’application)"""
+  totalMatings: Int!
+
+  """Points à vérifier avant la saillie"""
+  warnings: [String!]!
+  weight: Float
+}
+
 input RequestPasswordResetInput {
   email: String!
 }
@@ -1563,6 +1729,27 @@ input RequestPasswordResetInput {
 input ResetPasswordInput {
   password: String!
   token: String!
+}
+
+type SaleCandidateModel {
+  ageDays: Int
+  cageCode: String
+  code: String!
+  lotCode: String
+  lotId: ID
+  manual: Boolean!
+  purpose: String!
+  rabbitId: ID!
+  reasons: [String!]!
+  sex: String!
+  weighedAt: DateTime
+  weight: Float
+  weightSource: String
+}
+
+type SaleCriteriaModel {
+  minAgeDays: Int!
+  minWeightKg: Float!
 }
 
 type SaleItemModel {
@@ -1593,6 +1780,14 @@ type SaleModel {
   status: SaleStatus!
   totalAmount: Float!
   updatedAt: DateTime!
+}
+
+type SaleReadinessModel {
+  criteria: SaleCriteriaModel!
+  ready: [SaleCandidateModel!]!
+
+  """Prêts dans les 14 prochains jours"""
+  soon: [SaleCandidateModel!]!
 }
 
 enum SaleStatus {
@@ -1836,6 +2031,24 @@ input UpdateCageInput {
   type: String
 }
 
+input UpdateCareRecordInput {
+  animalCount: Int
+  cageId: ID
+  careType: String
+  date: DateTime
+  dose: String
+  id: ID!
+  lotId: ID
+
+  """Prochain soin : une tâche est créée ce jour-là"""
+  nextDate: DateTime
+  notes: String
+  product: String
+  rabbitId: ID
+  scope: CareScope
+  sectionId: ID
+}
+
 input UpdateCrossBreedInput {
   description: String
   id: ID!
@@ -1898,6 +2111,12 @@ input UpdateInventoryItemInput {
   id: ID!
   minimumStock: Float
   name: String
+
+  """Conditionnement d’achat (ex. sac)"""
+  packageName: String
+
+  """Contenu d’un conditionnement, en unité de stock (ex. 25 kg)"""
+  packageSize: Float
   type: InventoryItemType
   unit: String
 
@@ -1917,9 +2136,30 @@ input UpdateRabbitInput {
   color: String
   crossBreedId: ID
   fatherId: ID
+
+  """Maladies et problèmes de santé passés"""
+  healthHistory: String
   id: ID!
+
+  """Date de sa dernière mise bas avant son arrivée"""
+  lastBirthDate: DateTime
+
+  """Comportement de mère : GOOD, AVERAGE, POOR"""
+  maternalBehavior: String
   motherId: ID
   observations: String
+
+  """Provenance : née ici, achetée…"""
+  origin: String
+
+  """Lapereaux nés vivants avant son arrivée"""
+  previousKitsBorn: Int
+
+  """Mises bas faites avant son arrivée"""
+  previousLitters: Int
+
+  """Saillies faites avant son arrivée (mâle)"""
+  previousMatings: Int
   purpose: RabbitPurpose
   sex: RabbitSex
   status: RabbitStatus

@@ -1,4 +1,4 @@
-import { Field, ID, InputType } from '@nestjs/graphql';
+import { Field, Float, ID, InputType } from '@nestjs/graphql';
 
 @InputType()
 export class CreateBreedingInput {
@@ -13,6 +13,12 @@ export class CreateBreedingInput {
 
   @Field({ nullable: true })
   observation?: string;
+
+  @Field(() => Float, { nullable: true, description: 'Poids de la femelle le jour de la saillie (kg)' })
+  femaleWeight?: number;
+
+  @Field(() => Float, { nullable: true, description: 'Poids du mâle le jour de la saillie (kg)' })
+  maleWeight?: number;
 
   @Field({
     nullable: true,

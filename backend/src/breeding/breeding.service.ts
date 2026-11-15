@@ -23,6 +23,7 @@ import {
 import { computeBreedingCalendar } from '../common/calendar/breeding-calendar.js';
 import { GenealogyService } from '../genetics/genealogy.service.js';
 import { TaskAutomationService } from '../operations/automation/task-automation.service.js';
+import { daysBetween, profileWarnings } from './reproduction-profile.js';
 
 /** Statuts pour lesquels la femelle est engagée dans un cycle. */
 export const ACTIVE_BREEDING_STATUSES = [
@@ -193,6 +194,19 @@ export class BreedingService {
         },
         include: breedingInclude,
       });
+
+      // Poids relevés au moment de la saillie.
+      for (const [rabbitId, weight] of [
+        [female.id, input.femaleWeight],
+        [male.id, input.maleWeight],
+      ] as const) {
+        if (weight != null) {
+          if (!(weight > 0) || weight > 15) {
+            throw new BadRequestException('Le poids doit être compris entre 0 et 15 kg.');
+          }
+          await tx.rabbit.update({ where: { id: rabbitId }, data: { weight } });
+        }
+      }
 
       await this.tasks.onBreedingCreated(
         currentUser.farmId,
@@ -418,5 +432,82 @@ export class BreedingService {
       await tx.breeding.delete({ where: { id: breeding.id } });
     });
     return true;
+  }
+
+  /** Résumé d'un reproducteur, affiché avant d'enregistrer une saillie. */
+  async reproductionProfile(rabbitId: string, currentUser: CurrentUserType) {
+    const rabbit = await this.prisma.rabbit.findFirst({
+      where: { id: rabbitId, farmId: currentUser.farmId },
+      include: {
+        motherBirths: { orderBy: { birthDate: 'desc' }, select: { birthDate: true, liveBorn: true } },
+        motherLitters: { where: { status: 'ACTIVE' }, select: { currentCount: true } },
+        breedingsAsFemale: { select: { breedingDate: true, status: true, birth: { select: { id: true } } } },
+        breedingsAsMale: { select: { breedingDate: true, status: true, birth: { select: { id: true } } } },
+        healthRecords: { orderBy: { date: 'desc' }, take: 5 },
+      },
+    });
+    if (!rabbit) throw new NotFoundException('Lapin introuvable.');
+
+    const now = new Date();
+    const female = rabbit.sex === RabbitSex.FEMALE;
+    const breedings = female ? rabbit.breedingsAsFemale : rabbit.breedingsAsMale;
+    const appLitters = rabbit.motherBirths.length;
+    const totalLitters = (rabbit.previousLitters ?? 0) + appLitters;
+    const kitsBornAlive =
+      (rabbit.previousKitsBorn ?? 0) + rabbit.motherBirths.reduce((sum, b) => sum + b.liveBorn, 0);
+    const lastBirthDate = [rabbit.motherBirths[0]?.birthDate, rabbit.lastBirthDate]
+      .filter((d): d is Date => !!d)
+      .sort((a, b) => b.getTime() - a.getTime())[0] ?? null;
+    const lastMating = breedings
+      .map((b) => b.breedingDate)
+      .sort((a, b) => b.getTime() - a.getTime())[0] ?? null;
+    const isActive = (status: BreedingStatus) => (ACTIVE_BREEDING_STATUSES as BreedingStatus[]).includes(status);
+    const closed = breedings.filter((b) => !isActive(b.status) && b.status !== BreedingStatus.CANCELLED);
+    const successRate = closed.length
+      ? Math.round((closed.filter((b) => b.birth).length / closed.length) * 100)
+      : null;
+    const active = breedings.find((b) => isActive(b.status));
+    const recent = rabbit.healthRecords.filter((h) => daysBetween(h.date, now) <= 30 && h.type !== 'VACCINATION');
+    const weight = rabbit.weight != null ? Number(rabbit.weight) : null;
+    const ageDays = rabbit.birthDate ? daysBetween(rabbit.birthDate, now) : null;
+    const daysSinceLastBirth = lastBirthDate ? daysBetween(lastBirthDate, now) : null;
+    const nursingKits = rabbit.motherLitters.reduce((sum, l) => sum + l.currentCount, 0);
+    const matingsLast7Days = breedings.filter((b) => daysBetween(b.breedingDate, now) < 7).length;
+
+    return {
+      id: rabbit.id,
+      code: rabbit.code,
+      sex: rabbit.sex,
+      ageDays,
+      weight,
+      totalLitters,
+      kitsBornAlive,
+      averageLiveBorn: totalLitters ? Math.round((kitsBornAlive / totalLitters) * 10) / 10 : null,
+      lastBirthDate,
+      daysSinceLastBirth,
+      nursingKits,
+      maternalBehavior: rabbit.maternalBehavior,
+      healthHistory: rabbit.healthHistory,
+      totalMatings: (rabbit.previousMatings ?? 0) + breedings.length,
+      matingsLast7Days,
+      lastMatingDate: lastMating,
+      successRate,
+      activeBreedingStatus: active?.status ?? null,
+      recentHealth: rabbit.healthRecords.slice(0, 3).map((h) => ({
+        date: h.date,
+        text: [h.diagnosis, h.symptoms, h.treatment, h.observation].filter(Boolean).join(' · ') || 'Note de santé',
+      })),
+      warnings: profileWarnings({
+        sex: rabbit.sex,
+        ageDays,
+        weight,
+        daysSinceLastBirth,
+        nursingKits,
+        matingsLast7Days,
+        maternalBehavior: rabbit.maternalBehavior,
+        recentHealthCount: recent.length,
+        activeBreedingStatus: active?.status ?? null,
+      }),
+    };
   }
 }

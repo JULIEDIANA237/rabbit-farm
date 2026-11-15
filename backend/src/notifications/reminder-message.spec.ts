@@ -7,6 +7,12 @@ describe('reminderMessage', () => {
     );
   });
 
+  it('signale les lapins prêts pour la vente', () => {
+    expect(reminderMessage({ dueToday: 0, overdue: 0, birthsSoon: 0, readyForSale: 4 })?.body).toBe(
+      '4 lapins prêts pour la vente.',
+    );
+  });
+
   it('ne dérange pas quand il n’y a rien', () => {
     expect(reminderMessage({ dueToday: 0, overdue: 0, birthsSoon: 0 })).toBeNull();
   });

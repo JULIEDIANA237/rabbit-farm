@@ -434,7 +434,8 @@ export const ModelName = {
   NestInstallation: 'NestInstallation',
   MortalityRecord: 'MortalityRecord',
   LotCageMovement: 'LotCageMovement',
-  FeedRation: 'FeedRation'
+  FeedRation: 'FeedRation',
+  CareRecord: 'CareRecord'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -450,7 +451,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "passwordResetToken" | "pushSubscription" | "aiUsage" | "farm" | "farmMembership" | "section" | "cage" | "breed" | "crossBreed" | "rabbit" | "rabbitPhoto" | "rabbitIdentification" | "rabbitCageMovement" | "breeding" | "pregnancy" | "birth" | "litter" | "litterAdoption" | "adoptionRabbit" | "weaning" | "weaningRabbit" | "fatteningLot" | "lotMembership" | "weighing" | "healthRecord" | "customer" | "sale" | "saleItem" | "payment" | "expense" | "inventoryItem" | "stockMovement" | "task" | "nestInstallation" | "mortalityRecord" | "lotCageMovement" | "feedRation"
+    modelProps: "user" | "passwordResetToken" | "pushSubscription" | "aiUsage" | "farm" | "farmMembership" | "section" | "cage" | "breed" | "crossBreed" | "rabbit" | "rabbitPhoto" | "rabbitIdentification" | "rabbitCageMovement" | "breeding" | "pregnancy" | "birth" | "litter" | "litterAdoption" | "adoptionRabbit" | "weaning" | "weaningRabbit" | "fatteningLot" | "lotMembership" | "weighing" | "healthRecord" | "customer" | "sale" | "saleItem" | "payment" | "expense" | "inventoryItem" | "stockMovement" | "task" | "nestInstallation" | "mortalityRecord" | "lotCageMovement" | "feedRation" | "careRecord"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3266,6 +3267,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CareRecord: {
+      payload: Prisma.$CareRecordPayload<ExtArgs>
+      fields: Prisma.CareRecordFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CareRecordFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CareRecordPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CareRecordFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CareRecordPayload>
+        }
+        findFirst: {
+          args: Prisma.CareRecordFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CareRecordPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CareRecordFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CareRecordPayload>
+        }
+        findMany: {
+          args: Prisma.CareRecordFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CareRecordPayload>[]
+        }
+        create: {
+          args: Prisma.CareRecordCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CareRecordPayload>
+        }
+        createMany: {
+          args: Prisma.CareRecordCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CareRecordCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CareRecordPayload>[]
+        }
+        delete: {
+          args: Prisma.CareRecordDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CareRecordPayload>
+        }
+        update: {
+          args: Prisma.CareRecordUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CareRecordPayload>
+        }
+        deleteMany: {
+          args: Prisma.CareRecordDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CareRecordUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CareRecordUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CareRecordPayload>[]
+        }
+        upsert: {
+          args: Prisma.CareRecordUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CareRecordPayload>
+        }
+        aggregate: {
+          args: Prisma.CareRecordAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCareRecord>
+        }
+        groupBy: {
+          args: Prisma.CareRecordGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CareRecordGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CareRecordCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CareRecordCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -3360,6 +3435,8 @@ export const FarmScalarFieldEnum = {
   description: 'description',
   location: 'location',
   inbreedingPolicy: 'inbreedingPolicy',
+  saleMinAgeDays: 'saleMinAgeDays',
+  saleMinWeightKg: 'saleMinWeightKg',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -3451,6 +3528,15 @@ export const RabbitScalarFieldEnum = {
   originalCode: 'originalCode',
   exitDate: 'exitDate',
   exitCause: 'exitCause',
+  origin: 'origin',
+  previousLitters: 'previousLitters',
+  previousKitsBorn: 'previousKitsBorn',
+  lastBirthDate: 'lastBirthDate',
+  maternalBehavior: 'maternalBehavior',
+  previousMatings: 'previousMatings',
+  healthHistory: 'healthHistory',
+  readyForSale: 'readyForSale',
+  readyForSaleAt: 'readyForSaleAt',
   birthLitterId: 'birthLitterId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -3775,6 +3861,8 @@ export const InventoryItemScalarFieldEnum = {
   currentStock: 'currentStock',
   minimumStock: 'minimumStock',
   unitPrice: 'unitPrice',
+  packageName: 'packageName',
+  packageSize: 'packageSize',
   rationsAppliedUntil: 'rationsAppliedUntil',
   description: 'description',
   createdAt: 'createdAt',
@@ -3879,6 +3967,29 @@ export const FeedRationScalarFieldEnum = {
 export type FeedRationScalarFieldEnum = (typeof FeedRationScalarFieldEnum)[keyof typeof FeedRationScalarFieldEnum]
 
 
+export const CareRecordScalarFieldEnum = {
+  id: 'id',
+  farmId: 'farmId',
+  date: 'date',
+  careType: 'careType',
+  scope: 'scope',
+  sectionId: 'sectionId',
+  cageId: 'cageId',
+  lotId: 'lotId',
+  rabbitId: 'rabbitId',
+  product: 'product',
+  dose: 'dose',
+  animalCount: 'animalCount',
+  notes: 'notes',
+  nextDate: 'nextDate',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CareRecordScalarFieldEnum = (typeof CareRecordScalarFieldEnum)[keyof typeof CareRecordScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -3969,6 +4080,20 @@ export type EnumInbreedingPolicyFieldRefInput<$PrismaModel> = FieldRefInputType<
  * Reference to a field of type 'InbreedingPolicy[]'
  */
 export type ListEnumInbreedingPolicyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InbreedingPolicy[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 
@@ -4141,20 +4266,6 @@ export type ListEnumFatteningLotStatusFieldRefInput<$PrismaModel> = FieldRefInpu
 
 
 /**
- * Reference to a field of type 'Float'
- */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-/**
- * Reference to a field of type 'Float[]'
- */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-/**
  * Reference to a field of type 'HealthRecordType'
  */
 export type EnumHealthRecordTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'HealthRecordType'>
@@ -4305,6 +4416,20 @@ export type EnumFeedingCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$
  * Reference to a field of type 'FeedingCategory[]'
  */
 export type ListEnumFeedingCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FeedingCategory[]'>
+    
+
+
+/**
+ * Reference to a field of type 'CareScope'
+ */
+export type EnumCareScopeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CareScope'>
+    
+
+
+/**
+ * Reference to a field of type 'CareScope[]'
+ */
+export type ListEnumCareScopeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CareScope[]'>
     
 
 /**
@@ -4496,6 +4621,7 @@ export type GlobalOmitConfig = {
   mortalityRecord?: Prisma.MortalityRecordOmit
   lotCageMovement?: Prisma.LotCageMovementOmit
   feedRation?: Prisma.FeedRationOmit
+  careRecord?: Prisma.CareRecordOmit
 }
 
 /* Types for Logging */

@@ -2,6 +2,7 @@ import {
   Field,
   ID,
   InputType,
+  Int,
 } from '@nestjs/graphql';
 
 import { RabbitSex } from '../graphql/rabbit-sex.enum.js';
@@ -59,4 +60,25 @@ export class CreateRabbitInput {
     nullable: true,
   })
   observations?: string;
+
+  @Field(() => String, { nullable: true, description: 'Provenance : née ici, achetée…' })
+  origin?: string | null;
+
+  @Field(() => Int, { nullable: true, description: 'Mises bas faites avant son arrivée' })
+  previousLitters?: number | null;
+
+  @Field(() => Int, { nullable: true, description: 'Lapereaux nés vivants avant son arrivée' })
+  previousKitsBorn?: number | null;
+
+  @Field(() => Date, { nullable: true, description: 'Date de sa dernière mise bas avant son arrivée' })
+  lastBirthDate?: Date | null;
+
+  @Field(() => String, { nullable: true, description: 'Comportement de mère : GOOD, AVERAGE, POOR' })
+  maternalBehavior?: string | null;
+
+  @Field(() => Int, { nullable: true, description: 'Saillies faites avant son arrivée (mâle)' })
+  previousMatings?: number | null;
+
+  @Field(() => String, { nullable: true, description: 'Maladies et problèmes de santé passés' })
+  healthHistory?: string | null;
 }

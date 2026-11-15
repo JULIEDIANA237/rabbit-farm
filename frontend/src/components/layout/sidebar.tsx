@@ -20,6 +20,9 @@ import {
   X,
   ListChecks,
   Warehouse,
+  Stethoscope,
+  HandCoins,
+  Wrench,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -74,9 +77,19 @@ const navigation = [
     icon: Syringe,
   },
   {
+    label: 'Soins',
+    href: '/care',
+    icon: Stethoscope,
+  },
+  {
     label: 'Ventes',
     href: '/sales',
     icon: CircleDollarSign,
+  },
+  {
+    label: 'Prêts pour la vente',
+    href: '/sales/ready',
+    icon: HandCoins,
   },
   {
     label: 'Opérations',
@@ -102,6 +115,11 @@ const navigation = [
     label: 'Statistiques',
     href: '/statistics',
     icon: BarChart3,
+  },
+  {
+    label: 'Boîte à outils',
+    href: '/tools',
+    icon: Wrench,
   },
 ];
 

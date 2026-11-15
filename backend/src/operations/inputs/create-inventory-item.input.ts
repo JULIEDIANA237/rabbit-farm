@@ -19,6 +19,12 @@ export class CreateInventoryItemInput {
   @Field(() => Float, { nullable: true, description: 'Prix unitaire de référence' })
   unitPrice?: number;
 
+  @Field({ nullable: true, description: 'Conditionnement d’achat (ex. sac)' })
+  packageName?: string;
+
+  @Field(() => Float, { nullable: true, description: 'Contenu d’un conditionnement, en unité de stock (ex. 25 kg)' })
+  packageSize?: number;
+
   @Field({ nullable: true })
   description?: string;
 

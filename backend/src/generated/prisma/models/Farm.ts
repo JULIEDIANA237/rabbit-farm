@@ -20,8 +20,20 @@ export type FarmModel = runtime.Types.Result.DefaultSelection<Prisma.$FarmPayloa
 
 export type AggregateFarm = {
   _count: FarmCountAggregateOutputType | null
+  _avg: FarmAvgAggregateOutputType | null
+  _sum: FarmSumAggregateOutputType | null
   _min: FarmMinAggregateOutputType | null
   _max: FarmMaxAggregateOutputType | null
+}
+
+export type FarmAvgAggregateOutputType = {
+  saleMinAgeDays: number | null
+  saleMinWeightKg: number | null
+}
+
+export type FarmSumAggregateOutputType = {
+  saleMinAgeDays: number | null
+  saleMinWeightKg: number | null
 }
 
 export type FarmMinAggregateOutputType = {
@@ -30,6 +42,8 @@ export type FarmMinAggregateOutputType = {
   description: string | null
   location: string | null
   inbreedingPolicy: $Enums.InbreedingPolicy | null
+  saleMinAgeDays: number | null
+  saleMinWeightKg: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -40,6 +54,8 @@ export type FarmMaxAggregateOutputType = {
   description: string | null
   location: string | null
   inbreedingPolicy: $Enums.InbreedingPolicy | null
+  saleMinAgeDays: number | null
+  saleMinWeightKg: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -50,11 +66,23 @@ export type FarmCountAggregateOutputType = {
   description: number
   location: number
   inbreedingPolicy: number
+  saleMinAgeDays: number
+  saleMinWeightKg: number
   createdAt: number
   updatedAt: number
   _all: number
 }
 
+
+export type FarmAvgAggregateInputType = {
+  saleMinAgeDays?: true
+  saleMinWeightKg?: true
+}
+
+export type FarmSumAggregateInputType = {
+  saleMinAgeDays?: true
+  saleMinWeightKg?: true
+}
 
 export type FarmMinAggregateInputType = {
   id?: true
@@ -62,6 +90,8 @@ export type FarmMinAggregateInputType = {
   description?: true
   location?: true
   inbreedingPolicy?: true
+  saleMinAgeDays?: true
+  saleMinWeightKg?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -72,6 +102,8 @@ export type FarmMaxAggregateInputType = {
   description?: true
   location?: true
   inbreedingPolicy?: true
+  saleMinAgeDays?: true
+  saleMinWeightKg?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -82,6 +114,8 @@ export type FarmCountAggregateInputType = {
   description?: true
   location?: true
   inbreedingPolicy?: true
+  saleMinAgeDays?: true
+  saleMinWeightKg?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -125,6 +159,18 @@ export type FarmAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: FarmAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: FarmSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: FarmMinAggregateInputType
@@ -155,6 +201,8 @@ export type FarmGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: FarmCountAggregateInputType | true
+  _avg?: FarmAvgAggregateInputType
+  _sum?: FarmSumAggregateInputType
   _min?: FarmMinAggregateInputType
   _max?: FarmMaxAggregateInputType
 }
@@ -165,9 +213,13 @@ export type FarmGroupByOutputType = {
   description: string | null
   location: string | null
   inbreedingPolicy: $Enums.InbreedingPolicy
+  saleMinAgeDays: number
+  saleMinWeightKg: number
   createdAt: Date
   updatedAt: Date
   _count: FarmCountAggregateOutputType | null
+  _avg: FarmAvgAggregateOutputType | null
+  _sum: FarmSumAggregateOutputType | null
   _min: FarmMinAggregateOutputType | null
   _max: FarmMaxAggregateOutputType | null
 }
@@ -196,8 +248,11 @@ export type FarmWhereInput = {
   description?: Prisma.StringNullableFilter<"Farm"> | string | null
   location?: Prisma.StringNullableFilter<"Farm"> | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFilter<"Farm"> | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFilter<"Farm"> | number
+  saleMinWeightKg?: Prisma.FloatFilter<"Farm"> | number
   createdAt?: Prisma.DateTimeFilter<"Farm"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Farm"> | Date | string
+  careRecords?: Prisma.CareRecordListRelationFilter
   memberships?: Prisma.FarmMembershipListRelationFilter
   sections?: Prisma.SectionListRelationFilter
   cages?: Prisma.CageListRelationFilter
@@ -228,8 +283,11 @@ export type FarmOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   location?: Prisma.SortOrderInput | Prisma.SortOrder
   inbreedingPolicy?: Prisma.SortOrder
+  saleMinAgeDays?: Prisma.SortOrder
+  saleMinWeightKg?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  careRecords?: Prisma.CareRecordOrderByRelationAggregateInput
   memberships?: Prisma.FarmMembershipOrderByRelationAggregateInput
   sections?: Prisma.SectionOrderByRelationAggregateInput
   cages?: Prisma.CageOrderByRelationAggregateInput
@@ -263,8 +321,11 @@ export type FarmWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Farm"> | string | null
   location?: Prisma.StringNullableFilter<"Farm"> | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFilter<"Farm"> | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFilter<"Farm"> | number
+  saleMinWeightKg?: Prisma.FloatFilter<"Farm"> | number
   createdAt?: Prisma.DateTimeFilter<"Farm"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Farm"> | Date | string
+  careRecords?: Prisma.CareRecordListRelationFilter
   memberships?: Prisma.FarmMembershipListRelationFilter
   sections?: Prisma.SectionListRelationFilter
   cages?: Prisma.CageListRelationFilter
@@ -295,11 +356,15 @@ export type FarmOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   location?: Prisma.SortOrderInput | Prisma.SortOrder
   inbreedingPolicy?: Prisma.SortOrder
+  saleMinAgeDays?: Prisma.SortOrder
+  saleMinWeightKg?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.FarmCountOrderByAggregateInput
+  _avg?: Prisma.FarmAvgOrderByAggregateInput
   _max?: Prisma.FarmMaxOrderByAggregateInput
   _min?: Prisma.FarmMinOrderByAggregateInput
+  _sum?: Prisma.FarmSumOrderByAggregateInput
 }
 
 export type FarmScalarWhereWithAggregatesInput = {
@@ -311,6 +376,8 @@ export type FarmScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"Farm"> | string | null
   location?: Prisma.StringNullableWithAggregatesFilter<"Farm"> | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyWithAggregatesFilter<"Farm"> | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntWithAggregatesFilter<"Farm"> | number
+  saleMinWeightKg?: Prisma.FloatWithAggregatesFilter<"Farm"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Farm"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Farm"> | Date | string
 }
@@ -321,8 +388,11 @@ export type FarmCreateInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -353,8 +423,11 @@ export type FarmUncheckedCreateInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -385,8 +458,11 @@ export type FarmUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -417,8 +493,11 @@ export type FarmUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -449,6 +528,8 @@ export type FarmCreateManyInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -459,6 +540,8 @@ export type FarmUpdateManyMutationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -469,6 +552,8 @@ export type FarmUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -479,8 +564,15 @@ export type FarmCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   location?: Prisma.SortOrder
   inbreedingPolicy?: Prisma.SortOrder
+  saleMinAgeDays?: Prisma.SortOrder
+  saleMinWeightKg?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type FarmAvgOrderByAggregateInput = {
+  saleMinAgeDays?: Prisma.SortOrder
+  saleMinWeightKg?: Prisma.SortOrder
 }
 
 export type FarmMaxOrderByAggregateInput = {
@@ -489,6 +581,8 @@ export type FarmMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   location?: Prisma.SortOrder
   inbreedingPolicy?: Prisma.SortOrder
+  saleMinAgeDays?: Prisma.SortOrder
+  saleMinWeightKg?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -499,8 +593,15 @@ export type FarmMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   location?: Prisma.SortOrder
   inbreedingPolicy?: Prisma.SortOrder
+  saleMinAgeDays?: Prisma.SortOrder
+  saleMinWeightKg?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type FarmSumOrderByAggregateInput = {
+  saleMinAgeDays?: Prisma.SortOrder
+  saleMinWeightKg?: Prisma.SortOrder
 }
 
 export type FarmScalarRelationFilter = {
@@ -514,6 +615,14 @@ export type NullableStringFieldUpdateOperationsInput = {
 
 export type EnumInbreedingPolicyFieldUpdateOperationsInput = {
   set?: $Enums.InbreedingPolicy
+}
+
+export type FloatFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type FarmCreateNestedOneWithoutMembershipsInput = {
@@ -824,14 +933,31 @@ export type FarmUpdateOneRequiredWithoutFeedRationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.FarmUpdateToOneWithWhereWithoutFeedRationsInput, Prisma.FarmUpdateWithoutFeedRationsInput>, Prisma.FarmUncheckedUpdateWithoutFeedRationsInput>
 }
 
+export type FarmCreateNestedOneWithoutCareRecordsInput = {
+  create?: Prisma.XOR<Prisma.FarmCreateWithoutCareRecordsInput, Prisma.FarmUncheckedCreateWithoutCareRecordsInput>
+  connectOrCreate?: Prisma.FarmCreateOrConnectWithoutCareRecordsInput
+  connect?: Prisma.FarmWhereUniqueInput
+}
+
+export type FarmUpdateOneRequiredWithoutCareRecordsNestedInput = {
+  create?: Prisma.XOR<Prisma.FarmCreateWithoutCareRecordsInput, Prisma.FarmUncheckedCreateWithoutCareRecordsInput>
+  connectOrCreate?: Prisma.FarmCreateOrConnectWithoutCareRecordsInput
+  upsert?: Prisma.FarmUpsertWithoutCareRecordsInput
+  connect?: Prisma.FarmWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FarmUpdateToOneWithWhereWithoutCareRecordsInput, Prisma.FarmUpdateWithoutCareRecordsInput>, Prisma.FarmUncheckedUpdateWithoutCareRecordsInput>
+}
+
 export type FarmCreateWithoutMembershipsInput = {
   id?: string
   name: string
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
   breeds?: Prisma.BreedCreateNestedManyWithoutFarmInput
@@ -861,8 +987,11 @@ export type FarmUncheckedCreateWithoutMembershipsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
   breeds?: Prisma.BreedUncheckedCreateNestedManyWithoutFarmInput
@@ -908,8 +1037,11 @@ export type FarmUpdateWithoutMembershipsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
   breeds?: Prisma.BreedUpdateManyWithoutFarmNestedInput
@@ -939,8 +1071,11 @@ export type FarmUncheckedUpdateWithoutMembershipsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
   breeds?: Prisma.BreedUncheckedUpdateManyWithoutFarmNestedInput
@@ -970,8 +1105,11 @@ export type FarmCreateWithoutSectionsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
   breeds?: Prisma.BreedCreateNestedManyWithoutFarmInput
@@ -1001,8 +1139,11 @@ export type FarmUncheckedCreateWithoutSectionsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
   breeds?: Prisma.BreedUncheckedCreateNestedManyWithoutFarmInput
@@ -1048,8 +1189,11 @@ export type FarmUpdateWithoutSectionsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
   breeds?: Prisma.BreedUpdateManyWithoutFarmNestedInput
@@ -1079,8 +1223,11 @@ export type FarmUncheckedUpdateWithoutSectionsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
   breeds?: Prisma.BreedUncheckedUpdateManyWithoutFarmNestedInput
@@ -1110,8 +1257,11 @@ export type FarmCreateWithoutCagesInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   breeds?: Prisma.BreedCreateNestedManyWithoutFarmInput
@@ -1141,8 +1291,11 @@ export type FarmUncheckedCreateWithoutCagesInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   breeds?: Prisma.BreedUncheckedCreateNestedManyWithoutFarmInput
@@ -1188,8 +1341,11 @@ export type FarmUpdateWithoutCagesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   breeds?: Prisma.BreedUpdateManyWithoutFarmNestedInput
@@ -1219,8 +1375,11 @@ export type FarmUncheckedUpdateWithoutCagesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   breeds?: Prisma.BreedUncheckedUpdateManyWithoutFarmNestedInput
@@ -1250,8 +1409,11 @@ export type FarmCreateWithoutBreedsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -1281,8 +1443,11 @@ export type FarmUncheckedCreateWithoutBreedsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -1328,8 +1493,11 @@ export type FarmUpdateWithoutBreedsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -1359,8 +1527,11 @@ export type FarmUncheckedUpdateWithoutBreedsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -1390,8 +1561,11 @@ export type FarmCreateWithoutCrossBreedsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -1421,8 +1595,11 @@ export type FarmUncheckedCreateWithoutCrossBreedsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -1468,8 +1645,11 @@ export type FarmUpdateWithoutCrossBreedsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -1499,8 +1679,11 @@ export type FarmUncheckedUpdateWithoutCrossBreedsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -1530,8 +1713,11 @@ export type FarmCreateWithoutRabbitsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -1561,8 +1747,11 @@ export type FarmUncheckedCreateWithoutRabbitsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -1608,8 +1797,11 @@ export type FarmUpdateWithoutRabbitsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -1639,8 +1831,11 @@ export type FarmUncheckedUpdateWithoutRabbitsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -1670,8 +1865,11 @@ export type FarmCreateWithoutBreedingsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -1701,8 +1899,11 @@ export type FarmUncheckedCreateWithoutBreedingsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -1748,8 +1949,11 @@ export type FarmUpdateWithoutBreedingsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -1779,8 +1983,11 @@ export type FarmUncheckedUpdateWithoutBreedingsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -1810,8 +2017,11 @@ export type FarmCreateWithoutPregnanciesInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -1841,8 +2051,11 @@ export type FarmUncheckedCreateWithoutPregnanciesInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -1888,8 +2101,11 @@ export type FarmUpdateWithoutPregnanciesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -1919,8 +2135,11 @@ export type FarmUncheckedUpdateWithoutPregnanciesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -1950,8 +2169,11 @@ export type FarmCreateWithoutBirthsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -1981,8 +2203,11 @@ export type FarmUncheckedCreateWithoutBirthsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -2028,8 +2253,11 @@ export type FarmUpdateWithoutBirthsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -2059,8 +2287,11 @@ export type FarmUncheckedUpdateWithoutBirthsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -2090,8 +2321,11 @@ export type FarmCreateWithoutLittersInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -2121,8 +2355,11 @@ export type FarmUncheckedCreateWithoutLittersInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -2168,8 +2405,11 @@ export type FarmUpdateWithoutLittersInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -2199,8 +2439,11 @@ export type FarmUncheckedUpdateWithoutLittersInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -2230,8 +2473,11 @@ export type FarmCreateWithoutAdoptionsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -2261,8 +2507,11 @@ export type FarmUncheckedCreateWithoutAdoptionsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -2308,8 +2557,11 @@ export type FarmUpdateWithoutAdoptionsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -2339,8 +2591,11 @@ export type FarmUncheckedUpdateWithoutAdoptionsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -2370,8 +2625,11 @@ export type FarmCreateWithoutWeaningsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -2401,8 +2659,11 @@ export type FarmUncheckedCreateWithoutWeaningsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -2448,8 +2709,11 @@ export type FarmUpdateWithoutWeaningsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -2479,8 +2743,11 @@ export type FarmUncheckedUpdateWithoutWeaningsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -2510,8 +2777,11 @@ export type FarmCreateWithoutFatteningLotsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -2541,8 +2811,11 @@ export type FarmUncheckedCreateWithoutFatteningLotsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -2588,8 +2861,11 @@ export type FarmUpdateWithoutFatteningLotsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -2619,8 +2895,11 @@ export type FarmUncheckedUpdateWithoutFatteningLotsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -2650,8 +2929,11 @@ export type FarmCreateWithoutHealthRecordsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -2681,8 +2963,11 @@ export type FarmUncheckedCreateWithoutHealthRecordsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -2728,8 +3013,11 @@ export type FarmUpdateWithoutHealthRecordsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -2759,8 +3047,11 @@ export type FarmUncheckedUpdateWithoutHealthRecordsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -2790,8 +3081,11 @@ export type FarmCreateWithoutCustomersInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -2821,8 +3115,11 @@ export type FarmUncheckedCreateWithoutCustomersInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -2868,8 +3165,11 @@ export type FarmUpdateWithoutCustomersInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -2899,8 +3199,11 @@ export type FarmUncheckedUpdateWithoutCustomersInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -2930,8 +3233,11 @@ export type FarmCreateWithoutSalesInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -2961,8 +3267,11 @@ export type FarmUncheckedCreateWithoutSalesInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -3008,8 +3317,11 @@ export type FarmUpdateWithoutSalesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -3039,8 +3351,11 @@ export type FarmUncheckedUpdateWithoutSalesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -3070,8 +3385,11 @@ export type FarmCreateWithoutExpensesInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -3101,8 +3419,11 @@ export type FarmUncheckedCreateWithoutExpensesInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -3148,8 +3469,11 @@ export type FarmUpdateWithoutExpensesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -3179,8 +3503,11 @@ export type FarmUncheckedUpdateWithoutExpensesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -3210,8 +3537,11 @@ export type FarmCreateWithoutInventoryItemsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -3241,8 +3571,11 @@ export type FarmUncheckedCreateWithoutInventoryItemsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -3288,8 +3621,11 @@ export type FarmUpdateWithoutInventoryItemsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -3319,8 +3655,11 @@ export type FarmUncheckedUpdateWithoutInventoryItemsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -3350,8 +3689,11 @@ export type FarmCreateWithoutTasksInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -3381,8 +3723,11 @@ export type FarmUncheckedCreateWithoutTasksInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -3428,8 +3773,11 @@ export type FarmUpdateWithoutTasksInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -3459,8 +3807,11 @@ export type FarmUncheckedUpdateWithoutTasksInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -3490,8 +3841,11 @@ export type FarmCreateWithoutNestInstallationsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -3521,8 +3875,11 @@ export type FarmUncheckedCreateWithoutNestInstallationsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -3568,8 +3925,11 @@ export type FarmUpdateWithoutNestInstallationsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -3599,8 +3959,11 @@ export type FarmUncheckedUpdateWithoutNestInstallationsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -3630,8 +3993,11 @@ export type FarmCreateWithoutMortalitiesInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -3661,8 +4027,11 @@ export type FarmUncheckedCreateWithoutMortalitiesInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -3708,8 +4077,11 @@ export type FarmUpdateWithoutMortalitiesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -3739,8 +4111,11 @@ export type FarmUncheckedUpdateWithoutMortalitiesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -3770,8 +4145,11 @@ export type FarmCreateWithoutFeedRationsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -3801,8 +4179,11 @@ export type FarmUncheckedCreateWithoutFeedRationsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -3848,8 +4229,11 @@ export type FarmUpdateWithoutFeedRationsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -3879,8 +4263,11 @@ export type FarmUncheckedUpdateWithoutFeedRationsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -3904,12 +4291,165 @@ export type FarmUncheckedUpdateWithoutFeedRationsInput = {
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
 }
 
+export type FarmCreateWithoutCareRecordsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  location?: string | null
+  inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
+  sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
+  cages?: Prisma.CageCreateNestedManyWithoutFarmInput
+  breeds?: Prisma.BreedCreateNestedManyWithoutFarmInput
+  crossBreeds?: Prisma.CrossBreedCreateNestedManyWithoutFarmInput
+  rabbits?: Prisma.RabbitCreateNestedManyWithoutFarmInput
+  breedings?: Prisma.BreedingCreateNestedManyWithoutFarmInput
+  pregnancies?: Prisma.PregnancyCreateNestedManyWithoutFarmInput
+  births?: Prisma.BirthCreateNestedManyWithoutFarmInput
+  litters?: Prisma.LitterCreateNestedManyWithoutFarmInput
+  fatteningLots?: Prisma.FatteningLotCreateNestedManyWithoutFarmInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutFarmInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutFarmInput
+  sales?: Prisma.SaleCreateNestedManyWithoutFarmInput
+  expenses?: Prisma.ExpenseCreateNestedManyWithoutFarmInput
+  inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutFarmInput
+  feedRations?: Prisma.FeedRationCreateNestedManyWithoutFarmInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
+  nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
+}
+
+export type FarmUncheckedCreateWithoutCareRecordsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  location?: string | null
+  inbreedingPolicy?: $Enums.InbreedingPolicy
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
+  sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
+  cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
+  breeds?: Prisma.BreedUncheckedCreateNestedManyWithoutFarmInput
+  crossBreeds?: Prisma.CrossBreedUncheckedCreateNestedManyWithoutFarmInput
+  rabbits?: Prisma.RabbitUncheckedCreateNestedManyWithoutFarmInput
+  breedings?: Prisma.BreedingUncheckedCreateNestedManyWithoutFarmInput
+  pregnancies?: Prisma.PregnancyUncheckedCreateNestedManyWithoutFarmInput
+  births?: Prisma.BirthUncheckedCreateNestedManyWithoutFarmInput
+  litters?: Prisma.LitterUncheckedCreateNestedManyWithoutFarmInput
+  fatteningLots?: Prisma.FatteningLotUncheckedCreateNestedManyWithoutFarmInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutFarmInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutFarmInput
+  sales?: Prisma.SaleUncheckedCreateNestedManyWithoutFarmInput
+  expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutFarmInput
+  inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutFarmInput
+  feedRations?: Prisma.FeedRationUncheckedCreateNestedManyWithoutFarmInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
+  nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
+}
+
+export type FarmCreateOrConnectWithoutCareRecordsInput = {
+  where: Prisma.FarmWhereUniqueInput
+  create: Prisma.XOR<Prisma.FarmCreateWithoutCareRecordsInput, Prisma.FarmUncheckedCreateWithoutCareRecordsInput>
+}
+
+export type FarmUpsertWithoutCareRecordsInput = {
+  update: Prisma.XOR<Prisma.FarmUpdateWithoutCareRecordsInput, Prisma.FarmUncheckedUpdateWithoutCareRecordsInput>
+  create: Prisma.XOR<Prisma.FarmCreateWithoutCareRecordsInput, Prisma.FarmUncheckedCreateWithoutCareRecordsInput>
+  where?: Prisma.FarmWhereInput
+}
+
+export type FarmUpdateToOneWithWhereWithoutCareRecordsInput = {
+  where?: Prisma.FarmWhereInput
+  data: Prisma.XOR<Prisma.FarmUpdateWithoutCareRecordsInput, Prisma.FarmUncheckedUpdateWithoutCareRecordsInput>
+}
+
+export type FarmUpdateWithoutCareRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
+  sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
+  cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
+  breeds?: Prisma.BreedUpdateManyWithoutFarmNestedInput
+  crossBreeds?: Prisma.CrossBreedUpdateManyWithoutFarmNestedInput
+  rabbits?: Prisma.RabbitUpdateManyWithoutFarmNestedInput
+  breedings?: Prisma.BreedingUpdateManyWithoutFarmNestedInput
+  pregnancies?: Prisma.PregnancyUpdateManyWithoutFarmNestedInput
+  births?: Prisma.BirthUpdateManyWithoutFarmNestedInput
+  litters?: Prisma.LitterUpdateManyWithoutFarmNestedInput
+  fatteningLots?: Prisma.FatteningLotUpdateManyWithoutFarmNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutFarmNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutFarmNestedInput
+  sales?: Prisma.SaleUpdateManyWithoutFarmNestedInput
+  expenses?: Prisma.ExpenseUpdateManyWithoutFarmNestedInput
+  inventoryItems?: Prisma.InventoryItemUpdateManyWithoutFarmNestedInput
+  feedRations?: Prisma.FeedRationUpdateManyWithoutFarmNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
+  nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
+}
+
+export type FarmUncheckedUpdateWithoutCareRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
+  sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
+  cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
+  breeds?: Prisma.BreedUncheckedUpdateManyWithoutFarmNestedInput
+  crossBreeds?: Prisma.CrossBreedUncheckedUpdateManyWithoutFarmNestedInput
+  rabbits?: Prisma.RabbitUncheckedUpdateManyWithoutFarmNestedInput
+  breedings?: Prisma.BreedingUncheckedUpdateManyWithoutFarmNestedInput
+  pregnancies?: Prisma.PregnancyUncheckedUpdateManyWithoutFarmNestedInput
+  births?: Prisma.BirthUncheckedUpdateManyWithoutFarmNestedInput
+  litters?: Prisma.LitterUncheckedUpdateManyWithoutFarmNestedInput
+  fatteningLots?: Prisma.FatteningLotUncheckedUpdateManyWithoutFarmNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutFarmNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutFarmNestedInput
+  sales?: Prisma.SaleUncheckedUpdateManyWithoutFarmNestedInput
+  expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutFarmNestedInput
+  inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutFarmNestedInput
+  feedRations?: Prisma.FeedRationUncheckedUpdateManyWithoutFarmNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
+  nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
+}
+
 
 /**
  * Count Type FarmCountOutputType
  */
 
 export type FarmCountOutputType = {
+  careRecords: number
   memberships: number
   sections: number
   cages: number
@@ -3935,6 +4475,7 @@ export type FarmCountOutputType = {
 }
 
 export type FarmCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  careRecords?: boolean | FarmCountOutputTypeCountCareRecordsArgs
   memberships?: boolean | FarmCountOutputTypeCountMembershipsArgs
   sections?: boolean | FarmCountOutputTypeCountSectionsArgs
   cages?: boolean | FarmCountOutputTypeCountCagesArgs
@@ -3967,6 +4508,13 @@ export type FarmCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
    * Select specific fields to fetch from the FarmCountOutputType
    */
   select?: Prisma.FarmCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * FarmCountOutputType without action
+ */
+export type FarmCountOutputTypeCountCareRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CareRecordWhereInput
 }
 
 /**
@@ -4130,8 +4678,11 @@ export type FarmSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   description?: boolean
   location?: boolean
   inbreedingPolicy?: boolean
+  saleMinAgeDays?: boolean
+  saleMinWeightKg?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  careRecords?: boolean | Prisma.Farm$careRecordsArgs<ExtArgs>
   memberships?: boolean | Prisma.Farm$membershipsArgs<ExtArgs>
   sections?: boolean | Prisma.Farm$sectionsArgs<ExtArgs>
   cages?: boolean | Prisma.Farm$cagesArgs<ExtArgs>
@@ -4163,6 +4714,8 @@ export type FarmSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   description?: boolean
   location?: boolean
   inbreedingPolicy?: boolean
+  saleMinAgeDays?: boolean
+  saleMinWeightKg?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["farm"]>
@@ -4173,6 +4726,8 @@ export type FarmSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   description?: boolean
   location?: boolean
   inbreedingPolicy?: boolean
+  saleMinAgeDays?: boolean
+  saleMinWeightKg?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["farm"]>
@@ -4183,12 +4738,15 @@ export type FarmSelectScalar = {
   description?: boolean
   location?: boolean
   inbreedingPolicy?: boolean
+  saleMinAgeDays?: boolean
+  saleMinWeightKg?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type FarmOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "location" | "inbreedingPolicy" | "createdAt" | "updatedAt", ExtArgs["result"]["farm"]>
+export type FarmOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "location" | "inbreedingPolicy" | "saleMinAgeDays" | "saleMinWeightKg" | "createdAt" | "updatedAt", ExtArgs["result"]["farm"]>
 export type FarmInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  careRecords?: boolean | Prisma.Farm$careRecordsArgs<ExtArgs>
   memberships?: boolean | Prisma.Farm$membershipsArgs<ExtArgs>
   sections?: boolean | Prisma.Farm$sectionsArgs<ExtArgs>
   cages?: boolean | Prisma.Farm$cagesArgs<ExtArgs>
@@ -4219,6 +4777,7 @@ export type FarmIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $FarmPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Farm"
   objects: {
+    careRecords: Prisma.$CareRecordPayload<ExtArgs>[]
     memberships: Prisma.$FarmMembershipPayload<ExtArgs>[]
     sections: Prisma.$SectionPayload<ExtArgs>[]
     cages: Prisma.$CagePayload<ExtArgs>[]
@@ -4252,6 +4811,11 @@ export type $FarmPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
      * et aux ancêtres communs éloignés (§18).
      */
     inbreedingPolicy: $Enums.InbreedingPolicy
+    /**
+     * Critères « prêt pour la vente » : âge minimum (jours) et poids minimum (kg).
+     */
+    saleMinAgeDays: number
+    saleMinWeightKg: number
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["farm"]>
@@ -4648,6 +5212,7 @@ readonly fields: FarmFieldRefs;
  */
 export interface Prisma__FarmClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  careRecords<T extends Prisma.Farm$careRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$careRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CareRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   memberships<T extends Prisma.Farm$membershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FarmMembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sections<T extends Prisma.Farm$sectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$sectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   cages<T extends Prisma.Farm$cagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$cagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4704,6 +5269,8 @@ export interface FarmFieldRefs {
   readonly description: Prisma.FieldRef<"Farm", 'String'>
   readonly location: Prisma.FieldRef<"Farm", 'String'>
   readonly inbreedingPolicy: Prisma.FieldRef<"Farm", 'InbreedingPolicy'>
+  readonly saleMinAgeDays: Prisma.FieldRef<"Farm", 'Int'>
+  readonly saleMinWeightKg: Prisma.FieldRef<"Farm", 'Float'>
   readonly createdAt: Prisma.FieldRef<"Farm", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Farm", 'DateTime'>
 }
@@ -5096,6 +5663,30 @@ export type FarmDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Farms to delete.
    */
   limit?: number
+}
+
+/**
+ * Farm.careRecords
+ */
+export type Farm$careRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CareRecord
+   */
+  select?: Prisma.CareRecordSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CareRecord
+   */
+  omit?: Prisma.CareRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CareRecordInclude<ExtArgs> | null
+  where?: Prisma.CareRecordWhereInput
+  orderBy?: Prisma.CareRecordOrderByWithRelationInput | Prisma.CareRecordOrderByWithRelationInput[]
+  cursor?: Prisma.CareRecordWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CareRecordScalarFieldEnum | Prisma.CareRecordScalarFieldEnum[]
 }
 
 /**

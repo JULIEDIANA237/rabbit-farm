@@ -44,6 +44,12 @@ export function PushPrompt() {
         </p>
         {push.info ? (
           <p className="font-medium">{push.info}</p>
+        ) : push.state === 'denied' && isIOS() ? (
+          <p>
+            Les notifications sont <strong>bloquées</strong> pour RabbitFarm. Sur iPhone : <em>Réglages</em> →{' '}
+            <em>Notifications</em> → <em>RabbitFarm</em> → activer <em>Autoriser les notifications</em>, avec{' '}
+            <em>Centre de notifications</em> et <em>Bannières</em>. Reviens ensuite ici.
+          </p>
         ) : push.state === 'denied' ? (
           <p>
             Les notifications sont <strong>bloquées</strong> pour RabbitFarm sur ce téléphone. Pour les autoriser : appui long
@@ -52,8 +58,9 @@ export function PushPrompt() {
           </p>
         ) : push.state === 'unsupported' ? (
           <p>
-            Ce navigateur ne gère pas les notifications. Sur iPhone, installe d’abord l’app : bouton Partager →{' '}
-            <em>Sur l’écran d’accueil</em>, puis ouvre-la depuis l’icône.
+            Ce navigateur ne gère pas les notifications. Sur iPhone (iOS 16.4 ou plus récent), ouvre le site dans{' '}
+            <strong>Safari</strong>, bouton Partager → <em>Sur l’écran d’accueil</em>, puis ouvre RabbitFarm depuis l’icône
+            et reviens ici.
           </p>
         ) : (
           <Button loading={push.busy} onClick={() => void push.enable()}>
@@ -67,4 +74,10 @@ export function PushPrompt() {
       </button>
     </div>
   );
+}
+
+/** iPhone ou iPad (y compris iPadOS qui se présente comme un Mac tactile). */
+function isIOS() {
+  if (typeof navigator === 'undefined') return false;
+  return /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.userAgent.includes('Macintosh') && navigator.maxTouchPoints > 1);
 }

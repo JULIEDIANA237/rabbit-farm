@@ -69,6 +69,14 @@ export const GET_RABBIT = gql`
       color
       weight
       observations
+      origin
+      previousLitters
+      previousKitsBorn
+      lastBirthDate
+      maternalBehavior
+      previousMatings
+      healthHistory
+      readyForSale
       createdAt
       updatedAt
 

@@ -257,3 +257,14 @@ export const RabbitPurpose = {
 } as const
 
 export type RabbitPurpose = (typeof RabbitPurpose)[keyof typeof RabbitPurpose]
+
+
+export const CareScope = {
+  FARM: 'FARM',
+  SECTION: 'SECTION',
+  CAGE: 'CAGE',
+  LOT: 'LOT',
+  RABBIT: 'RABBIT'
+} as const
+
+export type CareScope = (typeof CareScope)[keyof typeof CareScope]

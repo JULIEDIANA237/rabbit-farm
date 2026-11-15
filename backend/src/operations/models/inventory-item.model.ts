@@ -29,6 +29,12 @@ export class InventoryItemModel {
   @Field(() => Float, { nullable: true, description: 'Prix unitaire de référence' })
   unitPrice?: number | null;
 
+  @Field(() => String, { nullable: true, description: 'Conditionnement d’achat (ex. sac)' })
+  packageName?: string | null;
+
+  @Field(() => Float, { nullable: true, description: 'Contenu d’un conditionnement, en unité de stock' })
+  packageSize?: number | null;
+
   @Field(() => Float, { nullable: true, description: 'Valeur du stock (stock × prix unitaire)' })
   stockValue?: number | null;
 

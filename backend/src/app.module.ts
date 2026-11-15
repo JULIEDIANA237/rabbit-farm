@@ -41,6 +41,7 @@ import { MailModule } from './mail/mail.module.js';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { NotificationsModule } from './notifications/notifications.module.js';
+import { CareModule } from './care/care.module.js';
 
 import { GqlThrottlerGuard } from './auth/guards/gql-throttler.guard.js';
 import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor.js';
@@ -102,6 +103,7 @@ import { join } from 'path';
     StorageModule,
     MailModule,
     NotificationsModule,
+    CareModule,
   ],
 
   // GET / répond « Hello World! » : sert à vérifier que l'API est en ligne.
