@@ -71,13 +71,19 @@ export class FatteningService {
     }
   }
 
-  async createLot(input: CreateFatteningLotInput, currentUser: CurrentUserType) {
-    const code = input.code.trim().toUpperCase();
-    const entryDate = new Date(input.entryDate);
+  /** Prochain code libre : LOT-01, LOT-02… */
+  private async nextLotCode(farmId: string) {
+    const lots = await this.prisma.fatteningLot.findMany({ where: { farmId }, select: { code: true } });
+    const max = lots.reduce((m, l) => {
+      const match = /^LOT-(\d+)$/.exec(l.code);
+      return match ? Math.max(m, Number(match[1])) : m;
+    }, 0);
+    return `LOT-${String(max + 1).padStart(2, '0')}`;
+  }
 
-    if (!code) {
-      throw new BadRequestException('Le code du lot est obligatoire.');
-    }
+  async createLot(input: CreateFatteningLotInput, currentUser: CurrentUserType) {
+    const code = input.code?.trim().toUpperCase() || (await this.nextLotCode(currentUser.farmId));
+    const entryDate = new Date(input.entryDate);
 
     this.validateDate(entryDate, "d'entrée");
 

@@ -19,6 +19,7 @@ import type {
   CreateRabbitInput,
   RabbitSex,
 } from '@/types/rabbit';
+import { BreedSelect } from '@/components/genetics/BreedSelect';
 import {
   RabbitHistoryFields,
   emptyHistory,
@@ -569,6 +570,19 @@ export function RabbitForm() {
                 }
                 placeholder="Ex : Blanc"
                 className="w-full rounded-xl border border-slate-300 px-4 py-3"
+              />
+            </div>
+
+            {/* Race */}
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-700">
+                Race
+              </label>
+
+              <BreedSelect
+                value={form.breedId ?? ''}
+                onChange={(breedId) => updateField('breedId', breedId || undefined)}
+                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3"
               />
             </div>
           </div>

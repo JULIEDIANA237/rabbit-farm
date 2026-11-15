@@ -11,6 +11,11 @@ export interface RabbitHistoryValues {
   maternalBehavior: string;
   previousMatings: string;
   healthHistory: string;
+  /** « A-t-elle déjà mis bas ? » : yes, no ou vide (je ne sais pas). Non envoyé. */
+  hasLittered: string;
+  previousKitsLost: string;
+  cannibalismCases: string;
+  previousFemales: string;
 }
 
 export const emptyHistory: RabbitHistoryValues = {
@@ -21,11 +26,20 @@ export const emptyHistory: RabbitHistoryValues = {
   maternalBehavior: '',
   previousMatings: '',
   healthHistory: '',
+  hasLittered: '',
+  previousKitsLost: '',
+  cannibalismCases: '',
+  previousFemales: '',
 };
 
 export function historyFromRabbit(rabbit: Partial<Record<keyof RabbitHistoryValues, unknown>>): RabbitHistoryValues {
   const text = (v: unknown) => (v == null ? '' : String(v));
+  const litters = rabbit.previousLitters;
   return {
+    hasLittered: litters == null ? '' : Number(litters) > 0 ? 'yes' : 'no',
+    previousKitsLost: text(rabbit.previousKitsLost),
+    cannibalismCases: text(rabbit.cannibalismCases),
+    previousFemales: text(rabbit.previousFemales),
     origin: text(rabbit.origin),
     previousLitters: text(rabbit.previousLitters),
     previousKitsBorn: text(rabbit.previousKitsBorn),
@@ -46,13 +60,19 @@ export function historyPayload(values: RabbitHistoryValues, sex: RabbitSex, forU
   const female = sex === 'FEMALE';
   const male = sex === 'MALE';
   const text = (v: string) => v.trim() || null;
+  // « Jamais mis bas » : zéro portée, zéro lapereau, pas de date.
+  const never = female && values.hasLittered === 'no';
+  const littered = female && !never;
   const payload = {
     origin: text(values.origin),
-    previousLitters: female ? int(values.previousLitters) : null,
-    previousKitsBorn: female ? int(values.previousKitsBorn) : null,
-    lastBirthDate: female && values.lastBirthDate ? values.lastBirthDate : null,
-    maternalBehavior: female ? text(values.maternalBehavior) : null,
+    previousLitters: never ? 0 : littered ? int(values.previousLitters) : null,
+    previousKitsBorn: never ? 0 : littered ? int(values.previousKitsBorn) : null,
+    lastBirthDate: littered && values.lastBirthDate ? values.lastBirthDate : null,
+    maternalBehavior: littered ? text(values.maternalBehavior) : null,
+    previousKitsLost: never ? 0 : littered ? int(values.previousKitsLost) : null,
+    cannibalismCases: never ? 0 : littered ? int(values.cannibalismCases) : null,
     previousMatings: male ? int(values.previousMatings) : null,
+    previousFemales: male ? int(values.previousFemales) : null,
     healthHistory: text(values.healthHistory),
   };
   if (forUpdate) return payload;
@@ -105,6 +125,15 @@ export function RabbitHistoryFields({
           </select>
         </Question>
         {female && (
+          <Question label="A-t-elle déjà mis bas ?">
+            <select className={input} value={values.hasLittered} onChange={set('hasLittered')}>
+              <option value="">Je ne sais pas</option>
+              <option value="yes">Oui</option>
+              <option value="no">Non, jamais</option>
+            </select>
+          </Question>
+        )}
+        {female && values.hasLittered !== 'no' && (
           <>
             <Question label="Combien de mises bas a-t-elle déjà faites ?" hint="Avant de l’enregistrer ici">
               <input className={input} inputMode="numeric" placeholder="ex. 2" value={values.previousLitters} onChange={set('previousLitters')} />
@@ -112,7 +141,13 @@ export function RabbitHistoryFields({
             <Question label="Combien de lapereaux nés vivants au total ?">
               <input className={input} inputMode="numeric" placeholder="ex. 14" value={values.previousKitsBorn} onChange={set('previousKitsBorn')} />
             </Question>
-            <Question label="Date de sa dernière mise bas">
+            <Question label="Combien de lapereaux a-t-elle perdus ?" hint="Morts avant le sevrage, toutes portées confondues">
+              <input className={input} inputMode="numeric" placeholder="ex. 3" value={values.previousKitsLost} onChange={set('previousKitsLost')} />
+            </Question>
+            <Question label="Cas de cannibalisme (a-t-elle mangé des petits) ?" hint="Combien de fois ? 0 si jamais">
+              <input className={input} inputMode="numeric" placeholder="ex. 0" value={values.cannibalismCases} onChange={set('cannibalismCases')} />
+            </Question>
+            <Question label="Date de sa dernière mise bas" hint="Laisse vide si tu l’as oubliée">
               <input className={input} type="date" value={values.lastBirthDate} onChange={set('lastBirthDate')} />
             </Question>
             <Question label="Est-ce une bonne mère ?">
@@ -126,9 +161,14 @@ export function RabbitHistoryFields({
           </>
         )}
         {male && (
-          <Question label="Combien de saillies a-t-il déjà faites ?" hint="Avant de l’enregistrer ici">
-            <input className={input} inputMode="numeric" placeholder="ex. 10" value={values.previousMatings} onChange={set('previousMatings')} />
-          </Question>
+          <>
+            <Question label="Combien de femelles différentes a-t-il couvertes ?" hint="Avant de l’enregistrer ici">
+              <input className={input} inputMode="numeric" placeholder="ex. 5" value={values.previousFemales} onChange={set('previousFemales')} />
+            </Question>
+            <Question label="Combien de saillies a-t-il déjà faites ?" hint="Toutes femelles confondues">
+              <input className={input} inputMode="numeric" placeholder="ex. 10" value={values.previousMatings} onChange={set('previousMatings')} />
+            </Question>
+          </>
         )}
         <Question
           label="Maladies ou problèmes de santé passés"

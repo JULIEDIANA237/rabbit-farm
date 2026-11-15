@@ -24,6 +24,9 @@ export const GET_RABBITS_PAGINATED = gql`
         crossBreedId
         fatherId
         motherId
+        motherCode
+        birthLitterId
+        currentCageCode
 
       photos {
         id
@@ -76,6 +79,9 @@ export const GET_RABBIT = gql`
       maternalBehavior
       previousMatings
       healthHistory
+      previousKitsLost
+      cannibalismCases
+      previousFemales
       readyForSale
       createdAt
       updatedAt

@@ -88,4 +88,13 @@ export class UpdateRabbitInput {
 
   @Field(() => String, { nullable: true, description: 'Maladies et problèmes de santé passés' })
   healthHistory?: string | null;
+
+  @Field(() => Int, { nullable: true, description: 'Lapereaux perdus avant son arrivée (femelle)' })
+  previousKitsLost?: number | null;
+
+  @Field(() => Int, { nullable: true, description: 'Cas de cannibalisme avant son arrivée (femelle)' })
+  cannibalismCases?: number | null;
+
+  @Field(() => Int, { nullable: true, description: 'Femelles déjà saillies avant son arrivée (mâle)' })
+  previousFemales?: number | null;
 }

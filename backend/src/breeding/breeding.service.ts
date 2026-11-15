@@ -489,6 +489,9 @@ export class BreedingService {
       maternalBehavior: rabbit.maternalBehavior,
       healthHistory: rabbit.healthHistory,
       totalMatings: (rabbit.previousMatings ?? 0) + breedings.length,
+      previousKitsLost: rabbit.previousKitsLost,
+      cannibalismCases: rabbit.cannibalismCases,
+      previousFemales: rabbit.previousFemales,
       matingsLast7Days,
       lastMatingDate: lastMating,
       successRate,
@@ -507,6 +510,7 @@ export class BreedingService {
         maternalBehavior: rabbit.maternalBehavior,
         recentHealthCount: recent.length,
         activeBreedingStatus: active?.status ?? null,
+        cannibalismCases: rabbit.cannibalismCases,
       }),
     };
   }

@@ -249,6 +249,31 @@ export class MortalityService {
         include: mortalityInclude,
       });
 
+      // Lapereaux déjà identifiés (L001-01…) : les derniers codes passent
+      // en « mort », pour que les vivants seuls soient sevrés et vendus.
+      const kits = await tx.rabbit.findMany({
+        where: { farmId: currentUser.farmId, birthLitterId: litter.id, status: RabbitStatus.ACTIVE },
+        orderBy: { code: 'desc' },
+        take: input.count,
+        select: { id: true },
+      });
+      if (kits.length) {
+        const ids = kits.map((k) => k.id);
+        await tx.rabbitCageMovement.updateMany({ where: { rabbitId: { in: ids }, endedAt: null }, data: { endedAt: date } });
+        await tx.lotMembership.updateMany({
+          where: { rabbitId: { in: ids }, leftAt: null },
+          data: { leftAt: date, reason: 'Décès' },
+        });
+        await tx.task.updateMany({
+          where: { farmId: currentUser.farmId, rabbitId: { in: ids }, status: { in: [TaskStatus.TODO, TaskStatus.IN_PROGRESS] } },
+          data: { status: TaskStatus.CANCELLED },
+        });
+        await tx.rabbit.updateMany({
+          where: { id: { in: ids } },
+          data: { status: RabbitStatus.DEAD, exitDate: date, exitCause: input.cause?.trim() || 'Mort dans la portée' },
+        });
+      }
+
       const remaining = litter.currentCount - input.count;
 
       await tx.litter.update({
@@ -361,6 +386,18 @@ export class MortalityService {
           where: { id: record.litter.id },
           data: { currentCount: { increment: record.count }, status: LitterStatus.ACTIVE },
         });
+        // Les lapereaux identifiés marqués morts par cet enregistrement revivent.
+        const dead = await tx.rabbit.findMany({
+          where: { birthLitterId: record.litter.id, status: RabbitStatus.DEAD, exitDate: record.date },
+          take: record.count,
+          select: { id: true },
+        });
+        if (dead.length) {
+          await tx.rabbit.updateMany({
+            where: { id: { in: dead.map((d) => d.id) } },
+            data: { status: RabbitStatus.ACTIVE, exitDate: null, exitCause: null },
+          });
+        }
       }
       await tx.mortalityRecord.delete({ where: { id: record.id } });
     });

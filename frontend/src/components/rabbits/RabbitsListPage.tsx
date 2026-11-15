@@ -23,10 +23,16 @@ import {
   Pagination,
 } from '@/components/ui/Pagination';
 
+import { useQuery } from '@apollo/client/react';
+
+import { KitsByMother } from '@/components/rabbits/KitsByMother';
+import { BREEDERS_PAST, needsPast, type BreederPast } from '@/components/rabbits/breeders-past';
+
 const COPY = {
   ADULT: {
     title: 'Lapins',
     unit: 'lapin',
+    plural: 'lapins',
     hint: 'Reproducteurs, futurs reproducteurs, réformes et lapins achetés.',
     search: 'Rechercher un lapin...',
     other: { href: '/kits', label: 'Voir les lapereaux' },
@@ -34,6 +40,7 @@ const COPY = {
   KIT: {
     title: 'Lapereaux',
     unit: 'lapereau',
+    plural: 'lapereaux',
     hint: 'Lapins nés à la ferme et destinés à l’engraissement. Choisis « futur reproducteur » sur une fiche pour le passer dans Lapins.',
     search: 'Rechercher un lapereau (ex. L002-03)...',
     other: { href: '/rabbits', label: 'Voir les lapins' },
@@ -58,7 +65,8 @@ export function RabbitsListPage({ category }: { category: 'ADULT' | 'KIT' }) {
     hasPreviousPage,
   } = useRabbits(
     page,
-    10,
+    // Lapereaux : une page assez grande pour garder chaque portée ensemble.
+    category === 'KIT' ? 60 : 10,
     search,
     category,
   );
@@ -79,7 +87,7 @@ export function RabbitsListPage({ category }: { category: 'ADULT' | 'KIT' }) {
           </h1>
 
           <p className="mt-1 text-sm text-slate-500">
-            {total} {copy.unit}{total > 1 ? 's' : ''} ·{' '}
+            {total} {total > 1 ? copy.plural : copy.unit} ·{' '}
             <Link href={copy.other.href} className="font-medium text-emerald-700 hover:underline">
               {copy.other.label}
             </Link>
@@ -100,6 +108,8 @@ export function RabbitsListPage({ category }: { category: 'ADULT' | 'KIT' }) {
         </Link>
         )}
       </header>
+
+      {category === 'ADULT' && <PastReminder />}
 
       <div className="mb-6">
         <div className="relative">
@@ -127,10 +137,14 @@ export function RabbitsListPage({ category }: { category: 'ADULT' | 'KIT' }) {
         </div>
       )}
 
-      <RabbitList
-        rabbits={rabbits}
-        loading={loading}
-      />
+      {category === 'KIT' && !loading && rabbits.length > 0 ? (
+        <KitsByMother rabbits={rabbits} />
+      ) : (
+        <RabbitList
+          rabbits={rabbits}
+          loading={loading}
+        />
+      )}
 
       <Pagination
         page={currentPage}
@@ -140,5 +154,20 @@ export function RabbitsListPage({ category }: { category: 'ADULT' | 'KIT' }) {
         onPageChange={setPage}
       />
     </main>
+  );
+}
+/** Rappel : des reproducteurs n'ont pas encore leur passé renseigné. */
+function PastReminder() {
+  const { data } = useQuery<{ rabbitsPaginated: { items: BreederPast[] } }>(BREEDERS_PAST);
+  const count = (data?.rabbitsPaginated.items ?? []).filter(needsPast).length;
+  if (!count) return null;
+  return (
+    <Link
+      href="/rabbits/past"
+      className="mb-5 block rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900 hover:bg-amber-100"
+    >
+      <strong>{count} reproducteur(s)</strong> sans passé renseigné (mises bas, pertes, cannibalisme, femelles couvertes…).{' '}
+      <span className="font-semibold underline">Répondre aux questions</span>
+    </Link>
   );
 }

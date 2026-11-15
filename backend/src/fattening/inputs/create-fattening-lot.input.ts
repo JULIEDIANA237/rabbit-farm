@@ -2,8 +2,8 @@ import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
 export class CreateFatteningLotInput {
-  @Field()
-  code: string;
+  @Field({ nullable: true, description: 'Laissé vide : LOT-01, LOT-02… généré' })
+  code?: string;
 
   @Field()
   entryDate: Date;
