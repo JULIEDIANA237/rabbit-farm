@@ -4,7 +4,7 @@
  * - Fichiers statiques Next (/_next/static) et icônes : cache d'abord.
  * - L'API GraphQL n'est jamais mise en cache (données métier toujours fraîches).
  */
-const VERSION = 'rabbit-farm-v3';
+const VERSION = 'rabbit-farm-v4';
 const STATIC_CACHE = `${VERSION}-static`;
 const PAGE_CACHE = `${VERSION}-pages`;
 const OFFLINE_URL = '/offline.html';
@@ -76,7 +76,7 @@ self.addEventListener('push', (event) => {
       icon: '/icons/icon-192.png',
       badge: '/icons/icon-192.png',
       data: { url: data.url },
-      tag: 'rabbitfarm-rappel',
+      tag: data.tag || 'rabbitfarm-rappel',
       // Un nouveau rappel qui remplace l'ancien sonne et s'affiche quand même.
       renotify: true,
     }),

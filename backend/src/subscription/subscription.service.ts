@@ -53,6 +53,11 @@ export class SubscriptionService {
   }
 
   async status(user: CurrentUserType) {
+    if (!user.farmId) {
+      // Compte propriétaire sans ferme : toujours exempté.
+      const settings = await this.settings();
+      return { status: AccessStatus.EXEMPT, daysLeft: 0, trialEndsAt: new Date(), readOnly: false, paidUntil: null, settings, pendingPayment: null };
+    }
     const [farm, settings, pending] = await Promise.all([
       this.prisma.farm.findUniqueOrThrow({ where: { id: user.farmId }, select: this.farmAccessSelect }),
       this.settings(),

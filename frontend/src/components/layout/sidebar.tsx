@@ -24,6 +24,8 @@ import {
   HandCoins,
   Wrench,
   CreditCard,
+  MessageCircleQuestion,
+  BookOpen,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -37,6 +39,17 @@ const navigation = [
     href: '/dashboard',
     icon: Home,
   },
+  {
+    label: 'Mon assistant',
+    href: '/questions',
+    icon: MessageCircleQuestion,
+  },
+  {
+    label: 'Fiches conseils',
+    href: '/advice',
+    icon: BookOpen,
+  },
+
   {
     label: 'Lapins',
     href: '/rabbits',
