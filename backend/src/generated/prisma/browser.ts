@@ -234,3 +234,8 @@ export type PlatformSetting = Prisma.PlatformSettingModel
  * Paiement d'abonnement : déclaré par l'élevage, confirmé par la propriétaire.
  */
 export type SubscriptionPayment = Prisma.SubscriptionPaymentModel
+/**
+ * Model ContactMessage
+ * Message envoyé depuis la zone contact de la page d'accueil (public).
+ */
+export type ContactMessage = Prisma.ContactMessageModel

@@ -93,7 +93,8 @@ export const ModelName = {
   BreedingMating: 'BreedingMating',
   AppRating: 'AppRating',
   PlatformSetting: 'PlatformSetting',
-  SubscriptionPayment: 'SubscriptionPayment'
+  SubscriptionPayment: 'SubscriptionPayment',
+  ContactMessage: 'ContactMessage'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -779,6 +780,18 @@ export const SubscriptionPaymentScalarFieldEnum = {
 } as const
 
 export type SubscriptionPaymentScalarFieldEnum = (typeof SubscriptionPaymentScalarFieldEnum)[keyof typeof SubscriptionPaymentScalarFieldEnum]
+
+
+export const ContactMessageScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  contact: 'contact',
+  message: 'message',
+  handled: 'handled',
+  createdAt: 'createdAt'
+} as const
+
+export type ContactMessageScalarFieldEnum = (typeof ContactMessageScalarFieldEnum)[keyof typeof ContactMessageScalarFieldEnum]
 
 
 export const SortOrder = {
