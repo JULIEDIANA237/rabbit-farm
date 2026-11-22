@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 export const revalidate = 3600;
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
-const DEFAULT_PRICING = { trialDays: 30, monthlyPrice: 1000, yearlyPrice: 10000 };
+const DEFAULT_PRICING = { trialDays: 30, monthlyPrice: 2500, yearlyPrice: 25000 };
 
 async function loadPricing() {
   try {

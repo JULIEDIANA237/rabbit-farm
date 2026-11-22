@@ -96,7 +96,8 @@ describe('Assistant bras droit (intégration)', () => {
 
     const other = await registerFarm(app, 'bras-droit-voisin');
     expect((await gqlOk(app, QUESTIONS, undefined, other)).companionQuestions).toEqual([]);
-    const mine = (await questions())[0];
+    // N’importe quelle question de cette ferme (la liste « à répondre » dépend de l’heure du test).
+    const mine = await prisma.companionQuestion.findFirstOrThrow({ where: { farmId } });
     const stolen = await gql(app, `mutation ($id: ID!) { dismissCompanionQuestion(id: $id) { status } }`, { id: mine.id }, other);
     expect(stolen.errors?.[0]?.message).toContain('introuvable');
   });

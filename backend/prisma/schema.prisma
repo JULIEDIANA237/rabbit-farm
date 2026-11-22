@@ -1420,8 +1420,8 @@ model AppRating {
 model PlatformSetting {
   id                  String   @id @default("default")
   trialDays           Int      @default(30)
-  monthlyPrice        Int      @default(1000)
-  yearlyPrice         Int      @default(10000)
+  monthlyPrice        Int      @default(2500)
+  yearlyPrice         Int      @default(25000)
   /// Comment payer (numéro Mobile Money, nom du compte…), affiché sur l'écran d'abonnement.
   paymentInstructions String?
   updatedAt           DateTime @updatedAt

@@ -44,7 +44,7 @@ describe('Essai et abonnement (intégration)', () => {
       status: 'TRIAL',
       readOnly: false,
       daysLeft: 30,
-      settings: { trialDays: 30, monthlyPrice: 1000, yearlyPrice: 10000 },
+      settings: { trialDays: 30, monthlyPrice: 2500, yearlyPrice: 25000 },
     });
     expect((await createRabbit(farmer, 'ABO-1')).errors).toBeUndefined();
   });
@@ -73,7 +73,7 @@ describe('Essai et abonnement (intégration)', () => {
       undefined,
       farmer,
     );
-    expect(declareSubscriptionPayment).toMatchObject({ amount: 10000, status: 'PENDING' });
+    expect(declareSubscriptionPayment).toMatchObject({ amount: 25000, status: 'PENDING' });
 
     const refused = await gql(app, `mutation ($id: ID!) { confirmSubscriptionPayment(id: $id) { id } }`, { id: declareSubscriptionPayment.id }, farmer);
     expect(refused.errors?.[0]?.message).toContain('Réservé');
