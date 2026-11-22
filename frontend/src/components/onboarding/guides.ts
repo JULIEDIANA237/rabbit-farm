@@ -140,6 +140,19 @@ const GUIDES: Array<{ prefix: string; guide: ModuleGuide }> = [
     },
   },
   {
+    prefix: '/sales/ready',
+    guide: {
+      key: 'sales-ready',
+      title: 'Prêts pour la vente',
+      steps: [
+        'L’app liste les lapins qui ont l’âge et le poids pour être vendus.',
+        'Coche ceux que tu veux vendre, puis crée la vente en une fois.',
+        'Pèse tes lapins régulièrement : la liste se base sur la dernière pesée.',
+      ],
+      question: 'Comment savoir quels lapins sont prêts à être vendus ?',
+    },
+  },
+  {
     prefix: '/sales',
     guide: {
       key: 'sales',
@@ -212,9 +225,91 @@ const GUIDES: Array<{ prefix: string; guide: ModuleGuide }> = [
       question: 'Comment organiser mes blocs et mes cages ?',
     },
   },
+  {
+    prefix: '/care',
+    guide: {
+      key: 'care',
+      title: 'Les soins',
+      steps: [
+        'Note chaque soin donné : nettoyage, vermifuge, vitamines, vaccin…',
+        'Un soin peut viser toute la ferme, un bloc, une cage, un lot ou un seul lapin.',
+        'Indique la date du prochain soin : une tâche te le rappellera.',
+      ],
+      question: 'Quels soins réguliers dois-je donner à mes lapins ?',
+    },
+  },
+  {
+    prefix: '/remating',
+    guide: {
+      key: 'remating',
+      title: 'Nouvelle saillie après la mise bas',
+      steps: [
+        'Pèse la femelle et réponds aux questions sur son état.',
+        'L’app te dit si elle est prête, ou dans combien de jours la revoir.',
+        'Si elle est prête, la tâche se ferme toute seule ; sinon elle est reportée.',
+      ],
+      question: 'Quand une lapine peut-elle être ressaillie après une mise bas ?',
+    },
+  },
+  {
+    prefix: '/tools',
+    guide: {
+      key: 'tools',
+      title: 'Boîte à outils',
+      steps: [
+        'Calcule les dates d’une saillie (palpation, nid, mise bas, sevrage).',
+        'Calcule la provende nécessaire selon le nombre de lapins.',
+        'Les raccourcis mènent directement aux saisies les plus courantes.',
+      ],
+      question: 'Quelles sont les dates clés après une saillie ?',
+    },
+  },
+  {
+    prefix: '/subscription',
+    guide: {
+      key: 'subscription',
+      title: 'Ton abonnement',
+      steps: [
+        'Le premier mois est gratuit. Ensuite : 1 000 FCFA par mois ou 10 000 FCFA par an.',
+        'Paie par Mobile Money en suivant les consignes, puis appuie sur « J’ai payé ».',
+        'Ton accès est prolongé dès que le paiement est confirmé.',
+      ],
+      question: 'Comment fonctionne l’abonnement RabbitFarm ?',
+    },
+  },
+  {
+    prefix: '/settings',
+    guide: {
+      key: 'settings',
+      title: 'Paramètres',
+      steps: [
+        'Modifie le nom et la localisation de ta ferme.',
+        'Ajoute les membres de ton équipe avec leur rôle.',
+        'Choisis l’apparence (Jour, Nuit, Plein soleil) et active les rappels du jour.',
+      ],
+      question: 'Comment ajouter un employé à ma ferme ?',
+    },
+  },
 ];
+
+/** Aide générale, pour une page qui n'a pas de bulle propre. */
+const DEFAULT_GUIDE: ModuleGuide = {
+  key: 'general',
+  title: 'Besoin d’aide ?',
+  steps: [
+    'Le menu à gauche (ou le bouton ☰ sur téléphone) mène à chaque partie de la ferme.',
+    'Les tâches du jour sont sous la cloche, en haut de l’écran.',
+    'Le bouton Assistant répond à tes questions sur l’app et sur l’élevage.',
+  ],
+  question: 'Comment bien utiliser RabbitFarm au quotidien ?',
+};
 
 export function guideFor(pathname: string): ModuleGuide | null {
   const match = GUIDES.find(({ prefix }) => pathname === prefix || pathname.startsWith(`${prefix}/`));
   return match?.guide ?? null;
+}
+
+/** Bulle à montrer quand l'éleveur appuie sur « ? » : celle de la page, sinon l'aide générale. */
+export function helpFor(pathname: string): ModuleGuide {
+  return guideFor(pathname) ?? DEFAULT_GUIDE;
 }
