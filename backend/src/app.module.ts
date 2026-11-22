@@ -54,6 +54,7 @@ import { PlatformModule } from './platform/platform.module.js';
 import { ContactModule } from './contact/contact.module.js';
 import { SubscriptionModule } from './subscription/subscription.module.js';
 import { RematingModule } from './remating/remating.module.js';
+import { AgentModule } from './agent/agent.module.js';
 
 @Module({
   imports: [
@@ -115,6 +116,7 @@ import { RematingModule } from './remating/remating.module.js';
     ContactModule,
     SubscriptionModule,
     RematingModule,
+    AgentModule,
   ],
 
   // GET / répond « Hello World! » : sert à vérifier que l'API est en ligne.

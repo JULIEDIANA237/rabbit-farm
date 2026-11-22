@@ -4,15 +4,17 @@ import { useEffect, type ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useApolloClient } from '@apollo/client/react';
-import { BarChart3, CreditCard, Home, Loader2, LogOut, Mail, Settings, Star } from 'lucide-react';
+import { BarChart3, Bot, CreditCard, Home, Loader2, LogOut, Mail, Settings, Star } from 'lucide-react';
 
 import { useAuthStore } from '@/stores/auth-store';
 import { usePlatformAdmin } from '@/lib/platform-admin';
 import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { useUnreadContactCount } from '@/components/admin/contact-messages';
+import { usePendingAgentCount } from '@/components/admin/agent';
 
 const NAV = [
   { href: '/admin', label: 'Vue d’ensemble', icon: BarChart3 },
+  { href: '/admin/agent', label: 'Agent', icon: Bot },
   { href: '/admin/payments', label: 'Paiements', icon: CreditCard },
   { href: '/admin/farms', label: 'Élevages', icon: Home },
   { href: '/admin/reviews', label: 'Avis', icon: Star },
@@ -78,6 +80,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
               >
                 <Icon size={16} /> {label}
                 {href === '/admin/messages' && <UnreadBadge />}
+                {href === '/admin/agent' && <AgentBadge />}
               </Link>
             );
           })}
@@ -93,4 +96,11 @@ function UnreadBadge() {
   const unread = useUnreadContactCount();
   if (unread === 0) return null;
   return <span className="rounded-full bg-violet-600 px-1.5 text-xs font-bold text-white">{unread}</span>;
+}
+
+/** Nombre de propositions de l'agent à valider. */
+function AgentBadge() {
+  const pending = usePendingAgentCount();
+  if (pending === 0) return null;
+  return <span className="rounded-full bg-amber-500 px-1.5 text-xs font-bold text-white">{pending}</span>;
 }

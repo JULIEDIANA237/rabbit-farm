@@ -53,6 +53,69 @@ enum AdoptionReason {
   SURPLUS
 }
 
+type AgentBriefModel {
+  createdAt: DateTime!
+  id: ID!
+  pending: Int!
+  text: String!
+  usedAi: Boolean!
+}
+
+input AgentChatMessageInput {
+  content: String!
+
+  """user ou assistant"""
+  role: String!
+}
+
+type AgentLogModel {
+  action: String!
+
+  """AGENT ou OWNER"""
+  actor: String!
+  actorEmail: String
+  createdAt: DateTime!
+  id: ID!
+  summary: String!
+}
+
+type AgentOverviewModel {
+  """Rédaction et questions par IA disponibles"""
+  aiEnabled: Boolean!
+  brief: AgentBriefModel
+
+  """Envoi d’e-mails configuré (RESEND_API_KEY)"""
+  mailEnabled: Boolean!
+  pending: [AgentSuggestionModel!]!
+}
+
+type AgentSuggestionModel {
+  """NONE | CONFIRM_PAYMENT | EXTEND_TRIAL | SEND_EMAIL | REPLY_CONTACT"""
+  action: String!
+  createdAt: DateTime!
+  detail: String
+  draft: String
+  href: String
+  id: ID!
+  kind: String!
+  recipient: String
+  resolvedAt: DateTime
+  resolvedBy: String
+
+  """danger | warning | info"""
+  severity: String!
+  status: AgentSuggestionStatus!
+  subject: String
+  title: String!
+}
+
+enum AgentSuggestionStatus {
+  DISMISSED
+  DONE
+  EXPIRED
+  PENDING
+}
+
 type AppRatingModel {
   comment: String
 
@@ -61,6 +124,11 @@ type AppRatingModel {
   id: ID!
   stars: Int!
   updatedAt: DateTime!
+}
+
+input AskAgentInput {
+  history: [AgentChatMessageInput!]
+  question: String!
 }
 
 input AskAssistantInput {
@@ -1329,6 +1397,12 @@ type Mutation {
   """
   applyFeedRations(inventoryItemId: ID!): StockMovementModel
 
+  """Valide une proposition (avec le brouillon modifié, si fourni)."""
+  approveAgentSuggestion(draft: String, id: ID!): AgentSuggestionModel!
+
+  """Question libre sur la plateforme."""
+  askAgent(input: AskAgentInput!): String!
+
   """Pose une question à l’assistant (aucune donnée n’est modifiée)"""
   askAssistant(input: AskAssistantInput!): AssistantReplyModel!
 
@@ -1399,6 +1473,7 @@ type Mutation {
   deleteTask(id: ID!): Boolean!
   deleteWeaning(id: ID!): Boolean!
   deleteWeighing(id: ID!): Boolean!
+  dismissAgentSuggestion(id: ID!): AgentSuggestionModel!
 
   """Offrir des jours d’essai en plus"""
   extendTrial(days: Int!, farmId: ID!): Boolean!
@@ -1407,6 +1482,9 @@ type Mutation {
   Pré-remplit un formulaire à partir d’une phrase (rien n’est enregistré)
   """
   fillFormWithAi(input: FillFormInput!): AssistantDraftModel!
+
+  """Réécrit le brouillon avec l’IA."""
+  improveAgentDraft(draft: String, id: ID!): AgentSuggestionModel!
   login(input: LoginInput!): AuthModel!
   moveFatteningLot(input: MoveFatteningLotInput!): LotCageMovementModel!
   moveRabbit(input: MoveRabbitInput!): RabbitCageMovementModel!
@@ -1418,6 +1496,9 @@ type Mutation {
 
   """Décès, réforme ou transfert d’un lapin (§37, §58)."""
   recordRabbitExit(input: RecordRabbitExitInput!): RabbitModel!
+
+  """Relance la tournée de l’agent et réécrit le point."""
+  refreshAgent: AgentBriefModel!
   register(input: RegisterInput!): AuthModel!
   rejectSubscriptionPayment(id: ID!): SubscriptionPaymentModel!
   removeFarmMember(membershipId: ID!): FarmMembershipModel!
@@ -1595,6 +1676,15 @@ input PushSubscriptionInput {
 
 type Query {
   adoptions: [AdoptionModel!]!
+
+  """Propositions déjà traitées, ignorées ou expirées."""
+  agentHistory: [AgentSuggestionModel!]!
+
+  """Journal de l’agent et des validations."""
+  agentLog: [AgentLogModel!]!
+
+  """Dernier point du matin et propositions à valider."""
+  agentOverview: AgentOverviewModel!
 
   """L’assistant IA est-il disponible ?"""
   assistantStatus: AssistantStatusModel!

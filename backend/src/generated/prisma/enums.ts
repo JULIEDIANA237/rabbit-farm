@@ -285,3 +285,13 @@ export const SubscriptionPaymentStatus = {
 } as const
 
 export type SubscriptionPaymentStatus = (typeof SubscriptionPaymentStatus)[keyof typeof SubscriptionPaymentStatus]
+
+
+export const AgentSuggestionStatus = {
+  PENDING: 'PENDING',
+  DONE: 'DONE',
+  DISMISSED: 'DISMISSED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type AgentSuggestionStatus = (typeof AgentSuggestionStatus)[keyof typeof AgentSuggestionStatus]

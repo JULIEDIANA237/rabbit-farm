@@ -239,3 +239,23 @@ export type SubscriptionPayment = Prisma.SubscriptionPaymentModel
  * Message envoyé depuis la zone contact de la page d'accueil (public).
  */
 export type ContactMessage = Prisma.ContactMessageModel
+/**
+ * Model AgentSuggestion
+ * Action proposée par l'agent de la propriétaire, en attente de sa validation.
+ */
+export type AgentSuggestion = Prisma.AgentSuggestionModel
+/**
+ * Model AgentLog
+ * Journal de l'agent : ce qu'il a proposé ou fait, et ce que la propriétaire a validé.
+ */
+export type AgentLog = Prisma.AgentLogModel
+/**
+ * Model AgentBrief
+ * Point du matin rédigé pour la propriétaire.
+ */
+export type AgentBrief = Prisma.AgentBriefModel
+/**
+ * Model AppError
+ * Erreurs inattendues du serveur, comptées par l'agent.
+ */
+export type AppError = Prisma.AppErrorModel

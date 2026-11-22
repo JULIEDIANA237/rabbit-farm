@@ -1460,3 +1460,74 @@ model ContactMessage {
 
   @@index([handled, createdAt])
 }
+
+enum AgentSuggestionStatus {
+  PENDING
+  DONE
+  DISMISSED
+  EXPIRED
+}
+
+/// Action proposée par l'agent de la propriétaire, en attente de sa validation.
+model AgentSuggestion {
+  id         String                @id @default(uuid())
+  /// Clé stable : une même situation ne crée qu'une proposition (ignorée = reste ignorée).
+  key        String                @unique
+  kind       String
+  severity   String
+  title      String
+  detail     String?
+  href       String?
+  /// NONE | CONFIRM_PAYMENT | EXTEND_TRIAL | SEND_EMAIL | REPLY_CONTACT
+  action     String
+  targetId   String?
+  recipient  String?
+  subject    String?
+  draft      String?
+  status     AgentSuggestionStatus @default(PENDING)
+  resolvedBy String?
+  resolvedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt])
+}
+
+/// Journal de l'agent : ce qu'il a proposé ou fait, et ce que la propriétaire a validé.
+model AgentLog {
+  id           String  @id @default(uuid())
+  /// AGENT ou OWNER
+  actor        String
+  actorEmail   String?
+  action       String
+  summary      String
+  suggestionId String?
+
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+/// Point du matin rédigé pour la propriétaire.
+model AgentBrief {
+  id      String  @id @default(uuid())
+  text    String
+  usedAi  Boolean @default(false)
+  pending Int     @default(0)
+
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+/// Erreurs inattendues du serveur, comptées par l'agent.
+model AppError {
+  id      String @id @default(uuid())
+  source  String
+  message String
+
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
