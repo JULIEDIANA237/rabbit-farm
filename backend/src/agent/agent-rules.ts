@@ -54,6 +54,10 @@ export interface AgentFacts {
   lastError: string | null;
   dbSizeMb: number | null;
   dbLimitMb: number;
+  /** Nombre total de comptes utilisateurs. */
+  totalUsers: number;
+  /** Offre d'hébergement Vercel déclarée (variable HOSTING_PLAN) : « hobby » tant qu'elle n'est pas « pro ». */
+  hostingPlan: string;
 }
 
 /** Seuils proposés à Diana (réglables plus tard). */
@@ -71,6 +75,8 @@ export const THRESHOLDS = {
   errorsPerDay: 5,
   dbWarnShare: 0.8,
   maxDormant: 5,
+  /** Rappel de passer à Vercel Pro à partir de ce nombre d'utilisateurs (ou dès le premier abonné payant). */
+  vercelProUsers: 20,
 };
 
 export const fcfa = (n: number) => `${n.toLocaleString('fr-FR').replace(/ | /g, ' ')} FCFA`;
@@ -166,6 +172,21 @@ export function detect(facts: AgentFacts, t = THRESHOLDS): Finding[] {
       severity: 'warning',
       title: `Base de données à ${Math.round((facts.dbSizeMb / facts.dbLimitMb) * 100)} % de sa limite`,
       detail: `${Math.round(facts.dbSizeMb)} Mo sur ${facts.dbLimitMb} Mo (offre gratuite Neon). Prévois de passer à l’offre payante.`,
+      action: 'NONE',
+    });
+  }
+
+  const paying = facts.farms.filter((f) => f.status === 'ACTIVE').length;
+  if (facts.hostingPlan !== 'pro' && (facts.totalUsers >= t.vercelProUsers || paying > 0)) {
+    out.push({
+      key: `HOSTING:${ymd(now).slice(0, 7)}`,
+      kind: 'HOSTING',
+      severity: 'warning',
+      title: 'Passe l’hébergement à Vercel Pro',
+      detail:
+        `${facts.totalUsers} utilisateurs, ${paying} élevage${paying > 1 ? 's' : ''} abonné${paying > 1 ? 's' : ''}. ` +
+        'L’offre gratuite de Vercel (Hobby) est réservée à un usage non commercial : passe les projets farm_backend et rabbit-farm à Pro (~20 $ par mois). ' +
+        'Ensuite, ajoute HOSTING_PLAN=pro dans les variables de farm_backend pour arrêter ce rappel.',
       action: 'NONE',
     });
   }

@@ -64,6 +64,8 @@ export class NotificationsService {
     const subscriptions = await this.prisma.pushSubscription.findMany();
     const byFarm = new Map<string, typeof subscriptions>();
     for (const subscription of subscriptions) {
+      // Appareils de la propriétaire de l'app (sans ferme) : pas de rappel d'élevage.
+      if (!subscription.farmId) continue;
       byFarm.set(subscription.farmId, [...(byFarm.get(subscription.farmId) ?? []), subscription]);
     }
 

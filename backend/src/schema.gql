@@ -208,7 +208,9 @@ type AssistantStatusModel {
 type AuthModel {
   accessToken: String!
   email: String!
-  farm: FarmModel!
+
+  """Absent pour la propriétaire de l’app (espace propriétaire)."""
+  farm: FarmModel
   firstName: String!
   lastName: String!
   userId: String!

@@ -59,7 +59,7 @@ export class AgentService {
   async collectFacts(now = new Date()): Promise<AgentFacts> {
     const admins = platformAdmins();
     const since24h = new Date(now.getTime() - DAY);
-    const [settings, payments, farms, rabbitCounts, newUsers24h, newFarms24h, contacts, lowRatings, errors24h, lastError, dbSizeMb] =
+    const [settings, payments, farms, rabbitCounts, newUsers24h, newFarms24h, contacts, lowRatings, errors24h, lastError, dbSizeMb, totalUsers] =
       await Promise.all([
         this.subscriptions.settings(),
         this.prisma.subscriptionPayment.findMany({ where: { status: 'PENDING' }, orderBy: { createdAt: 'asc' }, include: { farm: { select: { name: true } } } }),
@@ -77,6 +77,7 @@ export class AgentService {
         this.prisma.appError.count({ where: { createdAt: { gte: since24h } } }),
         this.prisma.appError.findFirst({ orderBy: { createdAt: 'desc' }, select: { message: true } }),
         this.databaseSizeMb(),
+        this.prisma.user.count(),
       ]);
 
     const rabbitsOf = new Map(rabbitCounts.map((r) => [r.farmId, r._count._all]));
@@ -107,6 +108,8 @@ export class AgentService {
       lastError: lastError?.message ?? null,
       dbSizeMb,
       dbLimitMb: Number.parseInt(process.env.AGENT_DB_LIMIT_MB ?? '', 10) || 512,
+      totalUsers,
+      hostingPlan: (process.env.HOSTING_PLAN ?? 'hobby').trim().toLowerCase(),
     };
   }
 

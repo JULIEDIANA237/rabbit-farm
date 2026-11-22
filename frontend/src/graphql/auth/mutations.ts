@@ -6,6 +6,7 @@ export const LOGIN_MUTATION = gql`
       accessToken
       userId
       email
+      farm { id }
     }
   }
 `;

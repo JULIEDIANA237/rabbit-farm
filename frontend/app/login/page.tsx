@@ -12,7 +12,7 @@ import { AuthLayout } from '@/components/auth/auth-layout';
 import { Button, ErrorBox, Field, Input, PasswordInput } from '@/components/ui/kit';
 
 interface LoginResponse {
-  login: { accessToken: string; userId: string; email: string };
+  login: { accessToken: string; userId: string; email: string; farm: { id: string } | null };
 }
 
 function safeNext(next: string | null) {
@@ -34,7 +34,8 @@ function LoginForm() {
       const { data } = await loginMutation({ variables: { input: { email: email.trim(), password } } });
       if (!data?.login.accessToken) return;
       login(data.login.accessToken, { userId: data.login.userId, email: data.login.email });
-      router.replace(safeNext(params.get('next')));
+      // Compte propriétaire (sans ferme) : directement vers l'espace propriétaire.
+      router.replace(data.login.farm ? safeNext(params.get('next')) : '/admin');
     } catch {
       // L'erreur exacte (mot de passe, serveur injoignable…) est affichée via `error`.
     }
