@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Lightbulb, Sparkles, X } from 'lucide-react';
 
 import { useAssistantEnabled } from '@/lib/assistant';
 
-import { guideFor } from './guides';
+import { guideFor, helpFor } from './guides';
 
 /** Ouvre l'assistant IA avec une question déjà posée. */
 export const ASK_ASSISTANT_EVENT = 'rabbitfarm:ask-assistant';
@@ -41,23 +41,35 @@ export function askAssistant(question: string) {
  */
 export function ModuleGuide() {
   const pathname = usePathname();
-  const guide = guideFor(pathname);
+  const pageGuide = guideFor(pathname);
+  // Avec le bouton « ? », toute page a une aide (l'aide générale à défaut).
+  const guide = helpFor(pathname);
   const assistantEnabled = useAssistantEnabled();
   const [visibleKey, setVisibleKey] = useState<string | null>(null);
+  const ref = useRef<HTMLElement>(null);
+  const [scrollRequest, setScrollRequest] = useState(0);
 
   useEffect(() => {
     // Lu après le montage : localStorage n'existe pas côté serveur.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setVisibleKey(guide && !seen(guide.key) ? guide.key : null);
-  }, [guide]);
+    setVisibleKey(pageGuide && !seen(pageGuide.key) ? pageGuide.key : null);
+  }, [pageGuide]);
 
   useEffect(() => {
-    const show = () => guide && setVisibleKey(guide.key);
+    const show = () => {
+      setVisibleKey(guide.key);
+      setScrollRequest((n) => n + 1);
+    };
     window.addEventListener(SHOW_GUIDE_EVENT, show);
     return () => window.removeEventListener(SHOW_GUIDE_EVENT, show);
   }, [guide]);
 
-  if (!guide || visibleKey !== guide.key) return null;
+  // La bulle est en haut de la page : on la ramène à l'écran si l'éleveur avait défilé.
+  useEffect(() => {
+    if (scrollRequest > 0) ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, [scrollRequest]);
+
+  if (visibleKey !== guide.key) return null;
 
   const close = () => {
     markSeen(guide.key);
@@ -66,6 +78,7 @@ export function ModuleGuide() {
 
   return (
     <aside
+      ref={ref}
       role="note"
       aria-label={`Aide : ${guide.title}`}
       className="relative mb-5 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 pr-10 text-sm text-emerald-950 shadow-sm"
