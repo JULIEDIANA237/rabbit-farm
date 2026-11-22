@@ -237,3 +237,14 @@ export type FeedRation = Prisma.FeedRationModel
  * 
  */
 export type CareRecord = Prisma.CareRecordModel
+/**
+ * Model BreedingMating
+ * Une femelle peut être saillie plusieurs fois le même jour : chaque
+ * saillie en plus s'ajoute à l'accouplement au lieu d'en créer un autre.
+ */
+export type BreedingMating = Prisma.BreedingMatingModel
+/**
+ * Model AppRating
+ * Note donnée par un utilisateur (une par personne, modifiable).
+ */
+export type AppRating = Prisma.AppRatingModel

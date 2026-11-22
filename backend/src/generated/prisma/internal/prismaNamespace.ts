@@ -435,7 +435,9 @@ export const ModelName = {
   MortalityRecord: 'MortalityRecord',
   LotCageMovement: 'LotCageMovement',
   FeedRation: 'FeedRation',
-  CareRecord: 'CareRecord'
+  CareRecord: 'CareRecord',
+  BreedingMating: 'BreedingMating',
+  AppRating: 'AppRating'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -451,7 +453,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "passwordResetToken" | "pushSubscription" | "aiUsage" | "farm" | "farmMembership" | "section" | "cage" | "breed" | "crossBreed" | "rabbit" | "rabbitPhoto" | "rabbitIdentification" | "rabbitCageMovement" | "breeding" | "pregnancy" | "birth" | "litter" | "litterAdoption" | "adoptionRabbit" | "weaning" | "weaningRabbit" | "fatteningLot" | "lotMembership" | "weighing" | "healthRecord" | "customer" | "sale" | "saleItem" | "payment" | "expense" | "inventoryItem" | "stockMovement" | "task" | "nestInstallation" | "mortalityRecord" | "lotCageMovement" | "feedRation" | "careRecord"
+    modelProps: "user" | "passwordResetToken" | "pushSubscription" | "aiUsage" | "farm" | "farmMembership" | "section" | "cage" | "breed" | "crossBreed" | "rabbit" | "rabbitPhoto" | "rabbitIdentification" | "rabbitCageMovement" | "breeding" | "pregnancy" | "birth" | "litter" | "litterAdoption" | "adoptionRabbit" | "weaning" | "weaningRabbit" | "fatteningLot" | "lotMembership" | "weighing" | "healthRecord" | "customer" | "sale" | "saleItem" | "payment" | "expense" | "inventoryItem" | "stockMovement" | "task" | "nestInstallation" | "mortalityRecord" | "lotCageMovement" | "feedRation" | "careRecord" | "breedingMating" | "appRating"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3341,6 +3343,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    BreedingMating: {
+      payload: Prisma.$BreedingMatingPayload<ExtArgs>
+      fields: Prisma.BreedingMatingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BreedingMatingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BreedingMatingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BreedingMatingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BreedingMatingPayload>
+        }
+        findFirst: {
+          args: Prisma.BreedingMatingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BreedingMatingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BreedingMatingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BreedingMatingPayload>
+        }
+        findMany: {
+          args: Prisma.BreedingMatingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BreedingMatingPayload>[]
+        }
+        create: {
+          args: Prisma.BreedingMatingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BreedingMatingPayload>
+        }
+        createMany: {
+          args: Prisma.BreedingMatingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BreedingMatingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BreedingMatingPayload>[]
+        }
+        delete: {
+          args: Prisma.BreedingMatingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BreedingMatingPayload>
+        }
+        update: {
+          args: Prisma.BreedingMatingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BreedingMatingPayload>
+        }
+        deleteMany: {
+          args: Prisma.BreedingMatingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BreedingMatingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BreedingMatingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BreedingMatingPayload>[]
+        }
+        upsert: {
+          args: Prisma.BreedingMatingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BreedingMatingPayload>
+        }
+        aggregate: {
+          args: Prisma.BreedingMatingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBreedingMating>
+        }
+        groupBy: {
+          args: Prisma.BreedingMatingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BreedingMatingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BreedingMatingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BreedingMatingCountAggregateOutputType> | number
+        }
+      }
+    }
+    AppRating: {
+      payload: Prisma.$AppRatingPayload<ExtArgs>
+      fields: Prisma.AppRatingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AppRatingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppRatingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AppRatingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppRatingPayload>
+        }
+        findFirst: {
+          args: Prisma.AppRatingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppRatingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AppRatingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppRatingPayload>
+        }
+        findMany: {
+          args: Prisma.AppRatingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppRatingPayload>[]
+        }
+        create: {
+          args: Prisma.AppRatingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppRatingPayload>
+        }
+        createMany: {
+          args: Prisma.AppRatingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AppRatingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppRatingPayload>[]
+        }
+        delete: {
+          args: Prisma.AppRatingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppRatingPayload>
+        }
+        update: {
+          args: Prisma.AppRatingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppRatingPayload>
+        }
+        deleteMany: {
+          args: Prisma.AppRatingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AppRatingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AppRatingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppRatingPayload>[]
+        }
+        upsert: {
+          args: Prisma.AppRatingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppRatingPayload>
+        }
+        aggregate: {
+          args: Prisma.AppRatingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAppRating>
+        }
+        groupBy: {
+          args: Prisma.AppRatingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AppRatingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AppRatingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AppRatingCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -3387,6 +3537,7 @@ export const UserScalarFieldEnum = {
   firstName: 'firstName',
   lastName: 'lastName',
   isActive: 'isActive',
+  lastSeenAt: 'lastSeenAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -3991,6 +4142,30 @@ export const CareRecordScalarFieldEnum = {
 } as const
 
 export type CareRecordScalarFieldEnum = (typeof CareRecordScalarFieldEnum)[keyof typeof CareRecordScalarFieldEnum]
+
+
+export const BreedingMatingScalarFieldEnum = {
+  id: 'id',
+  breedingId: 'breedingId',
+  maleId: 'maleId',
+  date: 'date',
+  createdAt: 'createdAt'
+} as const
+
+export type BreedingMatingScalarFieldEnum = (typeof BreedingMatingScalarFieldEnum)[keyof typeof BreedingMatingScalarFieldEnum]
+
+
+export const AppRatingScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  farmId: 'farmId',
+  stars: 'stars',
+  comment: 'comment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AppRatingScalarFieldEnum = (typeof AppRatingScalarFieldEnum)[keyof typeof AppRatingScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -4625,6 +4800,8 @@ export type GlobalOmitConfig = {
   lotCageMovement?: Prisma.LotCageMovementOmit
   feedRation?: Prisma.FeedRationOmit
   careRecord?: Prisma.CareRecordOmit
+  breedingMating?: Prisma.BreedingMatingOmit
+  appRating?: Prisma.AppRatingOmit
 }
 
 /* Types for Logging */

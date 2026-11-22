@@ -1,8 +1,9 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
 import { BreedingStatus } from '../graphql/breeding-status.enum.js';
 import { RabbitSummaryModel } from '../../common/models/rabbit-summary.model.js';
 import { NestInstallationModel } from './nest-installation.model.js';
+import { BreedingMatingModel } from './mating.models.js';
 
 @ObjectType()
 export class BreedingModel {
@@ -47,6 +48,12 @@ export class BreedingModel {
 
   @Field(() => NestInstallationModel, { nullable: true })
   nestInstallation?: NestInstallationModel | null;
+
+  @Field(() => [BreedingMatingModel], { description: 'Saillies supplémentaires du même jour' })
+  matings: BreedingMatingModel[];
+
+  @Field(() => Int, { description: 'Nombre total de saillies (la première comprise)' })
+  matingCount: number;
 
   @Field(() => ID, { nullable: true, description: 'Naissance enregistrée' })
   birthId?: string | null;

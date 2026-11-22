@@ -210,6 +210,10 @@ model User {
 
   passwordResetTokens PasswordResetToken[]
   pushSubscriptions   PushSubscription[]
+  appRating           AppRating?
+
+  /// Dernière activité (mise à jour au plus une fois par heure).
+  lastSeenAt DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -521,6 +525,7 @@ model Rabbit {
 
   breedingsAsFemale Breeding[] @relation("FemaleBreedings")
   breedingsAsMale   Breeding[] @relation("MaleBreedings")
+  extraMatings      BreedingMating[]
 
   motherBirths  Birth[]  @relation("MotherBirths")
   motherLitters Litter[] @relation("MotherLitters")
@@ -632,6 +637,9 @@ model Breeding {
   farm   Farm   @relation(fields: [farmId], references: [id], onDelete: Cascade)
   female Rabbit @relation("FemaleBreedings", fields: [femaleId], references: [id])
   male   Rabbit @relation("MaleBreedings", fields: [maleId], references: [id])
+
+  /// Saillies supplémentaires du même jour (la première est breedingDate / maleId).
+  matings BreedingMating[]
 
   pregnancies      Pregnancy[]
   birth            Birth?
@@ -1345,4 +1353,43 @@ model CareRecord {
 
   @@index([farmId])
   @@index([date])
+}
+
+// ============================================================
+// SAILLIES SUPPLÉMENTAIRES D'UN MÊME ACCOUPLEMENT
+// ============================================================
+
+/// Une femelle peut être saillie plusieurs fois le même jour : chaque
+/// saillie en plus s'ajoute à l'accouplement au lieu d'en créer un autre.
+model BreedingMating {
+  id         String   @id @default(uuid())
+  breedingId String
+  maleId     String
+  date       DateTime
+
+  breeding Breeding @relation(fields: [breedingId], references: [id], onDelete: Cascade)
+  male     Rabbit   @relation(fields: [maleId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([breedingId])
+  @@index([maleId, date])
+}
+
+// ============================================================
+// NOTE DE L'APPLICATION
+// ============================================================
+
+/// Note donnée par un utilisateur (une par personne, modifiable).
+model AppRating {
+  id      String  @id @default(uuid())
+  userId  String  @unique
+  farmId  String?
+  stars   Int
+  comment String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

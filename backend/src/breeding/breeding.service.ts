@@ -24,6 +24,7 @@ import { computeBreedingCalendar } from '../common/calendar/breeding-calendar.js
 import { GenealogyService } from '../genetics/genealogy.service.js';
 import { TaskAutomationService } from '../operations/automation/task-automation.service.js';
 import { daysBetween, profileWarnings } from './reproduction-profile.js';
+import { MAX_FEMALES_PER_MALE_24H, femalesCoveredAround, maleLimitMessage, sameMatingDay } from './mating-rules.js';
 
 /** Statuts pour lesquels la femelle est engagée dans un cycle. */
 export const ACTIVE_BREEDING_STATUSES = [
@@ -38,10 +39,12 @@ const breedingInclude = {
   male: true,
   nestInstallation: true,
   birth: { select: { id: true } },
+  matings: { include: { male: true }, orderBy: { date: 'asc' as const } },
 } as const;
 
 type BreedingWithRelations = {
   birth?: { id: string } | null;
+  matings?: unknown[];
   [key: string]: unknown;
 };
 
@@ -56,6 +59,8 @@ export class BreedingService {
   private toModel<T extends BreedingWithRelations>(breeding: T) {
     return {
       ...breeding,
+      matings: breeding.matings ?? [],
+      matingCount: (breeding.matings?.length ?? 0) + 1,
       birthId: breeding.birth?.id ?? null,
     };
   }
@@ -165,7 +170,27 @@ export class BreedingService {
       },
     });
 
+    // Limite du mâle : 2 femelles différentes au plus sur 24 h.
+    const covered = (await femalesCoveredAround(this.prisma, currentUser.farmId, male.id, breedingDate))
+      .filter((f) => f.id !== female.id);
+    if (covered.length >= MAX_FEMALES_PER_MALE_24H) {
+      throw new BadRequestException(maleLimitMessage(male.code, covered.map((f) => f.code)));
+    }
+
     if (activeBreeding) {
+      // Nouvelle saillie le même jour : elle s'ajoute à l'accouplement existant.
+      if (sameMatingDay(activeBreeding.breedingDate, breedingDate)) {
+        await this.prisma.breedingMating.create({
+          data: { breedingId: activeBreeding.id, maleId: male.id, date: breedingDate },
+        });
+        const note = input.observation?.trim();
+        const updated = await this.prisma.breeding.update({
+          where: { id: activeBreeding.id },
+          data: note ? { observation: [activeBreeding.observation, note].filter(Boolean).join('\n') } : {},
+          include: breedingInclude,
+        });
+        return this.toModel(updated);
+      }
       throw new BadRequestException(
         `La femelle ${female.code} possède déjà un accouplement actif.`,
       );
@@ -224,6 +249,30 @@ export class BreedingService {
     });
 
     return this.toModel(breeding);
+  }
+
+  /**
+   * Ce que le formulaire doit savoir avant d'enregistrer une saillie :
+   * charge du mâle sur 24 h et accouplement du jour déjà ouvert pour la femelle.
+   */
+  async matingContext(femaleId: string | undefined, maleId: string | undefined, date: Date, currentUser: CurrentUserType) {
+    const farmId = currentUser.farmId;
+    const covered = maleId
+      ? (await femalesCoveredAround(this.prisma, farmId, maleId, date)).filter((f) => f.id !== femaleId)
+      : [];
+    const sameDay = femaleId
+      ? await this.prisma.breeding.findFirst({
+          where: { farmId, femaleId, status: { in: ACTIVE_BREEDING_STATUSES } },
+          include: { matings: { select: { id: true } } },
+        })
+      : null;
+    return {
+      maleFemalesLast24h: covered.map((f) => f.code),
+      maleLimitReached: covered.length >= MAX_FEMALES_PER_MALE_24H,
+      sameDayBreedingId: sameDay && sameMatingDay(sameDay.breedingDate, date) ? sameDay.id : null,
+      sameDayMatingCount: sameDay && sameMatingDay(sameDay.breedingDate, date) ? sameDay.matings.length + 1 : 0,
+      femaleHasOtherActiveBreeding: Boolean(sameDay && !sameMatingDay(sameDay.breedingDate, date)),
+    };
   }
 
   /**
@@ -363,6 +412,14 @@ export class BreedingService {
     }
     const dateChanged = breedingDate.getTime() !== breeding.breedingDate.getTime();
     const calendar = dateChanged ? computeBreedingCalendar(breedingDate) : null;
+
+    if (dateChanged || male.id !== breeding.maleId) {
+      const covered = (await femalesCoveredAround(this.prisma, currentUser.farmId, male.id, breedingDate))
+        .filter((f) => f.id !== breeding.femaleId);
+      if (covered.length >= MAX_FEMALES_PER_MALE_24H) {
+        throw new BadRequestException(maleLimitMessage(male.code, covered.map((f) => f.code)));
+      }
+    }
 
     const updated = await this.prisma.$transaction(async (tx) => {
       const result = await tx.breeding.update({

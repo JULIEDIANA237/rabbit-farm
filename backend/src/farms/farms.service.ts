@@ -102,6 +102,12 @@ export class FarmsService {
   }
 
   async me(user: CurrentUserType) {
+    // Dernière activité (pour compter les utilisateurs actifs), au plus une fois par heure.
+    const hourAgo = new Date(Date.now() - 3_600_000);
+    void this.prisma.user
+      ?.updateMany({ where: { id: user.userId, OR: [{ lastSeenAt: null }, { lastSeenAt: { lt: hourAgo } }] }, data: { lastSeenAt: new Date() } })
+      ?.catch(() => undefined);
+
     const membership = await this.prisma.farmMembership.findFirst({
       where: { userId: user.userId, farmId: user.farmId },
       include: { user: true, farm: true },
