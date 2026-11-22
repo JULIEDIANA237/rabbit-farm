@@ -162,10 +162,7 @@ export function RabbitHistoryFields({
         )}
         {male && (
           <>
-            <Question label="Combien de femelles différentes a-t-il couvertes ?" hint="Avant de l’enregistrer ici">
-              <input className={input} inputMode="numeric" placeholder="ex. 5" value={values.previousFemales} onChange={set('previousFemales')} />
-            </Question>
-            <Question label="Combien de saillies a-t-il déjà faites ?" hint="Toutes femelles confondues">
+            <Question label="Combien de saillies a-t-il déjà faites ?" hint="Avant de l’enregistrer ici, toutes femelles confondues">
               <input className={input} inputMode="numeric" placeholder="ex. 10" value={values.previousMatings} onChange={set('previousMatings')} />
             </Question>
           </>
