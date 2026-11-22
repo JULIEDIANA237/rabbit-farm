@@ -314,6 +314,14 @@ model Farm {
   nestInstallations NestInstallation[]
   mortalities       MortalityRecord[]
 
+  /// Fin de l'essai gratuit. Vide : date de création + durée d'essai réglée par la plateforme.
+  trialEndsAt DateTime?
+  /// Fin de la période payée (abonnement mensuel ou annuel).
+  paidUntil   DateTime?
+  /// Accès gratuit à vie, accordé par la propriétaire de l'app (ex. : le gérant de sa ferme).
+  freeAccess  Boolean   @default(false)
+  subscriptionPayments SubscriptionPayment[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -1392,4 +1400,50 @@ model AppRating {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// ============================================================
+// ABONNEMENT
+// ============================================================
+
+/// Réglages de l'abonnement, modifiables depuis la page propriétaire (une seule ligne, id « default »).
+model PlatformSetting {
+  id                  String   @id @default("default")
+  trialDays           Int      @default(30)
+  monthlyPrice        Int      @default(1000)
+  yearlyPrice         Int      @default(10000)
+  /// Comment payer (numéro Mobile Money, nom du compte…), affiché sur l'écran d'abonnement.
+  paymentInstructions String?
+  updatedAt           DateTime @updatedAt
+}
+
+enum SubscriptionPlan {
+  MONTHLY
+  YEARLY
+}
+
+enum SubscriptionPaymentStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+}
+
+/// Paiement d'abonnement : déclaré par l'élevage, confirmé par la propriétaire.
+model SubscriptionPayment {
+  id            String                    @id @default(uuid())
+  farmId        String
+  farm          Farm                      @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  plan          SubscriptionPlan
+  amount        Int
+  status        SubscriptionPaymentStatus @default(PENDING)
+  /// Référence de la transaction Mobile Money donnée par l'éleveur.
+  reference     String?
+  requestedById String?
+  /// Fin de la période payée une fois confirmé.
+  periodEnd     DateTime?
+  confirmedAt   DateTime?
+  createdAt     DateTime                  @default(now())
+
+  @@index([farmId])
+  @@index([status])
 }

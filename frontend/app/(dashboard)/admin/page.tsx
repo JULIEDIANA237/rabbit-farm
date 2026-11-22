@@ -6,6 +6,7 @@ import { Activity, Home, Rabbit, Star, Users } from 'lucide-react';
 
 import { Card, ErrorBox, Loading, PageHeader } from '@/components/ui/kit';
 import { KpiCard } from '@/components/dashboard/kpi-card';
+import { SubscriptionAdmin } from '@/components/admin/subscription-admin';
 
 const PLATFORM_STATS = gql`
   query PlatformStats {
@@ -38,7 +39,7 @@ export default function AdminPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader eyebrow="Propriétaire" title="Chiffres de l’application" description="Utilisateurs, élevages et notes de toutes les fermes." />
+      <PageHeader eyebrow="Propriétaire" title="Chiffres de l’application" description="Utilisateurs, élevages, notes et abonnements de toutes les fermes." />
       {loading && !s && <Loading />}
       <ErrorBox error={error} />
       {s && (
@@ -79,6 +80,8 @@ export default function AdminPage() {
               )}
             </Card>
           </div>
+          <h2 className="pt-2 text-lg font-semibold text-slate-900">Abonnements</h2>
+          <SubscriptionAdmin />
         </>
       )}
     </div>

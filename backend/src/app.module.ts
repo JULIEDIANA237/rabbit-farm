@@ -51,6 +51,7 @@ import { join } from 'path';
 
 import { AdvisorModule } from './advisor/advisor.module.js';
 import { PlatformModule } from './platform/platform.module.js';
+import { SubscriptionModule } from './subscription/subscription.module.js';
 
 @Module({
   imports: [
@@ -109,6 +110,7 @@ import { PlatformModule } from './platform/platform.module.js';
     CareModule,
     AdvisorModule,
     PlatformModule,
+    SubscriptionModule,
   ],
 
   // GET / répond « Hello World! » : sert à vérifier que l'API est en ligne.

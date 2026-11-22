@@ -2,6 +2,16 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+"""
+TRIAL (essai), ACTIVE (payé), EXPIRED (lecture seule), EXEMPT (propriétaire de l’app)
+"""
+enum AccessStatus {
+  ACTIVE
+  EXEMPT
+  EXPIRED
+  TRIAL
+}
+
 input AddLotMembersInput {
   """Date de l’opération (par défaut : maintenant)"""
   date: DateTime
@@ -813,6 +823,23 @@ type ExpenseModel {
   updatedAt: DateTime!
 }
 
+type FarmAccessModel {
+  createdAt: DateTime!
+  daysLeft: Int!
+  farmId: ID!
+  farmName: String!
+
+  """Accès gratuit à vie accordé"""
+  freeAccess: Boolean!
+
+  """E-mails des membres, pour retrouver un élevage"""
+  memberEmails: [String!]!
+  ownerEmail: String
+  paidUntil: DateTime
+  status: AccessStatus!
+  trialEndsAt: DateTime!
+}
+
 type FarmMembershipModel {
   createdAt: DateTime!
   id: ID!
@@ -1258,6 +1285,8 @@ input MoveRabbitInput {
 }
 
 type Mutation {
+  """Enregistrer à la main un abonnement payé hors de l’app"""
+  activateSubscription(farmId: ID!, plan: SubscriptionPlan!): Boolean!
   addFarmMember(input: AddMemberInput!): FarmMembershipModel!
   addLotMembers(input: AddLotMembersInput!): [LotMembershipModel!]!
   addPayment(input: CreatePaymentInput!): PaymentModel!
@@ -1278,6 +1307,7 @@ type Mutation {
   cancelSale(input: CancelSaleInput!): SaleModel!
   completeFatteningLot(input: CompleteFatteningLotInput!): FatteningLotModel!
   completeWeaning(input: CompleteWeaningInput!): WeaningModel!
+  confirmSubscriptionPayment(id: ID!): SubscriptionPaymentModel!
   createAdoption(input: CreateAdoptionInput!): AdoptionModel!
   createBirth(input: CreateBirthInput!): BirthModel!
   createBreed(input: CreateBreedInput!): BreedModel!
@@ -1301,6 +1331,11 @@ type Mutation {
   createTask(input: CreateTaskInput!): TaskModel!
   createWeaning(input: CreateWeaningInput!): WeaningModel!
   createWeighing(input: CreateWeighingInput!): WeighingModel!
+
+  """
+  Déclarer un paiement Mobile Money, confirmé ensuite par la propriétaire
+  """
+  declareSubscriptionPayment(plan: SubscriptionPlan!, reference: String): SubscriptionPaymentModel!
   deleteBirth(id: ID!): Boolean!
   deleteBreed(id: ID!): Boolean!
   deleteBreeding(id: ID!): Boolean!
@@ -1330,6 +1365,9 @@ type Mutation {
   deleteWeaning(id: ID!): Boolean!
   deleteWeighing(id: ID!): Boolean!
 
+  """Offrir des jours d’essai en plus"""
+  extendTrial(days: Int!, farmId: ID!): Boolean!
+
   """
   Pré-remplit un formulaire à partir d’une phrase (rien n’est enregistré)
   """
@@ -1346,6 +1384,7 @@ type Mutation {
   """Décès, réforme ou transfert d’un lapin (§37, §58)."""
   recordRabbitExit(input: RecordRabbitExitInput!): RabbitModel!
   register(input: RegisterInput!): AuthModel!
+  rejectSubscriptionPayment(id: ID!): SubscriptionPaymentModel!
   removeFarmMember(membershipId: ID!): FarmMembershipModel!
   removeLotMembers(input: RemoveLotMembersInput!): [LotMembershipModel!]!
 
@@ -1363,6 +1402,9 @@ type Mutation {
 
   """Met en engraissement un sevrage réalisé resté sans lot"""
   sendWeaningToFattening(fatteningLotId: ID, weaningId: ID!): WeaningModel!
+
+  """Accorder ou retirer l’accès gratuit à vie"""
+  setFarmFreeAccess(farmId: ID!, free: Boolean!): Boolean!
   setFeedRations(input: SetFeedRationsInput!): FeedingItemPlanModel!
 
   """Marque (ou retire) des lapins comme prêts pour la vente"""
@@ -1386,6 +1428,7 @@ type Mutation {
   updateFatteningLot(input: UpdateFatteningLotInput!): FatteningLotModel!
   updateHealthRecord(input: UpdateHealthRecordInput!): HealthRecordModel!
   updateInventoryItem(input: UpdateInventoryItemInput!): InventoryItemModel!
+  updatePlatformSettings(input: PlatformSettingsInput!): PlatformSettingsModel!
   updateRabbit(input: UpdateRabbitInput!): RabbitModel!
 
   """
@@ -1434,6 +1477,20 @@ type PedigreeNodeModel {
   mother: PedigreeNodeModel
   sex: RabbitSex!
   status: RabbitStatus!
+}
+
+input PlatformSettingsInput {
+  monthlyPrice: Int
+  paymentInstructions: String
+  trialDays: Int
+  yearlyPrice: Int
+}
+
+type PlatformSettingsModel {
+  monthlyPrice: Int!
+  paymentInstructions: String
+  trialDays: Int!
+  yearlyPrice: Int!
 }
 
 type PlatformStatsModel {
@@ -1586,6 +1643,12 @@ type Query {
   sales(customerId: ID): [SaleModel!]!
   section(id: ID!): SectionModel!
   sections: [SectionModel!]!
+
+  """Abonnements de tous les élevages (propriétaire)"""
+  subscriptionAdmin: SubscriptionAdminModel!
+
+  """Essai, abonnement et prix pour l’élevage connecté"""
+  subscriptionStatus: SubscriptionStatusModel!
   task(id: ID!): TaskModel!
   tasks(from: DateTime, openOnly: Boolean = false, rabbitId: ID, status: TaskStatus, to: DateTime): [TaskModel!]!
 
@@ -2024,6 +2087,64 @@ enum StockMovementType {
   LOSS
   PURCHASE
   RETURN
+}
+
+type SubscriptionAdminModel {
+  expiredFarms: Int!
+  farms: [FarmAccessModel!]!
+  payingFarms: Int!
+  pendingPayments: [SubscriptionPaymentModel!]!
+
+  """Total confirmé sur 30 jours"""
+  revenue30d: Int!
+  revenueTotal: Int!
+  settings: PlatformSettingsModel!
+  trialFarms: Int!
+}
+
+type SubscriptionPaymentModel {
+  amount: Int!
+  createdAt: DateTime!
+
+  """Vue propriétaire"""
+  farmId: String
+
+  """Vue propriétaire"""
+  farmName: String
+  id: ID!
+  periodEnd: DateTime
+  plan: SubscriptionPlan!
+  reference: String
+  status: SubscriptionPaymentStatus!
+}
+
+enum SubscriptionPaymentStatus {
+  CONFIRMED
+  PENDING
+  REJECTED
+}
+
+"""MONTHLY (mensuel) ou YEARLY (annuel)"""
+enum SubscriptionPlan {
+  MONTHLY
+  YEARLY
+}
+
+type SubscriptionStatusModel {
+  """Jours restants (essai ou période payée)."""
+  daysLeft: Int!
+  paidUntil: DateTime
+
+  """Paiement déclaré en attente de confirmation."""
+  pendingPayment: SubscriptionPaymentModel
+
+  """
+  Vrai quand l’essai est fini et rien n’est payé : seule la lecture est permise.
+  """
+  readOnly: Boolean!
+  settings: PlatformSettingsModel!
+  status: AccessStatus!
+  trialEndsAt: DateTime!
 }
 
 type TaskModel {

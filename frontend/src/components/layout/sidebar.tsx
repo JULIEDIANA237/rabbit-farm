@@ -23,6 +23,7 @@ import {
   Stethoscope,
   HandCoins,
   Wrench,
+  CreditCard,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -218,6 +219,14 @@ export function Sidebar({
         </nav>
 
         <div className="border-t border-slate-100 p-4">
+          <Link
+            href="/subscription"
+            onClick={onClose}
+            className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50"
+          >
+            <CreditCard size={19} />
+            <span>Abonnement</span>
+          </Link>
           <Link
             href="/settings"
             onClick={onClose}
