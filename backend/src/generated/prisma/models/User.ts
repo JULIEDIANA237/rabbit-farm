@@ -31,6 +31,7 @@ export type UserMinAggregateOutputType = {
   firstName: string | null
   lastName: string | null
   isActive: boolean | null
+  lastSeenAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -42,6 +43,7 @@ export type UserMaxAggregateOutputType = {
   firstName: string | null
   lastName: string | null
   isActive: boolean | null
+  lastSeenAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -53,6 +55,7 @@ export type UserCountAggregateOutputType = {
   firstName: number
   lastName: number
   isActive: number
+  lastSeenAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -66,6 +69,7 @@ export type UserMinAggregateInputType = {
   firstName?: true
   lastName?: true
   isActive?: true
+  lastSeenAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -77,6 +81,7 @@ export type UserMaxAggregateInputType = {
   firstName?: true
   lastName?: true
   isActive?: true
+  lastSeenAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -88,6 +93,7 @@ export type UserCountAggregateInputType = {
   firstName?: true
   lastName?: true
   isActive?: true
+  lastSeenAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -172,6 +178,7 @@ export type UserGroupByOutputType = {
   firstName: string
   lastName: string
   isActive: boolean
+  lastSeenAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -204,6 +211,7 @@ export type UserWhereInput = {
   firstName?: Prisma.StringFilter<"User"> | string
   lastName?: Prisma.StringFilter<"User"> | string
   isActive?: Prisma.BoolFilter<"User"> | boolean
+  lastSeenAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   memberships?: Prisma.FarmMembershipListRelationFilter
@@ -211,6 +219,7 @@ export type UserWhereInput = {
   assignedTasks?: Prisma.TaskListRelationFilter
   passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter
   pushSubscriptions?: Prisma.PushSubscriptionListRelationFilter
+  appRating?: Prisma.XOR<Prisma.AppRatingNullableScalarRelationFilter, Prisma.AppRatingWhereInput> | null
 }
 
 export type UserOrderByWithRelationInput = {
@@ -220,6 +229,7 @@ export type UserOrderByWithRelationInput = {
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  lastSeenAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   memberships?: Prisma.FarmMembershipOrderByRelationAggregateInput
@@ -227,6 +237,7 @@ export type UserOrderByWithRelationInput = {
   assignedTasks?: Prisma.TaskOrderByRelationAggregateInput
   passwordResetTokens?: Prisma.PasswordResetTokenOrderByRelationAggregateInput
   pushSubscriptions?: Prisma.PushSubscriptionOrderByRelationAggregateInput
+  appRating?: Prisma.AppRatingOrderByWithRelationInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -239,6 +250,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   firstName?: Prisma.StringFilter<"User"> | string
   lastName?: Prisma.StringFilter<"User"> | string
   isActive?: Prisma.BoolFilter<"User"> | boolean
+  lastSeenAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   memberships?: Prisma.FarmMembershipListRelationFilter
@@ -246,6 +258,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   assignedTasks?: Prisma.TaskListRelationFilter
   passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter
   pushSubscriptions?: Prisma.PushSubscriptionListRelationFilter
+  appRating?: Prisma.XOR<Prisma.AppRatingNullableScalarRelationFilter, Prisma.AppRatingWhereInput> | null
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -255,6 +268,7 @@ export type UserOrderByWithAggregationInput = {
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  lastSeenAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -272,6 +286,7 @@ export type UserScalarWhereWithAggregatesInput = {
   firstName?: Prisma.StringWithAggregatesFilter<"User"> | string
   lastName?: Prisma.StringWithAggregatesFilter<"User"> | string
   isActive?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  lastSeenAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -283,6 +298,7 @@ export type UserCreateInput = {
   firstName: string
   lastName: string
   isActive?: boolean
+  lastSeenAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutUserInput
@@ -290,6 +306,7 @@ export type UserCreateInput = {
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
   passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  appRating?: Prisma.AppRatingCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -299,6 +316,7 @@ export type UserUncheckedCreateInput = {
   firstName: string
   lastName: string
   isActive?: boolean
+  lastSeenAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutUserInput
@@ -306,6 +324,7 @@ export type UserUncheckedCreateInput = {
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  appRating?: Prisma.AppRatingUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -315,6 +334,7 @@ export type UserUpdateInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.FarmMembershipUpdateManyWithoutUserNestedInput
@@ -322,6 +342,7 @@ export type UserUpdateInput = {
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  appRating?: Prisma.AppRatingUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -331,6 +352,7 @@ export type UserUncheckedUpdateInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutUserNestedInput
@@ -338,6 +360,7 @@ export type UserUncheckedUpdateInput = {
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  appRating?: Prisma.AppRatingUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -347,6 +370,7 @@ export type UserCreateManyInput = {
   firstName: string
   lastName: string
   isActive?: boolean
+  lastSeenAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -358,6 +382,7 @@ export type UserUpdateManyMutationInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -369,6 +394,7 @@ export type UserUncheckedUpdateManyInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -380,6 +406,7 @@ export type UserCountOrderByAggregateInput = {
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  lastSeenAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -391,6 +418,7 @@ export type UserMaxOrderByAggregateInput = {
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  lastSeenAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -402,6 +430,7 @@ export type UserMinOrderByAggregateInput = {
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  lastSeenAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -422,6 +451,10 @@ export type StringFieldUpdateOperationsInput = {
 
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -502,6 +535,20 @@ export type UserUpdateOneWithoutAssignedTasksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAssignedTasksInput, Prisma.UserUpdateWithoutAssignedTasksInput>, Prisma.UserUncheckedUpdateWithoutAssignedTasksInput>
 }
 
+export type UserCreateNestedOneWithoutAppRatingInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAppRatingInput, Prisma.UserUncheckedCreateWithoutAppRatingInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAppRatingInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAppRatingNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAppRatingInput, Prisma.UserUncheckedCreateWithoutAppRatingInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAppRatingInput
+  upsert?: Prisma.UserUpsertWithoutAppRatingInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAppRatingInput, Prisma.UserUpdateWithoutAppRatingInput>, Prisma.UserUncheckedUpdateWithoutAppRatingInput>
+}
+
 export type UserCreateWithoutPasswordResetTokensInput = {
   id?: string
   email: string
@@ -509,12 +556,14 @@ export type UserCreateWithoutPasswordResetTokensInput = {
   firstName: string
   lastName: string
   isActive?: boolean
+  lastSeenAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutUserInput
   healthRecordsCreated?: Prisma.HealthRecordCreateNestedManyWithoutCreatedByInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  appRating?: Prisma.AppRatingCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
@@ -524,12 +573,14 @@ export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
   firstName: string
   lastName: string
   isActive?: boolean
+  lastSeenAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutUserInput
   healthRecordsCreated?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutCreatedByInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  appRating?: Prisma.AppRatingUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
@@ -555,12 +606,14 @@ export type UserUpdateWithoutPasswordResetTokensInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.FarmMembershipUpdateManyWithoutUserNestedInput
   healthRecordsCreated?: Prisma.HealthRecordUpdateManyWithoutCreatedByNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  appRating?: Prisma.AppRatingUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
@@ -570,12 +623,14 @@ export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutUserNestedInput
   healthRecordsCreated?: Prisma.HealthRecordUncheckedUpdateManyWithoutCreatedByNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  appRating?: Prisma.AppRatingUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPushSubscriptionsInput = {
@@ -585,12 +640,14 @@ export type UserCreateWithoutPushSubscriptionsInput = {
   firstName: string
   lastName: string
   isActive?: boolean
+  lastSeenAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutUserInput
   healthRecordsCreated?: Prisma.HealthRecordCreateNestedManyWithoutCreatedByInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
   passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  appRating?: Prisma.AppRatingCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
@@ -600,12 +657,14 @@ export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
   firstName: string
   lastName: string
   isActive?: boolean
+  lastSeenAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutUserInput
   healthRecordsCreated?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutCreatedByInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  appRating?: Prisma.AppRatingUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPushSubscriptionsInput = {
@@ -631,12 +690,14 @@ export type UserUpdateWithoutPushSubscriptionsInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.FarmMembershipUpdateManyWithoutUserNestedInput
   healthRecordsCreated?: Prisma.HealthRecordUpdateManyWithoutCreatedByNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  appRating?: Prisma.AppRatingUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
@@ -646,12 +707,14 @@ export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutUserNestedInput
   healthRecordsCreated?: Prisma.HealthRecordUncheckedUpdateManyWithoutCreatedByNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  appRating?: Prisma.AppRatingUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutMembershipsInput = {
@@ -661,12 +724,14 @@ export type UserCreateWithoutMembershipsInput = {
   firstName: string
   lastName: string
   isActive?: boolean
+  lastSeenAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   healthRecordsCreated?: Prisma.HealthRecordCreateNestedManyWithoutCreatedByInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
   passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  appRating?: Prisma.AppRatingCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMembershipsInput = {
@@ -676,12 +741,14 @@ export type UserUncheckedCreateWithoutMembershipsInput = {
   firstName: string
   lastName: string
   isActive?: boolean
+  lastSeenAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   healthRecordsCreated?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutCreatedByInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  appRating?: Prisma.AppRatingUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMembershipsInput = {
@@ -707,12 +774,14 @@ export type UserUpdateWithoutMembershipsInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   healthRecordsCreated?: Prisma.HealthRecordUpdateManyWithoutCreatedByNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  appRating?: Prisma.AppRatingUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMembershipsInput = {
@@ -722,12 +791,14 @@ export type UserUncheckedUpdateWithoutMembershipsInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   healthRecordsCreated?: Prisma.HealthRecordUncheckedUpdateManyWithoutCreatedByNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  appRating?: Prisma.AppRatingUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutHealthRecordsCreatedInput = {
@@ -737,12 +808,14 @@ export type UserCreateWithoutHealthRecordsCreatedInput = {
   firstName: string
   lastName: string
   isActive?: boolean
+  lastSeenAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
   passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  appRating?: Prisma.AppRatingCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutHealthRecordsCreatedInput = {
@@ -752,12 +825,14 @@ export type UserUncheckedCreateWithoutHealthRecordsCreatedInput = {
   firstName: string
   lastName: string
   isActive?: boolean
+  lastSeenAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  appRating?: Prisma.AppRatingUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutHealthRecordsCreatedInput = {
@@ -783,12 +858,14 @@ export type UserUpdateWithoutHealthRecordsCreatedInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.FarmMembershipUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  appRating?: Prisma.AppRatingUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutHealthRecordsCreatedInput = {
@@ -798,12 +875,14 @@ export type UserUncheckedUpdateWithoutHealthRecordsCreatedInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  appRating?: Prisma.AppRatingUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAssignedTasksInput = {
@@ -813,12 +892,14 @@ export type UserCreateWithoutAssignedTasksInput = {
   firstName: string
   lastName: string
   isActive?: boolean
+  lastSeenAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutUserInput
   healthRecordsCreated?: Prisma.HealthRecordCreateNestedManyWithoutCreatedByInput
   passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  appRating?: Prisma.AppRatingCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAssignedTasksInput = {
@@ -828,12 +909,14 @@ export type UserUncheckedCreateWithoutAssignedTasksInput = {
   firstName: string
   lastName: string
   isActive?: boolean
+  lastSeenAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutUserInput
   healthRecordsCreated?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutCreatedByInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  appRating?: Prisma.AppRatingUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAssignedTasksInput = {
@@ -859,12 +942,14 @@ export type UserUpdateWithoutAssignedTasksInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.FarmMembershipUpdateManyWithoutUserNestedInput
   healthRecordsCreated?: Prisma.HealthRecordUpdateManyWithoutCreatedByNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  appRating?: Prisma.AppRatingUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedTasksInput = {
@@ -874,10 +959,96 @@ export type UserUncheckedUpdateWithoutAssignedTasksInput = {
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutUserNestedInput
   healthRecordsCreated?: Prisma.HealthRecordUncheckedUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  appRating?: Prisma.AppRatingUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutAppRatingInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  firstName: string
+  lastName: string
+  isActive?: boolean
+  lastSeenAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.FarmMembershipCreateNestedManyWithoutUserInput
+  healthRecordsCreated?: Prisma.HealthRecordCreateNestedManyWithoutCreatedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAppRatingInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  firstName: string
+  lastName: string
+  isActive?: boolean
+  lastSeenAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutUserInput
+  healthRecordsCreated?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAppRatingInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAppRatingInput, Prisma.UserUncheckedCreateWithoutAppRatingInput>
+}
+
+export type UserUpsertWithoutAppRatingInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAppRatingInput, Prisma.UserUncheckedUpdateWithoutAppRatingInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAppRatingInput, Prisma.UserUncheckedCreateWithoutAppRatingInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAppRatingInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAppRatingInput, Prisma.UserUncheckedUpdateWithoutAppRatingInput>
+}
+
+export type UserUpdateWithoutAppRatingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.FarmMembershipUpdateManyWithoutUserNestedInput
+  healthRecordsCreated?: Prisma.HealthRecordUpdateManyWithoutCreatedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAppRatingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutUserNestedInput
+  healthRecordsCreated?: Prisma.HealthRecordUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -956,6 +1127,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   firstName?: boolean
   lastName?: boolean
   isActive?: boolean
+  lastSeenAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
@@ -963,6 +1135,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   assignedTasks?: boolean | Prisma.User$assignedTasksArgs<ExtArgs>
   passwordResetTokens?: boolean | Prisma.User$passwordResetTokensArgs<ExtArgs>
   pushSubscriptions?: boolean | Prisma.User$pushSubscriptionsArgs<ExtArgs>
+  appRating?: boolean | Prisma.User$appRatingArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -973,6 +1146,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   firstName?: boolean
   lastName?: boolean
   isActive?: boolean
+  lastSeenAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -984,6 +1158,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   firstName?: boolean
   lastName?: boolean
   isActive?: boolean
+  lastSeenAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -995,17 +1170,19 @@ export type UserSelectScalar = {
   firstName?: boolean
   lastName?: boolean
   isActive?: boolean
+  lastSeenAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "firstName" | "lastName" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "firstName" | "lastName" | "isActive" | "lastSeenAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
   healthRecordsCreated?: boolean | Prisma.User$healthRecordsCreatedArgs<ExtArgs>
   assignedTasks?: boolean | Prisma.User$assignedTasksArgs<ExtArgs>
   passwordResetTokens?: boolean | Prisma.User$passwordResetTokensArgs<ExtArgs>
   pushSubscriptions?: boolean | Prisma.User$pushSubscriptionsArgs<ExtArgs>
+  appRating?: boolean | Prisma.User$appRatingArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1019,6 +1196,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     assignedTasks: Prisma.$TaskPayload<ExtArgs>[]
     passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
     pushSubscriptions: Prisma.$PushSubscriptionPayload<ExtArgs>[]
+    appRating: Prisma.$AppRatingPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1027,6 +1205,10 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     firstName: string
     lastName: string
     isActive: boolean
+    /**
+     * Dernière activité (mise à jour au plus une fois par heure).
+     */
+    lastSeenAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -1428,6 +1610,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   assignedTasks<T extends Prisma.User$assignedTasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedTasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   passwordResetTokens<T extends Prisma.User$passwordResetTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   pushSubscriptions<T extends Prisma.User$pushSubscriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$pushSubscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  appRating<T extends Prisma.User$appRatingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$appRatingArgs<ExtArgs>>): Prisma.Prisma__AppRatingClient<runtime.Types.Result.GetResult<Prisma.$AppRatingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1463,6 +1646,7 @@ export interface UserFieldRefs {
   readonly firstName: Prisma.FieldRef<"User", 'String'>
   readonly lastName: Prisma.FieldRef<"User", 'String'>
   readonly isActive: Prisma.FieldRef<"User", 'Boolean'>
+  readonly lastSeenAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
@@ -1975,6 +2159,25 @@ export type User$pushSubscriptionsArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.PushSubscriptionScalarFieldEnum | Prisma.PushSubscriptionScalarFieldEnum[]
+}
+
+/**
+ * User.appRating
+ */
+export type User$appRatingArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AppRating
+   */
+  select?: Prisma.AppRatingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AppRating
+   */
+  omit?: Prisma.AppRatingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AppRatingInclude<ExtArgs> | null
+  where?: Prisma.AppRatingWhereInput
 }
 
 /**

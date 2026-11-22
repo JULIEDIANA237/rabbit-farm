@@ -16,6 +16,7 @@ import { UpdateBreedingInput } from './inputs/update-breeding.input.js';
 import { CancelBreedingInput } from './inputs/cancel-breeding.input.js';
 import { BreedingStatus } from './graphql/breeding-status.enum.js';
 import { ReproductionProfileModel } from './models/reproduction-profile.model.js';
+import { MatingContextModel } from './models/mating.models.js';
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
 import { RolesGuard } from '../auth/guards/roles.guard.js';
@@ -38,6 +39,16 @@ export class BreedingResolver {
     @CurrentUser() currentUser: CurrentUserType,
   ) {
     return this.breedingService.reproductionProfile(rabbitId, currentUser);
+  }
+
+  @Query(() => MatingContextModel, { description: 'Charge du mâle sur 24 h et accouplement du jour de la femelle' })
+  async matingContext(
+    @Args('date') date: Date,
+    @CurrentUser() currentUser: CurrentUserType,
+    @Args('femaleId', { type: () => ID, nullable: true }) femaleId?: string,
+    @Args('maleId', { type: () => ID, nullable: true }) maleId?: string,
+  ) {
+    return this.breedingService.matingContext(femaleId, maleId, new Date(date), currentUser);
   }
 
   @Query(() => [BreedingModel])

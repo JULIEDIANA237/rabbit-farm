@@ -10,6 +10,6 @@ import { FeedingResolver } from './feeding/feeding.resolver.js';
 @Module({
   imports: [AuthModule],
   providers: [OperationsService, OperationsResolver, TaskAutomationService, FeedingService, FeedingResolver],
-  exports: [OperationsService, TaskAutomationService],
+  exports: [OperationsService, TaskAutomationService, FeedingService],
 })
 export class OperationsModule {}

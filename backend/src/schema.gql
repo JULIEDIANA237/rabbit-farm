@@ -43,6 +43,16 @@ enum AdoptionReason {
   SURPLUS
 }
 
+type AppRatingModel {
+  comment: String
+
+  """Ferme de la personne (vue admin)"""
+  farmName: String
+  id: ID!
+  stars: Int!
+  updatedAt: DateTime!
+}
+
 input AskAssistantInput {
   """Échanges précédents (20 au plus)"""
   history: [AssistantMessageInput!]
@@ -164,6 +174,12 @@ type BreedingCompatibilityModel {
   reasons: [CompatibilityReasonModel!]!
 }
 
+type BreedingMatingModel {
+  date: DateTime!
+  id: ID!
+  male: RabbitSummaryModel
+}
+
 type BreedingModel {
   """Naissance enregistrée"""
   birthId: ID
@@ -176,6 +192,12 @@ type BreedingModel {
   id: ID!
   male: RabbitSummaryModel
   maleId: ID!
+
+  """Nombre total de saillies (la première comprise)"""
+  matingCount: Int!
+
+  """Saillies supplémentaires du même jour"""
+  matings: [BreedingMatingModel!]!
   nestDate: DateTime!
   nestInstallation: NestInstallationModel
   observation: String
@@ -832,6 +854,20 @@ type FarmStatisticsModel {
   to: DateTime!
 }
 
+type FarmSuggestionModel {
+  actionLabel: String!
+  detail: String
+  href: String!
+  key: String!
+
+  """TODO (à faire), PLAN (à prévoir) ou IDEA (suggestion)"""
+  kind: String!
+  title: String!
+
+  """info, warning, danger ou success"""
+  tone: String!
+}
+
 type FatteningLotModel {
   """Lapins actuellement dans le lot"""
   activeMemberCount: Int!
@@ -1142,6 +1178,18 @@ type LotMembershipModel {
   reason: String
 }
 
+type MatingContextModel {
+  femaleHasOtherActiveBreeding: Boolean!
+
+  """Femelles déjà couvertes par ce mâle sur 24 h"""
+  maleFemalesLast24h: [String!]!
+  maleLimitReached: Boolean!
+
+  """Accouplement du jour auquel la saillie s’ajoutera"""
+  sameDayBreedingId: ID
+  sameDayMatingCount: Int!
+}
+
 type MeModel {
   email: String!
   farm: FarmModel!
@@ -1289,6 +1337,9 @@ type Mutation {
   login(input: LoginInput!): AuthModel!
   moveFatteningLot(input: MoveFatteningLotInput!): LotCageMovementModel!
   moveRabbit(input: MoveRabbitInput!): RabbitCageMovementModel!
+
+  """Noter l’application (1 à 5 étoiles)"""
+  rateApp(comment: String, stars: Int!): AppRatingModel!
   recordLitterMortality(input: RecordLitterMortalityInput!): MortalityModel!
   recordNestInstallation(input: RecordNestInstallationInput!): NestInstallationModel!
 
@@ -1385,6 +1436,21 @@ type PedigreeNodeModel {
   status: RabbitStatus!
 }
 
+type PlatformStatsModel {
+  activeUsers7d: Int!
+  activeUsers30d: Int!
+  averageRating: Float
+  farms: Int!
+  latestRatings: [AppRatingModel!]!
+  newUsers30d: Int!
+  rabbits: Int!
+
+  """Nombre de notes de 1 à 5 étoiles"""
+  ratingDistribution: [Int!]!
+  ratingsCount: Int!
+  users: Int!
+}
+
 type PopulationStatisticsModel {
   active: Int!
   byPurpose: [LabeledValueModel!]!
@@ -1455,6 +1521,9 @@ type Query {
   farmMembers: [FarmMembershipModel!]!
   farmResetPreview: [FarmResetCountModel!]!
   farmStatistics(from: DateTime, to: DateTime): FarmStatisticsModel!
+
+  """À faire, à prévoir et suggestions pour la ferme"""
+  farmSuggestions: [FarmSuggestionModel!]!
   farms: [FarmModel!]!
   fatteningLot(id: ID!): FatteningLotModel!
   fatteningLots: [FatteningLotModel!]!
@@ -1468,6 +1537,9 @@ type Query {
   healthRecordsByRabbit(rabbitId: ID!): [HealthRecordModel!]!
   inventoryItem(id: ID!): InventoryItemModel!
   inventoryItems: [InventoryItemModel!]!
+
+  """La personne connectée est-elle propriétaire de l’app ?"""
+  isPlatformAdmin: Boolean!
   litter(id: ID!): LitterModel
   litterAdoptions(litterId: ID!): [AdoptionModel!]!
   litterByBirth(birthId: ID!): LitterModel
@@ -1480,8 +1552,13 @@ type Query {
   Fiche de suivi : de la saillie des mères jusqu’à l’engraissement du lot.
   """
   lotTrackingSheet(lotId: ID!): TrackingSheetModel!
+
+  """Charge du mâle sur 24 h et accouplement du jour de la femelle"""
+  matingContext(date: DateTime!, femaleId: ID, maleId: ID): MatingContextModel!
   me: MeModel!
   mortalities(from: DateTime, to: DateTime): [MortalityModel!]!
+  myAppRating: AppRatingModel
+  platformStats: PlatformStatsModel!
   pregnancies: [PregnancyModel!]!
   pregnancyChecksByBreeding(breedingId: ID!): [PregnancyModel!]!
 

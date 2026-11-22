@@ -29,12 +29,34 @@ const BREEDINGS = gql`
       expectedBirthEndDate
       observation
       birthId
+      matingCount
+      matings { id date male { id code } }
       female { id code }
       male { id code }
       nestInstallation { id installedAt }
     }
   }
 `;
+
+const MATING_CONTEXT = gql`
+  query MatingContext($femaleId: ID, $maleId: ID, $date: DateTime!) {
+    matingContext(femaleId: $femaleId, maleId: $maleId, date: $date) {
+      maleFemalesLast24h
+      maleLimitReached
+      sameDayBreedingId
+      sameDayMatingCount
+      femaleHasOtherActiveBreeding
+    }
+  }
+`;
+
+/** Date de saillie : avec l'heure si elle est donnée (heure du Cameroun), sinon midi. */
+function matingDate(date: string, time: string) {
+  return time ? new Date(`${date}T${time}:00+01:00`).toISOString() : fromDateInput(date);
+}
+
+const timeOf = (iso: string) =>
+  new Date(iso).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', timeZone: 'Africa/Douala' });
 
 const COMPATIBILITY_QUERY = gql`
   query Compatibility($femaleId: ID!, $maleId: ID!) {
@@ -193,6 +215,8 @@ interface Breeding {
   expectedBirthEndDate: string;
   observation?: string | null;
   birthId?: string | null;
+  matingCount?: number;
+  matings?: Array<{ id: string; date: string; male?: { id: string; code: string } | null }>;
   female?: { id: string; code: string } | null;
   male?: { id: string; code: string } | null;
   nestInstallation?: { id: string; installedAt: string } | null;
@@ -282,8 +306,26 @@ export default function BreedingPage() {
           empty="Aucun accouplement"
           columns={[
             { header: 'Femelle', cell: (b) => <strong>{b.female?.code}</strong> },
-            { header: 'Mâle', cell: (b) => b.male?.code },
-            { header: 'Saillie', cell: (b) => formatDate(b.breedingDate) },
+            {
+              header: 'Mâle',
+              cell: (b) => {
+                const others = [...new Set((b.matings ?? []).map((m) => m.male?.code).filter((c) => c && c !== b.male?.code))];
+                return [b.male?.code, ...others].join(' + ');
+              },
+            },
+            {
+              header: 'Saillie',
+              cell: (b) => (
+                <span>
+                  {formatDate(b.breedingDate)}
+                  {(b.matingCount ?? 1) > 1 && (
+                    <span className="ml-2 inline-block rounded-full bg-sky-50 px-2 py-0.5 text-xs font-medium text-sky-700" title={(b.matings ?? []).map((m) => `${timeOf(m.date)} ${m.male?.code ?? ''}`).join(' · ')}>
+                      {b.matingCount} saillies
+                    </span>
+                  )}
+                </span>
+              ),
+            },
             {
               header: 'Palpation',
               cell: (b) => `${formatDate(b.palpationStartDate)} → ${formatDate(b.palpationEndDate)}`,
@@ -350,6 +392,7 @@ function CreateBreedingModal({ open, onClose, prefill }: { open: boolean; onClos
     femaleId: '',
     maleId: '',
     breedingDate: toDateInput(),
+    breedingTime: '',
     observation: '',
     femaleWeight: '',
     maleWeight: '',
@@ -380,6 +423,24 @@ function CreateBreedingModal({ open, onClose, prefill }: { open: boolean; onClos
   const [create, { loading, error, reset: resetMutation }] = useMutation(CREATE, { refetchQueries });
 
   const result = compat?.breedingCompatibility;
+
+  // Charge du mâle sur 24 h et saillie déjà faite aujourd'hui pour la femelle.
+  const when = values.breedingDate ? matingDate(values.breedingDate, values.breedingTime) : null;
+  const { data: ctxData } = useQuery<{
+    matingContext: {
+      maleFemalesLast24h: string[];
+      maleLimitReached: boolean;
+      sameDayBreedingId?: string | null;
+      sameDayMatingCount: number;
+      femaleHasOtherActiveBreeding: boolean;
+    };
+  }>(MATING_CONTEXT, {
+    variables: { femaleId: values.femaleId || null, maleId: values.maleId || null, date: when },
+    skip: !when || (!values.femaleId && !values.maleId),
+    fetchPolicy: 'network-only',
+  });
+  const mating = ctxData?.matingContext;
+  const maleCode = males.options.find((o) => o.value === values.maleId)?.label ?? 'Ce mâle';
 
   // Couple pré-rempli (assistant) : on vérifie tout de suite la compatibilité.
   useEffect(() => {
@@ -416,7 +477,7 @@ function CreateBreedingModal({ open, onClose, prefill }: { open: boolean; onClos
         input: clean({
           femaleId: values.femaleId,
           maleId: values.maleId,
-          breedingDate: fromDateInput(values.breedingDate),
+          breedingDate: matingDate(values.breedingDate, values.breedingTime),
           observation: [answers.join(' · '), values.observation.trim()].filter(Boolean).join('\n'),
           femaleWeight: toFloat(values.femaleWeight),
           maleWeight: toFloat(values.maleWeight),
@@ -441,9 +502,9 @@ function CreateBreedingModal({ open, onClose, prefill }: { open: boolean; onClos
           <Button
             onClick={() => submit().catch(() => undefined)}
             loading={loading}
-            disabled={!values.femaleId || !values.maleId || blocked || needsAck}
+            disabled={!values.femaleId || !values.maleId || blocked || needsAck || mating?.maleLimitReached}
           >
-            Enregistrer
+            {mating?.sameDayBreedingId ? 'Ajouter la saillie' : 'Enregistrer'}
           </Button>
         </>
       }
@@ -469,7 +530,32 @@ function CreateBreedingModal({ open, onClose, prefill }: { open: boolean; onClos
         <Field label="Date de saillie">
           <Input type="date" {...bind('breedingDate')} />
         </Field>
+        <Field label="Heure (facultatif)" hint="Utile si la femelle est saillie plusieurs fois dans la journée.">
+          <Input type="time" {...bind('breedingTime')} />
+        </Field>
       </FormGrid>
+
+      {mating?.maleLimitReached && (
+        <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+          <strong>{maleCode} a déjà sailli {mating.maleFemalesLast24h.length} femelles en 24 h</strong> ({mating.maleFemalesLast24h.join(', ')}).
+          {' '}Un mâle ne doit pas couvrir plus de 2 femelles par 24 h : choisis un autre mâle ou attends demain.
+        </div>
+      )}
+      {mating && !mating.maleLimitReached && mating.maleFemalesLast24h.length === 1 && (
+        <div className="rounded-2xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+          {maleCode} a déjà sailli {mating.maleFemalesLast24h[0]} dans les dernières 24 h : ce sera sa dernière femelle avant demain.
+        </div>
+      )}
+      {mating?.sameDayBreedingId && (
+        <div className="rounded-2xl border border-sky-200 bg-sky-50 p-3 text-sm text-sky-800">
+          Cette femelle a déjà été saillie ce jour-là : cette saillie s’ajoutera au même accouplement ({mating.sameDayMatingCount + 1}ᵉ saillie), sans en créer un nouveau.
+        </div>
+      )}
+      {mating?.femaleHasOtherActiveBreeding && (
+        <div className="rounded-2xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+          Cette femelle a déjà un accouplement en cours (pas le même jour). Enregistre d’abord sa palpation ou annule cet accouplement.
+        </div>
+      )}
 
       {checking && <Loading label="Vérification de la généalogie…" />}
       {result && (

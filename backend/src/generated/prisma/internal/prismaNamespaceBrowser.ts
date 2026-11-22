@@ -89,7 +89,9 @@ export const ModelName = {
   MortalityRecord: 'MortalityRecord',
   LotCageMovement: 'LotCageMovement',
   FeedRation: 'FeedRation',
-  CareRecord: 'CareRecord'
+  CareRecord: 'CareRecord',
+  BreedingMating: 'BreedingMating',
+  AppRating: 'AppRating'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -115,6 +117,7 @@ export const UserScalarFieldEnum = {
   firstName: 'firstName',
   lastName: 'lastName',
   isActive: 'isActive',
+  lastSeenAt: 'lastSeenAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -719,6 +722,30 @@ export const CareRecordScalarFieldEnum = {
 } as const
 
 export type CareRecordScalarFieldEnum = (typeof CareRecordScalarFieldEnum)[keyof typeof CareRecordScalarFieldEnum]
+
+
+export const BreedingMatingScalarFieldEnum = {
+  id: 'id',
+  breedingId: 'breedingId',
+  maleId: 'maleId',
+  date: 'date',
+  createdAt: 'createdAt'
+} as const
+
+export type BreedingMatingScalarFieldEnum = (typeof BreedingMatingScalarFieldEnum)[keyof typeof BreedingMatingScalarFieldEnum]
+
+
+export const AppRatingScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  farmId: 'farmId',
+  stars: 'stars',
+  comment: 'comment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AppRatingScalarFieldEnum = (typeof AppRatingScalarFieldEnum)[keyof typeof AppRatingScalarFieldEnum]
 
 
 export const SortOrder = {

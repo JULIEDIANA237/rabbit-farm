@@ -9,6 +9,8 @@ import { ME_QUERY, type Me } from '@/graphql/auth/mutations';
 import { useForm } from '@/hooks/use-form';
 import { NotificationsCard } from '@/components/settings/notifications-card';
 import { ResetCard } from '@/components/settings/reset-card';
+import { RatingCard } from '@/components/settings/rating-card';
+import { AdminLinkCard } from '@/components/settings/admin-link-card';
 import { FARM_ROLE, INBREEDING_POLICY, label, options } from '@/lib/labels';
 
 const UPDATE_FARM = gql`
@@ -48,6 +50,8 @@ export default function SettingsPage() {
       {data && <FarmSettings me={data.me} canEdit={isAdmin} />}
       {data && <MembersCard me={data.me} canEdit={isAdmin} />}
       <NotificationsCard />
+      <RatingCard />
+      <AdminLinkCard />
       {isAdmin && <ResetCard />}
     </div>
   );

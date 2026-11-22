@@ -49,6 +49,9 @@ import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
+import { AdvisorModule } from './advisor/advisor.module.js';
+import { PlatformModule } from './platform/platform.module.js';
+
 @Module({
   imports: [
     ServeStaticModule.forRoot({
@@ -104,6 +107,8 @@ import { join } from 'path';
     MailModule,
     NotificationsModule,
     CareModule,
+    AdvisorModule,
+    PlatformModule,
   ],
 
   // GET / répond « Hello World! » : sert à vérifier que l'API est en ligne.

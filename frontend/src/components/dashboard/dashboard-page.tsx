@@ -28,6 +28,8 @@ import { StockAlerts } from './stock-alerts';
 import { ExpenseChart } from './expense-chart';
 import { BriefingCard } from '@/components/assistant/briefing-card';
 import { PushPrompt } from './push-prompt';
+import { AdvisorCard } from './advisor-card';
+import { RatingPrompt } from './rating-prompt';
 
 function DashboardSkeleton() {
   return (
@@ -154,6 +156,10 @@ export function DashboardPage() {
       <PushPrompt />
 
       <BriefingCard />
+
+      <AdvisorCard />
+
+      <RatingPrompt />
 
       {/* KPI */}
 
