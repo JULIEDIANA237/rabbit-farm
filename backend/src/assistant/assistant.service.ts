@@ -1,3 +1,4 @@
+import { adviceDigest } from '../companion/advice.js';
 import {
   HttpException,
   HttpStatus,
@@ -50,7 +51,10 @@ Règles :
 - Santé : donne des pistes et des gestes de prudence (isoler, eau propre, hygiène), jamais un diagnostic certain ; conseille le vétérinaire en cas de doute ou de mortalité.
 - Repères d'élevage : gestation ≈ 31 jours, palpation vers J+10 à J+14, nid vers J+28, sevrage vers 35 jours.
 - Les ventes se saisissent dans la page Ventes : guide l'éleveur sans préparer de brouillon.
-- Si l'information manque, dis-le et propose ce que l'éleveur peut noter.`;
+- Si l'information manque, dis-le et propose ce que l'éleveur peut noter.
+- Appuie tes conseils sur les fiches de RabbitFarm ci-dessous et cite le titre de la fiche utile (l'éleveur les retrouve dans « Fiches conseils »).
+Fiches conseils :
+${adviceDigest()}`;
 
 @Injectable()
 export class AssistantService {

@@ -32,6 +32,8 @@ const facts = (over: Partial<AgentFacts> = {}): AgentFacts => ({
   lastError: null,
   dbSizeMb: null,
   dbLimitMb: 512,
+  totalUsers: 3,
+  hostingPlan: 'hobby',
   ...over,
 });
 
@@ -95,5 +97,14 @@ describe('agent : détection', () => {
 
   it('un élevage sans e-mail de propriétaire ne produit pas de brouillon impossible à envoyer', () => {
     expect(detect(facts({ farms: [farm({ ownerEmail: null, daysLeft: 1 })] }))).toEqual([]);
+  });
+
+  it('rappelle de passer à Vercel Pro au-delà du seuil d’utilisateurs ou dès le premier abonné, plus après le passage', () => {
+    expect(detect(facts({ totalUsers: 19 })).some((s) => s.kind === 'HOSTING')).toBe(false);
+    const [h] = detect(facts({ totalUsers: 20 }));
+    expect(h).toMatchObject({ kind: 'HOSTING', key: 'HOSTING:2026-11', action: 'NONE' });
+    expect(h.detail).toContain('HOSTING_PLAN=pro');
+    expect(detect(facts({ farms: [farm({ status: 'ACTIVE', daysLeft: 200 })] })).some((s) => s.kind === 'HOSTING')).toBe(true);
+    expect(detect(facts({ totalUsers: 50, hostingPlan: 'pro' })).some((s) => s.kind === 'HOSTING')).toBe(false);
   });
 });

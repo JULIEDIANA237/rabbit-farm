@@ -252,6 +252,32 @@ const GUIDES: Array<{ prefix: string; guide: ModuleGuide }> = [
     },
   },
   {
+    prefix: '/questions',
+    guide: {
+      key: 'questions',
+      title: 'Ton assistant',
+      steps: [
+        'À 6 h, 13 h et 18 h, l’assistant fait le tour de ta ferme et pose une question quand un lapin mérite un suivi.',
+        'Réponds en un geste : « Il va mal » ajoute une observation et une tâche de contrôle pour demain.',
+        'Dans Réglages, choisis le nombre de notifications par jour et la ville de ta ferme pour les alertes de chaleur.',
+      ],
+      question: 'Que dois-je surveiller après une injection ?',
+    },
+  },
+  {
+    prefix: '/advice',
+    guide: {
+      key: 'advice',
+      title: 'Fiches conseils',
+      steps: [
+        'Chaque fiche dit ce qu’on observe, ce qu’il faut faire et quand appeler le vétérinaire.',
+        'Cherche par mot : diarrhée, chaleur, nid…',
+        'L’assistant te propose la bonne fiche quand il te pose une question.',
+      ],
+      question: 'Comment protéger mes lapins de la chaleur ?',
+    },
+  },
+  {
     prefix: '/tools',
     guide: {
       key: 'tools',

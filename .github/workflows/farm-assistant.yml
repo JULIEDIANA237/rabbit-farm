@@ -1,0 +1,31 @@
+# Tournées de l'assistant « bras droit » : 6 h, 13 h et 18 h à Douala (UTC+1).
+# Secrets du dépôt à créer (Settings > Secrets and variables > Actions) :
+#   BACKEND_URL : adresse de l'API (ex. https://rabbitfarm-api.vercel.app)
+#   CRON_SECRET : la même valeur que CRON_SECRET dans le projet Vercel farm_backend
+name: Tournées de l'assistant
+
+on:
+  schedule:
+    - cron: '0 5 * * *'
+    - cron: '0 12 * * *'
+    - cron: '0 17 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tour:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Appeler la tournée
+        env:
+          BACKEND_URL: ${{ secrets.BACKEND_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$BACKEND_URL" ] || [ -z "$CRON_SECRET" ]; then
+            echo "Secrets BACKEND_URL et CRON_SECRET absents : tournée ignorée."
+            exit 0
+          fi
+          curl -fsS --max-time 240 -H "Authorization: Bearer $CRON_SECRET" "${BACKEND_URL%/}/cron/farm-assistant"

@@ -9,6 +9,7 @@ import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { RegisterInput } from './dto/register.input.js';
 import { LoginInput } from './dto/login.input.js';
+import { platformAdmins } from '../platform/platform.service.js';
 
 @Injectable()
 export class AuthService {
@@ -112,6 +113,26 @@ export class AuthService {
     }
 
     /**
+     * Propriétaire de l'app : session sans ferme, vers l'espace propriétaire.
+     * Les fermes dont elle est membre passent en accès gratuit permanent.
+     */
+    if (platformAdmins().includes(email)) {
+      const farmIds = user.memberships.map((m) => m.farmId);
+      if (farmIds.length > 0) {
+        await this.prisma.farm.updateMany({ where: { id: { in: farmIds }, freeAccess: false }, data: { freeAccess: true } });
+      }
+      const accessToken = await this.generateToken(user.id, user.email, null, 'ADMIN');
+      return {
+        accessToken,
+        userId: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        farm: null,
+      };
+    }
+
+    /**
      * Ferme de la session :
      * celle demandée si elle appartient bien
      * à l'utilisateur, sinon la première (tri
@@ -151,13 +172,13 @@ export class AuthService {
   private async generateToken(
     userId: string,
     email: string,
-    farmId: string,
+    farmId: string | null,
     role: string,
   ) {
     return this.jwtService.signAsync({
       sub: userId,
       email,
-      farmId,
+      ...(farmId ? { farmId } : {}),
       role,
     });
   }

@@ -30,6 +30,7 @@ import { BriefingCard } from '@/components/assistant/briefing-card';
 import { PushPrompt } from './push-prompt';
 import { AdvisorCard } from './advisor-card';
 import { RatingPrompt } from './rating-prompt';
+import { CompanionCard } from '@/components/companion/companion';
 
 function DashboardSkeleton() {
   return (
@@ -154,6 +155,8 @@ export function DashboardPage() {
       </header>
 
       <PushPrompt />
+
+      <CompanionCard />
 
       <BriefingCard />
 

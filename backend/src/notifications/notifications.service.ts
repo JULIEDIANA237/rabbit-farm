@@ -57,6 +57,15 @@ export class NotificationsService {
     return results.filter((result) => result === 'sent').length;
   }
 
+  /** Notification à tous les appareils abonnés d'une ferme. */
+  async sendToFarm(farmId: string, payload: PushPayload) {
+    if (!this.config().enabled) return 0;
+    const subscriptions = await this.prisma.pushSubscription.findMany({ where: { farmId } });
+    if (subscriptions.length === 0) return 0;
+    const results = await this.deliver(subscriptions, payload);
+    return results.filter((result) => result === 'sent').length;
+  }
+
   /** Rappel du matin pour chaque ferme qui a au moins un appareil abonné. */
   async sendDailyReminders(now = new Date()) {
     if (!this.config().enabled) return { farms: 0, sent: 0 };
@@ -64,6 +73,8 @@ export class NotificationsService {
     const subscriptions = await this.prisma.pushSubscription.findMany();
     const byFarm = new Map<string, typeof subscriptions>();
     for (const subscription of subscriptions) {
+      // Appareils de la propriétaire de l'app (sans ferme) : pas de rappel d'élevage.
+      if (!subscription.farmId) continue;
       byFarm.set(subscription.farmId, [...(byFarm.get(subscription.farmId) ?? []), subscription]);
     }
 

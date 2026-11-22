@@ -575,14 +575,6 @@ export type WeighingUncheckedUpdateManyWithoutLotNestedInput = {
   deleteMany?: Prisma.WeighingScalarWhereInput | Prisma.WeighingScalarWhereInput[]
 }
 
-export type NullableFloatFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type WeighingCreateWithoutRabbitInput = {
   id?: string
   date: Date | string

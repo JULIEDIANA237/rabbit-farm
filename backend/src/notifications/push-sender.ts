@@ -26,6 +26,8 @@ export interface PushPayload {
   title: string;
   body: string;
   url: string;
+  /** Notifications de même étiquette se remplacent (par défaut : le rappel du jour). */
+  tag?: string;
 }
 
 export type PushResult = 'sent' | 'gone' | 'failed';

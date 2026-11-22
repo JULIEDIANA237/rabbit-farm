@@ -98,7 +98,8 @@ export const ModelName = {
   AgentSuggestion: 'AgentSuggestion',
   AgentLog: 'AgentLog',
   AgentBrief: 'AgentBrief',
-  AppError: 'AppError'
+  AppError: 'AppError',
+  CompanionQuestion: 'CompanionQuestion'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -173,6 +174,11 @@ export const FarmScalarFieldEnum = {
   description: 'description',
   location: 'location',
   inbreedingPolicy: 'inbreedingPolicy',
+  companionEnabled: 'companionEnabled',
+  companionMaxPerDay: 'companionMaxPerDay',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  geocodedLocation: 'geocodedLocation',
   saleMinAgeDays: 'saleMinAgeDays',
   saleMinWeightKg: 'saleMinWeightKg',
   trialEndsAt: 'trialEndsAt',
@@ -855,12 +861,47 @@ export const AppErrorScalarFieldEnum = {
 export type AppErrorScalarFieldEnum = (typeof AppErrorScalarFieldEnum)[keyof typeof AppErrorScalarFieldEnum]
 
 
+export const CompanionQuestionScalarFieldEnum = {
+  id: 'id',
+  farmId: 'farmId',
+  key: 'key',
+  kind: 'kind',
+  severity: 'severity',
+  title: 'title',
+  detail: 'detail',
+  rabbitId: 'rabbitId',
+  refId: 'refId',
+  options: 'options',
+  adviceKey: 'adviceKey',
+  href: 'href',
+  askAt: 'askAt',
+  expiresAt: 'expiresAt',
+  notifiedAt: 'notifiedAt',
+  status: 'status',
+  answer: 'answer',
+  answerLabel: 'answerLabel',
+  answeredById: 'answeredById',
+  answeredAt: 'answeredAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CompanionQuestionScalarFieldEnum = (typeof CompanionQuestionScalarFieldEnum)[keyof typeof CompanionQuestionScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -877,4 +918,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

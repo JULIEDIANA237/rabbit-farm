@@ -18,6 +18,6 @@ export class AuthModel {
   @Field()
   lastName: string;
 
-  @Field(() => FarmModel)
-  farm: FarmModel;
+  @Field(() => FarmModel, { nullable: true, description: 'Absent pour la propriétaire de l’app (espace propriétaire).' })
+  farm: FarmModel | null;
 }

@@ -27,11 +27,17 @@ export type AggregateFarm = {
 }
 
 export type FarmAvgAggregateOutputType = {
+  companionMaxPerDay: number | null
+  latitude: number | null
+  longitude: number | null
   saleMinAgeDays: number | null
   saleMinWeightKg: number | null
 }
 
 export type FarmSumAggregateOutputType = {
+  companionMaxPerDay: number | null
+  latitude: number | null
+  longitude: number | null
   saleMinAgeDays: number | null
   saleMinWeightKg: number | null
 }
@@ -42,6 +48,11 @@ export type FarmMinAggregateOutputType = {
   description: string | null
   location: string | null
   inbreedingPolicy: $Enums.InbreedingPolicy | null
+  companionEnabled: boolean | null
+  companionMaxPerDay: number | null
+  latitude: number | null
+  longitude: number | null
+  geocodedLocation: string | null
   saleMinAgeDays: number | null
   saleMinWeightKg: number | null
   trialEndsAt: Date | null
@@ -57,6 +68,11 @@ export type FarmMaxAggregateOutputType = {
   description: string | null
   location: string | null
   inbreedingPolicy: $Enums.InbreedingPolicy | null
+  companionEnabled: boolean | null
+  companionMaxPerDay: number | null
+  latitude: number | null
+  longitude: number | null
+  geocodedLocation: string | null
   saleMinAgeDays: number | null
   saleMinWeightKg: number | null
   trialEndsAt: Date | null
@@ -72,6 +88,11 @@ export type FarmCountAggregateOutputType = {
   description: number
   location: number
   inbreedingPolicy: number
+  companionEnabled: number
+  companionMaxPerDay: number
+  latitude: number
+  longitude: number
+  geocodedLocation: number
   saleMinAgeDays: number
   saleMinWeightKg: number
   trialEndsAt: number
@@ -84,11 +105,17 @@ export type FarmCountAggregateOutputType = {
 
 
 export type FarmAvgAggregateInputType = {
+  companionMaxPerDay?: true
+  latitude?: true
+  longitude?: true
   saleMinAgeDays?: true
   saleMinWeightKg?: true
 }
 
 export type FarmSumAggregateInputType = {
+  companionMaxPerDay?: true
+  latitude?: true
+  longitude?: true
   saleMinAgeDays?: true
   saleMinWeightKg?: true
 }
@@ -99,6 +126,11 @@ export type FarmMinAggregateInputType = {
   description?: true
   location?: true
   inbreedingPolicy?: true
+  companionEnabled?: true
+  companionMaxPerDay?: true
+  latitude?: true
+  longitude?: true
+  geocodedLocation?: true
   saleMinAgeDays?: true
   saleMinWeightKg?: true
   trialEndsAt?: true
@@ -114,6 +146,11 @@ export type FarmMaxAggregateInputType = {
   description?: true
   location?: true
   inbreedingPolicy?: true
+  companionEnabled?: true
+  companionMaxPerDay?: true
+  latitude?: true
+  longitude?: true
+  geocodedLocation?: true
   saleMinAgeDays?: true
   saleMinWeightKg?: true
   trialEndsAt?: true
@@ -129,6 +166,11 @@ export type FarmCountAggregateInputType = {
   description?: true
   location?: true
   inbreedingPolicy?: true
+  companionEnabled?: true
+  companionMaxPerDay?: true
+  latitude?: true
+  longitude?: true
+  geocodedLocation?: true
   saleMinAgeDays?: true
   saleMinWeightKg?: true
   trialEndsAt?: true
@@ -231,6 +273,11 @@ export type FarmGroupByOutputType = {
   description: string | null
   location: string | null
   inbreedingPolicy: $Enums.InbreedingPolicy
+  companionEnabled: boolean
+  companionMaxPerDay: number
+  latitude: number | null
+  longitude: number | null
+  geocodedLocation: string | null
   saleMinAgeDays: number
   saleMinWeightKg: number
   trialEndsAt: Date | null
@@ -269,6 +316,11 @@ export type FarmWhereInput = {
   description?: Prisma.StringNullableFilter<"Farm"> | string | null
   location?: Prisma.StringNullableFilter<"Farm"> | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFilter<"Farm"> | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFilter<"Farm"> | boolean
+  companionMaxPerDay?: Prisma.IntFilter<"Farm"> | number
+  latitude?: Prisma.FloatNullableFilter<"Farm"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Farm"> | number | null
+  geocodedLocation?: Prisma.StringNullableFilter<"Farm"> | string | null
   saleMinAgeDays?: Prisma.IntFilter<"Farm"> | number
   saleMinWeightKg?: Prisma.FloatFilter<"Farm"> | number
   trialEndsAt?: Prisma.DateTimeNullableFilter<"Farm"> | Date | string | null
@@ -276,6 +328,7 @@ export type FarmWhereInput = {
   freeAccess?: Prisma.BoolFilter<"Farm"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Farm"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Farm"> | Date | string
+  companionQuestions?: Prisma.CompanionQuestionListRelationFilter
   careRecords?: Prisma.CareRecordListRelationFilter
   memberships?: Prisma.FarmMembershipListRelationFilter
   sections?: Prisma.SectionListRelationFilter
@@ -308,6 +361,11 @@ export type FarmOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   location?: Prisma.SortOrderInput | Prisma.SortOrder
   inbreedingPolicy?: Prisma.SortOrder
+  companionEnabled?: Prisma.SortOrder
+  companionMaxPerDay?: Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  geocodedLocation?: Prisma.SortOrderInput | Prisma.SortOrder
   saleMinAgeDays?: Prisma.SortOrder
   saleMinWeightKg?: Prisma.SortOrder
   trialEndsAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -315,6 +373,7 @@ export type FarmOrderByWithRelationInput = {
   freeAccess?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  companionQuestions?: Prisma.CompanionQuestionOrderByRelationAggregateInput
   careRecords?: Prisma.CareRecordOrderByRelationAggregateInput
   memberships?: Prisma.FarmMembershipOrderByRelationAggregateInput
   sections?: Prisma.SectionOrderByRelationAggregateInput
@@ -350,6 +409,11 @@ export type FarmWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Farm"> | string | null
   location?: Prisma.StringNullableFilter<"Farm"> | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFilter<"Farm"> | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFilter<"Farm"> | boolean
+  companionMaxPerDay?: Prisma.IntFilter<"Farm"> | number
+  latitude?: Prisma.FloatNullableFilter<"Farm"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Farm"> | number | null
+  geocodedLocation?: Prisma.StringNullableFilter<"Farm"> | string | null
   saleMinAgeDays?: Prisma.IntFilter<"Farm"> | number
   saleMinWeightKg?: Prisma.FloatFilter<"Farm"> | number
   trialEndsAt?: Prisma.DateTimeNullableFilter<"Farm"> | Date | string | null
@@ -357,6 +421,7 @@ export type FarmWhereUniqueInput = Prisma.AtLeast<{
   freeAccess?: Prisma.BoolFilter<"Farm"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Farm"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Farm"> | Date | string
+  companionQuestions?: Prisma.CompanionQuestionListRelationFilter
   careRecords?: Prisma.CareRecordListRelationFilter
   memberships?: Prisma.FarmMembershipListRelationFilter
   sections?: Prisma.SectionListRelationFilter
@@ -389,6 +454,11 @@ export type FarmOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   location?: Prisma.SortOrderInput | Prisma.SortOrder
   inbreedingPolicy?: Prisma.SortOrder
+  companionEnabled?: Prisma.SortOrder
+  companionMaxPerDay?: Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  geocodedLocation?: Prisma.SortOrderInput | Prisma.SortOrder
   saleMinAgeDays?: Prisma.SortOrder
   saleMinWeightKg?: Prisma.SortOrder
   trialEndsAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -412,6 +482,11 @@ export type FarmScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"Farm"> | string | null
   location?: Prisma.StringNullableWithAggregatesFilter<"Farm"> | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyWithAggregatesFilter<"Farm"> | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolWithAggregatesFilter<"Farm"> | boolean
+  companionMaxPerDay?: Prisma.IntWithAggregatesFilter<"Farm"> | number
+  latitude?: Prisma.FloatNullableWithAggregatesFilter<"Farm"> | number | null
+  longitude?: Prisma.FloatNullableWithAggregatesFilter<"Farm"> | number | null
+  geocodedLocation?: Prisma.StringNullableWithAggregatesFilter<"Farm"> | string | null
   saleMinAgeDays?: Prisma.IntWithAggregatesFilter<"Farm"> | number
   saleMinWeightKg?: Prisma.FloatWithAggregatesFilter<"Farm"> | number
   trialEndsAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Farm"> | Date | string | null
@@ -427,6 +502,11 @@ export type FarmCreateInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -434,6 +514,7 @@ export type FarmCreateInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
@@ -466,6 +547,11 @@ export type FarmUncheckedCreateInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -473,6 +559,7 @@ export type FarmUncheckedCreateInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
@@ -505,6 +592,11 @@ export type FarmUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -512,6 +604,7 @@ export type FarmUpdateInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
@@ -544,6 +637,11 @@ export type FarmUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -551,6 +649,7 @@ export type FarmUncheckedUpdateInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
@@ -583,6 +682,11 @@ export type FarmCreateManyInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -598,6 +702,11 @@ export type FarmUpdateManyMutationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -613,6 +722,11 @@ export type FarmUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -628,6 +742,11 @@ export type FarmCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   location?: Prisma.SortOrder
   inbreedingPolicy?: Prisma.SortOrder
+  companionEnabled?: Prisma.SortOrder
+  companionMaxPerDay?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  geocodedLocation?: Prisma.SortOrder
   saleMinAgeDays?: Prisma.SortOrder
   saleMinWeightKg?: Prisma.SortOrder
   trialEndsAt?: Prisma.SortOrder
@@ -638,6 +757,9 @@ export type FarmCountOrderByAggregateInput = {
 }
 
 export type FarmAvgOrderByAggregateInput = {
+  companionMaxPerDay?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
   saleMinAgeDays?: Prisma.SortOrder
   saleMinWeightKg?: Prisma.SortOrder
 }
@@ -648,6 +770,11 @@ export type FarmMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   location?: Prisma.SortOrder
   inbreedingPolicy?: Prisma.SortOrder
+  companionEnabled?: Prisma.SortOrder
+  companionMaxPerDay?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  geocodedLocation?: Prisma.SortOrder
   saleMinAgeDays?: Prisma.SortOrder
   saleMinWeightKg?: Prisma.SortOrder
   trialEndsAt?: Prisma.SortOrder
@@ -663,6 +790,11 @@ export type FarmMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   location?: Prisma.SortOrder
   inbreedingPolicy?: Prisma.SortOrder
+  companionEnabled?: Prisma.SortOrder
+  companionMaxPerDay?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  geocodedLocation?: Prisma.SortOrder
   saleMinAgeDays?: Prisma.SortOrder
   saleMinWeightKg?: Prisma.SortOrder
   trialEndsAt?: Prisma.SortOrder
@@ -673,6 +805,9 @@ export type FarmMinOrderByAggregateInput = {
 }
 
 export type FarmSumOrderByAggregateInput = {
+  companionMaxPerDay?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
   saleMinAgeDays?: Prisma.SortOrder
   saleMinWeightKg?: Prisma.SortOrder
 }
@@ -688,6 +823,14 @@ export type NullableStringFieldUpdateOperationsInput = {
 
 export type EnumInbreedingPolicyFieldUpdateOperationsInput = {
   set?: $Enums.InbreedingPolicy
+}
+
+export type NullableFloatFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type FloatFieldUpdateOperationsInput = {
@@ -1034,12 +1177,31 @@ export type FarmUpdateOneRequiredWithoutSubscriptionPaymentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.FarmUpdateToOneWithWhereWithoutSubscriptionPaymentsInput, Prisma.FarmUpdateWithoutSubscriptionPaymentsInput>, Prisma.FarmUncheckedUpdateWithoutSubscriptionPaymentsInput>
 }
 
+export type FarmCreateNestedOneWithoutCompanionQuestionsInput = {
+  create?: Prisma.XOR<Prisma.FarmCreateWithoutCompanionQuestionsInput, Prisma.FarmUncheckedCreateWithoutCompanionQuestionsInput>
+  connectOrCreate?: Prisma.FarmCreateOrConnectWithoutCompanionQuestionsInput
+  connect?: Prisma.FarmWhereUniqueInput
+}
+
+export type FarmUpdateOneRequiredWithoutCompanionQuestionsNestedInput = {
+  create?: Prisma.XOR<Prisma.FarmCreateWithoutCompanionQuestionsInput, Prisma.FarmUncheckedCreateWithoutCompanionQuestionsInput>
+  connectOrCreate?: Prisma.FarmCreateOrConnectWithoutCompanionQuestionsInput
+  upsert?: Prisma.FarmUpsertWithoutCompanionQuestionsInput
+  connect?: Prisma.FarmWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FarmUpdateToOneWithWhereWithoutCompanionQuestionsInput, Prisma.FarmUpdateWithoutCompanionQuestionsInput>, Prisma.FarmUncheckedUpdateWithoutCompanionQuestionsInput>
+}
+
 export type FarmCreateWithoutMembershipsInput = {
   id?: string
   name: string
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -1047,6 +1209,7 @@ export type FarmCreateWithoutMembershipsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -1078,6 +1241,11 @@ export type FarmUncheckedCreateWithoutMembershipsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -1085,6 +1253,7 @@ export type FarmUncheckedCreateWithoutMembershipsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -1132,6 +1301,11 @@ export type FarmUpdateWithoutMembershipsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1139,6 +1313,7 @@ export type FarmUpdateWithoutMembershipsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -1170,6 +1345,11 @@ export type FarmUncheckedUpdateWithoutMembershipsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1177,6 +1357,7 @@ export type FarmUncheckedUpdateWithoutMembershipsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -1208,6 +1389,11 @@ export type FarmCreateWithoutSectionsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -1215,6 +1401,7 @@ export type FarmCreateWithoutSectionsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -1246,6 +1433,11 @@ export type FarmUncheckedCreateWithoutSectionsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -1253,6 +1445,7 @@ export type FarmUncheckedCreateWithoutSectionsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -1300,6 +1493,11 @@ export type FarmUpdateWithoutSectionsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1307,6 +1505,7 @@ export type FarmUpdateWithoutSectionsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -1338,6 +1537,11 @@ export type FarmUncheckedUpdateWithoutSectionsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1345,6 +1549,7 @@ export type FarmUncheckedUpdateWithoutSectionsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -1376,6 +1581,11 @@ export type FarmCreateWithoutCagesInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -1383,6 +1593,7 @@ export type FarmCreateWithoutCagesInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
@@ -1414,6 +1625,11 @@ export type FarmUncheckedCreateWithoutCagesInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -1421,6 +1637,7 @@ export type FarmUncheckedCreateWithoutCagesInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
@@ -1468,6 +1685,11 @@ export type FarmUpdateWithoutCagesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1475,6 +1697,7 @@ export type FarmUpdateWithoutCagesInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
@@ -1506,6 +1729,11 @@ export type FarmUncheckedUpdateWithoutCagesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1513,6 +1741,7 @@ export type FarmUncheckedUpdateWithoutCagesInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
@@ -1544,6 +1773,11 @@ export type FarmCreateWithoutBreedsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -1551,6 +1785,7 @@ export type FarmCreateWithoutBreedsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
@@ -1582,6 +1817,11 @@ export type FarmUncheckedCreateWithoutBreedsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -1589,6 +1829,7 @@ export type FarmUncheckedCreateWithoutBreedsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
@@ -1636,6 +1877,11 @@ export type FarmUpdateWithoutBreedsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1643,6 +1889,7 @@ export type FarmUpdateWithoutBreedsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
@@ -1674,6 +1921,11 @@ export type FarmUncheckedUpdateWithoutBreedsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1681,6 +1933,7 @@ export type FarmUncheckedUpdateWithoutBreedsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
@@ -1712,6 +1965,11 @@ export type FarmCreateWithoutCrossBreedsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -1719,6 +1977,7 @@ export type FarmCreateWithoutCrossBreedsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
@@ -1750,6 +2009,11 @@ export type FarmUncheckedCreateWithoutCrossBreedsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -1757,6 +2021,7 @@ export type FarmUncheckedCreateWithoutCrossBreedsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
@@ -1804,6 +2069,11 @@ export type FarmUpdateWithoutCrossBreedsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1811,6 +2081,7 @@ export type FarmUpdateWithoutCrossBreedsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
@@ -1842,6 +2113,11 @@ export type FarmUncheckedUpdateWithoutCrossBreedsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1849,6 +2125,7 @@ export type FarmUncheckedUpdateWithoutCrossBreedsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
@@ -1880,6 +2157,11 @@ export type FarmCreateWithoutRabbitsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -1887,6 +2169,7 @@ export type FarmCreateWithoutRabbitsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
@@ -1918,6 +2201,11 @@ export type FarmUncheckedCreateWithoutRabbitsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -1925,6 +2213,7 @@ export type FarmUncheckedCreateWithoutRabbitsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
@@ -1972,6 +2261,11 @@ export type FarmUpdateWithoutRabbitsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1979,6 +2273,7 @@ export type FarmUpdateWithoutRabbitsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
@@ -2010,6 +2305,11 @@ export type FarmUncheckedUpdateWithoutRabbitsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2017,6 +2317,7 @@ export type FarmUncheckedUpdateWithoutRabbitsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
@@ -2048,6 +2349,11 @@ export type FarmCreateWithoutBreedingsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -2055,6 +2361,7 @@ export type FarmCreateWithoutBreedingsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
@@ -2086,6 +2393,11 @@ export type FarmUncheckedCreateWithoutBreedingsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -2093,6 +2405,7 @@ export type FarmUncheckedCreateWithoutBreedingsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
@@ -2140,6 +2453,11 @@ export type FarmUpdateWithoutBreedingsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2147,6 +2465,7 @@ export type FarmUpdateWithoutBreedingsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
@@ -2178,6 +2497,11 @@ export type FarmUncheckedUpdateWithoutBreedingsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2185,6 +2509,7 @@ export type FarmUncheckedUpdateWithoutBreedingsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
@@ -2216,6 +2541,11 @@ export type FarmCreateWithoutPregnanciesInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -2223,6 +2553,7 @@ export type FarmCreateWithoutPregnanciesInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
@@ -2254,6 +2585,11 @@ export type FarmUncheckedCreateWithoutPregnanciesInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -2261,6 +2597,7 @@ export type FarmUncheckedCreateWithoutPregnanciesInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
@@ -2308,6 +2645,11 @@ export type FarmUpdateWithoutPregnanciesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2315,6 +2657,7 @@ export type FarmUpdateWithoutPregnanciesInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
@@ -2346,6 +2689,11 @@ export type FarmUncheckedUpdateWithoutPregnanciesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2353,6 +2701,7 @@ export type FarmUncheckedUpdateWithoutPregnanciesInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
@@ -2384,6 +2733,11 @@ export type FarmCreateWithoutBirthsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -2391,6 +2745,7 @@ export type FarmCreateWithoutBirthsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
@@ -2422,6 +2777,11 @@ export type FarmUncheckedCreateWithoutBirthsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -2429,6 +2789,7 @@ export type FarmUncheckedCreateWithoutBirthsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
@@ -2476,6 +2837,11 @@ export type FarmUpdateWithoutBirthsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2483,6 +2849,7 @@ export type FarmUpdateWithoutBirthsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
@@ -2514,6 +2881,11 @@ export type FarmUncheckedUpdateWithoutBirthsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2521,6 +2893,7 @@ export type FarmUncheckedUpdateWithoutBirthsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
@@ -2552,6 +2925,11 @@ export type FarmCreateWithoutLittersInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -2559,6 +2937,7 @@ export type FarmCreateWithoutLittersInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
@@ -2590,6 +2969,11 @@ export type FarmUncheckedCreateWithoutLittersInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -2597,6 +2981,7 @@ export type FarmUncheckedCreateWithoutLittersInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
@@ -2644,6 +3029,11 @@ export type FarmUpdateWithoutLittersInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2651,6 +3041,7 @@ export type FarmUpdateWithoutLittersInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
@@ -2682,6 +3073,11 @@ export type FarmUncheckedUpdateWithoutLittersInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2689,6 +3085,7 @@ export type FarmUncheckedUpdateWithoutLittersInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
@@ -2720,6 +3117,11 @@ export type FarmCreateWithoutAdoptionsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -2727,6 +3129,7 @@ export type FarmCreateWithoutAdoptionsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
@@ -2758,6 +3161,11 @@ export type FarmUncheckedCreateWithoutAdoptionsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -2765,6 +3173,7 @@ export type FarmUncheckedCreateWithoutAdoptionsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
@@ -2812,6 +3221,11 @@ export type FarmUpdateWithoutAdoptionsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2819,6 +3233,7 @@ export type FarmUpdateWithoutAdoptionsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
@@ -2850,6 +3265,11 @@ export type FarmUncheckedUpdateWithoutAdoptionsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2857,6 +3277,7 @@ export type FarmUncheckedUpdateWithoutAdoptionsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
@@ -2888,6 +3309,11 @@ export type FarmCreateWithoutWeaningsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -2895,6 +3321,7 @@ export type FarmCreateWithoutWeaningsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
@@ -2926,6 +3353,11 @@ export type FarmUncheckedCreateWithoutWeaningsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -2933,6 +3365,7 @@ export type FarmUncheckedCreateWithoutWeaningsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
@@ -2980,6 +3413,11 @@ export type FarmUpdateWithoutWeaningsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2987,6 +3425,7 @@ export type FarmUpdateWithoutWeaningsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
@@ -3018,6 +3457,11 @@ export type FarmUncheckedUpdateWithoutWeaningsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3025,6 +3469,7 @@ export type FarmUncheckedUpdateWithoutWeaningsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
@@ -3056,6 +3501,11 @@ export type FarmCreateWithoutFatteningLotsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -3063,6 +3513,7 @@ export type FarmCreateWithoutFatteningLotsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
@@ -3094,6 +3545,11 @@ export type FarmUncheckedCreateWithoutFatteningLotsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -3101,6 +3557,7 @@ export type FarmUncheckedCreateWithoutFatteningLotsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
@@ -3148,6 +3605,11 @@ export type FarmUpdateWithoutFatteningLotsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3155,6 +3617,7 @@ export type FarmUpdateWithoutFatteningLotsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
@@ -3186,6 +3649,11 @@ export type FarmUncheckedUpdateWithoutFatteningLotsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3193,6 +3661,7 @@ export type FarmUncheckedUpdateWithoutFatteningLotsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
@@ -3224,6 +3693,11 @@ export type FarmCreateWithoutHealthRecordsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -3231,6 +3705,7 @@ export type FarmCreateWithoutHealthRecordsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
@@ -3262,6 +3737,11 @@ export type FarmUncheckedCreateWithoutHealthRecordsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -3269,6 +3749,7 @@ export type FarmUncheckedCreateWithoutHealthRecordsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
@@ -3316,6 +3797,11 @@ export type FarmUpdateWithoutHealthRecordsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3323,6 +3809,7 @@ export type FarmUpdateWithoutHealthRecordsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
@@ -3354,6 +3841,11 @@ export type FarmUncheckedUpdateWithoutHealthRecordsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3361,6 +3853,7 @@ export type FarmUncheckedUpdateWithoutHealthRecordsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
@@ -3392,6 +3885,11 @@ export type FarmCreateWithoutCustomersInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -3399,6 +3897,7 @@ export type FarmCreateWithoutCustomersInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
@@ -3430,6 +3929,11 @@ export type FarmUncheckedCreateWithoutCustomersInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -3437,6 +3941,7 @@ export type FarmUncheckedCreateWithoutCustomersInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
@@ -3484,6 +3989,11 @@ export type FarmUpdateWithoutCustomersInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3491,6 +4001,7 @@ export type FarmUpdateWithoutCustomersInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
@@ -3522,6 +4033,11 @@ export type FarmUncheckedUpdateWithoutCustomersInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3529,6 +4045,7 @@ export type FarmUncheckedUpdateWithoutCustomersInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
@@ -3560,6 +4077,11 @@ export type FarmCreateWithoutSalesInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -3567,6 +4089,7 @@ export type FarmCreateWithoutSalesInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
@@ -3598,6 +4121,11 @@ export type FarmUncheckedCreateWithoutSalesInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -3605,6 +4133,7 @@ export type FarmUncheckedCreateWithoutSalesInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
@@ -3652,6 +4181,11 @@ export type FarmUpdateWithoutSalesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3659,6 +4193,7 @@ export type FarmUpdateWithoutSalesInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
@@ -3690,6 +4225,11 @@ export type FarmUncheckedUpdateWithoutSalesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3697,6 +4237,7 @@ export type FarmUncheckedUpdateWithoutSalesInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
@@ -3728,6 +4269,11 @@ export type FarmCreateWithoutExpensesInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -3735,6 +4281,7 @@ export type FarmCreateWithoutExpensesInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
@@ -3766,6 +4313,11 @@ export type FarmUncheckedCreateWithoutExpensesInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -3773,6 +4325,7 @@ export type FarmUncheckedCreateWithoutExpensesInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
@@ -3820,6 +4373,11 @@ export type FarmUpdateWithoutExpensesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3827,6 +4385,7 @@ export type FarmUpdateWithoutExpensesInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
@@ -3858,6 +4417,11 @@ export type FarmUncheckedUpdateWithoutExpensesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3865,6 +4429,7 @@ export type FarmUncheckedUpdateWithoutExpensesInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
@@ -3896,6 +4461,11 @@ export type FarmCreateWithoutInventoryItemsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -3903,6 +4473,7 @@ export type FarmCreateWithoutInventoryItemsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
@@ -3934,6 +4505,11 @@ export type FarmUncheckedCreateWithoutInventoryItemsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -3941,6 +4517,7 @@ export type FarmUncheckedCreateWithoutInventoryItemsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
@@ -3988,6 +4565,11 @@ export type FarmUpdateWithoutInventoryItemsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3995,6 +4577,7 @@ export type FarmUpdateWithoutInventoryItemsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
@@ -4026,6 +4609,11 @@ export type FarmUncheckedUpdateWithoutInventoryItemsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4033,6 +4621,7 @@ export type FarmUncheckedUpdateWithoutInventoryItemsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
@@ -4064,6 +4653,11 @@ export type FarmCreateWithoutTasksInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -4071,6 +4665,7 @@ export type FarmCreateWithoutTasksInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
@@ -4102,6 +4697,11 @@ export type FarmUncheckedCreateWithoutTasksInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -4109,6 +4709,7 @@ export type FarmUncheckedCreateWithoutTasksInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
@@ -4156,6 +4757,11 @@ export type FarmUpdateWithoutTasksInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4163,6 +4769,7 @@ export type FarmUpdateWithoutTasksInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
@@ -4194,6 +4801,11 @@ export type FarmUncheckedUpdateWithoutTasksInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4201,6 +4813,7 @@ export type FarmUncheckedUpdateWithoutTasksInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
@@ -4232,6 +4845,11 @@ export type FarmCreateWithoutNestInstallationsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -4239,6 +4857,7 @@ export type FarmCreateWithoutNestInstallationsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
@@ -4270,6 +4889,11 @@ export type FarmUncheckedCreateWithoutNestInstallationsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -4277,6 +4901,7 @@ export type FarmUncheckedCreateWithoutNestInstallationsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
@@ -4324,6 +4949,11 @@ export type FarmUpdateWithoutNestInstallationsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4331,6 +4961,7 @@ export type FarmUpdateWithoutNestInstallationsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
@@ -4362,6 +4993,11 @@ export type FarmUncheckedUpdateWithoutNestInstallationsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4369,6 +5005,7 @@ export type FarmUncheckedUpdateWithoutNestInstallationsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
@@ -4400,6 +5037,11 @@ export type FarmCreateWithoutMortalitiesInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -4407,6 +5049,7 @@ export type FarmCreateWithoutMortalitiesInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
@@ -4438,6 +5081,11 @@ export type FarmUncheckedCreateWithoutMortalitiesInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -4445,6 +5093,7 @@ export type FarmUncheckedCreateWithoutMortalitiesInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
@@ -4492,6 +5141,11 @@ export type FarmUpdateWithoutMortalitiesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4499,6 +5153,7 @@ export type FarmUpdateWithoutMortalitiesInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
@@ -4530,6 +5185,11 @@ export type FarmUncheckedUpdateWithoutMortalitiesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4537,6 +5197,7 @@ export type FarmUncheckedUpdateWithoutMortalitiesInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
@@ -4568,6 +5229,11 @@ export type FarmCreateWithoutFeedRationsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -4575,6 +5241,7 @@ export type FarmCreateWithoutFeedRationsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
@@ -4606,6 +5273,11 @@ export type FarmUncheckedCreateWithoutFeedRationsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -4613,6 +5285,7 @@ export type FarmUncheckedCreateWithoutFeedRationsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
@@ -4660,6 +5333,11 @@ export type FarmUpdateWithoutFeedRationsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4667,6 +5345,7 @@ export type FarmUpdateWithoutFeedRationsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
@@ -4698,6 +5377,11 @@ export type FarmUncheckedUpdateWithoutFeedRationsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4705,6 +5389,7 @@ export type FarmUncheckedUpdateWithoutFeedRationsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
@@ -4736,6 +5421,11 @@ export type FarmCreateWithoutCareRecordsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -4743,6 +5433,7 @@ export type FarmCreateWithoutCareRecordsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageCreateNestedManyWithoutFarmInput
@@ -4774,6 +5465,11 @@ export type FarmUncheckedCreateWithoutCareRecordsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -4781,6 +5477,7 @@ export type FarmUncheckedCreateWithoutCareRecordsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
   cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
@@ -4828,6 +5525,11 @@ export type FarmUpdateWithoutCareRecordsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4835,6 +5537,7 @@ export type FarmUpdateWithoutCareRecordsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
@@ -4866,6 +5569,11 @@ export type FarmUncheckedUpdateWithoutCareRecordsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4873,6 +5581,7 @@ export type FarmUncheckedUpdateWithoutCareRecordsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
   cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
@@ -4904,6 +5613,11 @@ export type FarmCreateWithoutSubscriptionPaymentsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -4911,6 +5625,7 @@ export type FarmCreateWithoutSubscriptionPaymentsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
@@ -4942,6 +5657,11 @@ export type FarmUncheckedCreateWithoutSubscriptionPaymentsInput = {
   description?: string | null
   location?: string | null
   inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
   saleMinAgeDays?: number
   saleMinWeightKg?: number
   trialEndsAt?: Date | string | null
@@ -4949,6 +5669,7 @@ export type FarmUncheckedCreateWithoutSubscriptionPaymentsInput = {
   freeAccess?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
   careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
   memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
@@ -4996,6 +5717,11 @@ export type FarmUpdateWithoutSubscriptionPaymentsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -5003,6 +5729,7 @@ export type FarmUpdateWithoutSubscriptionPaymentsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
@@ -5034,6 +5761,203 @@ export type FarmUncheckedUpdateWithoutSubscriptionPaymentsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
+  trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
+  memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
+  sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
+  cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
+  breeds?: Prisma.BreedUncheckedUpdateManyWithoutFarmNestedInput
+  crossBreeds?: Prisma.CrossBreedUncheckedUpdateManyWithoutFarmNestedInput
+  rabbits?: Prisma.RabbitUncheckedUpdateManyWithoutFarmNestedInput
+  breedings?: Prisma.BreedingUncheckedUpdateManyWithoutFarmNestedInput
+  pregnancies?: Prisma.PregnancyUncheckedUpdateManyWithoutFarmNestedInput
+  births?: Prisma.BirthUncheckedUpdateManyWithoutFarmNestedInput
+  litters?: Prisma.LitterUncheckedUpdateManyWithoutFarmNestedInput
+  fatteningLots?: Prisma.FatteningLotUncheckedUpdateManyWithoutFarmNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutFarmNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutFarmNestedInput
+  sales?: Prisma.SaleUncheckedUpdateManyWithoutFarmNestedInput
+  expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutFarmNestedInput
+  inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutFarmNestedInput
+  feedRations?: Prisma.FeedRationUncheckedUpdateManyWithoutFarmNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
+  nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
+}
+
+export type FarmCreateWithoutCompanionQuestionsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  location?: string | null
+  inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
+  trialEndsAt?: Date | string | null
+  paidUntil?: Date | string | null
+  freeAccess?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
+  memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
+  sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
+  cages?: Prisma.CageCreateNestedManyWithoutFarmInput
+  breeds?: Prisma.BreedCreateNestedManyWithoutFarmInput
+  crossBreeds?: Prisma.CrossBreedCreateNestedManyWithoutFarmInput
+  rabbits?: Prisma.RabbitCreateNestedManyWithoutFarmInput
+  breedings?: Prisma.BreedingCreateNestedManyWithoutFarmInput
+  pregnancies?: Prisma.PregnancyCreateNestedManyWithoutFarmInput
+  births?: Prisma.BirthCreateNestedManyWithoutFarmInput
+  litters?: Prisma.LitterCreateNestedManyWithoutFarmInput
+  fatteningLots?: Prisma.FatteningLotCreateNestedManyWithoutFarmInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutFarmInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutFarmInput
+  sales?: Prisma.SaleCreateNestedManyWithoutFarmInput
+  expenses?: Prisma.ExpenseCreateNestedManyWithoutFarmInput
+  inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutFarmInput
+  feedRations?: Prisma.FeedRationCreateNestedManyWithoutFarmInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
+  nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
+  subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+}
+
+export type FarmUncheckedCreateWithoutCompanionQuestionsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  location?: string | null
+  inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
+  trialEndsAt?: Date | string | null
+  paidUntil?: Date | string | null
+  freeAccess?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
+  memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
+  sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
+  cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
+  breeds?: Prisma.BreedUncheckedCreateNestedManyWithoutFarmInput
+  crossBreeds?: Prisma.CrossBreedUncheckedCreateNestedManyWithoutFarmInput
+  rabbits?: Prisma.RabbitUncheckedCreateNestedManyWithoutFarmInput
+  breedings?: Prisma.BreedingUncheckedCreateNestedManyWithoutFarmInput
+  pregnancies?: Prisma.PregnancyUncheckedCreateNestedManyWithoutFarmInput
+  births?: Prisma.BirthUncheckedCreateNestedManyWithoutFarmInput
+  litters?: Prisma.LitterUncheckedCreateNestedManyWithoutFarmInput
+  fatteningLots?: Prisma.FatteningLotUncheckedCreateNestedManyWithoutFarmInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutFarmInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutFarmInput
+  sales?: Prisma.SaleUncheckedCreateNestedManyWithoutFarmInput
+  expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutFarmInput
+  inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutFarmInput
+  feedRations?: Prisma.FeedRationUncheckedCreateNestedManyWithoutFarmInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
+  nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
+  subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+}
+
+export type FarmCreateOrConnectWithoutCompanionQuestionsInput = {
+  where: Prisma.FarmWhereUniqueInput
+  create: Prisma.XOR<Prisma.FarmCreateWithoutCompanionQuestionsInput, Prisma.FarmUncheckedCreateWithoutCompanionQuestionsInput>
+}
+
+export type FarmUpsertWithoutCompanionQuestionsInput = {
+  update: Prisma.XOR<Prisma.FarmUpdateWithoutCompanionQuestionsInput, Prisma.FarmUncheckedUpdateWithoutCompanionQuestionsInput>
+  create: Prisma.XOR<Prisma.FarmCreateWithoutCompanionQuestionsInput, Prisma.FarmUncheckedCreateWithoutCompanionQuestionsInput>
+  where?: Prisma.FarmWhereInput
+}
+
+export type FarmUpdateToOneWithWhereWithoutCompanionQuestionsInput = {
+  where?: Prisma.FarmWhereInput
+  data: Prisma.XOR<Prisma.FarmUpdateWithoutCompanionQuestionsInput, Prisma.FarmUncheckedUpdateWithoutCompanionQuestionsInput>
+}
+
+export type FarmUpdateWithoutCompanionQuestionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
+  trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
+  memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
+  sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
+  cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
+  breeds?: Prisma.BreedUpdateManyWithoutFarmNestedInput
+  crossBreeds?: Prisma.CrossBreedUpdateManyWithoutFarmNestedInput
+  rabbits?: Prisma.RabbitUpdateManyWithoutFarmNestedInput
+  breedings?: Prisma.BreedingUpdateManyWithoutFarmNestedInput
+  pregnancies?: Prisma.PregnancyUpdateManyWithoutFarmNestedInput
+  births?: Prisma.BirthUpdateManyWithoutFarmNestedInput
+  litters?: Prisma.LitterUpdateManyWithoutFarmNestedInput
+  fatteningLots?: Prisma.FatteningLotUpdateManyWithoutFarmNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutFarmNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutFarmNestedInput
+  sales?: Prisma.SaleUpdateManyWithoutFarmNestedInput
+  expenses?: Prisma.ExpenseUpdateManyWithoutFarmNestedInput
+  inventoryItems?: Prisma.InventoryItemUpdateManyWithoutFarmNestedInput
+  feedRations?: Prisma.FeedRationUpdateManyWithoutFarmNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
+  nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
+  subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+}
+
+export type FarmUncheckedUpdateWithoutCompanionQuestionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
   saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -5064,6 +5988,7 @@ export type FarmUncheckedUpdateWithoutSubscriptionPaymentsInput = {
   weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
+  subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 
@@ -5072,6 +5997,7 @@ export type FarmUncheckedUpdateWithoutSubscriptionPaymentsInput = {
  */
 
 export type FarmCountOutputType = {
+  companionQuestions: number
   careRecords: number
   memberships: number
   sections: number
@@ -5099,6 +6025,7 @@ export type FarmCountOutputType = {
 }
 
 export type FarmCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  companionQuestions?: boolean | FarmCountOutputTypeCountCompanionQuestionsArgs
   careRecords?: boolean | FarmCountOutputTypeCountCareRecordsArgs
   memberships?: boolean | FarmCountOutputTypeCountMembershipsArgs
   sections?: boolean | FarmCountOutputTypeCountSectionsArgs
@@ -5133,6 +6060,13 @@ export type FarmCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
    * Select specific fields to fetch from the FarmCountOutputType
    */
   select?: Prisma.FarmCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * FarmCountOutputType without action
+ */
+export type FarmCountOutputTypeCountCompanionQuestionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CompanionQuestionWhereInput
 }
 
 /**
@@ -5310,6 +6244,11 @@ export type FarmSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   description?: boolean
   location?: boolean
   inbreedingPolicy?: boolean
+  companionEnabled?: boolean
+  companionMaxPerDay?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  geocodedLocation?: boolean
   saleMinAgeDays?: boolean
   saleMinWeightKg?: boolean
   trialEndsAt?: boolean
@@ -5317,6 +6256,7 @@ export type FarmSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   freeAccess?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  companionQuestions?: boolean | Prisma.Farm$companionQuestionsArgs<ExtArgs>
   careRecords?: boolean | Prisma.Farm$careRecordsArgs<ExtArgs>
   memberships?: boolean | Prisma.Farm$membershipsArgs<ExtArgs>
   sections?: boolean | Prisma.Farm$sectionsArgs<ExtArgs>
@@ -5350,6 +6290,11 @@ export type FarmSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   description?: boolean
   location?: boolean
   inbreedingPolicy?: boolean
+  companionEnabled?: boolean
+  companionMaxPerDay?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  geocodedLocation?: boolean
   saleMinAgeDays?: boolean
   saleMinWeightKg?: boolean
   trialEndsAt?: boolean
@@ -5365,6 +6310,11 @@ export type FarmSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   description?: boolean
   location?: boolean
   inbreedingPolicy?: boolean
+  companionEnabled?: boolean
+  companionMaxPerDay?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  geocodedLocation?: boolean
   saleMinAgeDays?: boolean
   saleMinWeightKg?: boolean
   trialEndsAt?: boolean
@@ -5380,6 +6330,11 @@ export type FarmSelectScalar = {
   description?: boolean
   location?: boolean
   inbreedingPolicy?: boolean
+  companionEnabled?: boolean
+  companionMaxPerDay?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  geocodedLocation?: boolean
   saleMinAgeDays?: boolean
   saleMinWeightKg?: boolean
   trialEndsAt?: boolean
@@ -5389,8 +6344,9 @@ export type FarmSelectScalar = {
   updatedAt?: boolean
 }
 
-export type FarmOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "location" | "inbreedingPolicy" | "saleMinAgeDays" | "saleMinWeightKg" | "trialEndsAt" | "paidUntil" | "freeAccess" | "createdAt" | "updatedAt", ExtArgs["result"]["farm"]>
+export type FarmOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "location" | "inbreedingPolicy" | "companionEnabled" | "companionMaxPerDay" | "latitude" | "longitude" | "geocodedLocation" | "saleMinAgeDays" | "saleMinWeightKg" | "trialEndsAt" | "paidUntil" | "freeAccess" | "createdAt" | "updatedAt", ExtArgs["result"]["farm"]>
 export type FarmInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  companionQuestions?: boolean | Prisma.Farm$companionQuestionsArgs<ExtArgs>
   careRecords?: boolean | Prisma.Farm$careRecordsArgs<ExtArgs>
   memberships?: boolean | Prisma.Farm$membershipsArgs<ExtArgs>
   sections?: boolean | Prisma.Farm$sectionsArgs<ExtArgs>
@@ -5423,6 +6379,7 @@ export type FarmIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $FarmPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Farm"
   objects: {
+    companionQuestions: Prisma.$CompanionQuestionPayload<ExtArgs>[]
     careRecords: Prisma.$CareRecordPayload<ExtArgs>[]
     memberships: Prisma.$FarmMembershipPayload<ExtArgs>[]
     sections: Prisma.$SectionPayload<ExtArgs>[]
@@ -5458,6 +6415,20 @@ export type $FarmPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
      * et aux ancêtres communs éloignés (§18).
      */
     inbreedingPolicy: $Enums.InbreedingPolicy
+    /**
+     * Assistant « bras droit » : questions de suivi et alertes au fil de la journée.
+     */
+    companionEnabled: boolean
+    /**
+     * Notifications de l'assistant par jour (en plus du rappel du matin), de 0 à 3.
+     */
+    companionMaxPerDay: number
+    /**
+     * Position de la ferme pour la météo (déduite du lieu saisi).
+     */
+    latitude: number | null
+    longitude: number | null
+    geocodedLocation: string | null
     /**
      * Critères « prêt pour la vente » : âge minimum (jours) et poids minimum (kg).
      */
@@ -5871,6 +6842,7 @@ readonly fields: FarmFieldRefs;
  */
 export interface Prisma__FarmClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  companionQuestions<T extends Prisma.Farm$companionQuestionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$companionQuestionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompanionQuestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   careRecords<T extends Prisma.Farm$careRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$careRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CareRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   memberships<T extends Prisma.Farm$membershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FarmMembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sections<T extends Prisma.Farm$sectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$sectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -5929,6 +6901,11 @@ export interface FarmFieldRefs {
   readonly description: Prisma.FieldRef<"Farm", 'String'>
   readonly location: Prisma.FieldRef<"Farm", 'String'>
   readonly inbreedingPolicy: Prisma.FieldRef<"Farm", 'InbreedingPolicy'>
+  readonly companionEnabled: Prisma.FieldRef<"Farm", 'Boolean'>
+  readonly companionMaxPerDay: Prisma.FieldRef<"Farm", 'Int'>
+  readonly latitude: Prisma.FieldRef<"Farm", 'Float'>
+  readonly longitude: Prisma.FieldRef<"Farm", 'Float'>
+  readonly geocodedLocation: Prisma.FieldRef<"Farm", 'String'>
   readonly saleMinAgeDays: Prisma.FieldRef<"Farm", 'Int'>
   readonly saleMinWeightKg: Prisma.FieldRef<"Farm", 'Float'>
   readonly trialEndsAt: Prisma.FieldRef<"Farm", 'DateTime'>
@@ -6326,6 +7303,30 @@ export type FarmDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Farms to delete.
    */
   limit?: number
+}
+
+/**
+ * Farm.companionQuestions
+ */
+export type Farm$companionQuestionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CompanionQuestion
+   */
+  select?: Prisma.CompanionQuestionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CompanionQuestion
+   */
+  omit?: Prisma.CompanionQuestionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CompanionQuestionInclude<ExtArgs> | null
+  where?: Prisma.CompanionQuestionWhereInput
+  orderBy?: Prisma.CompanionQuestionOrderByWithRelationInput | Prisma.CompanionQuestionOrderByWithRelationInput[]
+  cursor?: Prisma.CompanionQuestionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CompanionQuestionScalarFieldEnum | Prisma.CompanionQuestionScalarFieldEnum[]
 }
 
 /**

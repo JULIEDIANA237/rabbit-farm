@@ -1,7 +1,9 @@
-import { ClipboardList, History, FileText, HandCoins, Package, Search, Settings, Syringe, type LucideIcon } from 'lucide-react';
+import { BookOpen, ClipboardList, MessageCircleQuestion, History, FileText, HandCoins, Package, Search, Settings, Syringe, type LucideIcon } from 'lucide-react';
 
 /** Raccourcis de la boîte à outils (page Outils et menu du bas). */
 export const TOOL_LINKS: Array<{ label: string; href: string; icon: LucideIcon }> = [
+  { label: 'Questions de l’assistant', href: '/questions', icon: MessageCircleQuestion },
+  { label: 'Fiches conseils', href: '/advice', icon: BookOpen },
   { label: 'Prêts pour la vente', href: '/sales/ready', icon: HandCoins },
   { label: 'Noter un soin', href: '/care?new=1', icon: Syringe },
   { label: 'Fiches de suivi des lots', href: '/fattening', icon: FileText },

@@ -27,3 +27,6 @@ process.env.SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ??
 // les valeurs vides empêchent aussi dotenv de recharger celles du .env.
 process.env.GOOGLE_GENERATIVE_AI_API_KEY = '';
 process.env.ANTHROPIC_API_KEY = '';
+
+// Pas d'appel météo pendant les tests.
+process.env.COMPANION_WEATHER = 'off';
