@@ -283,3 +283,8 @@ export type AgentBrief = Prisma.AgentBriefModel
  * Erreurs inattendues du serveur, comptées par l'agent.
  */
 export type AppError = Prisma.AppErrorModel
+/**
+ * Model CompanionQuestion
+ * Question ou alerte posée par l'assistant au fil de la journée.
+ */
+export type CompanionQuestion = Prisma.CompanionQuestionModel

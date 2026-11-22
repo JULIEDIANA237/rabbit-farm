@@ -57,6 +57,15 @@ export class NotificationsService {
     return results.filter((result) => result === 'sent').length;
   }
 
+  /** Notification à tous les appareils abonnés d'une ferme. */
+  async sendToFarm(farmId: string, payload: PushPayload) {
+    if (!this.config().enabled) return 0;
+    const subscriptions = await this.prisma.pushSubscription.findMany({ where: { farmId } });
+    if (subscriptions.length === 0) return 0;
+    const results = await this.deliver(subscriptions, payload);
+    return results.filter((result) => result === 'sent').length;
+  }
+
   /** Rappel du matin pour chaque ferme qui a au moins un appareil abonné. */
   async sendDailyReminders(now = new Date()) {
     if (!this.config().enabled) return { farms: 0, sent: 0 };

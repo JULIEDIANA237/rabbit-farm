@@ -53,6 +53,16 @@ enum AdoptionReason {
   SURPLUS
 }
 
+type AdviceSheetModel {
+  actions: [String!]!
+  key: String!
+  signs: [String!]!
+  summary: String!
+  title: String!
+  topic: String!
+  vet: String
+}
+
 type AgentBriefModel {
   createdAt: DateTime!
   id: ID!
@@ -381,6 +391,57 @@ enum CareScope {
   LOT
   RABBIT
   SECTION
+}
+
+type CompanionOptionModel {
+  adviceKey: String
+  href: String
+  label: String!
+
+  """La question reviendra plus tard"""
+  snooze: Boolean!
+
+  """good | bad | neutral"""
+  tone: String
+  value: String!
+}
+
+type CompanionQuestionModel {
+  adviceKey: String
+  answer: String
+  answerLabel: String
+  answeredAt: DateTime
+  askAt: DateTime!
+  createdAt: DateTime!
+  detail: String
+  href: String
+  id: ID!
+  kind: String!
+  options: [CompanionOptionModel!]!
+  rabbitId: String
+
+  """danger | warning | info"""
+  severity: String!
+  status: CompanionQuestionStatus!
+  title: String!
+}
+
+enum CompanionQuestionStatus {
+  ANSWERED
+  DISMISSED
+  EXPIRED
+  PENDING
+}
+
+type CompanionSettingsModel {
+  enabled: Boolean!
+  location: String
+
+  """Notifications de l’assistant par jour (0 à 3)"""
+  maxPerDay: Int!
+
+  """La position de la ferme est connue : alertes de chaleur actives"""
+  weatherReady: Boolean!
 }
 
 """Résultat du contrôle généalogique avant accouplement."""
@@ -1394,6 +1455,9 @@ type Mutation {
   addPayment(input: CreatePaymentInput!): PaymentModel!
   addRabbitIdentification(input: AddRabbitIdentificationInput!, rabbitId: ID!): RabbitIdentificationModel!
 
+  """Répond à une question en un geste."""
+  answerCompanionQuestion(id: ID!, value: String!): CompanionQuestionModel!
+
   """
   Déduit du stock les rations des jours écoulés depuis la dernière déduction.
   """
@@ -1416,6 +1480,9 @@ type Mutation {
   """Annule une sortie (décès, réforme, transfert) saisie par erreur."""
   cancelRabbitExit(rabbitId: ID!): RabbitModel!
   cancelSale(input: CancelSaleInput!): SaleModel!
+
+  """L’assistant fait le tour de la ferme maintenant (sans notification)."""
+  companionTourNow: [CompanionQuestionModel!]!
   completeFatteningLot(input: CompleteFatteningLotInput!): FatteningLotModel!
   completeWeaning(input: CompleteWeaningInput!): WeaningModel!
   confirmSubscriptionPayment(id: ID!): SubscriptionPaymentModel!
@@ -1476,6 +1543,7 @@ type Mutation {
   deleteWeaning(id: ID!): Boolean!
   deleteWeighing(id: ID!): Boolean!
   dismissAgentSuggestion(id: ID!): AgentSuggestionModel!
+  dismissCompanionQuestion(id: ID!): CompanionQuestionModel!
 
   """Offrir des jours d’essai en plus"""
   extendTrial(days: Int!, farmId: ID!): Boolean!
@@ -1542,6 +1610,7 @@ type Mutation {
   updateBreeding(input: UpdateBreedingInput!): BreedingModel!
   updateCage(input: UpdateCageInput!): CageModel!
   updateCareRecord(input: UpdateCareRecordInput!): CareRecordModel!
+  updateCompanionSettings(input: UpdateCompanionSettingsInput!): CompanionSettingsModel!
   updateCrossBreed(input: UpdateCrossBreedInput!): CrossBreedModel!
   updateCustomer(input: UpdateCustomerInput!): CustomerModel!
   updateExpense(input: UpdateExpenseInput!): ExpenseModel!
@@ -1679,6 +1748,9 @@ input PushSubscriptionInput {
 type Query {
   adoptions: [AdoptionModel!]!
 
+  """Fiches conseils de l’assistant."""
+  adviceSheets: [AdviceSheetModel!]!
+
   """Propositions déjà traitées, ignorées ou expirées."""
   agentHistory: [AgentSuggestionModel!]!
 
@@ -1702,6 +1774,13 @@ type Query {
 
   """Soins saisis par l’éleveur"""
   careRecords(from: DateTime): [CareRecordModel!]!
+
+  """Questions déjà répondues."""
+  companionHistory: [CompanionQuestionModel!]!
+
+  """Questions et alertes de l’assistant en attente de réponse."""
+  companionQuestions: [CompanionQuestionModel!]!
+  companionSettings: CompanionSettingsModel!
 
   """Messages reçus (propriétaire de l’app)."""
   contactMessages: [ContactMessageModel!]!
@@ -2487,6 +2566,14 @@ input UpdateCareRecordInput {
   rabbitId: ID
   scope: CareScope
   sectionId: ID
+}
+
+input UpdateCompanionSettingsInput {
+  enabled: Boolean
+
+  """Ville de la ferme, pour la météo"""
+  location: String
+  maxPerDay: Int
 }
 
 input UpdateCrossBreedInput {

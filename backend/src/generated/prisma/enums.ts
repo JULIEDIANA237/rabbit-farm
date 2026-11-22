@@ -295,3 +295,13 @@ export const AgentSuggestionStatus = {
 } as const
 
 export type AgentSuggestionStatus = (typeof AgentSuggestionStatus)[keyof typeof AgentSuggestionStatus]
+
+
+export const CompanionQuestionStatus = {
+  PENDING: 'PENDING',
+  ANSWERED: 'ANSWERED',
+  DISMISSED: 'DISMISSED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type CompanionQuestionStatus = (typeof CompanionQuestionStatus)[keyof typeof CompanionQuestionStatus]

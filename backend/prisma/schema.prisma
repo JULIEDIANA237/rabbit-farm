@@ -277,6 +277,16 @@ model Farm {
   /// et aux ancêtres communs éloignés (§18).
   inbreedingPolicy InbreedingPolicy @default(WARN)
 
+  /// Assistant « bras droit » : questions de suivi et alertes au fil de la journée.
+  companionEnabled   Boolean @default(true)
+  /// Notifications de l'assistant par jour (en plus du rappel du matin), de 0 à 3.
+  companionMaxPerDay Int     @default(3)
+  /// Position de la ferme pour la météo (déduite du lieu saisi).
+  latitude          Float?
+  longitude         Float?
+  geocodedLocation  String?
+  companionQuestions CompanionQuestion[]
+
   /// Critères « prêt pour la vente » : âge minimum (jours) et poids minimum (kg).
   saleMinAgeDays  Int   @default(90)
   saleMinWeightKg Float @default(2.5)
@@ -1530,4 +1540,53 @@ model AppError {
   createdAt DateTime @default(now())
 
   @@index([createdAt])
+}
+
+// ============================================================
+// ASSISTANT « BRAS DROIT » DE L'ÉLEVEUR
+// ============================================================
+
+enum CompanionQuestionStatus {
+  PENDING
+  ANSWERED
+  DISMISSED
+  EXPIRED
+}
+
+/// Question ou alerte posée par l'assistant au fil de la journée.
+model CompanionQuestion {
+  id     String @id @default(uuid())
+  farmId String
+  /// Clé stable (ex. TREAT:<soin>:1) : une même situation ne crée qu'une question.
+  key    String
+  kind   String
+  /// danger | warning | info
+  severity String
+  title    String
+  detail   String?
+  rabbitId String?
+  refId    String?
+  /// Réponses proposées : [{ value, label, tone?, href?, snoozeDays?, effect? }]
+  options  Json
+  adviceKey String?
+  href      String?
+
+  askAt      DateTime
+  expiresAt  DateTime?
+  notifiedAt DateTime?
+
+  status       CompanionQuestionStatus @default(PENDING)
+  answer       String?
+  answerLabel  String?
+  answeredById String?
+  answeredAt   DateTime?
+
+  farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([farmId, key])
+  @@index([farmId, status, askAt])
+  @@index([notifiedAt])
 }
