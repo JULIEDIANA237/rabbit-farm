@@ -10,6 +10,11 @@ import { SubscriptionService } from './subscription.service.js';
 export const ALWAYS_ALLOWED = new Set([
   'sendContactMessage',
   'setContactMessageHandled',
+  'refreshAgent',
+  'approveAgentSuggestion',
+  'dismissAgentSuggestion',
+  'improveAgentDraft',
+  'askAgent',
   'login',
   'register',
   'requestPasswordReset',

@@ -49,6 +49,14 @@ export class NotificationsService {
     return results.filter((result) => result === 'sent').length;
   }
 
+  /** Notification envoyée à des personnes précises (ex. la propriétaire de l'app). */
+  async sendToUsers(userIds: string[], payload: PushPayload) {
+    if (userIds.length === 0) return 0;
+    const subscriptions = await this.prisma.pushSubscription.findMany({ where: { userId: { in: userIds } } });
+    const results = await this.deliver(subscriptions, payload);
+    return results.filter((result) => result === 'sent').length;
+  }
+
   /** Rappel du matin pour chaque ferme qui a au moins un appareil abonné. */
   async sendDailyReminders(now = new Date()) {
     if (!this.config().enabled) return { farms: 0, sent: 0 };

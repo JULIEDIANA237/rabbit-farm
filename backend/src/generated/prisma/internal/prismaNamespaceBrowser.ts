@@ -94,7 +94,11 @@ export const ModelName = {
   AppRating: 'AppRating',
   PlatformSetting: 'PlatformSetting',
   SubscriptionPayment: 'SubscriptionPayment',
-  ContactMessage: 'ContactMessage'
+  ContactMessage: 'ContactMessage',
+  AgentSuggestion: 'AgentSuggestion',
+  AgentLog: 'AgentLog',
+  AgentBrief: 'AgentBrief',
+  AppError: 'AppError'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -792,6 +796,63 @@ export const ContactMessageScalarFieldEnum = {
 } as const
 
 export type ContactMessageScalarFieldEnum = (typeof ContactMessageScalarFieldEnum)[keyof typeof ContactMessageScalarFieldEnum]
+
+
+export const AgentSuggestionScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  kind: 'kind',
+  severity: 'severity',
+  title: 'title',
+  detail: 'detail',
+  href: 'href',
+  action: 'action',
+  targetId: 'targetId',
+  recipient: 'recipient',
+  subject: 'subject',
+  draft: 'draft',
+  status: 'status',
+  resolvedBy: 'resolvedBy',
+  resolvedAt: 'resolvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AgentSuggestionScalarFieldEnum = (typeof AgentSuggestionScalarFieldEnum)[keyof typeof AgentSuggestionScalarFieldEnum]
+
+
+export const AgentLogScalarFieldEnum = {
+  id: 'id',
+  actor: 'actor',
+  actorEmail: 'actorEmail',
+  action: 'action',
+  summary: 'summary',
+  suggestionId: 'suggestionId',
+  createdAt: 'createdAt'
+} as const
+
+export type AgentLogScalarFieldEnum = (typeof AgentLogScalarFieldEnum)[keyof typeof AgentLogScalarFieldEnum]
+
+
+export const AgentBriefScalarFieldEnum = {
+  id: 'id',
+  text: 'text',
+  usedAi: 'usedAi',
+  pending: 'pending',
+  createdAt: 'createdAt'
+} as const
+
+export type AgentBriefScalarFieldEnum = (typeof AgentBriefScalarFieldEnum)[keyof typeof AgentBriefScalarFieldEnum]
+
+
+export const AppErrorScalarFieldEnum = {
+  id: 'id',
+  source: 'source',
+  message: 'message',
+  createdAt: 'createdAt'
+} as const
+
+export type AppErrorScalarFieldEnum = (typeof AppErrorScalarFieldEnum)[keyof typeof AppErrorScalarFieldEnum]
 
 
 export const SortOrder = {

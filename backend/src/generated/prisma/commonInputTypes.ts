@@ -769,6 +769,23 @@ export type EnumSubscriptionPaymentStatusWithAggregatesFilter<$PrismaModel = nev
   _max?: Prisma.NestedEnumSubscriptionPaymentStatusFilter<$PrismaModel>
 }
 
+export type EnumAgentSuggestionStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.AgentSuggestionStatus | Prisma.EnumAgentSuggestionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AgentSuggestionStatus[] | Prisma.ListEnumAgentSuggestionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AgentSuggestionStatus[] | Prisma.ListEnumAgentSuggestionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAgentSuggestionStatusFilter<$PrismaModel> | $Enums.AgentSuggestionStatus
+}
+
+export type EnumAgentSuggestionStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AgentSuggestionStatus | Prisma.EnumAgentSuggestionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AgentSuggestionStatus[] | Prisma.ListEnumAgentSuggestionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AgentSuggestionStatus[] | Prisma.ListEnumAgentSuggestionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAgentSuggestionStatusWithAggregatesFilter<$PrismaModel> | $Enums.AgentSuggestionStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAgentSuggestionStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAgentSuggestionStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -1513,6 +1530,23 @@ export type NestedEnumSubscriptionPaymentStatusWithAggregatesFilter<$PrismaModel
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumSubscriptionPaymentStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumSubscriptionPaymentStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumAgentSuggestionStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.AgentSuggestionStatus | Prisma.EnumAgentSuggestionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AgentSuggestionStatus[] | Prisma.ListEnumAgentSuggestionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AgentSuggestionStatus[] | Prisma.ListEnumAgentSuggestionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAgentSuggestionStatusFilter<$PrismaModel> | $Enums.AgentSuggestionStatus
+}
+
+export type NestedEnumAgentSuggestionStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AgentSuggestionStatus | Prisma.EnumAgentSuggestionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AgentSuggestionStatus[] | Prisma.ListEnumAgentSuggestionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AgentSuggestionStatus[] | Prisma.ListEnumAgentSuggestionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAgentSuggestionStatusWithAggregatesFilter<$PrismaModel> | $Enums.AgentSuggestionStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAgentSuggestionStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAgentSuggestionStatusFilter<$PrismaModel>
 }
 
 
