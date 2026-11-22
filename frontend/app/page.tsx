@@ -16,6 +16,7 @@ import {
 import { AccountLink } from '@/components/landing/account-link';
 import { ContactForm } from '@/components/landing/contact-form';
 import { KeepDayTheme } from '@/components/landing/keep-day-theme';
+import { OpenAppIfSignedIn } from '@/components/landing/open-app-if-signed-in';
 
 export const metadata: Metadata = {
   title: { absolute: 'Rabbit Farm · Gère ton élevage de lapins depuis ton téléphone' },
@@ -112,6 +113,7 @@ export default async function LandingPage() {
   return (
     <div className="min-h-screen bg-white text-slate-900">
       <KeepDayTheme />
+      <OpenAppIfSignedIn />
       <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
           <Link href="/" className="flex items-center gap-2 font-bold">

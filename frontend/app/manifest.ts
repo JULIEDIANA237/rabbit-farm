@@ -6,7 +6,8 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: 'Rabbit Farm',
     description: 'Reproduction, portées, engraissement, santé, ventes et statistiques de votre élevage de lapins.',
     lang: 'fr',
-    start_url: '/dashboard',
+    // Page d'accueil si personne n'est connecté, sinon tableau de bord (voir OpenAppIfSignedIn).
+    start_url: '/?app=1',
     scope: '/',
     display: 'standalone',
     orientation: 'portrait',
