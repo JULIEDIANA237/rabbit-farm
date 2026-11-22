@@ -45,7 +45,7 @@ export class SubscriptionService {
 
   async settings() {
     const row = await this.prisma.platformSetting.findUnique({ where: { id: SETTINGS_ID } });
-    return row ?? { trialDays: 30, monthlyPrice: 1000, yearlyPrice: 10000, paymentInstructions: null };
+    return row ?? { trialDays: 30, monthlyPrice: 2500, yearlyPrice: 25000, paymentInstructions: null };
   }
 
   private priceOf(plan: SubscriptionPlan, s: { monthlyPrice: number; yearlyPrice: number }) {
