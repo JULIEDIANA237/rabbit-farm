@@ -51,6 +51,7 @@ import { join } from 'path';
 
 import { AdvisorModule } from './advisor/advisor.module.js';
 import { PlatformModule } from './platform/platform.module.js';
+import { ContactModule } from './contact/contact.module.js';
 import { SubscriptionModule } from './subscription/subscription.module.js';
 import { RematingModule } from './remating/remating.module.js';
 
@@ -111,6 +112,7 @@ import { RematingModule } from './remating/remating.module.js';
     CareModule,
     AdvisorModule,
     PlatformModule,
+    ContactModule,
     SubscriptionModule,
     RematingModule,
   ],

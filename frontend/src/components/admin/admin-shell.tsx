@@ -4,17 +4,19 @@ import { useEffect, type ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useApolloClient } from '@apollo/client/react';
-import { BarChart3, CreditCard, Home, Loader2, LogOut, Settings, Star } from 'lucide-react';
+import { BarChart3, CreditCard, Home, Loader2, LogOut, Mail, Settings, Star } from 'lucide-react';
 
 import { useAuthStore } from '@/stores/auth-store';
 import { usePlatformAdmin } from '@/lib/platform-admin';
 import { ThemeToggle } from '@/components/theme/theme-toggle';
+import { useUnreadContactCount } from '@/components/admin/contact-messages';
 
 const NAV = [
   { href: '/admin', label: 'Vue d’ensemble', icon: BarChart3 },
   { href: '/admin/payments', label: 'Paiements', icon: CreditCard },
   { href: '/admin/farms', label: 'Élevages', icon: Home },
   { href: '/admin/reviews', label: 'Avis', icon: Star },
+  { href: '/admin/messages', label: 'Messages', icon: Mail },
   { href: '/admin/settings', label: 'Prix et essai', icon: Settings },
 ];
 
@@ -75,6 +77,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
                 }`}
               >
                 <Icon size={16} /> {label}
+                {href === '/admin/messages' && <UnreadBadge />}
               </Link>
             );
           })}
@@ -83,4 +86,11 @@ export function AdminShell({ children }: { children: ReactNode }) {
       <main className="mx-auto max-w-6xl px-4 py-6">{children}</main>
     </div>
   );
+}
+
+/** Nombre de messages de contact à traiter (affiché seulement pour la propriétaire). */
+function UnreadBadge() {
+  const unread = useUnreadContactCount();
+  if (unread === 0) return null;
+  return <span className="rounded-full bg-violet-600 px-1.5 text-xs font-bold text-white">{unread}</span>;
 }

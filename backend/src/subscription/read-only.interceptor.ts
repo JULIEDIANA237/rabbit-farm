@@ -8,6 +8,8 @@ import { SubscriptionService } from './subscription.service.js';
 
 /** Actions toujours permises, même en lecture seule : compte, notes, rappels et abonnement. */
 export const ALWAYS_ALLOWED = new Set([
+  'sendContactMessage',
+  'setContactMessageHandled',
   'login',
   'register',
   'requestPasswordReset',

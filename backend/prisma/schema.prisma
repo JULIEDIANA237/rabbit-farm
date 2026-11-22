@@ -1447,3 +1447,16 @@ model SubscriptionPayment {
   @@index([farmId])
   @@index([status])
 }
+
+/// Message envoyé depuis la zone contact de la page d'accueil (public).
+model ContactMessage {
+  id      String  @id @default(uuid())
+  name    String
+  contact String
+  message String
+  handled Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@index([handled, createdAt])
+}
