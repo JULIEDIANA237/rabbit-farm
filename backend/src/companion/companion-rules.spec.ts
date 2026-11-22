@@ -111,6 +111,15 @@ describe('assistant bras droit : questions', () => {
     expect(detectQuestions(snap({ now: sunday, lastActivityAt: sunday, week: { ...week, deaths: 2 } }))[0].adviceKey).toBe('mortalite-serie');
   });
 
+  it('la première semaine, une étape de démarrage par jour, avec la photo du cahier en raccourci', () => {
+    const next = { key: 'FEMALES', title: 'Ajoute tes femelles reproductrices', detail: '…', href: '/rabbits/new', altLabel: 'Avec une photo de mon cahier', altHref: '/import' };
+    const [q] = detectQuestions(snap({ rabbitsActive: 0, setup: { farmAgeDays: 1, next } }));
+    expect(q).toMatchObject({ kind: 'SETUP', key: 'SETUP:FEMALES:2026-11-24', href: '/rabbits/new' });
+    expect(q.options.map((o) => o.href)).toEqual(['/rabbits/new', '/import', undefined]);
+    expect(kinds(snap({ setup: { farmAgeDays: 9, next } }))).toEqual([]);
+    expect(kinds(snap({ setup: { farmAgeDays: 2, next: null } }))).toEqual([]);
+  });
+
   it('chaque fiche citée par une question existe', () => {
     const all = detectQuestions(snap({
       treatments: [{ id: 'h1', rabbitId: 'r1', target: 'F07', label: 'un soin', createdAt: now }],

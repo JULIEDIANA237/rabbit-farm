@@ -4,10 +4,12 @@ import { AuthModule } from '../auth/auth.module.js';
 
 import { API_KEY_VARS, createModel, readAiConfig, type AiConfig } from './ai-config.js';
 import { AssistantResolver } from './assistant.resolver.js';
+import { NotebookController } from './notebook.controller.js';
 import { ASSISTANT_CONFIG, ASSISTANT_FALLBACK_MODEL, ASSISTANT_MODEL, AssistantService } from './assistant.service.js';
 
 @Module({
   imports: [AuthModule],
+  controllers: [NotebookController],
   providers: [
     { provide: ASSISTANT_CONFIG, useFactory: () => readAiConfig() },
     {

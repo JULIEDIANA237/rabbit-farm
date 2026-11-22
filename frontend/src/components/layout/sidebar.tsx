@@ -3,6 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useSyncExternalStore } from 'react';
 import {
   BarChart3,
   Baby,
@@ -26,14 +27,17 @@ import {
   CreditCard,
   MessageCircleQuestion,
   BookOpen,
+  Camera,
 } from 'lucide-react';
+
+import { readMenuChoice, saveMenuChoice, subscribeMenuChoice, unlockedInSimpleMenu, useFarmSetup } from '@/lib/setup';
 
 interface SidebarProps {
   open?: boolean;
   onClose?: () => void;
 }
 
-const navigation = [
+const navigation: Array<{ label: string; href: string; icon: typeof Home; onlyWhileSettingUp?: boolean }> = [
   {
     label: 'Vue générale',
     href: '/dashboard',
@@ -54,6 +58,12 @@ const navigation = [
     label: 'Lapins',
     href: '/rabbits',
     icon: Rabbit,
+  },
+  {
+    label: 'Photo du cahier',
+    href: '/import',
+    icon: Camera,
+    onlyWhileSettingUp: true,
   },
   {
     label: 'Lapereaux',
@@ -142,6 +152,15 @@ export function Sidebar({
   onClose,
 }: SidebarProps) {
   const pathname = usePathname();
+  const { setup } = useFarmSetup();
+  const choice = useSyncExternalStore(subscribeMenuChoice, readMenuChoice, () => null);
+  // Menu simplifié : proposé aux fermes qui démarrent, l'éleveur peut toujours tout afficher.
+  const simple = Boolean(setup) && (choice === 'simple' || (choice !== 'full' && Boolean(setup?.beginner)));
+  const items = navigation.filter((item) => {
+    if (item.onlyWhileSettingUp && !(setup && setup.percent < 100)) return false;
+    return !simple || !setup || unlockedInSimpleMenu(item.href, setup);
+  });
+  const hidden = navigation.length - items.length;
 
   return (
     <>
@@ -199,7 +218,7 @@ export function Sidebar({
           </p>
 
           <div className="space-y-1">
-            {navigation.map((item) => {
+            {items.map((item) => {
               const Icon = item.icon;
 
               const active =
@@ -229,6 +248,20 @@ export function Sidebar({
               );
             })}
           </div>
+
+          {simple && hidden > 0 && (
+            <div className="mt-4 rounded-xl bg-slate-50 px-3 py-3 text-xs text-slate-500">
+              <p>Menu simplifié : les autres écrans apparaissent au fil de ton élevage.</p>
+              <button type="button" onClick={() => saveMenuChoice('full')} className="mt-1 font-semibold text-emerald-700 hover:underline">
+                Afficher tout le menu
+              </button>
+            </div>
+          )}
+          {!simple && choice === 'full' && setup && setup.percent < 100 && (
+            <button type="button" onClick={() => saveMenuChoice('simple')} className="mt-4 px-3 text-xs font-semibold text-slate-500 hover:text-emerald-700 hover:underline">
+              Revenir au menu simplifié
+            </button>
+          )}
         </nav>
 
         <div className="border-t border-slate-100 p-4">

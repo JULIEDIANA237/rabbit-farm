@@ -61,7 +61,15 @@ export interface Snapshot {
   heat: { today: number | null; tomorrow: number | null } | null;
   /** Chiffres de la semaine, fournis le dimanche seulement. */
   week: { births: number; deaths: number; sales: number; salesAmount: number; expenses: number } | null;
+  /** Démarrage de la ferme : prochaine étape pendant les premiers jours. */
+  setup?: {
+    farmAgeDays: number;
+    next: { key: string; title: string; detail: string; href: string; altLabel?: string; altHref?: string } | null;
+  } | null;
 }
+
+/** Nombre de jours pendant lesquels l'assistant guide le démarrage. */
+export const SETUP_GUIDE_DAYS = 7;
 
 export const THRESHOLDS = {
   palpationFrom: 10,
@@ -416,6 +424,26 @@ export function detectQuestions(s: Snapshot, t = THRESHOLDS): QuestionSpec[] {
       adviceKey: 'tout-va-bien',
       askAt: nextSlot(at(today, SLOT_HOURS[2])),
       expiresAt: new Date(today.getTime() + 2 * DAY),
+    });
+  }
+
+  // Démarrage : une étape à la fois pendant la première semaine.
+  if (s.setup?.next && s.setup.farmAgeDays <= SETUP_GUIDE_DAYS) {
+    const step = s.setup.next;
+    push({
+      key: `SETUP:${step.key}:${ymd(today)}`,
+      kind: 'SETUP',
+      severity: 'info',
+      title: step.title,
+      detail: step.detail,
+      options: [
+        { value: 'go', label: 'On le fait maintenant', tone: 'good', href: step.href },
+        ...(step.altHref ? [{ value: 'alt', label: step.altLabel ?? 'Autrement', tone: 'good' as const, href: step.altHref }] : []),
+        LATER,
+      ],
+      href: step.href,
+      askAt: now,
+      expiresAt: new Date(now.getTime() + 3 * DAY),
     });
   }
 

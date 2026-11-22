@@ -25,7 +25,7 @@ export function useForm<T extends Record<string, string | boolean>>(initial: T) 
 export type Prefill = Record<string, string>;
 
 /** Paramètres d'URL consommés par les raccourcis et l'assistant IA. */
-const COMMAND_PARAMS = ['new', 'prefill', 'action', 'breedingId', 'exit'];
+const COMMAND_PARAMS = ['new', 'prefill', 'action', 'breedingId', 'exit', 'tab'];
 
 /** Événement émis après une navigation vers la page déjà affichée. */
 export const URL_COMMAND_EVENT = 'rabbitfarm:url-command';

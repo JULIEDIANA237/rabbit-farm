@@ -1,4 +1,5 @@
 import { adviceDigest } from '../companion/advice.js';
+import { appGuideDigest } from './app-guide.js';
 import {
   HttpException,
   HttpStatus,
@@ -17,9 +18,10 @@ import type { CurrentUserType } from '../auth/types/current-user.type.js';
 import { speedOptions, type AiConfig } from './ai-config.js';
 import { describeAiError, isOverloaded } from './ai-error.js';
 import { FORM_LABELS, FORM_SCHEMAS, prepareForm, type AssistantForm, type PreparedForm } from './assistant-forms.js';
-import { buildAssistantTools } from './assistant-tools.js';
+import { buildAssistantTools, type AppLink } from './assistant-tools.js';
 import { buildBriefing, type BriefingItem } from './briefing.js';
 import { FarmReader } from './farm-reader.js';
+import { NOTEBOOK_SCHEMA, notebookPrompt, tidyNotebook } from './notebook.js';
 import type { AskAssistantInput, FillFormInput } from './inputs/assistant.inputs.js';
 
 export const ASSISTANT_MODEL = Symbol('ASSISTANT_MODEL');
@@ -52,6 +54,10 @@ Règles :
 - Repères d'élevage : gestation ≈ 31 jours, palpation vers J+10 à J+14, nid vers J+28, sevrage vers 35 jours.
 - Les ventes se saisissent dans la page Ventes : guide l'éleveur sans préparer de brouillon.
 - Si l'information manque, dis-le et propose ce que l'éleveur peut noter.
+- Tu connais l'app par cœur (mode d'emploi ci-dessous). Quand l'éleveur demande comment faire quelque chose, explique en 2 ou 3 étapes très courtes, puis appelle « ouvrirPage » avec la bonne page. S'il donne déjà les informations (codes, date…), utilise plutôt l'outil « preparer… » pour lui préparer le brouillon.
+- Pour un éleveur qui débute, propose la photo du cahier (/import) pour enregistrer d'un coup ses lapins et ses saillies.
+Mode d'emploi de l'app :
+${appGuideDigest()}
 - Appuie tes conseils sur les fiches de RabbitFarm ci-dessous et cite le titre de la fiche utile (l'éleveur les retrouve dans « Fiches conseils »).
 Fiches conseils :
 ${adviceDigest()}`;
@@ -85,6 +91,7 @@ export class AssistantService {
     const now = new Date();
     const reader = new FarmReader(this.prisma, user.farmId, now);
     const drafts: PreparedForm[] = [];
+    const links: AppLink[] = [];
 
     const messages: ModelMessage[] = [
       ...(input.history ?? []).slice(-12).map(
@@ -102,11 +109,12 @@ export class AssistantService {
 
     const result = await this.call((model) => {
       drafts.length = 0; // un nouvel essai repart sans les brouillons du précédent
+      links.length = 0;
       return generateText({
         model,
         system: `${BASE_RULES}\nAujourd'hui : ${isoDay(now)}.${input.page ? `\nL'éleveur est sur la page : ${input.page}.` : ''}${overview ? `\nVue d'ensemble actuelle de la ferme (inutile de rappeler lireVueEnsemble) : ${JSON.stringify(overview)}` : ''}`,
         messages,
-        tools: buildAssistantTools(reader, drafts),
+        tools: buildAssistantTools(reader, drafts, links),
         stopWhen: stepCountIs(6),
         maxOutputTokens: 900,
         ...this.limits(model),
@@ -116,6 +124,7 @@ export class AssistantService {
     return {
       text: result.text.trim() || (drafts.length ? 'Voici le brouillon à vérifier.' : 'Je n’ai pas de réponse pour le moment.'),
       drafts: drafts.map(toDraftModel),
+      links,
     };
   }
 
@@ -143,6 +152,34 @@ Si l'éleveur donne un total et des morts (« 8 dont 1 mort »), les vivants son
 
     const prepared = await prepareForm(form, (result.output ?? {}) as Record<string, unknown>, new FarmReader(this.prisma, user.farmId, now));
     return toDraftModel(prepared);
+  }
+
+  // ---------------------------------------------------------------
+  // Photo du cahier : lecture seule, l'éleveur valide ensuite
+  // ---------------------------------------------------------------
+
+  async readNotebook(user: CurrentUserType, image: Buffer, mediaType: string) {
+    await this.requireModel(user);
+    const now = new Date();
+    const result = await this.call((model) =>
+      generateText({
+        model,
+        messages: [
+          {
+            role: 'user',
+            content: [
+              { type: 'text', text: notebookPrompt(isoDay(now)) },
+              { type: 'image', image, mediaType },
+            ],
+          },
+        ],
+        output: Output.object({ schema: NOTEBOOK_SCHEMA }),
+        maxOutputTokens: 4000,
+        ...this.limits(model),
+      }),
+    );
+    const known = await this.prisma.rabbit.findMany({ where: { farmId: user.farmId }, select: { code: true } });
+    return tidyNotebook(result.output ?? { rabbits: [], breedings: [], unreadable: [] }, known.map((r) => r.code));
   }
 
   // ---------------------------------------------------------------

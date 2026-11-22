@@ -3,6 +3,12 @@ import { z } from 'zod';
 
 import { ASSISTANT_FORMS, FORM_LABELS, FORM_SCHEMAS, prepareForm, type AssistantForm, type PreparedForm } from './assistant-forms.js';
 import type { FarmReader } from './farm-reader.js';
+import { APP_PAGES, isAppPath } from './app-guide.js';
+
+export interface AppLink {
+  label: string;
+  href: string;
+}
 
 /**
  * Outils mis à disposition du modèle.
@@ -11,7 +17,7 @@ import type { FarmReader } from './farm-reader.js';
  * - Les outils `preparer…` ne modifient rien : ils construisent un brouillon
  *   que l'utilisateur ouvre dans le formulaire habituel pour le valider.
  */
-export function buildAssistantTools(reader: FarmReader, proposals: PreparedForm[]): ToolSet {
+export function buildAssistantTools(reader: FarmReader, proposals: PreparedForm[], links: AppLink[] = []): ToolSet {
   const readTools: ToolSet = {
     lireVueEnsemble: tool({
       description:
@@ -102,7 +108,25 @@ export function buildAssistantTools(reader: FarmReader, proposals: PreparedForm[
     });
   }
 
-  return { ...readTools, ...prepareTools };
+  const guideTools: ToolSet = {
+    ouvrirPage: tool({
+      description:
+        "Affiche sous ta réponse un bouton vers une page de l'app (formulaire ouvert si le lien finit par ?new=1). À utiliser quand l'éleveur demande comment faire quelque chose dans l'app.",
+      inputSchema: z.object({
+        path: z.enum(APP_PAGES.map((p) => p.path) as [string, ...string[]]).describe('Page du mode d’emploi'),
+        label: z.string().max(40).optional().describe('Texte du bouton, court (ex. « Ajouter un lapin »)'),
+      }),
+      execute: ({ path, label }) => {
+        if (!isAppPath(path)) return { shown: false };
+        if (links.length < 3 && !links.some((l) => l.href === path)) {
+          links.push({ href: path, label: label?.trim() || APP_PAGES.find((p) => p.path === path)?.label || 'Ouvrir' });
+        }
+        return { shown: true };
+      },
+    }),
+  };
+
+  return { ...readTools, ...prepareTools, ...guideTools };
 }
 
 export const PREPARE_TOOL_NAMES: Record<AssistantForm, string> = {

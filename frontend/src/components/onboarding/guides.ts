@@ -17,7 +17,7 @@ const GUIDES: Array<{ prefix: string; guide: ModuleGuide }> = [
       title: 'Bienvenue sur RabbitFarm',
       steps: [
         'Cette page résume ta ferme : lapins actifs, tâches du jour, alertes de stock et santé.',
-        'Commence par créer tes blocs et tes cages (menu Cages), puis enregistre tes lapins.',
+        'Suis la carte « Ta ferme est prête à … % » : elle te donne l’étape suivante. Le plus rapide pour démarrer : la photo de ton cahier.',
         'Les tâches (palpation, nid, sevrage…) se créent toutes seules à partir de tes saisies.',
         'Le bouton + en bas de l’écran ouvre les saisies rapides sur téléphone.',
       ],
@@ -249,6 +249,19 @@ const GUIDES: Array<{ prefix: string; guide: ModuleGuide }> = [
         'Si elle est prête, la tâche se ferme toute seule ; sinon elle est reportée.',
       ],
       question: 'Quand une lapine peut-elle être ressaillie après une mise bas ?',
+    },
+  },
+  {
+    prefix: '/import',
+    guide: {
+      key: 'import',
+      title: 'Photo du cahier',
+      steps: [
+        'Pose la page de ton cahier à plat, à la lumière, et prends-la en photo.',
+        'L’assistant lit tes lapins et tes saillies : corrige un code ou une date si besoin, décoche ce que tu ne veux pas.',
+        '« Tout enregistrer » crée les lapins puis les saillies, avec leurs palpations et mises bas à venir dans tes tâches.',
+      ],
+      question: 'Comment bien écrire mon cahier pour que la photo soit lue ?',
     },
   },
   {
