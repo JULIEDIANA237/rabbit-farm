@@ -352,6 +352,25 @@ input CompleteWeaningInput {
   totalWeight: Float
 }
 
+input ContactMessageInput {
+  """E-mail ou numéro de téléphone / WhatsApp"""
+  contact: String!
+  message: String!
+  name: String!
+
+  """Champ piège invisible : rempli seulement par les robots."""
+  website: String
+}
+
+type ContactMessageModel {
+  contact: String!
+  createdAt: DateTime!
+  handled: Boolean!
+  id: ID!
+  message: String!
+  name: String!
+}
+
 input CreateAdoptionInput {
   date: DateTime!
   destinationLitterId: ID!
@@ -1411,6 +1430,9 @@ type Mutation {
   """Choisit un nouveau mot de passe à partir du lien reçu."""
   resetPassword(input: ResetPasswordInput!): Boolean!
 
+  """Zone contact de la page d’accueil (sans compte)."""
+  sendContactMessage(input: ContactMessageInput!): Boolean!
+
   """
   Envoie une notification d’essai ; renvoie le nombre d’appareils atteints.
   """
@@ -1418,6 +1440,7 @@ type Mutation {
 
   """Met en engraissement un sevrage réalisé resté sans lot"""
   sendWeaningToFattening(fatteningLotId: ID, weaningId: ID!): WeaningModel!
+  setContactMessageHandled(handled: Boolean!, id: ID!): ContactMessageModel!
 
   """Accorder ou retirer l’accès gratuit à vie"""
   setFarmFreeAccess(farmId: ID!, free: Boolean!): Boolean!
@@ -1552,6 +1575,12 @@ type ProfileHealthNote {
   text: String!
 }
 
+type PublicPricingModel {
+  monthlyPrice: Int!
+  trialDays: Int!
+  yearlyPrice: Int!
+}
+
 type PushConfigModel {
   """Les notifications sont configurées côté serveur (clés VAPID)."""
   enabled: Boolean!
@@ -1581,6 +1610,9 @@ type Query {
 
   """Soins saisis par l’éleveur"""
   careRecords(from: DateTime): [CareRecordModel!]!
+
+  """Messages reçus (propriétaire de l’app)."""
+  contactMessages: [ContactMessageModel!]!
   crossBreed(id: ID!): CrossBreedModel!
   crossBreeds: [CrossBreedModel!]!
   customer(id: ID!): CustomerModel!
@@ -1639,6 +1671,9 @@ type Query {
   platformStats: PlatformStatsModel!
   pregnancies: [PregnancyModel!]!
   pregnancyChecksByBreeding(breedingId: ID!): [PregnancyModel!]!
+
+  """Essai et prix, pour la page d’accueil (sans compte)."""
+  publicPricing: PublicPricingModel!
 
   """Configuration des notifications du navigateur."""
   pushConfig: PushConfigModel!
