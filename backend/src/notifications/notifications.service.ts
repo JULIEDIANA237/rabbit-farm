@@ -66,7 +66,7 @@ export class NotificationsService {
 
     let sent = 0;
     for (const [farmId, farmSubscriptions] of byFarm) {
-      const [dueToday, overdue, birthsSoon, readyForSale] = await Promise.all([
+      const [dueToday, overdue, birthsSoon, readyForSale, rematingChecks] = await Promise.all([
         this.prisma.task.count({ where: { farmId, status: open, dueDate: { gte: start, lt: end } } }),
         this.prisma.task.count({ where: { farmId, status: open, dueDate: { lt: start } } }),
         this.prisma.breeding.count({
@@ -77,8 +77,9 @@ export class NotificationsService {
           },
         }),
         this.readiness.readyCount(farmId).catch(() => 0),
+        this.prisma.task.count({ where: { farmId, status: open, automationKey: 'BIRTH_REMATING', dueDate: { lt: end } } }),
       ]);
-      const message = reminderMessage({ dueToday, overdue, birthsSoon, readyForSale });
+      const message = reminderMessage({ dueToday, overdue, birthsSoon, readyForSale, rematingChecks });
       if (!message) continue;
       const onlySales = readyForSale > 0 && dueToday + overdue + birthsSoon === 0;
       const results = await this.deliver(farmSubscriptions, { ...message, url: onlySales ? '/sales/ready' : '/tasks' });

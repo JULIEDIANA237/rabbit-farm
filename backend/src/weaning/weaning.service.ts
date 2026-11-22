@@ -243,6 +243,7 @@ export class WeaningService {
   }
 
   async create(input: CreateWeaningInput, currentUser: CurrentUserType) {
+    if (!input.litterId?.trim()) throw new BadRequestException('Choisis la portée à sevrer.');
     this.validateQuantity(input.quantity);
     const plannedDate = new Date(input.plannedDate);
     this.validateDate(plannedDate, 'prévue');

@@ -78,6 +78,14 @@ function taskActionHref(task: Task): string | null {
         : '/health?new=1';
     case 'STOCK_REORDER':
       return '/operations/inventory';
+    case 'BIRTH_DEWORM':
+      return task.rabbitId
+        ? `/health?new=1&prefill=${encodeURIComponent(
+            JSON.stringify({ rabbitId: task.rabbitId, type: 'TREATMENT', treatment: 'Déparasitage après mise bas', medication: 'Pandex 1 %' }),
+          )}`
+        : '/health?new=1';
+    case 'BIRTH_REMATING':
+      return task.rabbitId ? `/remating?femaleId=${task.rabbitId}` : null;
     default:
       return null;
   }
@@ -165,7 +173,7 @@ export default function TasksPage() {
                   <div className="flex gap-1">
                     {taskActionHref(t) && (
                       <Link href={taskActionHref(t) as string}>
-                        <Button className="px-2 py-1 text-xs">Faire</Button>
+                        <Button className="px-2 py-1 text-xs">{t.automationKey === 'BIRTH_REMATING' ? 'Répondre' : 'Faire'}</Button>
                       </Link>
                     )}
                     {t.status === 'TODO' && (

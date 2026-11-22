@@ -224,3 +224,13 @@ export type BreedingMating = Prisma.BreedingMatingModel
  * Note donnée par un utilisateur (une par personne, modifiable).
  */
 export type AppRating = Prisma.AppRatingModel
+/**
+ * Model PlatformSetting
+ * Réglages de l'abonnement, modifiables depuis la page propriétaire (une seule ligne, id « default »).
+ */
+export type PlatformSetting = Prisma.PlatformSettingModel
+/**
+ * Model SubscriptionPayment
+ * Paiement d'abonnement : déclaré par l'élevage, confirmé par la propriétaire.
+ */
+export type SubscriptionPayment = Prisma.SubscriptionPaymentModel

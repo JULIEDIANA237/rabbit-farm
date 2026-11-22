@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 import { gql } from '@apollo/client';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client/react';
-import { Plus } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { CalendarClock, Plus, Syringe } from 'lucide-react';
 
 import {
   Badge, Button, ErrorBox, Field, FormGrid, Input, Loading, Modal, PageHeader, Select, Table, Tabs, Textarea,
@@ -646,6 +647,55 @@ function CreateBreedingModal({ open, onClose, prefill }: { open: boolean; onClos
   );
 }
 
+const REMATING_DELAY_DAYS = 10;
+
+/** Rappels après une mise bas : déparasiter la mère, puis la ressaillie à J+10. */
+function AfterBirthModal({ female, birthDate, onClose }: { female: { id: string; code: string }; birthDate: string; onClose: () => void }) {
+  const router = useRouter();
+  const remate = new Date(`${birthDate}T12:00:00`);
+  remate.setDate(remate.getDate() + REMATING_DELAY_DAYS);
+  const treatment = `/health?new=1&prefill=${encodeURIComponent(
+    JSON.stringify({ rabbitId: female.id, type: 'TREATMENT', treatment: 'Déparasitage après mise bas', medication: 'Pandex 1 %' }),
+  )}`;
+  return (
+    <Modal
+      open
+      title="Mise bas enregistrée"
+      onClose={onClose}
+      footer={
+        <>
+          <Button variant="secondary" onClick={onClose}>Plus tard</Button>
+          <Button
+            onClick={() => {
+              onClose();
+              router.push(treatment);
+            }}
+          >
+            Noter le déparasitage
+          </Button>
+        </>
+      }
+    >
+      <div className="space-y-3 text-sm text-slate-700">
+        <div className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-3 text-amber-900">
+          <Syringe size={20} className="mt-0.5 shrink-0" />
+          <p>
+            <strong>Pense à déparasiter {female.code}.</strong> Injecte-lui un déparasitant, par exemple <strong>Pandex 1 %</strong>, à la dose
+            indiquée par la notice ou le vétérinaire. Une tâche a été ajoutée pour demain.
+          </p>
+        </div>
+        <div className="flex items-start gap-3 rounded-xl border border-sky-200 bg-sky-50 p-3 text-sky-900">
+          <CalendarClock size={20} className="mt-0.5 shrink-0" />
+          <p>
+            Le <strong>{remate.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</strong> (J+{REMATING_DELAY_DAYS}),
+            l’app te demandera le poids et l’état de {female.code} pour te dire si elle peut être ressaillie.
+          </p>
+        </div>
+      </div>
+    </Modal>
+  );
+}
+
 function ActionModal({ action, onClose }: { action: Action; onClose: () => void }) {
   const { bind, values, reset, setValues } = useForm({
     date: toDateInput(),
@@ -659,6 +709,7 @@ function ActionModal({ action, onClose }: { action: Action; onClose: () => void 
     ...action?.prefill,
   });
   const [createKits, setCreateKits] = useState(true);
+  const [born, setBorn] = useState<{ birthDate: string } | null>(null);
   const opts = { refetchQueries: [...refetchQueries, 'HeaderTasks'] };
   const [palpate, p] = useMutation(PALPATION, opts);
   const [nest, n] = useMutation(NEST, opts);
@@ -670,9 +721,13 @@ function ActionModal({ action, onClose }: { action: Action; onClose: () => void 
   const date = fromDateInput(values.date);
   const close = () => {
     reset();
+    setBorn(null);
     [p, n, b, c].forEach((m) => m.reset());
     onClose();
   };
+
+  // Après la mise bas : rappel du déparasitage et de la ressaillie.
+  if (born && breeding.female) return <AfterBirthModal female={breeding.female} birthDate={born.birthDate} onClose={close} />;
 
   const titles = {
     palpation: `Palpation de ${breeding.female?.code}`,
@@ -703,6 +758,10 @@ function ActionModal({ action, onClose }: { action: Action; onClose: () => void 
           }),
         },
       });
+      if (breeding.female) {
+        setBorn({ birthDate: values.date });
+        return;
+      }
     } else {
       await cancel({ variables: { input: { id: breeding.id, observation } } });
     }

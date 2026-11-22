@@ -42,6 +42,11 @@ export class FatteningResolver {
     return this.trackingSheet.forLot(lotId, currentUser);
   }
 
+  @Query(() => String, { description: 'Prochain code de lot libre (LOT-01, LOT-02…), proposé dans le formulaire' })
+  nextFatteningLotCode(@CurrentUser() currentUser: CurrentUserType) {
+    return this.fatteningService.nextLotCode(currentUser.farmId);
+  }
+
   @Query(() => [FatteningLotModel])
   fatteningLots(@CurrentUser() currentUser: CurrentUserType) {
     return this.fatteningService.findLots(currentUser);

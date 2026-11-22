@@ -22,7 +22,12 @@ export const AUTOMATION_KEYS = {
   WEANING: 'LITTER_WEANING',
   HEALTH_FOLLOW_UP: 'HEALTH_FOLLOW_UP',
   STOCK_REORDER: 'STOCK_REORDER',
+  BIRTH_DEWORM: 'BIRTH_DEWORM',
+  BIRTH_REMATING: 'BIRTH_REMATING',
 } as const;
+
+/** Jours après la mise bas avant de proposer une nouvelle saillie (rythme semi-intensif). */
+export const REMATING_DELAY_DAYS = 10;
 
 export type AutomationKey =
   (typeof AUTOMATION_KEYS)[keyof typeof AUTOMATION_KEYS];
@@ -128,6 +133,41 @@ export function planWeaningTask(birth: {
     sourceId: birth.id,
     rabbitId: birth.motherId,
   };
+}
+
+/**
+ * Après chaque mise bas : déparasiter la mère, puis, à J+10,
+ * évaluer si elle est prête pour une nouvelle saillie (questionnaire).
+ */
+export function planPostBirthTasks(birth: {
+  id: string;
+  birthDate: Date;
+  motherId: string;
+  motherCode: string;
+}): PlannedTask[] {
+  return [
+    {
+      automationKey: AUTOMATION_KEYS.BIRTH_DEWORM,
+      title: `Déparasiter ${birth.motherCode} après la mise bas`,
+      description:
+        'Injecter un déparasitant à la mère, par exemple Pandex 1 % (ivermectine), à la dose indiquée par la notice ou le vétérinaire.',
+      dueDate: addDays(birth.birthDate, 1),
+      priority: TaskPriority.HIGH,
+      sourceType: TaskSourceType.BIRTH,
+      sourceId: birth.id,
+      rabbitId: birth.motherId,
+    },
+    {
+      automationKey: AUTOMATION_KEYS.BIRTH_REMATING,
+      title: `${birth.motherCode} peut-elle être ressaillie ?`,
+      description: `${REMATING_DELAY_DAYS} jours après la mise bas : réponds au questionnaire (poids, état) pour savoir si elle est prête.`,
+      dueDate: addDays(birth.birthDate, REMATING_DELAY_DAYS),
+      priority: TaskPriority.MEDIUM,
+      sourceType: TaskSourceType.BIRTH,
+      sourceId: birth.id,
+      rabbitId: birth.motherId,
+    },
+  ];
 }
 
 export function planHealthFollowUpTask(record: {

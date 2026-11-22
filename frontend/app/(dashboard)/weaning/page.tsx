@@ -332,6 +332,7 @@ function WeaningModal({
   };
 
   const selectedLitter = litters.litters.find((l) => l.id === values.litterId);
+  const missingLitter = !weaning && !values.litterId;
   const done = weaning || values.done === 'yes';
   const litterCount = weaning ? weaning.quantity : selectedLitter?.currentCount;
   const count = toInt(values.quantity) ?? (litterCount != null ? Math.max(0, litterCount - deathCount) : 0);
@@ -393,14 +394,14 @@ function WeaningModal({
       footer={
         <>
           <Button variant="secondary" onClick={close}>Annuler</Button>
-          <Button loading={mutation.loading} onClick={() => submit().catch(() => undefined)}>Enregistrer</Button>
+          <Button loading={mutation.loading} disabled={missingLitter} onClick={() => submit().catch(() => undefined)}>Enregistrer</Button>
         </>
       }
     >
       <FormGrid>
         {!weaning && (
           <>
-            <Field label="Portée">
+            <Field label="Portée (obligatoire)" hint={missingLitter ? 'Choisis la portée pour pouvoir enregistrer.' : undefined}>
               <Select placeholder="Choisir…" options={litters.options} {...bind('litterId')} />
             </Field>
             <Field label="Date prévue">

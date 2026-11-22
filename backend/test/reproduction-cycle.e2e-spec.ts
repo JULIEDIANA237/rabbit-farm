@@ -144,9 +144,9 @@ describe('Cycle complet d’élevage (e2e)', () => {
     expect(detail.litterDetail.litter.mother.code).toBe('F001');
     expect(detail.litterDetail.litter.father.code).toBe('M001');
 
-    // Les tâches de reproduction sont closes, une tâche de sevrage est créée.
+    // Les tâches de reproduction sont closes ; déparasitage, ressaillie et sevrage sont créés.
     const after = await run(`{ tasks(openOnly: true) { automationKey } }`);
-    expect(after.tasks.map((t: any) => t.automationKey)).toEqual(['LITTER_WEANING']);
+    expect(after.tasks.map((t: any) => t.automationKey).sort()).toEqual(['BIRTH_DEWORM', 'BIRTH_REMATING', 'LITTER_WEANING']);
 
     // Un lapereau meurt avant le sevrage.
     await run(
@@ -183,8 +183,9 @@ describe('Cycle complet d’élevage (e2e)', () => {
     const weaned = await prisma.litter.findUniqueOrThrow({ where: { id: ids.litter } });
     expect(weaned.status).toBe('WEANED');
 
+    // Le sevrage clôt sa tâche ; déparasitage et ressaillie de la mère restent à faire.
     const open = await run(`{ tasks(openOnly: true) { automationKey } }`);
-    expect(open.tasks).toHaveLength(0);
+    expect(open.tasks.map((t: any) => t.automationKey).sort()).toEqual(['BIRTH_DEWORM', 'BIRTH_REMATING']);
   });
 
   it('scénario 2 : cages → déplacement → engraissement → vente', async () => {

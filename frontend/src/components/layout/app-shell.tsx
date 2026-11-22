@@ -9,6 +9,8 @@ import { MobileNavigation } from './mobile-navigation';
 import { AssistantPanel } from '@/components/assistant/assistant-panel';
 import { OfflineBanner } from './offline-banner';
 import { ModuleGuide } from '@/components/onboarding/module-guide';
+import { SubscriptionBanner } from '@/components/subscription/subscription-banner';
+import { TrialWelcome } from '@/components/subscription/trial-welcome';
 
 interface AppShellProps {
   children: ReactNode;
@@ -42,6 +44,8 @@ export function AppShell({
             <div className="mx-auto w-full max-w-[1600px] px-4 py-5 md:px-6 md:py-7 xl:px-8">
               <div className="print:hidden">
                 <ModuleGuide />
+                <SubscriptionBanner />
+                <TrialWelcome />
               </div>
               {children}
             </div>

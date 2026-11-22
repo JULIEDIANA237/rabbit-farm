@@ -91,7 +91,9 @@ export const ModelName = {
   FeedRation: 'FeedRation',
   CareRecord: 'CareRecord',
   BreedingMating: 'BreedingMating',
-  AppRating: 'AppRating'
+  AppRating: 'AppRating',
+  PlatformSetting: 'PlatformSetting',
+  SubscriptionPayment: 'SubscriptionPayment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -168,6 +170,9 @@ export const FarmScalarFieldEnum = {
   inbreedingPolicy: 'inbreedingPolicy',
   saleMinAgeDays: 'saleMinAgeDays',
   saleMinWeightKg: 'saleMinWeightKg',
+  trialEndsAt: 'trialEndsAt',
+  paidUntil: 'paidUntil',
+  freeAccess: 'freeAccess',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -746,6 +751,34 @@ export const AppRatingScalarFieldEnum = {
 } as const
 
 export type AppRatingScalarFieldEnum = (typeof AppRatingScalarFieldEnum)[keyof typeof AppRatingScalarFieldEnum]
+
+
+export const PlatformSettingScalarFieldEnum = {
+  id: 'id',
+  trialDays: 'trialDays',
+  monthlyPrice: 'monthlyPrice',
+  yearlyPrice: 'yearlyPrice',
+  paymentInstructions: 'paymentInstructions',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PlatformSettingScalarFieldEnum = (typeof PlatformSettingScalarFieldEnum)[keyof typeof PlatformSettingScalarFieldEnum]
+
+
+export const SubscriptionPaymentScalarFieldEnum = {
+  id: 'id',
+  farmId: 'farmId',
+  plan: 'plan',
+  amount: 'amount',
+  status: 'status',
+  reference: 'reference',
+  requestedById: 'requestedById',
+  periodEnd: 'periodEnd',
+  confirmedAt: 'confirmedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type SubscriptionPaymentScalarFieldEnum = (typeof SubscriptionPaymentScalarFieldEnum)[keyof typeof SubscriptionPaymentScalarFieldEnum]
 
 
 export const SortOrder = {

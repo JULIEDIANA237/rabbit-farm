@@ -37,18 +37,24 @@ const GROUPS: { kind: Suggestion['kind']; title: string; icon: ReactNode }[] = [
 
 /** Assistant d'élevage : ce qu'il faut faire, prévoir, et quelques idées. */
 export function AdvisorCard() {
-  const { data, loading } = useQuery<{ farmSuggestions: Suggestion[] }>(FARM_SUGGESTIONS, {
+  const { data, loading, error, refetch } = useQuery<{ farmSuggestions: Suggestion[] }>(FARM_SUGGESTIONS, {
     fetchPolicy: 'cache-and-network',
   });
   const items = data?.farmSuggestions ?? [];
-
-  if (!data && loading) return null;
-  if (items.length === 0) return null;
 
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
       <h2 className="mb-1 font-semibold text-slate-900">Ton assistant d&apos;élevage</h2>
       <p className="mb-4 text-sm text-slate-500">Ce que l&apos;app te propose aujourd&apos;hui, d&apos;après tes données.</p>
+      {!data && loading && <p className="text-sm text-slate-500">L&apos;assistant analyse ta ferme…</p>}
+      {error && !data && (
+        <div className="rounded-xl bg-red-50 p-3 text-sm text-red-800">
+          L&apos;assistant n&apos;a pas pu analyser ta ferme ({error.message}).{' '}
+          <button type="button" className="font-medium underline" onClick={() => void refetch()}>
+            Réessayer
+          </button>
+        </div>
+      )}
       <div className="grid gap-4 lg:grid-cols-3">
         {GROUPS.map((g) => {
           const list = items.filter((s) => s.kind === g.kind);
