@@ -1,8 +1,14 @@
 @import "tailwindcss";
+@import "./themes.css";
 
+/* Thème Jour (par défaut). Nuit et Contraste fort : voir themes.css. */
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0f172a;
+  --surface: #ffffff;
+  --field-text: #0f172a;
+  --placeholder: #94a3b8;
+  color-scheme: light;
 }
 
 @theme inline {
@@ -10,13 +16,6 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 html,
@@ -32,9 +31,24 @@ body {
 }
 
 .input {
-  @apply w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-900 outline-none transition;
+  @apply w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm outline-none transition;
 }
 
 .input:focus {
   @apply border-emerald-500 ring-2 ring-emerald-500/10;
+}
+
+/* Le texte saisi dans les champs est toujours bien lisible (noir en Jour). */
+@layer base {
+  input,
+  select,
+  textarea {
+    color: var(--field-text);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--placeholder);
+    opacity: 1;
+  }
 }

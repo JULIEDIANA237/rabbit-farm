@@ -12,6 +12,7 @@ import { ME_QUERY, type Me } from '@/graphql/auth/mutations';
 import { useAuthStore } from '@/stores/auth-store';
 import { FARM_ROLE, label } from '@/lib/labels';
 import { reloadApp } from '@/components/pwa/update-banner';
+import { ThemeToggle } from '@/components/theme/theme-toggle';
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -84,6 +85,7 @@ export function Header({ onMenuClick }: HeaderProps) {
         >
           <RefreshCw size={20} className={reloading ? 'animate-spin' : ''} />
         </button>
+        <ThemeToggle />
         <button
           type="button"
           onClick={() => window.dispatchEvent(new Event(SHOW_GUIDE_EVENT))}

@@ -10,6 +10,7 @@ import { useForm } from '@/hooks/use-form';
 import { NotificationsCard } from '@/components/settings/notifications-card';
 import { ResetCard } from '@/components/settings/reset-card';
 import { RatingCard } from '@/components/settings/rating-card';
+import { ThemePicker } from '@/components/theme/theme-toggle';
 import { FARM_ROLE, INBREEDING_POLICY, label, options } from '@/lib/labels';
 
 const UPDATE_FARM = gql`
@@ -48,6 +49,9 @@ export default function SettingsPage() {
       <ErrorBox error={error} />
       {data && <FarmSettings me={data.me} canEdit={isAdmin} />}
       {data && <MembersCard me={data.me} canEdit={isAdmin} />}
+      <Card title="Apparence" subtitle="Choisis l’apparence de l’app sur cet appareil.">
+        <ThemePicker />
+      </Card>
       <NotificationsCard />
       <RatingCard />
       {isAdmin && <ResetCard />}

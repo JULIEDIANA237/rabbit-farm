@@ -5,6 +5,7 @@ import './globals.css';
 import ApolloProviderWrapper from '@/providers/apollo-provider';
 import { RegisterServiceWorker } from '@/components/pwa/register-sw';
 import { UpdateBanner } from '@/components/pwa/update-banner';
+import { THEME_BOOT_SCRIPT } from '@/lib/theme-boot';
 
 export const metadata: Metadata = {
   title: { default: 'Rabbit Farm', template: '%s · Rabbit Farm' },
@@ -29,7 +30,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="fr">
+    // data-theme est posé par le script avant l'affichage : React ne doit pas s'en étonner.
+    <html lang="fr" data-theme="day" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
+      </head>
       <body>
         <ApolloProviderWrapper>{children}</ApolloProviderWrapper>
         <RegisterServiceWorker />

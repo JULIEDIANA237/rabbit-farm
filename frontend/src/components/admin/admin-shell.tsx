@@ -8,6 +8,7 @@ import { BarChart3, CreditCard, Home, Loader2, LogOut, Settings, Star } from 'lu
 
 import { useAuthStore } from '@/stores/auth-store';
 import { usePlatformAdmin } from '@/lib/platform-admin';
+import { ThemeToggle } from '@/components/theme/theme-toggle';
 
 const NAV = [
   { href: '/admin', label: 'Vue d’ensemble', icon: BarChart3 },
@@ -51,13 +52,16 @@ export function AdminShell({ children }: { children: ReactNode }) {
             <p className="font-semibold text-slate-900">Rabbit Farm</p>
             <p className="text-xs text-violet-700">Espace propriétaire</p>
           </div>
-          <button
-            type="button"
-            onClick={() => void handleLogout()}
-            className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-slate-600 hover:bg-slate-100"
-          >
-            <LogOut size={18} /> <span className="hidden sm:inline">Déconnexion</span>
-          </button>
+          <div className="flex items-center gap-1">
+            <ThemeToggle />
+            <button
+              type="button"
+              onClick={() => void handleLogout()}
+              className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-slate-600 hover:bg-slate-100"
+            >
+              <LogOut size={18} /> <span className="hidden sm:inline">Déconnexion</span>
+            </button>
+          </div>
         </div>
         <nav className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4 pb-2">
           {NAV.map(({ href, label, icon: Icon }) => {
