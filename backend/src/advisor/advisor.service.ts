@@ -30,13 +30,19 @@ export class AdvisorService {
     const ago24h = new Date(now.getTime() - DAY);
     const ago7d = new Date(now.getTime() - 7 * DAY);
 
-    const [breeders, activeBreedings, males, cages, litters, lots, plan] = await Promise.all([
+    const [breeders, activeBreedings, males, cages, litters, lots, overdueTasks, plan] = await Promise.all([
       this.prisma.rabbit.findMany({
         where: { farmId, status: RabbitStatus.ACTIVE, purpose: { in: ['BREEDER', 'FUTURE_BREEDER'] } },
         select: {
           id: true, code: true, sex: true, purpose: true, birthDate: true,
           previousLitters: true, previousMatings: true, previousFemales: true,
           motherBirths: { select: { birthDate: true }, orderBy: { birthDate: 'desc' }, take: 1 },
+          tasks: {
+            where: { automationKey: 'BIRTH_REMATING', status: { in: ['TODO', 'IN_PROGRESS'] } },
+            select: { dueDate: true },
+            orderBy: { dueDate: 'asc' },
+            take: 1,
+          },
           breedingsAsFemale: {
             select: { status: true, updatedAt: true },
             orderBy: { breedingDate: 'desc' },
@@ -46,7 +52,11 @@ export class AdvisorService {
       }),
       this.prisma.breeding.findMany({
         where: { farmId, status: { in: ACTIVE_BREEDING_STATUSES } },
-        select: { femaleId: true, expectedBirthStartDate: true, expectedBirthEndDate: true, female: { select: { code: true } }, nestInstallation: { select: { id: true } } },
+        select: {
+          id: true, femaleId: true, status: true, palpationStartDate: true, palpationEndDate: true, nestDate: true,
+          expectedBirthStartDate: true, expectedBirthEndDate: true, female: { select: { code: true } }, nestInstallation: { select: { id: true } },
+          pregnancies: { select: { id: true }, take: 1 },
+        },
       }),
       this.prisma.rabbit.findMany({
         where: { farmId, status: RabbitStatus.ACTIVE, sex: RabbitSex.MALE, purpose: 'BREEDER' },
@@ -69,6 +79,7 @@ export class AdvisorService {
           weighings: { orderBy: { date: 'desc' }, take: 1, select: { date: true, averageWeight: true } },
         },
       }),
+      this.prisma.task.count({ where: { farmId, status: { in: ['TODO', 'IN_PROGRESS'] }, dueDate: { lt: new Date(now.getTime() - 12 * 3_600_000) } } }),
       this.feeding.plan(user, now).catch(() => ({ items: [] as Array<{ name: string; unit: string; autonomyDays: number | null; dailyNeed: number }> })),
     ]);
 
@@ -86,6 +97,7 @@ export class AdvisorService {
         ageDays: f.birthDate ? days(f.birthDate, now) : null,
         daysSinceBirth: f.motherBirths[0] ? days(f.motherBirths[0].birthDate, now) : null,
         lastPalpationNegative: f.breedingsAsFemale[0]?.status === BreedingStatus.NON_PREGNANT,
+        rematingCheck: f.tasks[0] ? (f.tasks[0].dueDate.getTime() <= now.getTime() ? ('DUE' as const) : ('LATER' as const)) : null,
       })),
       males: males.map((m) => {
         const last24 = new Set([
@@ -100,6 +112,18 @@ export class AdvisorService {
           if (!start || !end || start > in7 || end < new Date(now.getTime() - 2 * DAY)) return [];
           return [{ femaleCode: b.female.code, start, end, nestInstalled: Boolean(b.nestInstallation) }];
         }),
+      palpationsDue: activeBreedings.flatMap((b) =>
+        b.status === BreedingStatus.AWAITING_PALPATION && b.palpationStartDate && b.palpationEndDate && !b.pregnancies.length &&
+        b.palpationStartDate <= new Date(now.getTime() + 2 * DAY)
+          ? [{ breedingId: b.id, femaleCode: b.female.code, start: b.palpationStartDate, end: b.palpationEndDate }]
+          : [],
+      ),
+      nestsDue: activeBreedings.flatMap((b) =>
+        b.status === BreedingStatus.PREGNANT && b.nestDate && !b.nestInstallation && b.nestDate <= new Date(now.getTime() + 3 * DAY)
+          ? [{ breedingId: b.id, femaleCode: b.female.code, date: b.nestDate }]
+          : [],
+      ),
+      overdueTasks,
       freeMaternityCages: cages.filter((c) => isMaternity(c) && c._count.rabbitMovements === 0).length,
       litters: litters.map((l) => ({ code: l.code, ageDays: days(l.birthDate, now), count: l.currentCount })),
       freeFatteningPlaces: free(isFattening),

@@ -101,16 +101,28 @@ export default function FatteningPage() {
           ]}
         />
       )}
-      {creating && <LotModal onClose={() => setCreating(false)} />}
+      {creating && <NewLotModal onClose={() => setCreating(false)} />}
       {editing && <LotModal key={editing.id} editing={editing} onClose={() => setEditing(null)} />}
       {remove.dialog}
     </div>
   );
 }
 
-function LotModal({ onClose, editing }: { onClose: () => void; editing?: Lot }) {
+const NEXT_LOT_CODE = gql`
+  query NextFatteningLotCode { nextFatteningLotCode }
+`;
+
+/** Nouveau lot : le code libre suivant (LOT-01, LOT-02…) est déjà rempli. */
+function NewLotModal({ onClose }: { onClose: () => void }) {
+  const { data, error } = useQuery<{ nextFatteningLotCode: string }>(NEXT_LOT_CODE, { fetchPolicy: 'network-only' });
+  if (error) return <LotModal initialCode="" onClose={onClose} />;
+  if (!data) return null;
+  return <LotModal initialCode={data.nextFatteningLotCode} onClose={onClose} />;
+}
+
+function LotModal({ onClose, editing, initialCode = '' }: { onClose: () => void; editing?: Lot; initialCode?: string }) {
   const { bind, values } = useForm({
-    code: editing?.code ?? '',
+    code: editing?.code ?? initialCode,
     entryDate: toDateInput(editing?.entryDate),
     observation: editing?.observation ?? '',
   });
@@ -126,7 +138,7 @@ function LotModal({ onClose, editing }: { onClose: () => void; editing?: Lot }) 
           <Button variant="secondary" onClick={onClose}>Annuler</Button>
           <Button
             loading={c.loading}
-            disabled={Boolean(editing) && !values.code}
+            disabled={!values.code.trim()}
             onClick={() =>
               save({ variables: { input: editing ? { id: editing.id, ...payload } : clean(payload) } })
                 .then(onClose)
@@ -139,8 +151,11 @@ function LotModal({ onClose, editing }: { onClose: () => void; editing?: Lot }) 
       }
     >
       <FormGrid>
-        <Field label="Code du lot" hint={editing ? undefined : 'Laisse vide : le code est donné automatiquement (LOT-01, LOT-02…).'}>
-          <Input placeholder={editing ? '' : 'Automatique'} {...bind('code')} />
+        <Field
+          label="Code du lot (obligatoire)"
+          hint={values.code.trim() ? (editing ? undefined : 'Proposé automatiquement : tu peux le changer.') : 'Saisis un code pour pouvoir créer le lot.'}
+        >
+          <Input placeholder="LOT-01" {...bind('code')} />
         </Field>
         <Field label="Date d'entrée">
           <Input type="date" {...bind('entryDate')} />

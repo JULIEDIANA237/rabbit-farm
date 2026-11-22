@@ -15,6 +15,7 @@ import {
   planRepalpationTask,
   planStockReorderTask,
   planWeaningTask,
+  planPostBirthTasks,
   type AutomationKey,
   type BreedingForPlanning,
   type PlannedTask,
@@ -236,9 +237,11 @@ export class TaskAutomationService {
       db,
     );
 
-    if (birth.liveBorn > 0) {
-      await this.createTasks(farmId, [planWeaningTask(birth)], db);
-    }
+    await this.createTasks(
+      farmId,
+      [...planPostBirthTasks(birth), ...(birth.liveBorn > 0 ? [planWeaningTask(birth)] : [])],
+      db,
+    );
   }
 
   /** Mise bas corrigée ou supprimée : la tâche de sevrage est recalculée. */
@@ -257,8 +260,18 @@ export class TaskAutomationService {
     db: Db = this.prisma,
   ) {
     await this.removeOpenTasksForSource(farmId, TaskSourceType.BIRTH, birthId, db);
-    if (birth && birth.liveBorn > 0) {
-      await this.createTasks(farmId, [planWeaningTask(birth)], db);
+    if (birth) {
+      // Tâches déjà faites (ex. déparasitage) : pas recréées.
+      const done = await db.task.findMany({
+        where: { farmId, sourceType: TaskSourceType.BIRTH, sourceId: birthId, automationKey: { not: null } },
+        select: { automationKey: true },
+      });
+      const handled = new Set(done.map((t) => t.automationKey));
+      await this.createTasks(
+        farmId,
+        [...planPostBirthTasks(birth), ...(birth.liveBorn > 0 ? [planWeaningTask(birth)] : [])].filter((t) => !handled.has(t.automationKey)),
+        db,
+      );
     }
   }
 

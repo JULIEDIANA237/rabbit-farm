@@ -52,6 +52,7 @@ import { join } from 'path';
 import { AdvisorModule } from './advisor/advisor.module.js';
 import { PlatformModule } from './platform/platform.module.js';
 import { SubscriptionModule } from './subscription/subscription.module.js';
+import { RematingModule } from './remating/remating.module.js';
 
 @Module({
   imports: [
@@ -111,6 +112,7 @@ import { SubscriptionModule } from './subscription/subscription.module.js';
     AdvisorModule,
     PlatformModule,
     SubscriptionModule,
+    RematingModule,
   ],
 
   // GET / répond « Hello World! » : sert à vérifier que l'API est en ligne.

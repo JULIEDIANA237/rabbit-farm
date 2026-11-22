@@ -72,7 +72,7 @@ export class FatteningService {
   }
 
   /** Prochain code libre : LOT-01, LOT-02… */
-  private async nextLotCode(farmId: string) {
+  async nextLotCode(farmId: string) {
     const lots = await this.prisma.fatteningLot.findMany({ where: { farmId }, select: { code: true } });
     const max = lots.reduce((m, l) => {
       const match = /^LOT-(\d+)$/.exec(l.code);

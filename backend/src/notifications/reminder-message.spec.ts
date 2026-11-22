@@ -17,3 +17,11 @@ describe('reminderMessage', () => {
     expect(reminderMessage({ dueToday: 0, overdue: 0, birthsSoon: 0 })).toBeNull();
   });
 });
+
+describe('reminderMessage : ressaillie', () => {
+  it('signale les femelles à évaluer', () => {
+    expect(reminderMessage({ dueToday: 1, overdue: 0, birthsSoon: 0, rematingChecks: 1 })?.body).toContain(
+      '1 femelle à évaluer pour une nouvelle saillie',
+    );
+  });
+});

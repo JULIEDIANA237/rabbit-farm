@@ -72,6 +72,19 @@ input AskAssistantInput {
   page: String
 }
 
+input AssessRematingInput {
+  """THIN (maigre), GOOD (bon état) ou FAT (grasse)"""
+  bodyCondition: String!
+  femaleId: ID!
+  goodAppetite: Boolean!
+  mastitis: Boolean!
+  sick: Boolean!
+
+  """PALE, PINK, RED ou UNKNOWN"""
+  vulva: String!
+  weightKg: Float
+}
+
 input AssignLitterRabbitsToCageInput {
   cageId: ID!
 
@@ -1299,6 +1312,9 @@ type Mutation {
 
   """Pose une question à l’assistant (aucune donnée n’est modifiée)"""
   askAssistant(input: AskAssistantInput!): AssistantReplyModel!
+
+  """La femelle est-elle prête pour une nouvelle saillie ?"""
+  assessRemating(input: AssessRematingInput!): RematingAssessmentModel!
   assignLitterRabbitsToCage(input: AssignLitterRabbitsToCageInput!): [RabbitCageMovementModel!]!
   cancelBreeding(input: CancelBreedingInput!): BreedingModel!
 
@@ -1615,6 +1631,11 @@ type Query {
   me: MeModel!
   mortalities(from: DateTime, to: DateTime): [MortalityModel!]!
   myAppRating: AppRatingModel
+
+  """
+  Prochain code de lot libre (LOT-01, LOT-02…), proposé dans le formulaire
+  """
+  nextFatteningLotCode: String!
   platformStats: PlatformStatsModel!
   pregnancies: [PregnancyModel!]!
   pregnancyChecksByBreeding(breedingId: ID!): [PregnancyModel!]!
@@ -1632,6 +1653,9 @@ type Query {
   rabbitTraceability(rabbitId: ID!): RabbitTraceabilityModel!
   rabbits(limit: Int = 10, page: Int = 1, search: String): RabbitPageModel!
   rabbitsPaginated(input: RabbitsPaginationInput): RabbitPageModel!
+
+  """Ce que l’app sait de la femelle avant le questionnaire de ressaillie"""
+  rematingContext(femaleId: ID!): RematingContextModel!
 
   """Résumé d’un reproducteur avant une saillie"""
   reproductionProfile(rabbitId: ID!): ReproductionProfileModel!
@@ -1867,6 +1891,33 @@ input RegisterInput {
   firstName: String!
   lastName: String!
   password: String!
+}
+
+type RematingAssessmentModel {
+  advice: [String!]!
+
+  """Nouvelle date de la tâche si elle est reportée"""
+  nextCheck: DateTime
+  reasons: [String!]!
+  title: String!
+
+  """READY (prête), WAIT (attendre un peu) ou NOT_READY (pas prête)"""
+  verdict: String!
+  waitDays: Int!
+}
+
+type RematingContextModel {
+  daysSinceBirth: Int
+  femaleCode: String!
+  femaleId: ID!
+
+  """Lapereaux encore allaités"""
+  kitsNursing: Int!
+  lastBirthDate: DateTime
+  lastWeightKg: Float
+
+  """Tâche « ressaillie » ouverte"""
+  taskId: ID
 }
 
 input RemoveLotMembersInput {
