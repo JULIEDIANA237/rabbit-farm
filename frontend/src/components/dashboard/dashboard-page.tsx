@@ -31,6 +31,7 @@ import { PushPrompt } from './push-prompt';
 import { AdvisorCard } from './advisor-card';
 import { RatingPrompt } from './rating-prompt';
 import { CompanionCard } from '@/components/companion/companion';
+import { SetupCard } from '@/components/setup/setup-card';
 
 function DashboardSkeleton() {
   return (
@@ -153,6 +154,8 @@ export function DashboardPage() {
           ) : null}
         </div>
       </header>
+
+      <SetupCard />
 
       <PushPrompt />
 

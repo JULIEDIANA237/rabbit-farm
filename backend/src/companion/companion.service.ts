@@ -14,6 +14,7 @@ import { ADVICE_BY_KEY, ADVICE_SHEETS } from './advice.js';
 import {
   DAY,
   HOUR,
+  SETUP_GUIDE_DAYS,
   SEVERITY_RANK,
   detectQuestions,
   localDayStart,
@@ -24,6 +25,8 @@ import {
   type Snapshot,
 } from './companion-rules.js';
 import { geocode, maxTemperatures } from './weather.js';
+import { SetupService } from '../setup/setup.service.js';
+import { setupProgress } from '../setup/setup-steps.js';
 import type { UpdateCompanionSettingsInput } from './companion.models.js';
 
 const PENDING = CompanionQuestionStatus.PENDING;
@@ -43,6 +46,7 @@ export class CompanionService {
     private readonly notifications: NotificationsService,
     private readonly readiness: SaleReadinessService,
     private readonly subscriptions: SubscriptionService,
+    private readonly setup: SetupService,
   ) {}
 
   // ---------------------------------------------------------------
@@ -72,9 +76,11 @@ export class CompanionService {
       if (accessOf(farm, settings.trialDays, exempt, now).status === 'EXPIRED') continue;
       try {
         const heat = await this.heatFor(farm, weatherCache);
-        const snapshot = await this.snapshot(farm.id, now, heat);
-        if (snapshot.rabbitsActive === 0 && snapshot.breedings.length === 0) continue;
-        created += await this.store(farm.id, detectQuestions(snapshot));
+        const snapshot = await this.snapshot(farm.id, now, heat, farm.createdAt);
+        const specs = detectQuestions(snapshot);
+        await this.closeSetupQuestions(farm.id, snapshot.setup?.next?.key ?? null);
+        if (specs.length === 0) continue;
+        created += await this.store(farm.id, specs);
         if (notify && (await this.notifyFarm(farm.id, farm.companionMaxPerDay, now))) notified += 1;
       } catch (e) {
         this.logger.warn(`Tournée impossible pour la ferme ${farm.id} : ${String(e).slice(0, 200)}`);
@@ -85,6 +91,19 @@ export class CompanionService {
       data: { status: CompanionQuestionStatus.EXPIRED },
     });
     return { farms: farms.length, created, notified };
+  }
+
+  /** Une étape de démarrage faite entre-temps : sa question n'a plus lieu d'être. */
+  private async closeSetupQuestions(farmId: string, currentStep: string | null) {
+    await this.prisma.companionQuestion.updateMany({
+      where: {
+        farmId,
+        kind: 'SETUP',
+        status: PENDING,
+        ...(currentStep ? { NOT: { key: { startsWith: `SETUP:${currentStep}:` } } } : {}),
+      },
+      data: { status: CompanionQuestionStatus.EXPIRED },
+    });
   }
 
   private async store(farmId: string, specs: ReturnType<typeof detectQuestions>) {
@@ -160,7 +179,7 @@ export class CompanionService {
   // Instantané de la ferme
   // ---------------------------------------------------------------
 
-  async snapshot(farmId: string, now: Date, heat: Snapshot['heat']): Promise<Snapshot> {
+  async snapshot(farmId: string, now: Date, heat: Snapshot['heat'], farmCreatedAt?: Date): Promise<Snapshot> {
     const since = (days: number) => new Date(now.getTime() - days * DAY);
     const today = localDayStart(now);
     const tomorrow = new Date(today.getTime() + DAY);
@@ -310,6 +329,18 @@ export class CompanionService {
       lastActivityAt: activity,
       heat,
       week,
+      setup: await this.setupFor(farmId, now, farmCreatedAt),
+    };
+  }
+
+  private async setupFor(farmId: string, now: Date, createdAt?: Date): Promise<Snapshot['setup']> {
+    if (!createdAt) return null;
+    const farmAgeDays = Math.floor((now.getTime() - createdAt.getTime()) / DAY);
+    if (farmAgeDays > SETUP_GUIDE_DAYS) return null;
+    const { next } = setupProgress(await this.setup.counts(farmId));
+    return {
+      farmAgeDays,
+      next: next ? { key: next.key, title: next.title, detail: next.detail, href: next.href, altLabel: next.altLabel, altHref: next.altHref } : null,
     };
   }
 

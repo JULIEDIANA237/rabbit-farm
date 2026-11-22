@@ -9,12 +9,13 @@ import { ErrorBox } from '@/components/ui/kit';
 import { URL_COMMAND_EVENT } from '@/hooks/use-form';
 import { ASK_ASSISTANT_EVENT } from '@/components/onboarding/module-guide';
 import { useSpeech } from '@/hooks/use-speech';
-import { ASK_ASSISTANT, useAssistantEnabled, type AssistantDraft } from '@/lib/assistant';
+import { ASK_ASSISTANT, useAssistantEnabled, type AssistantDraft, type AssistantLink } from '@/lib/assistant';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
   drafts?: AssistantDraft[];
+  links?: AssistantLink[];
 }
 
 const STORAGE_KEY = 'rabbitfarm.assistant.chat';
@@ -22,6 +23,7 @@ const STORAGE_KEY = 'rabbitfarm.assistant.chat';
 const CLIENT_TIMEOUT_MS = 90_000;
 
 const SUGGESTIONS = [
+  'Par où je commence dans l’app ?',
   'Que dois-je faire aujourd’hui ?',
   'Quelles lapines mettent bas cette semaine ?',
   'Combien j’ai vendu et dépensé ce mois-ci ?',
@@ -71,7 +73,7 @@ export function AssistantPanel() {
   const [text, setText] = useState('');
   const [timedOut, setTimedOut] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
-  const [ask, { loading, error, reset }] = useMutation<{ askAssistant: { text: string; drafts: AssistantDraft[] } }>(ASK_ASSISTANT);
+  const [ask, { loading, error, reset }] = useMutation<{ askAssistant: { text: string; drafts: AssistantDraft[]; links: AssistantLink[] } }>(ASK_ASSISTANT);
   const speech = useSpeech((spoken) => setText((previous) => (previous ? `${previous} ${spoken}` : spoken)));
 
   const lastActivity = useRef(0);
@@ -144,7 +146,7 @@ export function AssistantPanel() {
       });
       const reply = response.data?.askAssistant;
       if (reply) {
-        setMessages((previous) => [...previous, { role: 'assistant', content: reply.text, drafts: reply.drafts }]);
+        setMessages((previous) => [...previous, { role: 'assistant', content: reply.text, drafts: reply.drafts, links: reply.links }]);
       }
     } catch (caught) {
       // L'erreur est affichée sous la discussion ; un délai dépassé a son propre message.
@@ -256,6 +258,20 @@ export function AssistantPanel() {
                       )}
                     </div>
                   ))}
+                  {message.links && message.links.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {message.links.map((link) => (
+                        <button
+                          key={link.href}
+                          type="button"
+                          onClick={() => openDraft(link.href)}
+                          className="inline-flex items-center gap-1 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-700"
+                        >
+                          {link.label} <ArrowUpRight size={14} />
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

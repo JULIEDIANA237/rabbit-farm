@@ -11,6 +11,11 @@ export interface AssistantDraft {
   href?: string | null;
 }
 
+export interface AssistantLink {
+  label: string;
+  href: string;
+}
+
 export const ASSISTANT_STATUS = gql`
   query AssistantStatus {
     assistantStatus {
@@ -30,6 +35,10 @@ export const ASK_ASSISTANT = gql`
         summary
         fields
         warnings
+        href
+      }
+      links {
+        label
         href
       }
     }

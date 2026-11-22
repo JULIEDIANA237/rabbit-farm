@@ -197,6 +197,12 @@ enum AssistantFormKind {
   TASK
 }
 
+"""Bouton vers une page de l’app, proposé par l’assistant"""
+type AssistantLinkModel {
+  href: String!
+  label: String!
+}
+
 input AssistantMessageInput {
   content: String!
 
@@ -206,6 +212,7 @@ input AssistantMessageInput {
 
 type AssistantReplyModel {
   drafts: [AssistantDraftModel!]!
+  links: [AssistantLinkModel!]!
   text: String!
 }
 
@@ -1035,6 +1042,23 @@ enum FarmRole {
   VETERINARIAN
 }
 
+"""
+Démarrage de la ferme : étapes, avancement et compteurs pour le menu simplifié
+"""
+type FarmSetupModel {
+  """Menu simplifié proposé par défaut (ferme récente pas encore prête)"""
+  beginner: Boolean!
+  breedings: Int!
+  done: Int!
+  farmAgeDays: Int!
+  litters: Int!
+  lots: Int!
+  percent: Int!
+  rabbits: Int!
+  steps: [SetupStepModel!]!
+  total: Int!
+}
+
 type FarmStatisticsModel {
   finance: FinanceStatisticsModel!
   from: DateTime!
@@ -1218,6 +1242,17 @@ enum HealthRecordType {
   OBSERVATION
   TREATMENT
   VACCINATION
+}
+
+input ImportNotebookInput {
+  breedings: [NotebookBreedingInput!]!
+  rabbits: [NotebookRabbitInput!]!
+}
+
+type ImportNotebookResultModel {
+  breedings: Int!
+  errors: [String!]!
+  rabbits: Int!
 }
 
 """
@@ -1553,6 +1588,9 @@ type Mutation {
   """
   fillFormWithAi(input: FillFormInput!): AssistantDraftModel!
 
+  """Enregistre les lapins et saillies validés après la lecture du cahier"""
+  importNotebook(input: ImportNotebookInput!): ImportNotebookResultModel!
+
   """Réécrit le brouillon avec l’IA."""
   improveAgentDraft(draft: String, id: ID!): AgentSuggestionModel!
   login(input: LoginInput!): AuthModel!
@@ -1641,6 +1679,43 @@ type NestInstallationModel {
   material: String
   nestType: String
   observation: String
+}
+
+input NotebookBreedingInput {
+  date: String!
+  femaleCode: String!
+  maleCode: String!
+  note: String
+}
+
+type NotebookBreedingModel {
+  date: String
+  femaleCode: String!
+  maleCode: String!
+  note: String
+}
+
+input NotebookRabbitInput {
+  birthDate: String
+  breed: String
+  code: String!
+  color: String
+  note: String
+
+  """MALE, FEMALE ou UNKNOWN"""
+  sex: String!
+}
+
+type NotebookRabbitModel {
+  birthDate: String
+  breed: String
+  code: String!
+  color: String
+
+  """Ce code existe déjà dans la ferme"""
+  exists: Boolean!
+  note: String
+  sex: String!
 }
 
 enum PaymentMethod {
@@ -1796,6 +1871,9 @@ type Query {
   farm(id: ID!): FarmModel
   farmMembers: [FarmMembershipModel!]!
   farmResetPreview: [FarmResetCountModel!]!
+
+  """Avancement du démarrage de la ferme"""
+  farmSetup: FarmSetupModel!
   farmStatistics(from: DateTime, to: DateTime): FarmStatisticsModel!
 
   """À faire, à prévoir et suggestions pour la ferme"""
@@ -2277,6 +2355,16 @@ input SetFeedRationsInput {
   Début du calcul des rations (par défaut : aujourd’hui, ou la dernière déduction).
   """
   startDate: DateTime
+}
+
+type SetupStepModel {
+  altHref: String
+  altLabel: String
+  detail: String!
+  done: Boolean!
+  href: String!
+  key: String!
+  title: String!
 }
 
 type SheetEventModel {

@@ -7,11 +7,19 @@ import { BookOpen } from 'lucide-react';
 import { PageHeader, Tabs } from '@/components/ui/kit';
 import { CompanionHistory, CompanionList, CompanionSettings, TourNowButton } from '@/components/companion/companion';
 import { NotificationsCard } from '@/components/settings/notifications-card';
+import { useUrlCommand } from '@/hooks/use-form';
 
 type Tab = 'pending' | 'history' | 'settings';
 
 export default function QuestionsPage() {
   const [tab, setTab] = useState<Tab>('pending');
+  // « ?tab=settings » : lien direct vers les réglages (parcours de démarrage).
+  useUrlCommand((params) => {
+    const wanted = params.get('tab');
+    if (wanted !== 'settings' && wanted !== 'history') return false;
+    setTab(wanted);
+    return true;
+  });
   return (
     <div>
       <PageHeader

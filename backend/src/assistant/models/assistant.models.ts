@@ -32,6 +32,15 @@ export class AssistantDraftModel {
   href?: string | null;
 }
 
+@ObjectType({ description: 'Bouton vers une page de l’app, proposé par l’assistant' })
+export class AssistantLinkModel {
+  @Field(() => String)
+  label: string;
+
+  @Field(() => String)
+  href: string;
+}
+
 @ObjectType()
 export class AssistantReplyModel {
   @Field(() => String)
@@ -39,6 +48,9 @@ export class AssistantReplyModel {
 
   @Field(() => [AssistantDraftModel])
   drafts: AssistantDraftModel[];
+
+  @Field(() => [AssistantLinkModel])
+  links: AssistantLinkModel[];
 }
 
 @ObjectType()
