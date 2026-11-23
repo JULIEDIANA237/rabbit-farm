@@ -309,7 +309,7 @@ const GUIDES: Array<{ prefix: string; guide: ModuleGuide }> = [
       key: 'subscription',
       title: 'Ton abonnement',
       steps: [
-        'Le premier mois est gratuit. Ensuite : 1 000 FCFA par mois ou 10 000 FCFA par an.',
+        'Le premier mois est gratuit. Ensuite, un abonnement au mois ou à l’année : les prix sont affichés sur cette page.',
         'Paie par Mobile Money en suivant les consignes, puis appuie sur « J’ai payé ».',
         'Ton accès est prolongé dès que le paiement est confirmé.',
       ],

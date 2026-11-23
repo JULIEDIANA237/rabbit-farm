@@ -5,7 +5,7 @@
  * - L'API GraphQL n'est pas gérée ici : l'app garde ses données elle-même (IndexedDB).
  * - Sur demande de l'app, les pages du terrain et leurs fichiers sont gardés à l'avance.
  */
-const VERSION = 'rabbit-farm-v5';
+const VERSION = 'rabbit-farm-v6';
 const STATIC_CACHE = `${VERSION}-static`;
 const PAGE_CACHE = `${VERSION}-pages`;
 const OFFLINE_URL = '/offline.html';
@@ -98,6 +98,19 @@ self.addEventListener('message', (event) => {
   }
 });
 
+// Chiffre sur l'icône de l'app (iPhone 16.4+ app installée, ordinateur ;
+// Android affiche une pastille). Sans chiffre du serveur : nombre de notifications.
+async function updateBadge(count) {
+  if (!self.navigator || !('setAppBadge' in self.navigator)) return;
+  try {
+    let value = typeof count === 'number' ? count : (await self.registration.getNotifications()).length;
+    if (value > 0) await self.navigator.setAppBadge(value);
+    else await self.navigator.clearAppBadge();
+  } catch {
+    // Navigateur sans pastille : rien à faire.
+  }
+}
+
 // Rappels du jour (notifications envoyées par le serveur).
 self.addEventListener('push', (event) => {
   let data = { title: 'RabbitFarm', body: 'Tu as des tâches aujourd’hui.', url: '/tasks' };
@@ -107,15 +120,17 @@ self.addEventListener('push', (event) => {
     // Message sans contenu lisible : texte par défaut.
   }
   event.waitUntil(
-    self.registration.showNotification(data.title, {
-      body: data.body,
-      icon: '/icons/icon-192.png',
-      badge: '/icons/icon-192.png',
-      data: { url: data.url },
-      tag: data.tag || 'rabbitfarm-rappel',
-      // Un nouveau rappel qui remplace l'ancien sonne et s'affiche quand même.
-      renotify: true,
-    }),
+    self.registration
+      .showNotification(data.title, {
+        body: data.body,
+        icon: '/icons/icon-192.png',
+        badge: '/icons/icon-192.png',
+        data: { url: data.url },
+        tag: data.tag || 'rabbitfarm-rappel',
+        // Un nouveau rappel qui remplace l'ancien sonne et s'affiche quand même.
+        renotify: true,
+      })
+      .then(() => updateBadge(data.badge)),
   );
 });
 
