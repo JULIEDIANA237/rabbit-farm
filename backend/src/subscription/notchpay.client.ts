@@ -7,15 +7,25 @@ import { Injectable, Logger } from '@nestjs/common';
  *   NOTCHPAY_PUBLIC_KEY   clé publique (pk_test_… en Sandbox) : création et lecture des paiements
  *   NOTCHPAY_HASH_KEY     « Hash Key » des webhooks : vérifie la signature x-notch-signature
  *   NOTCHPAY_API_URL      optionnel (défaut https://api.notchpay.co)
+ *   NOTCHPAY_OPERATORS    opérateurs proposés, séparés par des virgules (défaut MTN ; ex. MTN,ORANGE)
  *
  * Sans clé publique, le paiement en ligne est simplement masqué : le paiement déclaré à la main reste possible.
  * On ne croit jamais le contenu d'un webhook : chaque paiement est relu auprès de NotchPay avant d'activer l'abonnement.
  */
 
+export type MobileOperator = 'MTN' | 'ORANGE';
+
+/** Opérateurs activés sur le compte NotchPay ; MTN seul par défaut (Orange Money pas encore ouvert). */
+export function parseOperators(value: string | undefined): MobileOperator[] {
+  const list = (value ?? 'MTN').split(',').map((v) => v.trim().toUpperCase()).filter((v): v is MobileOperator => v === 'MTN' || v === 'ORANGE');
+  return list.length ? [...new Set(list)] : ['MTN'];
+}
+
 export interface NotchPayConfig {
   publicKey: string | null;
   hashKey: string | null;
   apiUrl: string;
+  operators: MobileOperator[];
 }
 
 export function readNotchPayConfig(env: NodeJS.ProcessEnv = process.env): NotchPayConfig {
@@ -23,6 +33,7 @@ export function readNotchPayConfig(env: NodeJS.ProcessEnv = process.env): NotchP
     publicKey: env.NOTCHPAY_PUBLIC_KEY?.trim() || null,
     hashKey: env.NOTCHPAY_HASH_KEY?.trim() || null,
     apiUrl: (env.NOTCHPAY_API_URL?.trim() || 'https://api.notchpay.co').replace(/\/$/, ''),
+    operators: parseOperators(env.NOTCHPAY_OPERATORS),
   };
 }
 
@@ -45,7 +56,6 @@ export interface RemotePayment {
 
 const TIMEOUT = 15_000;
 
-export type MobileOperator = 'MTN' | 'ORANGE';
 const CHANNEL: Record<MobileOperator, string> = { MTN: 'cm.mtn', ORANGE: 'cm.orange' };
 
 /** Numéro camerounais (6XX XX XX XX, avec ou sans 237) au format +2376XXXXXXXX, sinon null. */
@@ -74,6 +84,13 @@ export function parseTransaction(body: Json): RemotePayment | null {
   };
 }
 
+/** Raison lisible d'un refus NotchPay : message + détail des champs refusés. */
+export function notchPayReason(body: Json, status: number) {
+  const message = typeof body.message === 'string' && body.message ? body.message : `NotchPay a répondu ${status}`;
+  const errors = body.errors && typeof body.errors === 'object' ? JSON.stringify(body.errors).slice(0, 300) : '';
+  return errors ? `${message} ${errors}` : message;
+}
+
 /** Signature HMAC SHA-256 (hex) du corps brut, comparée en temps constant. */
 export function validSignature(rawBody: string | Buffer, signature: string | undefined, hashKey: string) {
   if (!signature) return false;
@@ -92,6 +109,10 @@ export class NotchPayClient {
     return Boolean(this.config.publicKey);
   }
 
+  get operators(): MobileOperator[] {
+    return this.config.operators;
+  }
+
   get canVerifyWebhooks() {
     return Boolean(this.config.hashKey);
   }
@@ -105,8 +126,11 @@ export class NotchPayClient {
     });
     const body = (await res.json().catch(() => ({}))) as Json;
     if (!res.ok) {
-      this.logger.warn(`${init.method ?? 'GET'} ${path} → HTTP ${res.status} : ${(typeof body.message === 'string' ? body.message : '').slice(0, 200)}`);
-      throw new Error(typeof body.message === 'string' ? body.message : `NotchPay a répondu ${res.status}.`);
+      const reason = notchPayReason(body, res.status);
+      const line = `${init.method ?? 'GET'} ${path} → HTTP ${res.status} : ${reason}`;
+      if (init.method) this.logger.error(line);
+      else this.logger.warn(line);
+      throw new Error(reason);
     }
     return body;
   }
@@ -136,7 +160,8 @@ export class NotchPayClient {
   async charge(reference: string, operator: MobileOperator, phone: string): Promise<void> {
     await this.request(`/payments/${encodeURIComponent(reference)}`, {
       method: 'POST',
-      body: JSON.stringify({ channel: CHANNEL[operator], data: { phone } }),
+      // La doc NotchPay nomme le numéro tantôt « phone », tantôt « account_number » : on envoie les deux.
+      body: JSON.stringify({ channel: CHANNEL[operator], data: { phone, account_number: phone } }),
     });
   }
 

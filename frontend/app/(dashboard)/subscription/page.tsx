@@ -17,7 +17,7 @@ const DECLARE_PAYMENT = gql`
 
 const START_CHECKOUT = gql`
   mutation StartSubscriptionCheckout($plan: SubscriptionPlan!, $operator: MobileOperator, $phone: String) {
-    startSubscriptionCheckout(plan: $plan, operator: $operator, phone: $phone) { paymentId url direct }
+    startSubscriptionCheckout(plan: $plan, operator: $operator, phone: $phone) { paymentId url direct error }
   }
 `;
 
@@ -92,16 +92,17 @@ function validPhone(value: string) {
   return /^6\d{8}$/.test(d);
 }
 
-type DirectState = { phase: 'idle' } | { phase: 'waiting'; paymentId: string } | { phase: 'done' } | { phase: 'failed' } | { phase: 'late' };
+type DirectState = { phase: 'idle' } | { phase: 'refused'; reason: string | null; url: string; paymentId: string } | { phase: 'waiting'; paymentId: string } | { phase: 'done' } | { phase: 'failed' } | { phase: 'late' };
 
 /** Paiement sans quitter l'app : la demande de confirmation arrive sur le téléphone de l'éleveur. */
-function MobileMoneyPay({ plan, amount }: { plan: Plan; amount: number }) {
-  const [operator, setOperator] = useState<Operator>('MTN');
+function MobileMoneyPay({ plan, amount, operators }: { plan: Plan; amount: number; operators: Operator[] }) {
+  const available = OPERATORS.filter((o) => operators.includes(o.value));
+  const [operator, setOperator] = useState<Operator>(available[0]?.value ?? 'MTN');
   const [phone, setPhone] = useState(() => {
     try { return localStorage.getItem(PHONE_KEY) ?? ''; } catch { return ''; }
   });
   const [state, setState] = useState<DirectState>({ phase: 'idle' });
-  const [start, starting] = useMutation<{ startSubscriptionCheckout: { paymentId: string; url: string; direct: boolean } }>(START_CHECKOUT);
+  const [start, starting] = useMutation<{ startSubscriptionCheckout: { paymentId: string; url: string; direct: boolean; error?: string | null } }>(START_CHECKOUT);
   const [check] = useMutation<{ checkSubscriptionPayment: { status: 'CONFIRMED' | 'PENDING' | 'REJECTED' } }>(CHECK_PAYMENT, {
     refetchQueries: [{ query: SUBSCRIPTION_STATUS }],
   });
@@ -133,9 +134,13 @@ function MobileMoneyPay({ plan, amount }: { plan: Plan; amount: number }) {
     const r = data?.startSubscriptionCheckout;
     if (!r) return;
     if (r.direct) return setState({ phase: 'waiting', paymentId: r.paymentId });
-    // La demande directe n'a pas pu partir : page NotchPay en secours.
-    rememberPayment(r.paymentId);
-    window.location.assign(r.url);
+    // La demande directe n'a pas pu partir : on reste dans l'app et on explique pourquoi.
+    setState({ phase: 'refused', reason: r.error ?? null, url: r.url, paymentId: r.paymentId });
+  };
+
+  const openNotchPayPage = (url: string, paymentId: string) => {
+    rememberPayment(paymentId);
+    window.location.assign(url);
   };
 
   if (state.phase === 'waiting') {
@@ -158,26 +163,42 @@ function MobileMoneyPay({ plan, amount }: { plan: Plan; amount: number }) {
 
   return (
     <div className="space-y-3">
+      {state.phase === 'refused' && (
+        <div role="status" className="space-y-2 rounded-xl bg-amber-50 p-3 text-sm text-amber-900">
+          <p>
+            La demande n’a pas pu être envoyée sur ton téléphone avec {operator === 'MTN' ? 'MTN MoMo' : 'Orange Money'}. Vérifie le numéro
+            ou réessaie dans un moment.
+          </p>
+          {state.reason && <p className="text-xs text-amber-800">Réponse de NotchPay : {state.reason}</p>}
+          <button type="button" onClick={() => openNotchPayPage(state.url, state.paymentId)} className="text-xs font-semibold text-amber-900 underline">
+            Payer plutôt sur la page sécurisée NotchPay
+          </button>
+        </div>
+      )}
       {state.phase === 'failed' && (
         <p role="status" className="rounded-xl bg-amber-50 p-3 text-sm text-amber-900">Le paiement n’a pas abouti (refusé, annulé ou solde insuffisant). Rien n’a été prélevé : tu peux réessayer.</p>
       )}
       {state.phase === 'late' && (
         <p role="status" className="rounded-xl bg-sky-50 p-3 text-sm text-sky-900">Pas encore de confirmation. Si tu as validé sur ton téléphone, ton abonnement s’activera tout seul dans quelques minutes.</p>
       )}
-      <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label="Opérateur">
-        {OPERATORS.map((o) => (
-          <button
-            key={o.value}
-            type="button"
-            role="radio"
-            aria-checked={operator === o.value}
-            onClick={() => setOperator(o.value)}
-            className={`rounded-xl border-2 px-3 py-2.5 text-sm font-semibold transition ${operator === o.value ? o.cls : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}
-          >
-            {o.label}
-          </button>
-        ))}
-      </div>
+      {available.length > 1 ? (
+        <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label="Opérateur">
+          {available.map((o) => (
+            <button
+              key={o.value}
+              type="button"
+              role="radio"
+              aria-checked={operator === o.value}
+              onClick={() => setOperator(o.value)}
+              className={`rounded-xl border-2 px-3 py-2.5 text-sm font-semibold transition ${operator === o.value ? o.cls : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}
+            >
+              {o.label}
+            </button>
+          ))}
+        </div>
+      ) : (
+        <p className={`rounded-xl border-2 px-3 py-2.5 text-center text-sm font-semibold ${available[0]?.cls ?? ''}`}>{available[0]?.label ?? 'Mobile Money'}</p>
+      )}
       <Field label="Numéro Mobile Money">
         <Input type="tel" inputMode="tel" autoComplete="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="6XX XX XX XX" />
       </Field>
@@ -269,7 +290,7 @@ function Plans({ s }: { s: SubscriptionStatus }) {
       <Card title="Payer" subtitle={`${PLAN_LABEL[plan]} : ${formatMoney(amount)}`}>
         {s.onlinePaymentEnabled && (
           <div className="mb-4 space-y-2">
-            <MobileMoneyPay plan={plan} amount={amount} />
+            <MobileMoneyPay plan={plan} amount={amount} operators={s.onlineOperators} />
             {!showManual && !s.pendingPayment && (
               <button type="button" onClick={() => setShowManual(true)} className="text-xs font-semibold text-slate-500 hover:text-emerald-700 hover:underline">
                 J’ai déjà payé autrement

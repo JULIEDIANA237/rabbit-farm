@@ -1,10 +1,10 @@
 import { createHmac } from 'node:crypto';
 
-import { normalizeCameroonPhone, parseTransaction, readNotchPayConfig, validSignature } from './notchpay.client.js';
+import { normalizeCameroonPhone, notchPayReason, parseOperators, parseTransaction, readNotchPayConfig, validSignature } from './notchpay.client.js';
 
 describe('NotchPay', () => {
   it('désactivé sans clé, URL par défaut', () => {
-    expect(readNotchPayConfig({})).toEqual({ publicKey: null, hashKey: null, apiUrl: 'https://api.notchpay.co' });
+    expect(readNotchPayConfig({})).toEqual({ publicKey: null, hashKey: null, apiUrl: 'https://api.notchpay.co', operators: ['MTN'] });
     expect(readNotchPayConfig({ NOTCHPAY_PUBLIC_KEY: ' pk_test_1 ', NOTCHPAY_API_URL: 'http://x/' })).toMatchObject({ publicKey: 'pk_test_1', apiUrl: 'http://x' });
   });
 
@@ -33,5 +33,20 @@ describe('normalizeCameroonPhone', () => {
     expect(normalizeCameroonPhone('237670000000')).toBe('+237670000000');
     expect(normalizeCameroonPhone('22 22 22 22')).toBeNull();
     expect(normalizeCameroonPhone('67000000')).toBeNull();
+  });
+});
+
+describe('notchPayReason', () => {
+  it('donne le message et le détail des champs refusés', () => {
+    expect(notchPayReason({ message: 'Invalid data', errors: { phone: ['required'] } }, 422)).toBe('Invalid data {"phone":["required"]}');
+    expect(notchPayReason({}, 500)).toBe('NotchPay a répondu 500');
+  });
+});
+
+describe('parseOperators', () => {
+  it('MTN par défaut, liste nettoyée sinon', () => {
+    expect(parseOperators(undefined)).toEqual(['MTN']);
+    expect(parseOperators('mtn, orange,MTN')).toEqual(['MTN', 'ORANGE']);
+    expect(parseOperators('wave')).toEqual(['MTN']);
   });
 });

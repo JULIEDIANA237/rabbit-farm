@@ -7,7 +7,7 @@ export const SUBSCRIPTION_STATUS = gql`
       status readOnly trialEndsAt paidUntil daysLeft
       settings { trialDays monthlyPrice yearlyPrice paymentInstructions }
       pendingPayment { id plan amount reference createdAt }
-      onlinePaymentEnabled
+      onlinePaymentEnabled onlineOperators
     }
   }
 `;
@@ -24,6 +24,7 @@ export interface SubscriptionStatus {
   settings: { trialDays: number; monthlyPrice: number; yearlyPrice: number; paymentInstructions?: string | null };
   pendingPayment?: { id: string; plan: Plan; amount: number; reference?: string | null; createdAt: string } | null;
   onlinePaymentEnabled: boolean;
+  onlineOperators: Array<'MTN' | 'ORANGE'>;
 }
 
 export const PLAN_LABEL: Record<Plan, string> = { MONTHLY: 'Mensuel', YEARLY: 'Annuel' };

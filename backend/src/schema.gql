@@ -2464,6 +2464,9 @@ type SubscriptionAdminModel {
 type SubscriptionCheckoutModel {
   """Vrai quand la demande de confirmation a été envoyée sur le téléphone"""
   direct: Boolean!
+
+  """Raison donnée par NotchPay quand la demande directe a été refusée"""
+  error: String
   paymentId: ID!
 
   """
@@ -2503,6 +2506,9 @@ enum SubscriptionPlan {
 type SubscriptionStatusModel {
   """Jours restants (essai ou période payée)."""
   daysLeft: Int!
+
+  """Opérateurs proposés pour le paiement en ligne"""
+  onlineOperators: [MobileOperator!]!
 
   """
   Vrai quand le paiement Mobile Money en ligne (NotchPay) est disponible.

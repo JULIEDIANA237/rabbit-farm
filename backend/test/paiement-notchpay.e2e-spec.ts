@@ -12,6 +12,7 @@ const HASH = 'hsk_test_simulee';
 
 class FakeNotchPay {
   enabled = true;
+  operators = ['MTN', 'ORANGE'];
   canVerifyWebhooks = true;
   checkouts: CheckoutInput[] = [];
   remote = new Map<string, RemotePayment>();
@@ -45,7 +46,7 @@ class FakeNotchPay {
 
 const START = `mutation ($plan: SubscriptionPlan!) { startSubscriptionCheckout(plan: $plan) { paymentId url } }`;
 const DIRECT = `mutation ($plan: SubscriptionPlan!, $operator: MobileOperator, $phone: String) {
-  startSubscriptionCheckout(plan: $plan, operator: $operator, phone: $phone) { paymentId url direct }
+  startSubscriptionCheckout(plan: $plan, operator: $operator, phone: $phone) { paymentId url direct error }
 }`;
 const CHECK = `mutation ($r: String!) { checkSubscriptionPayment(reference: $r) { status periodEnd } }`;
 
@@ -159,6 +160,15 @@ describe('Paiement NotchPay (e2e)', () => {
     expect(after.getTime()).toBeGreaterThan(before.getTime());
   });
 
+  it('un opérateur non activé est refusé', async () => {
+    fake.operators = ['MTN'];
+    const { subscriptionStatus } = await gqlOk(app, `{ subscriptionStatus { onlineOperators } }`, undefined, token);
+    expect(subscriptionStatus.onlineOperators).toEqual(['MTN']);
+    const res = await gql(app, DIRECT, { plan: 'MONTHLY', operator: 'ORANGE', phone: '690000000' }, token);
+    expect(res.errors?.[0].message).toMatch(/pas encore disponible/);
+    fake.operators = ['MTN', 'ORANGE'];
+  });
+
   it('paiement direct : numéro invalide refusé, échec d’envoi → page NotchPay en secours', async () => {
     const bad = await gql(app, DIRECT, { plan: 'MONTHLY', operator: 'MTN', phone: '22 22 22' }, token);
     expect(bad.errors?.[0].message).toMatch(/Numéro invalide/);
@@ -166,6 +176,7 @@ describe('Paiement NotchPay (e2e)', () => {
     const { startSubscriptionCheckout: r } = await gqlOk(app, DIRECT, { plan: 'MONTHLY', operator: 'MTN', phone: '670000000' }, token);
     fake.chargeFails = false;
     expect(r.direct).toBe(false);
+    expect(r.error).toBe('canal indisponible');
     expect(r.url).toMatch(/^https:\/\/pay\.example\//);
   });
 });
