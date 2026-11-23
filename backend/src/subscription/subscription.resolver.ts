@@ -78,6 +78,11 @@ export class SubscriptionResolver {
     return this.subscriptions.rejectPayment(user, id);
   }
 
+  @Mutation(() => Boolean, { description: 'Supprimer un paiement (ex. test) ; la fin d’abonnement est recalculée' })
+  deleteSubscriptionPayment(@CurrentUser() user: CurrentUserType, @Args('id', { type: () => ID }) id: string) {
+    return this.subscriptions.deletePayment(user, id);
+  }
+
   @Mutation(() => Boolean, { description: 'Enregistrer à la main un abonnement payé hors de l’app' })
   activateSubscription(
     @CurrentUser() user: CurrentUserType,

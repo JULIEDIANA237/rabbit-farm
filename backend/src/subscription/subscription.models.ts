@@ -41,6 +41,8 @@ export class SubscriptionPaymentModel {
   @Field() createdAt: Date;
   @Field(() => String, { nullable: true, description: 'Vue propriétaire' }) farmName?: string | null;
   @Field(() => String, { nullable: true, description: 'Vue propriétaire' }) farmId?: string | null;
+  @Field(() => String, { nullable: true, description: 'NOTCHPAY pour un paiement en ligne, vide si déclaré' }) provider?: string | null;
+  @Field(() => Date, { nullable: true }) confirmedAt?: Date | null;
 }
 
 @ObjectType()
@@ -87,6 +89,7 @@ export class FarmAccessModel {
 export class SubscriptionAdminModel {
   @Field(() => PlatformSettingsModel) settings: PlatformSettingsModel;
   @Field(() => [SubscriptionPaymentModel]) pendingPayments: SubscriptionPaymentModel[];
+  @Field(() => [SubscriptionPaymentModel], { description: 'Derniers paiements confirmés (50)' }) confirmedPayments: SubscriptionPaymentModel[];
   @Field(() => [FarmAccessModel]) farms: FarmAccessModel[];
   @Field(() => Int, { description: 'Total confirmé sur 30 jours' }) revenue30d: number;
   @Field(() => Int) revenueTotal: number;
