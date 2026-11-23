@@ -62,7 +62,8 @@ export class NotificationsService {
     if (!this.config().enabled) return 0;
     const subscriptions = await this.prisma.pushSubscription.findMany({ where: { farmId } });
     if (subscriptions.length === 0) return 0;
-    const results = await this.deliver(subscriptions, payload);
+    const badge = payload.badge ?? (await this.dueTaskCount(farmId));
+    const results = await this.deliver(subscriptions, { ...payload, badge });
     return results.filter((result) => result === 'sent').length;
   }
 
@@ -101,12 +102,26 @@ export class NotificationsService {
       const message = reminderMessage({ dueToday, overdue, birthsSoon, readyForSale, rematingChecks });
       if (!message) continue;
       const onlySales = readyForSale > 0 && dueToday + overdue + birthsSoon === 0;
-      const results = await this.deliver(farmSubscriptions, { ...message, url: onlySales ? '/sales/ready' : '/tasks' });
+      const results = await this.deliver(farmSubscriptions, {
+        ...message,
+        url: onlySales ? '/sales/ready' : '/tasks',
+        badge: dueToday + overdue,
+      });
       sent += results.filter((result) => result === 'sent').length;
     }
 
     this.logger.log(`Rappels du jour : ${sent} notification(s) envoyée(s) pour ${byFarm.size} ferme(s).`);
     return { farms: byFarm.size, sent };
+  }
+
+  /** Tâches ouvertes à faire aujourd'hui ou en retard : le chiffre de l'icône. */
+  private async dueTaskCount(farmId: string, now = new Date()) {
+    const end = new Date(now);
+    end.setHours(0, 0, 0, 0);
+    end.setTime(end.getTime() + DAY);
+    return this.prisma.task.count({
+      where: { farmId, status: { in: [TaskStatus.TODO, TaskStatus.IN_PROGRESS] }, dueDate: { lt: end } },
+    });
   }
 
   private async deliver(subscriptions: Array<{ id: string; endpoint: string; p256dh: string; auth: string }>, payload: PushPayload) {

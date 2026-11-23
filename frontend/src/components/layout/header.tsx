@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useQuery, useApolloClient } from '@apollo/client/react';
 import { Bell, CircleHelp, LogOut, Menu, RefreshCw } from 'lucide-react';
 import { SHOW_GUIDE_EVENT } from '@/components/onboarding/module-guide';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { ME_QUERY, type Me } from '@/graphql/auth/mutations';
 import { OPEN_TASKS_QUERY } from '@/graphql/field-queries';
@@ -37,6 +37,14 @@ export function Header({ onMenuClick }: HeaderProps) {
   const endOfToday = new Date();
   endOfToday.setHours(23, 59, 59, 999);
   const dueCount = (tasks?.tasks ?? []).filter((t) => new Date(t.dueDate) <= endOfToday).length;
+
+  // Même chiffre sur l'icône de l'app installée, visible app fermée.
+  const tasksLoaded = Boolean(tasks);
+  useEffect(() => {
+    if (!tasksLoaded || typeof navigator === 'undefined' || !('setAppBadge' in navigator)) return;
+    const update = dueCount > 0 ? navigator.setAppBadge(dueCount) : navigator.clearAppBadge();
+    update.catch(() => undefined);
+  }, [dueCount, tasksLoaded]);
 
   async function handleLogout() {
     await clearOfflineCache();

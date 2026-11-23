@@ -28,6 +28,8 @@ export interface PushPayload {
   url: string;
   /** Notifications de même étiquette se remplacent (par défaut : le rappel du jour). */
   tag?: string;
+  /** Chiffre affiché sur l'icône de l'app (tâches à faire), même app fermée. */
+  badge?: number;
 }
 
 export type PushResult = 'sent' | 'gone' | 'failed';
