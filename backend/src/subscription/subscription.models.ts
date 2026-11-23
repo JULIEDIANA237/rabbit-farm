@@ -16,6 +16,12 @@ registerEnumType(AccessStatus, {
   description: 'TRIAL (essai), ACTIVE (payé), EXPIRED (lecture seule), EXEMPT (propriétaire de l’app)',
 });
 
+export enum MobileOperator {
+  MTN = 'MTN',
+  ORANGE = 'ORANGE',
+}
+registerEnumType(MobileOperator, { name: 'MobileOperator', description: 'MTN Mobile Money ou Orange Money' });
+
 @ObjectType()
 export class PlatformSettingsModel {
   @Field(() => Int) trialDays: number;
@@ -50,19 +56,17 @@ export class SubscriptionStatusModel {
   pendingPayment?: SubscriptionPaymentModel | null;
   @Field({ description: 'Vrai quand le paiement Mobile Money en ligne (NotchPay) est disponible.' })
   onlinePaymentEnabled: boolean;
+  @Field(() => [MobileOperator], { description: 'Opérateurs proposés pour le paiement en ligne' })
+  onlineOperators: MobileOperator[];
 }
-
-export enum MobileOperator {
-  MTN = 'MTN',
-  ORANGE = 'ORANGE',
-}
-registerEnumType(MobileOperator, { name: 'MobileOperator', description: 'MTN Mobile Money ou Orange Money' });
 
 @ObjectType()
 export class SubscriptionCheckoutModel {
   @Field(() => ID) paymentId: string;
   @Field({ description: 'Page de paiement NotchPay (secours si la demande directe n’a pas pu partir)' }) url: string;
   @Field({ description: 'Vrai quand la demande de confirmation a été envoyée sur le téléphone' }) direct: boolean;
+  @Field(() => String, { nullable: true, description: 'Raison donnée par NotchPay quand la demande directe a été refusée' })
+  error?: string | null;
 }
 
 @ObjectType()

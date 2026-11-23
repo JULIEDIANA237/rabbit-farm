@@ -65,7 +65,7 @@ export class SubscriptionService {
     if (!user.farmId) {
       // Compte propriétaire sans ferme : toujours exempté.
       const settings = await this.settings();
-      return { status: AccessStatus.EXEMPT, daysLeft: 0, trialEndsAt: new Date(), readOnly: false, paidUntil: null, settings, pendingPayment: null, onlinePaymentEnabled: this.notchpay.enabled };
+      return { status: AccessStatus.EXEMPT, daysLeft: 0, trialEndsAt: new Date(), readOnly: false, paidUntil: null, settings, pendingPayment: null, onlinePaymentEnabled: this.notchpay.enabled, onlineOperators: this.notchpay.operators };
     }
     const [farm, settings, pending] = await Promise.all([
       this.prisma.farm.findUniqueOrThrow({ where: { id: user.farmId }, select: this.farmAccessSelect }),
@@ -73,7 +73,7 @@ export class SubscriptionService {
       this.prisma.subscriptionPayment.findFirst({ where: { farmId: user.farmId, status: 'PENDING', provider: null }, orderBy: { createdAt: 'desc' } }),
     ]);
     const access = accessOf(farm, settings.trialDays, this.isAdmin(user.email) || this.farmExempt(farm));
-    return { ...access, paidUntil: farm.paidUntil, settings, pendingPayment: pending, onlinePaymentEnabled: this.notchpay.enabled };
+    return { ...access, paidUntil: farm.paidUntil, settings, pendingPayment: pending, onlinePaymentEnabled: this.notchpay.enabled, onlineOperators: this.notchpay.operators };
   }
 
   /** Vrai si l'élevage ne peut plus que consulter ses données. */
@@ -114,6 +114,7 @@ export class SubscriptionService {
     if (!this.notchpay.enabled) throw new ServiceUnavailableException('Le paiement en ligne n’est pas encore disponible : utilise le paiement déclaré.');
     const phone = direct ? normalizeCameroonPhone(direct.phone) : null;
     if (direct && !phone) throw new BadRequestException('Numéro invalide : tape les 9 chiffres, par exemple 670 00 00 00.');
+    if (direct && !this.notchpay.operators.includes(direct.operator)) throw new BadRequestException('Cet opérateur n’est pas encore disponible pour le paiement en ligne.');
     const settings = await this.settings();
     const amount = this.priceOf(plan, settings);
     const payment = await this.prisma.subscriptionPayment.create({
@@ -135,14 +136,15 @@ export class SubscriptionService {
       throw new ServiceUnavailableException('Le paiement en ligne ne répond pas pour le moment. Réessaie plus tard ou utilise le paiement déclaré.');
     }
     await this.prisma.subscriptionPayment.update({ where: { id: payment.id }, data: { providerRef: created.id, checkoutUrl: created.url } });
-    if (!direct || !phone) return { paymentId: payment.id, url: created.url, direct: false };
+    if (!direct || !phone) return { paymentId: payment.id, url: created.url, direct: false, error: null };
     try {
       await this.notchpay.charge(created.reference ?? created.id ?? payment.id, direct.operator, phone);
-      return { paymentId: payment.id, url: created.url, direct: true };
+      return { paymentId: payment.id, url: created.url, direct: true, error: null };
     } catch (error) {
-      // L'envoi direct a échoué : la page NotchPay reste un secours, avec le même paiement.
-      this.logger.warn(`Paiement direct NotchPay refusé : ${error instanceof Error ? error.message : String(error)}`);
-      return { paymentId: payment.id, url: created.url, direct: false };
+      // L'envoi direct a échoué : on montre la raison dans l'app ; la page NotchPay reste un secours au choix.
+      const reason = error instanceof Error ? error.message : String(error);
+      this.logger.error(`Paiement direct NotchPay refusé : ${reason}`);
+      return { paymentId: payment.id, url: created.url, direct: false, error: reason.slice(0, 300) };
     }
   }
 
