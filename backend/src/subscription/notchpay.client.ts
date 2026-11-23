@@ -49,6 +49,8 @@ export interface CheckoutInput {
 export interface RemotePayment {
   id: string | null;
   reference: string | null;
+  /** Notre référence (payment.id) quand NotchPay garde la sienne dans « reference ». */
+  merchantReference?: string | null;
   status: string;
   amount: number | null;
   currency: string | null;
@@ -69,15 +71,16 @@ export function normalizeCameroonPhone(input: string): string | null {
 type Json = Record<string, unknown>;
 const str = (v: unknown) => (typeof v === 'string' && v ? v : null);
 
-/** Le paiement peut arriver sous « transaction » ou à la racine selon la réponse. */
+/** Le paiement peut arriver sous « transaction », « payment » ou à la racine selon la réponse. */
 export function parseTransaction(body: Json): RemotePayment | null {
-  const raw = body.transaction;
+  const raw = body.transaction ?? body.payment;
   const t: Json = raw && typeof raw === 'object' ? (raw as Json) : body;
   const status = str(t.status);
   if (!status) return null;
   return {
     id: str(t.id) ?? (typeof raw === 'string' ? raw : null),
     reference: str(t.reference),
+    merchantReference: str(t.merchant_reference),
     status: status.toLowerCase(),
     amount: typeof t.amount === 'number' ? t.amount : Number(t.amount) || null,
     currency: str(t.currency),
