@@ -786,7 +786,10 @@ export const SubscriptionPaymentScalarFieldEnum = {
   requestedById: 'requestedById',
   periodEnd: 'periodEnd',
   confirmedAt: 'confirmedAt',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  provider: 'provider',
+  providerRef: 'providerRef',
+  checkoutUrl: 'checkoutUrl'
 } as const
 
 export type SubscriptionPaymentScalarFieldEnum = (typeof SubscriptionPaymentScalarFieldEnum)[keyof typeof SubscriptionPaymentScalarFieldEnum]

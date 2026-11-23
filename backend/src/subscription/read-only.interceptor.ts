@@ -24,6 +24,8 @@ export const ALWAYS_ALLOWED = new Set([
   'unsubscribePush',
   'sendTestPush',
   'declareSubscriptionPayment',
+  'startSubscriptionCheckout',
+  'checkSubscriptionPayment',
   'updatePlatformSettings',
   'confirmSubscriptionPayment',
   'rejectSubscriptionPayment',
