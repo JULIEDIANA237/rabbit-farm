@@ -52,10 +52,17 @@ export class SubscriptionStatusModel {
   onlinePaymentEnabled: boolean;
 }
 
+export enum MobileOperator {
+  MTN = 'MTN',
+  ORANGE = 'ORANGE',
+}
+registerEnumType(MobileOperator, { name: 'MobileOperator', description: 'MTN Mobile Money ou Orange Money' });
+
 @ObjectType()
 export class SubscriptionCheckoutModel {
   @Field(() => ID) paymentId: string;
-  @Field({ description: 'Page de paiement NotchPay où ouvrir l’éleveur' }) url: string;
+  @Field({ description: 'Page de paiement NotchPay (secours si la demande directe n’a pas pu partir)' }) url: string;
+  @Field({ description: 'Vrai quand la demande de confirmation a été envoyée sur le téléphone' }) direct: boolean;
 }
 
 @ObjectType()

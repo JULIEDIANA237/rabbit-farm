@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { gql } from '@apollo/client';
 import { useMutation } from '@apollo/client/react';
-import { CheckCircle2, Clock, Crown, Infinity as InfinityIcon, Lock, Smartphone } from 'lucide-react';
+import { CheckCircle2, Clock, Crown, Infinity as InfinityIcon, Loader2, Lock, Smartphone } from 'lucide-react';
 
 import { Button, Card, ErrorBox, Field, Input, Loading, PageHeader } from '@/components/ui/kit';
 import { formatDate, formatMoney } from '@/lib/format';
@@ -16,8 +16,8 @@ const DECLARE_PAYMENT = gql`
 `;
 
 const START_CHECKOUT = gql`
-  mutation StartSubscriptionCheckout($plan: SubscriptionPlan!) {
-    startSubscriptionCheckout(plan: $plan) { paymentId url }
+  mutation StartSubscriptionCheckout($plan: SubscriptionPlan!, $operator: MobileOperator, $phone: String) {
+    startSubscriptionCheckout(plan: $plan, operator: $operator, phone: $phone) { paymentId url direct }
   }
 `;
 
@@ -76,6 +76,120 @@ function PaymentReturn() {
   return <p role="status" className={`rounded-2xl p-4 text-sm font-medium ${view.cls}`}>{view.text}</p>;
 }
 
+type Operator = 'MTN' | 'ORANGE';
+const PHONE_KEY = 'rabbitfarm:numero-mobile-money';
+const POLL_MS = 4000;
+const WAIT_MS = 3 * 60_000;
+
+const OPERATORS: { value: Operator; label: string; cls: string }[] = [
+  { value: 'MTN', label: 'MTN MoMo', cls: 'border-yellow-400 bg-yellow-50 text-yellow-900' },
+  { value: 'ORANGE', label: 'Orange Money', cls: 'border-orange-400 bg-orange-50 text-orange-900' },
+];
+
+/** Numéro saisi valide : 9 chiffres commençant par 6, avec ou sans 237. */
+function validPhone(value: string) {
+  const d = value.replace(/\D/g, '').replace(/^(00)?237(?=\d{9}$)/, '');
+  return /^6\d{8}$/.test(d);
+}
+
+type DirectState = { phase: 'idle' } | { phase: 'waiting'; paymentId: string } | { phase: 'done' } | { phase: 'failed' } | { phase: 'late' };
+
+/** Paiement sans quitter l'app : la demande de confirmation arrive sur le téléphone de l'éleveur. */
+function MobileMoneyPay({ plan, amount }: { plan: Plan; amount: number }) {
+  const [operator, setOperator] = useState<Operator>('MTN');
+  const [phone, setPhone] = useState(() => {
+    try { return localStorage.getItem(PHONE_KEY) ?? ''; } catch { return ''; }
+  });
+  const [state, setState] = useState<DirectState>({ phase: 'idle' });
+  const [start, starting] = useMutation<{ startSubscriptionCheckout: { paymentId: string; url: string; direct: boolean } }>(START_CHECKOUT);
+  const [check] = useMutation<{ checkSubscriptionPayment: { status: 'CONFIRMED' | 'PENDING' | 'REJECTED' } }>(CHECK_PAYMENT, {
+    refetchQueries: [{ query: SUBSCRIPTION_STATUS }],
+  });
+
+  // Suit le paiement toutes les 4 s pendant 3 min (le webhook active aussi l'abonnement de son côté).
+  useEffect(() => {
+    if (state.phase !== 'waiting') return;
+    const startedAt = Date.now();
+    let stopped = false;
+    const tick = async () => {
+      if (stopped) return;
+      try {
+        const { data } = await check({ variables: { reference: state.paymentId } });
+        const status = data?.checkSubscriptionPayment.status;
+        if (stopped) return;
+        if (status === 'CONFIRMED') return setState({ phase: 'done' });
+        if (status === 'REJECTED') return setState({ phase: 'failed' });
+      } catch { /* réseau : on réessaie */ }
+      if (Date.now() - startedAt > WAIT_MS) return setState({ phase: 'late' });
+      timer = setTimeout(tick, POLL_MS);
+    };
+    let timer = setTimeout(tick, POLL_MS);
+    return () => { stopped = true; clearTimeout(timer); };
+  }, [state, check]);
+
+  const pay = async () => {
+    try { localStorage.setItem(PHONE_KEY, phone.trim()); } catch { /* navigation privée */ }
+    const { data } = await start({ variables: { plan, operator, phone: phone.trim() } });
+    const r = data?.startSubscriptionCheckout;
+    if (!r) return;
+    if (r.direct) return setState({ phase: 'waiting', paymentId: r.paymentId });
+    // La demande directe n'a pas pu partir : page NotchPay en secours.
+    rememberPayment(r.paymentId);
+    window.location.assign(r.url);
+  };
+
+  if (state.phase === 'waiting') {
+    return (
+      <div role="status" className="space-y-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-900">
+        <p className="flex items-center gap-2 font-semibold"><Loader2 size={18} className="animate-spin" /> Confirme le paiement sur ton téléphone</p>
+        <p className="text-sm">
+          Une demande de {formatMoney(amount)} arrive sur le {phone.trim()}. Valide-la avec ton code secret {operator === 'MTN' ? 'MTN MoMo' : 'Orange Money'}.
+          Garde cette page ouverte, elle se met à jour toute seule.
+        </p>
+        <button type="button" onClick={() => setState({ phase: 'idle' })} className="text-xs font-semibold text-emerald-800 hover:underline">
+          Changer de numéro
+        </button>
+      </div>
+    );
+  }
+  if (state.phase === 'done') {
+    return <p role="status" className="rounded-2xl bg-emerald-50 p-4 text-sm font-medium text-emerald-900">Paiement reçu, merci ! Ton abonnement est activé.</p>;
+  }
+
+  return (
+    <div className="space-y-3">
+      {state.phase === 'failed' && (
+        <p role="status" className="rounded-xl bg-amber-50 p-3 text-sm text-amber-900">Le paiement n’a pas abouti (refusé, annulé ou solde insuffisant). Rien n’a été prélevé : tu peux réessayer.</p>
+      )}
+      {state.phase === 'late' && (
+        <p role="status" className="rounded-xl bg-sky-50 p-3 text-sm text-sky-900">Pas encore de confirmation. Si tu as validé sur ton téléphone, ton abonnement s’activera tout seul dans quelques minutes.</p>
+      )}
+      <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label="Opérateur">
+        {OPERATORS.map((o) => (
+          <button
+            key={o.value}
+            type="button"
+            role="radio"
+            aria-checked={operator === o.value}
+            onClick={() => setOperator(o.value)}
+            className={`rounded-xl border-2 px-3 py-2.5 text-sm font-semibold transition ${operator === o.value ? o.cls : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}
+          >
+            {o.label}
+          </button>
+        ))}
+      </div>
+      <Field label="Numéro Mobile Money">
+        <Input type="tel" inputMode="tel" autoComplete="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="6XX XX XX XX" />
+      </Field>
+      <ErrorBox error={starting.error} />
+      <Button className="w-full" loading={starting.loading} disabled={!validPhone(phone)} onClick={() => pay().catch(() => undefined)}>
+        <Smartphone size={18} /> Payer {formatMoney(amount)}
+      </Button>
+      <p className="text-xs text-slate-500">Tu restes dans l’app : la demande arrive sur ton téléphone, l’abonnement s’active dès que tu valides. Paiement sécurisé par NotchPay.</p>
+    </div>
+  );
+}
+
 export default function SubscriptionPage() {
   const { subscription: s, loading } = useSubscription();
   return (
@@ -115,15 +229,7 @@ function Plans({ s }: { s: SubscriptionStatus }) {
   const [plan, setPlan] = useState<Plan>('YEARLY');
   const [reference, setReference] = useState('');
   const [declare, state] = useMutation(DECLARE_PAYMENT, { refetchQueries: [{ query: SUBSCRIPTION_STATUS }] });
-  const [startCheckout, checkout] = useMutation<{ startSubscriptionCheckout: { paymentId: string; url: string } }>(START_CHECKOUT);
   const [showManual, setShowManual] = useState(false);
-  const payOnline = async () => {
-    const { data } = await startCheckout({ variables: { plan } });
-    const target = data?.startSubscriptionCheckout;
-    if (!target) return;
-    rememberPayment(target.paymentId);
-    window.location.assign(target.url);
-  };
   const { monthlyPrice, yearlyPrice, paymentInstructions } = s.settings;
   const saved = monthlyPrice * 12 - yearlyPrice;
   const amount = plan === 'YEARLY' ? yearlyPrice : monthlyPrice;
@@ -163,11 +269,7 @@ function Plans({ s }: { s: SubscriptionStatus }) {
       <Card title="Payer" subtitle={`${PLAN_LABEL[plan]} : ${formatMoney(amount)}`}>
         {s.onlinePaymentEnabled && (
           <div className="mb-4 space-y-2">
-            <Button className="w-full" loading={checkout.loading} onClick={() => payOnline().catch(() => undefined)}>
-              <Smartphone size={18} /> Payer {formatMoney(amount)} par Mobile Money
-            </Button>
-            <p className="text-xs text-slate-500">MTN Mobile Money ou Orange Money, sur la page sécurisée NotchPay. L’abonnement s’active tout seul.</p>
-            <ErrorBox error={checkout.error} />
+            <MobileMoneyPay plan={plan} amount={amount} />
             {!showManual && !s.pendingPayment && (
               <button type="button" onClick={() => setShowManual(true)} className="text-xs font-semibold text-slate-500 hover:text-emerald-700 hover:underline">
                 J’ai déjà payé autrement

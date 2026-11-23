@@ -1424,6 +1424,12 @@ type MeModel {
   userId: ID!
 }
 
+"""MTN Mobile Money ou Orange Money"""
+enum MobileOperator {
+  MTN
+  ORANGE
+}
+
 type MonthlyFinanceModel {
   expenses: Float!
   margin: Float!
@@ -1641,8 +1647,10 @@ type Mutation {
   """Marque (ou retire) des lapins comme prêts pour la vente"""
   setRabbitsReadyForSale(rabbitIds: [ID!]!, ready: Boolean!): Int!
 
-  """Ouvrir une page de paiement Mobile Money (NotchPay)"""
-  startSubscriptionCheckout(plan: SubscriptionPlan!): SubscriptionCheckoutModel!
+  """
+  Payer par Mobile Money : demande envoyée sur le téléphone, ou page NotchPay en secours
+  """
+  startSubscriptionCheckout(operator: MobileOperator, phone: String, plan: SubscriptionPlan!): SubscriptionCheckoutModel!
 
   """Abonne cet appareil aux rappels du jour."""
   subscribePush(input: PushSubscriptionInput!): Boolean!
@@ -2454,9 +2462,13 @@ type SubscriptionAdminModel {
 }
 
 type SubscriptionCheckoutModel {
+  """Vrai quand la demande de confirmation a été envoyée sur le téléphone"""
+  direct: Boolean!
   paymentId: ID!
 
-  """Page de paiement NotchPay où ouvrir l’éleveur"""
+  """
+  Page de paiement NotchPay (secours si la demande directe n’a pas pu partir)
+  """
   url: String!
 }
 

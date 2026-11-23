@@ -16,13 +16,22 @@ class FakeNotchPay {
   checkouts: CheckoutInput[] = [];
   remote = new Map<string, RemotePayment>();
   fail = false;
+  chargeFails = false;
+  charges: Array<{ reference: string; operator: string; phone: string }> = [];
 
   async checkout(input: CheckoutInput) {
     if (this.fail) throw new Error('panne');
     this.checkouts.push(input);
     const id = `pay_${this.checkouts.length}`;
     this.remote.set(id, { id, reference: input.reference, status: 'pending', amount: input.amount, currency: 'XAF' });
-    return { id, url: `https://pay.example/${id}` };
+    return { id, reference: input.reference, url: `https://pay.example/${id}` };
+  }
+
+  async charge(reference: string, operator: string, phone: string) {
+    if (this.chargeFails) throw new Error('canal indisponible');
+    this.charges.push({ reference, operator, phone });
+    const p = [...this.remote.values()].find((r) => r.reference === reference)!;
+    p.status = 'processing';
   }
 
   async retrieve(ref: string) {
@@ -35,6 +44,9 @@ class FakeNotchPay {
 }
 
 const START = `mutation ($plan: SubscriptionPlan!) { startSubscriptionCheckout(plan: $plan) { paymentId url } }`;
+const DIRECT = `mutation ($plan: SubscriptionPlan!, $operator: MobileOperator, $phone: String) {
+  startSubscriptionCheckout(plan: $plan, operator: $operator, phone: $phone) { paymentId url direct }
+}`;
 const CHECK = `mutation ($r: String!) { checkSubscriptionPayment(reference: $r) { status periodEnd } }`;
 
 describe('Paiement NotchPay (e2e)', () => {
@@ -131,5 +143,29 @@ describe('Paiement NotchPay (e2e)', () => {
     const res2 = await gql(app, START, { plan: 'MONTHLY' }, token);
     expect(res2.errors?.[0].message).toMatch(/ne répond pas/);
     fake.fail = false;
+  });
+
+  it('paiement direct : la demande part sur le téléphone, l’app suit jusqu’à l’activation', async () => {
+    const before = (await prisma.farm.findUniqueOrThrow({ where: { id: farmId } })).paidUntil!;
+    const { startSubscriptionCheckout: r } = await gqlOk(app, DIRECT, { plan: 'MONTHLY', operator: 'ORANGE', phone: '690 00 00 00' }, token);
+    expect(r.direct).toBe(true);
+    expect(fake.charges.at(-1)).toEqual({ reference: r.paymentId, operator: 'ORANGE', phone: '+237690000000' });
+    const { checkSubscriptionPayment: waiting } = await gqlOk(app, CHECK, { r: r.paymentId }, token);
+    expect(waiting.status).toBe('PENDING');
+    [...fake.remote.values()].find((p) => p.reference === r.paymentId)!.status = 'complete';
+    const { checkSubscriptionPayment: done } = await gqlOk(app, CHECK, { r: r.paymentId }, token);
+    expect(done.status).toBe('CONFIRMED');
+    const after = (await prisma.farm.findUniqueOrThrow({ where: { id: farmId } })).paidUntil!;
+    expect(after.getTime()).toBeGreaterThan(before.getTime());
+  });
+
+  it('paiement direct : numéro invalide refusé, échec d’envoi → page NotchPay en secours', async () => {
+    const bad = await gql(app, DIRECT, { plan: 'MONTHLY', operator: 'MTN', phone: '22 22 22' }, token);
+    expect(bad.errors?.[0].message).toMatch(/Numéro invalide/);
+    fake.chargeFails = true;
+    const { startSubscriptionCheckout: r } = await gqlOk(app, DIRECT, { plan: 'MONTHLY', operator: 'MTN', phone: '670000000' }, token);
+    fake.chargeFails = false;
+    expect(r.direct).toBe(false);
+    expect(r.url).toMatch(/^https:\/\/pay\.example\//);
   });
 });

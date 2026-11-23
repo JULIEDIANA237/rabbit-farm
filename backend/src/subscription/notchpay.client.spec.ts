@@ -1,6 +1,6 @@
 import { createHmac } from 'node:crypto';
 
-import { parseTransaction, readNotchPayConfig, validSignature } from './notchpay.client.js';
+import { normalizeCameroonPhone, parseTransaction, readNotchPayConfig, validSignature } from './notchpay.client.js';
 
 describe('NotchPay', () => {
   it('désactivé sans clé, URL par défaut', () => {
@@ -22,5 +22,16 @@ describe('NotchPay', () => {
     expect(validSignature(raw, good, 'autre')).toBe(false);
     expect(validSignature(raw, undefined, 'hsk_test_1')).toBe(false);
     expect(validSignature(raw, 'abc', 'hsk_test_1')).toBe(false);
+  });
+});
+
+describe('normalizeCameroonPhone', () => {
+  it('accepte les formats courants et refuse le reste', () => {
+    expect(normalizeCameroonPhone('670 00 00 00')).toBe('+237670000000');
+    expect(normalizeCameroonPhone('+237 690-00-00-00')).toBe('+237690000000');
+    expect(normalizeCameroonPhone('00237670000000')).toBe('+237670000000');
+    expect(normalizeCameroonPhone('237670000000')).toBe('+237670000000');
+    expect(normalizeCameroonPhone('22 22 22 22')).toBeNull();
+    expect(normalizeCameroonPhone('67000000')).toBeNull();
   });
 });
