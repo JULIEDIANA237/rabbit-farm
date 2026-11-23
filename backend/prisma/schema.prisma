@@ -1453,6 +1453,12 @@ model SubscriptionPayment {
   periodEnd     DateTime?
   confirmedAt   DateTime?
   createdAt     DateTime                  @default(now())
+  /// Paiement en ligne : « NOTCHPAY » (null = déclaré à la main).
+  provider      String?
+  /// Identifiant de la transaction chez le prestataire (ex. pay_…).
+  providerRef   String?                   @unique
+  /// Page de paiement du prestataire.
+  checkoutUrl   String?
 
   @@index([farmId])
   @@index([status])

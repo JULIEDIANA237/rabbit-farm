@@ -12,7 +12,7 @@ import { trustSystemCertificates } from './common/utils/system-ca.js';
 async function bootstrap() {
   trustSystemCertificates();
 
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { rawBody: true });
 
   /**
    * Autorise le frontend (origin distincte)

@@ -48,6 +48,14 @@ export class SubscriptionStatusModel {
   @Field(() => PlatformSettingsModel) settings: PlatformSettingsModel;
   @Field(() => SubscriptionPaymentModel, { nullable: true, description: 'Paiement déclaré en attente de confirmation.' })
   pendingPayment?: SubscriptionPaymentModel | null;
+  @Field({ description: 'Vrai quand le paiement Mobile Money en ligne (NotchPay) est disponible.' })
+  onlinePaymentEnabled: boolean;
+}
+
+@ObjectType()
+export class SubscriptionCheckoutModel {
+  @Field(() => ID) paymentId: string;
+  @Field({ description: 'Page de paiement NotchPay où ouvrir l’éleveur' }) url: string;
 }
 
 @ObjectType()

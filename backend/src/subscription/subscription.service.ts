@@ -1,15 +1,19 @@
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, Logger, NotFoundException, ServiceUnavailableException, UnauthorizedException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service.js';
 import { platformAdmins } from '../platform/platform.service.js';
 import type { CurrentUserType } from '../auth/types/current-user.type.js';
-import type { SubscriptionPlan } from '../generated/prisma/client.js';
+import type { SubscriptionPayment, SubscriptionPlan } from '../generated/prisma/client.js';
+import { frontendUrl } from '../auth/password-reset/password-reset.service.js';
 
 import { AccessStatus } from './subscription.models.js';
 import { DAY, accessOf, extendPeriod } from './access.js';
+import { NotchPayClient } from './notchpay.client.js';
 
 const SETTINGS_ID = 'default';
 const CACHE_MS = 30_000;
+const NOTCHPAY = 'NOTCHPAY';
+const FAILED = new Set(['failed', 'canceled', 'cancelled', 'expired']);
 
 export interface PlatformSettingsInput {
   trialDays?: number;
@@ -23,7 +27,12 @@ export class SubscriptionService {
   /** Lecture seule par élevage, gardée 30 s pour ne pas interroger la base à chaque saisie. */
   private readonly readOnlyCache = new Map<string, { readOnly: boolean; until: number }>();
 
-  constructor(private readonly prisma: PrismaService) {}
+  private readonly logger = new Logger(SubscriptionService.name);
+
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly notchpay: NotchPayClient,
+  ) {}
 
   private isAdmin(email: string) {
     return platformAdmins().includes(email.toLowerCase());
@@ -56,15 +65,15 @@ export class SubscriptionService {
     if (!user.farmId) {
       // Compte propriétaire sans ferme : toujours exempté.
       const settings = await this.settings();
-      return { status: AccessStatus.EXEMPT, daysLeft: 0, trialEndsAt: new Date(), readOnly: false, paidUntil: null, settings, pendingPayment: null };
+      return { status: AccessStatus.EXEMPT, daysLeft: 0, trialEndsAt: new Date(), readOnly: false, paidUntil: null, settings, pendingPayment: null, onlinePaymentEnabled: this.notchpay.enabled };
     }
     const [farm, settings, pending] = await Promise.all([
       this.prisma.farm.findUniqueOrThrow({ where: { id: user.farmId }, select: this.farmAccessSelect }),
       this.settings(),
-      this.prisma.subscriptionPayment.findFirst({ where: { farmId: user.farmId, status: 'PENDING' }, orderBy: { createdAt: 'desc' } }),
+      this.prisma.subscriptionPayment.findFirst({ where: { farmId: user.farmId, status: 'PENDING', provider: null }, orderBy: { createdAt: 'desc' } }),
     ]);
     const access = accessOf(farm, settings.trialDays, this.isAdmin(user.email) || this.farmExempt(farm));
-    return { ...access, paidUntil: farm.paidUntil, settings, pendingPayment: pending };
+    return { ...access, paidUntil: farm.paidUntil, settings, pendingPayment: pending, onlinePaymentEnabled: this.notchpay.enabled };
   }
 
   /** Vrai si l'élevage ne peut plus que consulter ses données. */
@@ -86,11 +95,88 @@ export class SubscriptionService {
     if (user.role !== 'ADMIN') throw new ForbiddenException('Seul un administrateur de l’élevage peut gérer l’abonnement.');
     const ref = reference?.trim().slice(0, 100) || null;
     const settings = await this.settings();
-    const pending = await this.prisma.subscriptionPayment.findFirst({ where: { farmId: user.farmId, status: 'PENDING' } });
+    const pending = await this.prisma.subscriptionPayment.findFirst({ where: { farmId: user.farmId, status: 'PENDING', provider: null } });
     const data = { plan, amount: this.priceOf(plan, settings), reference: ref, requestedById: user.userId };
     return pending
       ? this.prisma.subscriptionPayment.update({ where: { id: pending.id }, data })
       : this.prisma.subscriptionPayment.create({ data: { ...data, farmId: user.farmId } });
+  }
+
+  // ---------- Paiement en ligne (NotchPay) ----------
+
+  /** Ouvre une page de paiement NotchPay ; l'abonnement s'active tout seul une fois le paiement confirmé. */
+  async startOnlinePayment(user: CurrentUserType, plan: SubscriptionPlan) {
+    if (user.role !== 'ADMIN') throw new ForbiddenException('Seul un administrateur de l’élevage peut gérer l’abonnement.');
+    if (!user.farmId) throw new BadRequestException('Aucun élevage à abonner.');
+    if (!this.notchpay.enabled) throw new ServiceUnavailableException('Le paiement en ligne n’est pas encore disponible : utilise le paiement déclaré.');
+    const settings = await this.settings();
+    const amount = this.priceOf(plan, settings);
+    const payment = await this.prisma.subscriptionPayment.create({
+      data: { farmId: user.farmId, plan, amount, provider: NOTCHPAY, requestedById: user.userId },
+    });
+    try {
+      const { id, url } = await this.notchpay.checkout({
+        amount,
+        reference: payment.id,
+        email: user.email,
+        description: `Abonnement Rabbit Farm ${plan === 'YEARLY' ? 'annuel' : 'mensuel'}`,
+        callback: `${frontendUrl()}/subscription`,
+      });
+      await this.prisma.subscriptionPayment.update({ where: { id: payment.id }, data: { providerRef: id, checkoutUrl: url } });
+      return { paymentId: payment.id, url };
+    } catch (error) {
+      await this.prisma.subscriptionPayment.update({ where: { id: payment.id }, data: { status: 'REJECTED' } });
+      this.logger.warn(`Paiement NotchPay non créé : ${error instanceof Error ? error.message : String(error)}`);
+      throw new ServiceUnavailableException('Le paiement en ligne ne répond pas pour le moment. Réessaie plus tard ou utilise le paiement déclaré.');
+    }
+  }
+
+  /** Au retour de la page NotchPay : relit le paiement et active l'abonnement s'il est payé. */
+  async checkOnlinePayment(user: CurrentUserType, reference: string) {
+    const ref = reference.trim().slice(0, 100);
+    const payment = await this.prisma.subscriptionPayment.findFirst({
+      where: { farmId: user.farmId, provider: NOTCHPAY, OR: [{ id: ref }, { providerRef: ref }] },
+    });
+    if (!payment) throw new NotFoundException('Paiement introuvable.');
+    return this.syncOnline(payment);
+  }
+
+  /** Webhook NotchPay : signature vérifiée, puis paiement relu chez NotchPay (le contenu reçu n'est jamais cru). */
+  async handleWebhook(rawBody: Buffer | string | undefined, signature: string | undefined, body: unknown) {
+    if (!rawBody || !this.notchpay.verify(rawBody, signature)) throw new UnauthorizedException('Signature invalide.');
+    const data = (body as { data?: Record<string, unknown> } | null)?.data ?? {};
+    const nested = data.transaction && typeof data.transaction === 'object' ? (data.transaction as Record<string, unknown>) : {};
+    const refs = [data.reference, data.id, nested.reference, nested.id, data.merchant_reference]
+      .filter((v): v is string => typeof v === 'string' && v.length > 0 && v.length <= 100);
+    if (!refs.length) return { ok: true };
+    const payment = await this.prisma.subscriptionPayment.findFirst({
+      where: { provider: NOTCHPAY, OR: [{ id: { in: refs } }, { providerRef: { in: refs } }] },
+    });
+    if (payment) await this.syncOnline(payment);
+    return { ok: true };
+  }
+
+  private async syncOnline(payment: SubscriptionPayment): Promise<SubscriptionPayment> {
+    if (payment.status !== 'PENDING') return payment;
+    const remote = (payment.providerRef && (await this.notchpay.retrieve(payment.providerRef))) || (await this.notchpay.retrieve(payment.id));
+    if (!remote) return payment;
+    if (remote.reference && remote.reference !== payment.id) return payment;
+    if (FAILED.has(remote.status)) {
+      await this.prisma.subscriptionPayment.updateMany({ where: { id: payment.id, status: 'PENDING' }, data: { status: 'REJECTED' } });
+      return this.prisma.subscriptionPayment.findUniqueOrThrow({ where: { id: payment.id } });
+    }
+    const paid = remote.status === 'complete' && (remote.amount ?? 0) >= payment.amount && (!remote.currency || remote.currency.toUpperCase() === 'XAF');
+    if (!paid) return payment;
+    await this.prisma.$transaction(async (tx) => {
+      const claimed = await tx.subscriptionPayment.updateMany({ where: { id: payment.id, status: 'PENDING' }, data: { status: 'CONFIRMED', confirmedAt: new Date() } });
+      if (!claimed.count) return;
+      const farm = await tx.farm.findUniqueOrThrow({ where: { id: payment.farmId }, select: { paidUntil: true } });
+      const periodEnd = extendPeriod(farm.paidUntil, payment.plan);
+      await tx.subscriptionPayment.update({ where: { id: payment.id }, data: { periodEnd } });
+      await tx.farm.update({ where: { id: payment.farmId }, data: { paidUntil: periodEnd } });
+    });
+    this.readOnlyCache.delete(payment.farmId);
+    return this.prisma.subscriptionPayment.findUniqueOrThrow({ where: { id: payment.id } });
   }
 
   // ---------- Propriétaire de l'app ----------
@@ -100,7 +186,7 @@ export class SubscriptionService {
     const now = new Date();
     const [settings, pending, farms, confirmed] = await Promise.all([
       this.settings(),
-      this.prisma.subscriptionPayment.findMany({ where: { status: 'PENDING' }, orderBy: { createdAt: 'asc' }, include: { farm: { select: { name: true } } } }),
+      this.prisma.subscriptionPayment.findMany({ where: { status: 'PENDING', provider: null }, orderBy: { createdAt: 'asc' }, include: { farm: { select: { name: true } } } }),
       this.prisma.farm.findMany({
         orderBy: { createdAt: 'desc' },
         select: {

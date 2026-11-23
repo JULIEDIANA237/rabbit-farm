@@ -1516,6 +1516,9 @@ type Mutation {
   cancelRabbitExit(rabbitId: ID!): RabbitModel!
   cancelSale(input: CancelSaleInput!): SaleModel!
 
+  """Vérifier un paiement en ligne au retour de NotchPay"""
+  checkSubscriptionPayment(reference: String!): SubscriptionPaymentModel!
+
   """L’assistant fait le tour de la ferme maintenant (sans notification)."""
   companionTourNow: [CompanionQuestionModel!]!
   completeFatteningLot(input: CompleteFatteningLotInput!): FatteningLotModel!
@@ -1637,6 +1640,9 @@ type Mutation {
 
   """Marque (ou retire) des lapins comme prêts pour la vente"""
   setRabbitsReadyForSale(rabbitIds: [ID!]!, ready: Boolean!): Int!
+
+  """Ouvrir une page de paiement Mobile Money (NotchPay)"""
+  startSubscriptionCheckout(plan: SubscriptionPlan!): SubscriptionCheckoutModel!
 
   """Abonne cet appareil aux rappels du jour."""
   subscribePush(input: PushSubscriptionInput!): Boolean!
@@ -2447,6 +2453,13 @@ type SubscriptionAdminModel {
   trialFarms: Int!
 }
 
+type SubscriptionCheckoutModel {
+  paymentId: ID!
+
+  """Page de paiement NotchPay où ouvrir l’éleveur"""
+  url: String!
+}
+
 type SubscriptionPaymentModel {
   amount: Int!
   createdAt: DateTime!
@@ -2478,6 +2491,11 @@ enum SubscriptionPlan {
 type SubscriptionStatusModel {
   """Jours restants (essai ou période payée)."""
   daysLeft: Int!
+
+  """
+  Vrai quand le paiement Mobile Money en ligne (NotchPay) est disponible.
+  """
+  onlinePaymentEnabled: Boolean!
   paidUntil: DateTime
 
   """Paiement déclaré en attente de confirmation."""

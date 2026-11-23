@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gql } from '@apollo/client';
 import { useMutation } from '@apollo/client/react';
-import { CheckCircle2, Clock, Crown, Infinity as InfinityIcon, Lock } from 'lucide-react';
+import { CheckCircle2, Clock, Crown, Infinity as InfinityIcon, Lock, Smartphone } from 'lucide-react';
 
 import { Button, Card, ErrorBox, Field, Input, Loading, PageHeader } from '@/components/ui/kit';
 import { formatDate, formatMoney } from '@/lib/format';
@@ -15,11 +15,73 @@ const DECLARE_PAYMENT = gql`
   }
 `;
 
+const START_CHECKOUT = gql`
+  mutation StartSubscriptionCheckout($plan: SubscriptionPlan!) {
+    startSubscriptionCheckout(plan: $plan) { paymentId url }
+  }
+`;
+
+const CHECK_PAYMENT = gql`
+  mutation CheckSubscriptionPayment($reference: String!) {
+    checkSubscriptionPayment(reference: $reference) { id status periodEnd }
+  }
+`;
+
+/** Paiement en cours gardé avant d'aller sur NotchPay, au cas où la référence ne revient pas dans l'adresse. */
+const LAST_PAYMENT_KEY = 'rabbitfarm:paiement-en-ligne';
+
+function rememberPayment(id: string) {
+  try { localStorage.setItem(LAST_PAYMENT_KEY, id); } catch { /* navigation privée */ }
+}
+
+function takeReturnReference() {
+  const params = new URLSearchParams(window.location.search);
+  const fromUrl = params.get('reference') || params.get('trxref') || params.get('notchpay_trxref');
+  let stored: string | null = null;
+  try { stored = localStorage.getItem(LAST_PAYMENT_KEY); } catch { /* ignoré */ }
+  if (!fromUrl && !stored) return null;
+  try { localStorage.removeItem(LAST_PAYMENT_KEY); } catch { /* ignoré */ }
+  if (fromUrl) window.history.replaceState(null, '', window.location.pathname);
+  return fromUrl || stored;
+}
+
+type CheckResult = 'checking' | 'CONFIRMED' | 'PENDING' | 'REJECTED' | 'error';
+
+function PaymentReturn() {
+  const [result, setResult] = useState<CheckResult | null>(null);
+  const [check] = useMutation<{ checkSubscriptionPayment: { status: 'CONFIRMED' | 'PENDING' | 'REJECTED' } }>(CHECK_PAYMENT, {
+    refetchQueries: [{ query: SUBSCRIPTION_STATUS }],
+  });
+  const started = useRef(false);
+
+  useEffect(() => {
+    if (started.current) return;
+    started.current = true;
+    const reference = takeReturnReference();
+    if (!reference) return;
+    queueMicrotask(() => setResult('checking'));
+    check({ variables: { reference } })
+      .then(({ data }) => setResult(data?.checkSubscriptionPayment.status ?? 'error'))
+      .catch(() => setResult('error'));
+  }, [check]);
+
+  if (!result) return null;
+  const view = {
+    checking: { cls: 'bg-slate-50 text-slate-700', text: 'Vérification de ton paiement…' },
+    CONFIRMED: { cls: 'bg-emerald-50 text-emerald-900', text: 'Paiement reçu, merci ! Ton abonnement est activé.' },
+    PENDING: { cls: 'bg-sky-50 text-sky-900', text: 'Ton paiement est en cours de validation. Ton abonnement s’activera tout seul dès qu’il sera confirmé, tu peux fermer cette page.' },
+    REJECTED: { cls: 'bg-amber-50 text-amber-900', text: 'Le paiement n’a pas abouti (annulé ou refusé). Aucun montant n’a été validé : tu peux réessayer.' },
+    error: { cls: 'bg-amber-50 text-amber-900', text: 'Impossible de vérifier le paiement pour le moment. S’il a réussi, ton abonnement s’activera tout seul dans quelques minutes.' },
+  }[result];
+  return <p role="status" className={`rounded-2xl p-4 text-sm font-medium ${view.cls}`}>{view.text}</p>;
+}
+
 export default function SubscriptionPage() {
   const { subscription: s, loading } = useSubscription();
   return (
     <div className="space-y-6">
       <PageHeader eyebrow="Compte" title="Abonnement" description="Ton essai gratuit, ton abonnement et comment payer." />
+      <PaymentReturn />
       {!s && loading && <Loading />}
       {s && (
         <>
@@ -53,6 +115,15 @@ function Plans({ s }: { s: SubscriptionStatus }) {
   const [plan, setPlan] = useState<Plan>('YEARLY');
   const [reference, setReference] = useState('');
   const [declare, state] = useMutation(DECLARE_PAYMENT, { refetchQueries: [{ query: SUBSCRIPTION_STATUS }] });
+  const [startCheckout, checkout] = useMutation<{ startSubscriptionCheckout: { paymentId: string; url: string } }>(START_CHECKOUT);
+  const [showManual, setShowManual] = useState(false);
+  const payOnline = async () => {
+    const { data } = await startCheckout({ variables: { plan } });
+    const target = data?.startSubscriptionCheckout;
+    if (!target) return;
+    rememberPayment(target.paymentId);
+    window.location.assign(target.url);
+  };
   const { monthlyPrice, yearlyPrice, paymentInstructions } = s.settings;
   const saved = monthlyPrice * 12 - yearlyPrice;
   const amount = plan === 'YEARLY' ? yearlyPrice : monthlyPrice;
@@ -90,7 +161,21 @@ function Plans({ s }: { s: SubscriptionStatus }) {
       </Card>
 
       <Card title="Payer" subtitle={`${PLAN_LABEL[plan]} : ${formatMoney(amount)}`}>
-        {s.pendingPayment ? (
+        {s.onlinePaymentEnabled && (
+          <div className="mb-4 space-y-2">
+            <Button className="w-full" loading={checkout.loading} onClick={() => payOnline().catch(() => undefined)}>
+              <Smartphone size={18} /> Payer {formatMoney(amount)} par Mobile Money
+            </Button>
+            <p className="text-xs text-slate-500">MTN Mobile Money ou Orange Money, sur la page sécurisée NotchPay. L’abonnement s’active tout seul.</p>
+            <ErrorBox error={checkout.error} />
+            {!showManual && !s.pendingPayment && (
+              <button type="button" onClick={() => setShowManual(true)} className="text-xs font-semibold text-slate-500 hover:text-emerald-700 hover:underline">
+                J’ai déjà payé autrement
+              </button>
+            )}
+          </div>
+        )}
+        {s.onlinePaymentEnabled && !showManual && !s.pendingPayment ? null : s.pendingPayment ? (
           <p className="rounded-xl bg-sky-50 p-3 text-sm text-sky-900">
             Paiement {PLAN_LABEL[s.pendingPayment.plan].toLowerCase()} de {formatMoney(s.pendingPayment.amount)} déclaré le{' '}
             {formatDate(s.pendingPayment.createdAt)}

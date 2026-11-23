@@ -15,7 +15,7 @@ export async function createTestApp(
     }),
   ).compile();
 
-  const app = moduleRef.createNestApplication();
+  const app = moduleRef.createNestApplication({ rawBody: true });
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   await app.init();
 

@@ -9,6 +9,7 @@ import { SubscriptionPlan } from '../generated/prisma/client.js';
 import {
   PlatformSettingsModel,
   SubscriptionAdminModel,
+  SubscriptionCheckoutModel,
   SubscriptionPaymentModel,
   SubscriptionStatusModel,
 } from './subscription.models.js';
@@ -39,6 +40,19 @@ export class SubscriptionResolver {
     @Args('reference', { type: () => String, nullable: true }) reference?: string,
   ) {
     return this.subscriptions.declarePayment(user, plan, reference);
+  }
+
+  @Mutation(() => SubscriptionCheckoutModel, { description: 'Ouvrir une page de paiement Mobile Money (NotchPay)' })
+  startSubscriptionCheckout(
+    @CurrentUser() user: CurrentUserType,
+    @Args('plan', { type: () => SubscriptionPlan }) plan: SubscriptionPlan,
+  ) {
+    return this.subscriptions.startOnlinePayment(user, plan);
+  }
+
+  @Mutation(() => SubscriptionPaymentModel, { description: 'Vérifier un paiement en ligne au retour de NotchPay' })
+  checkSubscriptionPayment(@CurrentUser() user: CurrentUserType, @Args('reference') reference: string) {
+    return this.subscriptions.checkOnlinePayment(user, reference);
   }
 
   @Query(() => SubscriptionAdminModel, { description: 'Abonnements de tous les élevages (propriétaire)' })

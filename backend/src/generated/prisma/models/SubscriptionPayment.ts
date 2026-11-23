@@ -45,6 +45,9 @@ export type SubscriptionPaymentMinAggregateOutputType = {
   periodEnd: Date | null
   confirmedAt: Date | null
   createdAt: Date | null
+  provider: string | null
+  providerRef: string | null
+  checkoutUrl: string | null
 }
 
 export type SubscriptionPaymentMaxAggregateOutputType = {
@@ -58,6 +61,9 @@ export type SubscriptionPaymentMaxAggregateOutputType = {
   periodEnd: Date | null
   confirmedAt: Date | null
   createdAt: Date | null
+  provider: string | null
+  providerRef: string | null
+  checkoutUrl: string | null
 }
 
 export type SubscriptionPaymentCountAggregateOutputType = {
@@ -71,6 +77,9 @@ export type SubscriptionPaymentCountAggregateOutputType = {
   periodEnd: number
   confirmedAt: number
   createdAt: number
+  provider: number
+  providerRef: number
+  checkoutUrl: number
   _all: number
 }
 
@@ -94,6 +103,9 @@ export type SubscriptionPaymentMinAggregateInputType = {
   periodEnd?: true
   confirmedAt?: true
   createdAt?: true
+  provider?: true
+  providerRef?: true
+  checkoutUrl?: true
 }
 
 export type SubscriptionPaymentMaxAggregateInputType = {
@@ -107,6 +119,9 @@ export type SubscriptionPaymentMaxAggregateInputType = {
   periodEnd?: true
   confirmedAt?: true
   createdAt?: true
+  provider?: true
+  providerRef?: true
+  checkoutUrl?: true
 }
 
 export type SubscriptionPaymentCountAggregateInputType = {
@@ -120,6 +135,9 @@ export type SubscriptionPaymentCountAggregateInputType = {
   periodEnd?: true
   confirmedAt?: true
   createdAt?: true
+  provider?: true
+  providerRef?: true
+  checkoutUrl?: true
   _all?: true
 }
 
@@ -220,6 +238,9 @@ export type SubscriptionPaymentGroupByOutputType = {
   periodEnd: Date | null
   confirmedAt: Date | null
   createdAt: Date
+  provider: string | null
+  providerRef: string | null
+  checkoutUrl: string | null
   _count: SubscriptionPaymentCountAggregateOutputType | null
   _avg: SubscriptionPaymentAvgAggregateOutputType | null
   _sum: SubscriptionPaymentSumAggregateOutputType | null
@@ -256,6 +277,9 @@ export type SubscriptionPaymentWhereInput = {
   periodEnd?: Prisma.DateTimeNullableFilter<"SubscriptionPayment"> | Date | string | null
   confirmedAt?: Prisma.DateTimeNullableFilter<"SubscriptionPayment"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"SubscriptionPayment"> | Date | string
+  provider?: Prisma.StringNullableFilter<"SubscriptionPayment"> | string | null
+  providerRef?: Prisma.StringNullableFilter<"SubscriptionPayment"> | string | null
+  checkoutUrl?: Prisma.StringNullableFilter<"SubscriptionPayment"> | string | null
   farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
 }
 
@@ -270,11 +294,15 @@ export type SubscriptionPaymentOrderByWithRelationInput = {
   periodEnd?: Prisma.SortOrderInput | Prisma.SortOrder
   confirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  provider?: Prisma.SortOrderInput | Prisma.SortOrder
+  providerRef?: Prisma.SortOrderInput | Prisma.SortOrder
+  checkoutUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   farm?: Prisma.FarmOrderByWithRelationInput
 }
 
 export type SubscriptionPaymentWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  providerRef?: string
   AND?: Prisma.SubscriptionPaymentWhereInput | Prisma.SubscriptionPaymentWhereInput[]
   OR?: Prisma.SubscriptionPaymentWhereInput[]
   NOT?: Prisma.SubscriptionPaymentWhereInput | Prisma.SubscriptionPaymentWhereInput[]
@@ -287,8 +315,10 @@ export type SubscriptionPaymentWhereUniqueInput = Prisma.AtLeast<{
   periodEnd?: Prisma.DateTimeNullableFilter<"SubscriptionPayment"> | Date | string | null
   confirmedAt?: Prisma.DateTimeNullableFilter<"SubscriptionPayment"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"SubscriptionPayment"> | Date | string
+  provider?: Prisma.StringNullableFilter<"SubscriptionPayment"> | string | null
+  checkoutUrl?: Prisma.StringNullableFilter<"SubscriptionPayment"> | string | null
   farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
-}, "id">
+}, "id" | "providerRef">
 
 export type SubscriptionPaymentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -301,6 +331,9 @@ export type SubscriptionPaymentOrderByWithAggregationInput = {
   periodEnd?: Prisma.SortOrderInput | Prisma.SortOrder
   confirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  provider?: Prisma.SortOrderInput | Prisma.SortOrder
+  providerRef?: Prisma.SortOrderInput | Prisma.SortOrder
+  checkoutUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.SubscriptionPaymentCountOrderByAggregateInput
   _avg?: Prisma.SubscriptionPaymentAvgOrderByAggregateInput
   _max?: Prisma.SubscriptionPaymentMaxOrderByAggregateInput
@@ -322,6 +355,9 @@ export type SubscriptionPaymentScalarWhereWithAggregatesInput = {
   periodEnd?: Prisma.DateTimeNullableWithAggregatesFilter<"SubscriptionPayment"> | Date | string | null
   confirmedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"SubscriptionPayment"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SubscriptionPayment"> | Date | string
+  provider?: Prisma.StringNullableWithAggregatesFilter<"SubscriptionPayment"> | string | null
+  providerRef?: Prisma.StringNullableWithAggregatesFilter<"SubscriptionPayment"> | string | null
+  checkoutUrl?: Prisma.StringNullableWithAggregatesFilter<"SubscriptionPayment"> | string | null
 }
 
 export type SubscriptionPaymentCreateInput = {
@@ -334,6 +370,9 @@ export type SubscriptionPaymentCreateInput = {
   periodEnd?: Date | string | null
   confirmedAt?: Date | string | null
   createdAt?: Date | string
+  provider?: string | null
+  providerRef?: string | null
+  checkoutUrl?: string | null
   farm: Prisma.FarmCreateNestedOneWithoutSubscriptionPaymentsInput
 }
 
@@ -348,6 +387,9 @@ export type SubscriptionPaymentUncheckedCreateInput = {
   periodEnd?: Date | string | null
   confirmedAt?: Date | string | null
   createdAt?: Date | string
+  provider?: string | null
+  providerRef?: string | null
+  checkoutUrl?: string | null
 }
 
 export type SubscriptionPaymentUpdateInput = {
@@ -360,6 +402,9 @@ export type SubscriptionPaymentUpdateInput = {
   periodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   farm?: Prisma.FarmUpdateOneRequiredWithoutSubscriptionPaymentsNestedInput
 }
 
@@ -374,6 +419,9 @@ export type SubscriptionPaymentUncheckedUpdateInput = {
   periodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SubscriptionPaymentCreateManyInput = {
@@ -387,6 +435,9 @@ export type SubscriptionPaymentCreateManyInput = {
   periodEnd?: Date | string | null
   confirmedAt?: Date | string | null
   createdAt?: Date | string
+  provider?: string | null
+  providerRef?: string | null
+  checkoutUrl?: string | null
 }
 
 export type SubscriptionPaymentUpdateManyMutationInput = {
@@ -399,6 +450,9 @@ export type SubscriptionPaymentUpdateManyMutationInput = {
   periodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SubscriptionPaymentUncheckedUpdateManyInput = {
@@ -412,6 +466,9 @@ export type SubscriptionPaymentUncheckedUpdateManyInput = {
   periodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SubscriptionPaymentListRelationFilter = {
@@ -435,6 +492,9 @@ export type SubscriptionPaymentCountOrderByAggregateInput = {
   periodEnd?: Prisma.SortOrder
   confirmedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  provider?: Prisma.SortOrder
+  providerRef?: Prisma.SortOrder
+  checkoutUrl?: Prisma.SortOrder
 }
 
 export type SubscriptionPaymentAvgOrderByAggregateInput = {
@@ -452,6 +512,9 @@ export type SubscriptionPaymentMaxOrderByAggregateInput = {
   periodEnd?: Prisma.SortOrder
   confirmedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  provider?: Prisma.SortOrder
+  providerRef?: Prisma.SortOrder
+  checkoutUrl?: Prisma.SortOrder
 }
 
 export type SubscriptionPaymentMinOrderByAggregateInput = {
@@ -465,6 +528,9 @@ export type SubscriptionPaymentMinOrderByAggregateInput = {
   periodEnd?: Prisma.SortOrder
   confirmedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  provider?: Prisma.SortOrder
+  providerRef?: Prisma.SortOrder
+  checkoutUrl?: Prisma.SortOrder
 }
 
 export type SubscriptionPaymentSumOrderByAggregateInput = {
@@ -531,6 +597,9 @@ export type SubscriptionPaymentCreateWithoutFarmInput = {
   periodEnd?: Date | string | null
   confirmedAt?: Date | string | null
   createdAt?: Date | string
+  provider?: string | null
+  providerRef?: string | null
+  checkoutUrl?: string | null
 }
 
 export type SubscriptionPaymentUncheckedCreateWithoutFarmInput = {
@@ -543,6 +612,9 @@ export type SubscriptionPaymentUncheckedCreateWithoutFarmInput = {
   periodEnd?: Date | string | null
   confirmedAt?: Date | string | null
   createdAt?: Date | string
+  provider?: string | null
+  providerRef?: string | null
+  checkoutUrl?: string | null
 }
 
 export type SubscriptionPaymentCreateOrConnectWithoutFarmInput = {
@@ -585,6 +657,9 @@ export type SubscriptionPaymentScalarWhereInput = {
   periodEnd?: Prisma.DateTimeNullableFilter<"SubscriptionPayment"> | Date | string | null
   confirmedAt?: Prisma.DateTimeNullableFilter<"SubscriptionPayment"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"SubscriptionPayment"> | Date | string
+  provider?: Prisma.StringNullableFilter<"SubscriptionPayment"> | string | null
+  providerRef?: Prisma.StringNullableFilter<"SubscriptionPayment"> | string | null
+  checkoutUrl?: Prisma.StringNullableFilter<"SubscriptionPayment"> | string | null
 }
 
 export type SubscriptionPaymentCreateManyFarmInput = {
@@ -597,6 +672,9 @@ export type SubscriptionPaymentCreateManyFarmInput = {
   periodEnd?: Date | string | null
   confirmedAt?: Date | string | null
   createdAt?: Date | string
+  provider?: string | null
+  providerRef?: string | null
+  checkoutUrl?: string | null
 }
 
 export type SubscriptionPaymentUpdateWithoutFarmInput = {
@@ -609,6 +687,9 @@ export type SubscriptionPaymentUpdateWithoutFarmInput = {
   periodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SubscriptionPaymentUncheckedUpdateWithoutFarmInput = {
@@ -621,6 +702,9 @@ export type SubscriptionPaymentUncheckedUpdateWithoutFarmInput = {
   periodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SubscriptionPaymentUncheckedUpdateManyWithoutFarmInput = {
@@ -633,6 +717,9 @@ export type SubscriptionPaymentUncheckedUpdateManyWithoutFarmInput = {
   periodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checkoutUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -648,6 +735,9 @@ export type SubscriptionPaymentSelect<ExtArgs extends runtime.Types.Extensions.I
   periodEnd?: boolean
   confirmedAt?: boolean
   createdAt?: boolean
+  provider?: boolean
+  providerRef?: boolean
+  checkoutUrl?: boolean
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["subscriptionPayment"]>
 
@@ -662,6 +752,9 @@ export type SubscriptionPaymentSelectCreateManyAndReturn<ExtArgs extends runtime
   periodEnd?: boolean
   confirmedAt?: boolean
   createdAt?: boolean
+  provider?: boolean
+  providerRef?: boolean
+  checkoutUrl?: boolean
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["subscriptionPayment"]>
 
@@ -676,6 +769,9 @@ export type SubscriptionPaymentSelectUpdateManyAndReturn<ExtArgs extends runtime
   periodEnd?: boolean
   confirmedAt?: boolean
   createdAt?: boolean
+  provider?: boolean
+  providerRef?: boolean
+  checkoutUrl?: boolean
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["subscriptionPayment"]>
 
@@ -690,9 +786,12 @@ export type SubscriptionPaymentSelectScalar = {
   periodEnd?: boolean
   confirmedAt?: boolean
   createdAt?: boolean
+  provider?: boolean
+  providerRef?: boolean
+  checkoutUrl?: boolean
 }
 
-export type SubscriptionPaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "plan" | "amount" | "status" | "reference" | "requestedById" | "periodEnd" | "confirmedAt" | "createdAt", ExtArgs["result"]["subscriptionPayment"]>
+export type SubscriptionPaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "plan" | "amount" | "status" | "reference" | "requestedById" | "periodEnd" | "confirmedAt" | "createdAt" | "provider" | "providerRef" | "checkoutUrl", ExtArgs["result"]["subscriptionPayment"]>
 export type SubscriptionPaymentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
 }
@@ -725,6 +824,18 @@ export type $SubscriptionPaymentPayload<ExtArgs extends runtime.Types.Extensions
     periodEnd: Date | null
     confirmedAt: Date | null
     createdAt: Date
+    /**
+     * Paiement en ligne : « NOTCHPAY » (null = déclaré à la main).
+     */
+    provider: string | null
+    /**
+     * Identifiant de la transaction chez le prestataire (ex. pay_…).
+     */
+    providerRef: string | null
+    /**
+     * Page de paiement du prestataire.
+     */
+    checkoutUrl: string | null
   }, ExtArgs["result"]["subscriptionPayment"]>
   composites: {}
 }
@@ -1159,6 +1270,9 @@ export interface SubscriptionPaymentFieldRefs {
   readonly periodEnd: Prisma.FieldRef<"SubscriptionPayment", 'DateTime'>
   readonly confirmedAt: Prisma.FieldRef<"SubscriptionPayment", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"SubscriptionPayment", 'DateTime'>
+  readonly provider: Prisma.FieldRef<"SubscriptionPayment", 'String'>
+  readonly providerRef: Prisma.FieldRef<"SubscriptionPayment", 'String'>
+  readonly checkoutUrl: Prisma.FieldRef<"SubscriptionPayment", 'String'>
 }
     
 
