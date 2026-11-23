@@ -18,12 +18,19 @@ class FakeNotchPay {
   remote = new Map<string, RemotePayment>();
   fail = false;
   chargeFails = false;
+  /** Comme le vrai NotchPay : référence « trx… » à lui, la nôtre en merchant_reference, pas d'id. */
+  trxStyle = false;
   charges: Array<{ reference: string; operator: string; phone: string }> = [];
 
   async checkout(input: CheckoutInput) {
     if (this.fail) throw new Error('panne');
     this.checkouts.push(input);
     const id = `pay_${this.checkouts.length}`;
+    if (this.trxStyle) {
+      const trx = `trx.${this.checkouts.length}`;
+      this.remote.set(trx, { id: null, reference: trx, merchantReference: input.reference, status: 'pending', amount: input.amount, currency: 'XAF' });
+      return { id: null, reference: trx, url: `https://pay.example/${trx}` };
+    }
     this.remote.set(id, { id, reference: input.reference, status: 'pending', amount: input.amount, currency: 'XAF' });
     return { id, reference: input.reference, url: `https://pay.example/${id}` };
   }
@@ -31,12 +38,12 @@ class FakeNotchPay {
   async charge(reference: string, operator: string, phone: string) {
     if (this.chargeFails) throw new Error('canal indisponible');
     this.charges.push({ reference, operator, phone });
-    const p = [...this.remote.values()].find((r) => r.reference === reference)!;
+    const p = this.remote.get(reference) ?? [...this.remote.values()].find((r) => r.reference === reference)!;
     p.status = 'processing';
   }
 
   async retrieve(ref: string) {
-    return this.remote.get(ref) ?? [...this.remote.values()].find((p) => p.reference === ref) ?? null;
+    return this.remote.get(ref) ?? [...this.remote.values()].find((p) => p.reference === ref || p.merchantReference === ref) ?? null;
   }
 
   verify(raw: string | Buffer, sig: string | undefined) {
@@ -178,5 +185,21 @@ describe('Paiement NotchPay (e2e)', () => {
     expect(r.direct).toBe(false);
     expect(r.error).toBe('canal indisponible');
     expect(r.url).toMatch(/^https:\/\/pay\.example\//);
+  });
+
+  it('référence NotchPay « trx… » : suivi et webhook retrouvent le paiement', async () => {
+    fake.trxStyle = true;
+    const { startSubscriptionCheckout: r } = await gqlOk(app, DIRECT, { plan: 'MONTHLY', operator: 'MTN', phone: '670000000' }, token);
+    expect(r.direct).toBe(true);
+    const row = await prisma.subscriptionPayment.findUniqueOrThrow({ where: { id: r.paymentId } });
+    expect(row.providerRef).toMatch(/^trx\./);
+    expect(fake.charges.at(-1)!.reference).toBe(row.providerRef);
+    const { checkSubscriptionPayment: waiting } = await gqlOk(app, CHECK, { r: r.paymentId }, token);
+    expect(waiting.status).toBe('PENDING');
+    fake.remote.get(row.providerRef!)!.status = 'complete';
+    expect((await webhook({ type: 'payment.complete', data: { reference: row.providerRef } })).status).toBe(200);
+    const after = await prisma.subscriptionPayment.findUniqueOrThrow({ where: { id: r.paymentId } });
+    expect(after.status).toBe('CONFIRMED');
+    fake.trxStyle = false;
   });
 });

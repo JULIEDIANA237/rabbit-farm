@@ -10,7 +10,7 @@ describe('NotchPay', () => {
 
   it('lit la transaction, à la racine ou sous « transaction »', () => {
     expect(parseTransaction({ transaction: { id: 'pay_1', reference: 'r1', status: 'Complete', amount: 2500, currency: 'XAF' } }))
-      .toEqual({ id: 'pay_1', reference: 'r1', status: 'complete', amount: 2500, currency: 'XAF' });
+      .toEqual({ id: 'pay_1', reference: 'r1', merchantReference: null, status: 'complete', amount: 2500, currency: 'XAF' });
     expect(parseTransaction({ status: 'failed', reference: 'r2' })).toMatchObject({ status: 'failed', reference: 'r2' });
     expect(parseTransaction({ message: 'ok' })).toBeNull();
   });
@@ -48,5 +48,13 @@ describe('parseOperators', () => {
     expect(parseOperators(undefined)).toEqual(['MTN']);
     expect(parseOperators('mtn, orange,MTN')).toEqual(['MTN', 'ORANGE']);
     expect(parseOperators('wave')).toEqual(['MTN']);
+  });
+});
+
+describe('parseTransaction (variantes NotchPay)', () => {
+  it('lit « payment » et la référence marchande', () => {
+    expect(parseTransaction({ payment: { reference: 'trx.abc', merchant_reference: 'p1', status: 'Complete', amount: '2500', currency: 'XAF' } })).toEqual({
+      id: null, reference: 'trx.abc', merchantReference: 'p1', status: 'complete', amount: 2500, currency: 'XAF',
+    });
   });
 });

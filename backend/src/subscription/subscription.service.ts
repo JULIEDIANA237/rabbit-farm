@@ -13,6 +13,12 @@ import { NotchPayClient, normalizeCameroonPhone, type MobileOperator } from './n
 const SETTINGS_ID = 'default';
 const CACHE_MS = 30_000;
 const NOTCHPAY = 'NOTCHPAY';
+/** Clé NotchPay à garder : sa propre référence (« trx… ») si elle diffère de la nôtre, sinon son identifiant. */
+function notchPayKey(created: { id: string | null; reference: string | null }, ourRef: string) {
+  if (created.reference && created.reference !== ourRef) return created.reference;
+  return created.id ?? created.reference;
+}
+
 const FAILED = new Set(['failed', 'canceled', 'cancelled', 'expired']);
 
 export interface PlatformSettingsInput {
@@ -135,7 +141,7 @@ export class SubscriptionService {
       this.logger.warn(`Paiement NotchPay non créé : ${error instanceof Error ? error.message : String(error)}`);
       throw new ServiceUnavailableException('Le paiement en ligne ne répond pas pour le moment. Réessaie plus tard ou utilise le paiement déclaré.');
     }
-    await this.prisma.subscriptionPayment.update({ where: { id: payment.id }, data: { providerRef: created.id, checkoutUrl: created.url } });
+    await this.prisma.subscriptionPayment.update({ where: { id: payment.id }, data: { providerRef: notchPayKey(created, payment.id), checkoutUrl: created.url } });
     if (!direct || !phone) return { paymentId: payment.id, url: created.url, direct: false, error: null };
     try {
       await this.notchpay.charge(created.reference ?? created.id ?? payment.id, direct.operator, phone);
@@ -176,10 +182,18 @@ export class SubscriptionService {
   private async syncOnline(payment: SubscriptionPayment): Promise<SubscriptionPayment> {
     if (payment.status !== 'PENDING') return payment;
     const remote = (payment.providerRef && (await this.notchpay.retrieve(payment.providerRef))) || (await this.notchpay.retrieve(payment.id));
-    if (!remote) return payment;
-    // Le paiement relu doit bien être celui-ci (notre référence ou l'identifiant NotchPay enregistré).
-    const sameId = Boolean(payment.providerRef) && remote.id === payment.providerRef;
-    if (remote.reference && remote.reference !== payment.id && !sameId) return payment;
+    if (!remote) {
+      this.logger.warn(`Paiement ${payment.id} introuvable chez NotchPay (réf. ${payment.providerRef ?? '—'})`);
+      return payment;
+    }
+    // Le paiement relu doit bien être celui-ci : notre référence ou la référence NotchPay enregistrée.
+    const known = new Set([payment.id, payment.providerRef].filter(Boolean));
+    const matches = [remote.reference, remote.id, remote.merchantReference].some((v) => v && known.has(v));
+    if (!matches) {
+      this.logger.warn(`Paiement ${payment.id} : NotchPay a renvoyé un autre paiement (${remote.reference ?? remote.id ?? '?'})`);
+      return payment;
+    }
+    this.logger.log(`Paiement ${payment.id} : statut NotchPay « ${remote.status} »`);
     if (FAILED.has(remote.status)) {
       await this.prisma.subscriptionPayment.updateMany({ where: { id: payment.id, status: 'PENDING' }, data: { status: 'REJECTED' } });
       return this.prisma.subscriptionPayment.findUniqueOrThrow({ where: { id: payment.id } });
