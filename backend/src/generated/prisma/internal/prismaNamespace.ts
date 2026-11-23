@@ -445,7 +445,8 @@ export const ModelName = {
   AgentLog: 'AgentLog',
   AgentBrief: 'AgentBrief',
   AppError: 'AppError',
-  CompanionQuestion: 'CompanionQuestion'
+  CompanionQuestion: 'CompanionQuestion',
+  OfflineSubmission: 'OfflineSubmission'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -461,7 +462,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "passwordResetToken" | "pushSubscription" | "aiUsage" | "farm" | "farmMembership" | "section" | "cage" | "breed" | "crossBreed" | "rabbit" | "rabbitPhoto" | "rabbitIdentification" | "rabbitCageMovement" | "breeding" | "pregnancy" | "birth" | "litter" | "litterAdoption" | "adoptionRabbit" | "weaning" | "weaningRabbit" | "fatteningLot" | "lotMembership" | "weighing" | "healthRecord" | "customer" | "sale" | "saleItem" | "payment" | "expense" | "inventoryItem" | "stockMovement" | "task" | "nestInstallation" | "mortalityRecord" | "lotCageMovement" | "feedRation" | "careRecord" | "breedingMating" | "appRating" | "platformSetting" | "subscriptionPayment" | "contactMessage" | "agentSuggestion" | "agentLog" | "agentBrief" | "appError" | "companionQuestion"
+    modelProps: "user" | "passwordResetToken" | "pushSubscription" | "aiUsage" | "farm" | "farmMembership" | "section" | "cage" | "breed" | "crossBreed" | "rabbit" | "rabbitPhoto" | "rabbitIdentification" | "rabbitCageMovement" | "breeding" | "pregnancy" | "birth" | "litter" | "litterAdoption" | "adoptionRabbit" | "weaning" | "weaningRabbit" | "fatteningLot" | "lotMembership" | "weighing" | "healthRecord" | "customer" | "sale" | "saleItem" | "payment" | "expense" | "inventoryItem" | "stockMovement" | "task" | "nestInstallation" | "mortalityRecord" | "lotCageMovement" | "feedRation" | "careRecord" | "breedingMating" | "appRating" | "platformSetting" | "subscriptionPayment" | "contactMessage" | "agentSuggestion" | "agentLog" | "agentBrief" | "appError" | "companionQuestion" | "offlineSubmission"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -4091,6 +4092,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    OfflineSubmission: {
+      payload: Prisma.$OfflineSubmissionPayload<ExtArgs>
+      fields: Prisma.OfflineSubmissionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OfflineSubmissionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfflineSubmissionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OfflineSubmissionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfflineSubmissionPayload>
+        }
+        findFirst: {
+          args: Prisma.OfflineSubmissionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfflineSubmissionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OfflineSubmissionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfflineSubmissionPayload>
+        }
+        findMany: {
+          args: Prisma.OfflineSubmissionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfflineSubmissionPayload>[]
+        }
+        create: {
+          args: Prisma.OfflineSubmissionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfflineSubmissionPayload>
+        }
+        createMany: {
+          args: Prisma.OfflineSubmissionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OfflineSubmissionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfflineSubmissionPayload>[]
+        }
+        delete: {
+          args: Prisma.OfflineSubmissionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfflineSubmissionPayload>
+        }
+        update: {
+          args: Prisma.OfflineSubmissionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfflineSubmissionPayload>
+        }
+        deleteMany: {
+          args: Prisma.OfflineSubmissionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OfflineSubmissionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OfflineSubmissionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfflineSubmissionPayload>[]
+        }
+        upsert: {
+          args: Prisma.OfflineSubmissionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfflineSubmissionPayload>
+        }
+        aggregate: {
+          args: Prisma.OfflineSubmissionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOfflineSubmission>
+        }
+        groupBy: {
+          args: Prisma.OfflineSubmissionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OfflineSubmissionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OfflineSubmissionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OfflineSubmissionCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -4904,6 +4979,16 @@ export const CompanionQuestionScalarFieldEnum = {
 export type CompanionQuestionScalarFieldEnum = (typeof CompanionQuestionScalarFieldEnum)[keyof typeof CompanionQuestionScalarFieldEnum]
 
 
+export const OfflineSubmissionScalarFieldEnum = {
+  id: 'id',
+  farmId: 'farmId',
+  field: 'field',
+  createdAt: 'createdAt'
+} as const
+
+export type OfflineSubmissionScalarFieldEnum = (typeof OfflineSubmissionScalarFieldEnum)[keyof typeof OfflineSubmissionScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -5632,6 +5717,7 @@ export type GlobalOmitConfig = {
   agentBrief?: Prisma.AgentBriefOmit
   appError?: Prisma.AppErrorOmit
   companionQuestion?: Prisma.CompanionQuestionOmit
+  offlineSubmission?: Prisma.OfflineSubmissionOmit
 }
 
 /* Types for Logging */

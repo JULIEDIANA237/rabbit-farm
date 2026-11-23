@@ -2,9 +2,10 @@
  * Service worker Rabbit Farm.
  * - Pages : réseau d'abord, page hors ligne en secours.
  * - Fichiers statiques Next (/_next/static) et icônes : cache d'abord.
- * - L'API GraphQL n'est jamais mise en cache (données métier toujours fraîches).
+ * - L'API GraphQL n'est pas gérée ici : l'app garde ses données elle-même (IndexedDB).
+ * - Sur demande de l'app, les pages du terrain et leurs fichiers sont gardés à l'avance.
  */
-const VERSION = 'rabbit-farm-v4';
+const VERSION = 'rabbit-farm-v5';
 const STATIC_CACHE = `${VERSION}-static`;
 const PAGE_CACHE = `${VERSION}-pages`;
 const OFFLINE_URL = '/offline.html';
@@ -42,7 +43,12 @@ self.addEventListener('fetch', (event) => {
           caches.open(PAGE_CACHE).then((cache) => cache.put(request, copy));
           return response;
         })
-        .catch(async () => (await caches.match(request)) ?? (await caches.match(OFFLINE_URL))),
+        .catch(
+          async () =>
+            (await caches.match(request)) ??
+            (await caches.match(request, { ignoreSearch: true })) ??
+            (await caches.match(OFFLINE_URL)),
+        ),
     );
     return;
   }
@@ -59,6 +65,36 @@ self.addEventListener('fetch', (event) => {
           }),
       ),
     );
+  }
+});
+
+// Hors ligne : l'app demande de garder les pages du terrain et leurs fichiers.
+const ASSET_PATTERN = /\/_next\/static\/[^"'\s)\\]+/g;
+
+async function precachePages(urls) {
+  const pages = await caches.open(PAGE_CACHE);
+  const assets = await caches.open(STATIC_CACHE);
+  for (const url of urls) {
+    try {
+      const response = await fetch(url, { credentials: 'same-origin' });
+      if (!response.ok || response.redirected) continue;
+      const html = await response.clone().text();
+      await pages.put(url, response);
+      const files = [...new Set(html.match(ASSET_PATTERN) ?? [])];
+      for (const file of files) {
+        if (!(await assets.match(file))) await assets.add(file).catch(() => undefined);
+      }
+    } catch {
+      // Réseau coupé en route : on réessaiera au prochain passage.
+    }
+  }
+}
+
+self.addEventListener('message', (event) => {
+  const data = event.data || {};
+  if (data.type === 'precache' && Array.isArray(data.urls)) {
+    const urls = data.urls.filter((url) => typeof url === 'string' && url.startsWith('/'));
+    event.waitUntil(precachePages(urls));
   }
 });
 

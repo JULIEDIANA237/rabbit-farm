@@ -11,14 +11,9 @@ import { toInt, useForm, useUrlCommand } from '@/hooks/use-form';
 import { useRouter } from 'next/navigation';
 import { clean, cleanEdit, fromDateInput, toDateInput } from '@/lib/format';
 import { RowActions, useDeleteAction } from '@/components/ui/row-actions';
+import { FARM_STRUCTURE } from '@/graphql/field-queries';
 import { CAGE_STATUS, SEX, SECTION_TYPE, label, options } from '@/lib/labels';
 
-const FARM = gql`
-  query FarmStructure {
-    sections { id name type description cageCount }
-    cages { id code type capacity rabbitCount status sectionId }
-  }
-`;
 const CREATE_SECTION = gql`
   mutation CreateSection($input: CreateSectionInput!) { createSection(input: $input) { id } }
 `;
@@ -77,7 +72,7 @@ const HOUSE_LOT = gql`
 `;
 
 export default function FarmPage() {
-  const { data, loading, error, refetch } = useQuery<{ sections: Section[]; cages: Cage[] }>(FARM);
+  const { data, loading, error, refetch } = useQuery<{ sections: Section[]; cages: Cage[] }>(FARM_STRUCTURE);
   // Arrivée depuis un lot d'engraissement (?lot=…) : choisir la cage où le loger.
   const router = useRouter();
   const [lotId, setLotId] = useState<string | null>(null);

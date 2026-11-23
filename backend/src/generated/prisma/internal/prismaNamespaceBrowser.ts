@@ -99,7 +99,8 @@ export const ModelName = {
   AgentLog: 'AgentLog',
   AgentBrief: 'AgentBrief',
   AppError: 'AppError',
-  CompanionQuestion: 'CompanionQuestion'
+  CompanionQuestion: 'CompanionQuestion',
+  OfflineSubmission: 'OfflineSubmission'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -890,6 +891,16 @@ export const CompanionQuestionScalarFieldEnum = {
 } as const
 
 export type CompanionQuestionScalarFieldEnum = (typeof CompanionQuestionScalarFieldEnum)[keyof typeof CompanionQuestionScalarFieldEnum]
+
+
+export const OfflineSubmissionScalarFieldEnum = {
+  id: 'id',
+  farmId: 'farmId',
+  field: 'field',
+  createdAt: 'createdAt'
+} as const
+
+export type OfflineSubmissionScalarFieldEnum = (typeof OfflineSubmissionScalarFieldEnum)[keyof typeof OfflineSubmissionScalarFieldEnum]
 
 
 export const SortOrder = {

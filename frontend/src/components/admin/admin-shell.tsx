@@ -1,5 +1,7 @@
 'use client';
 
+import { clearOfflineCache } from '@/lib/offline-cache';
+import { resetOfflineRestore } from '@/components/layout/offline-cache-gate';
 import { useEffect, type ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -35,6 +37,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
   }, [admin, router]);
 
   async function handleLogout() {
+    await clearOfflineCache();
+    resetOfflineRestore();
     logout();
     await client.clearStore();
     router.replace('/login');

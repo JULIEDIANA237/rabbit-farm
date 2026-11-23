@@ -288,3 +288,8 @@ export type AppError = Prisma.AppErrorModel
  * Question ou alerte posée par l'assistant au fil de la journée.
  */
 export type CompanionQuestion = Prisma.CompanionQuestionModel
+/**
+ * Model OfflineSubmission
+ * Saisie faite hors ligne sur le téléphone : son identifiant évite de l'enregistrer deux fois.
+ */
+export type OfflineSubmission = Prisma.OfflineSubmissionModel

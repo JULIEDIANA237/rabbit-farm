@@ -14,26 +14,9 @@ import { useCreateModal, useForm, type Prefill } from '@/hooks/use-form';
 import { AiFill } from '@/components/assistant/ai-fill';
 import { clean, formatDate, fromDateInput, toDateInput } from '@/lib/format';
 import { RowActions, useDeleteAction } from '@/components/ui/row-actions';
+import { TASKS_QUERY } from '@/graphql/field-queries';
 import { TASK_PRIORITY, TASK_STATUS, label, options } from '@/lib/labels';
 
-const TASKS = gql`
-  query Tasks($status: TaskStatus, $openOnly: Boolean) {
-    tasks(status: $status, openOnly: $openOnly) {
-      id
-      title
-      description
-      dueDate
-      priority
-      status
-      rabbitId
-      rabbitCode
-      sourceType
-      sourceId
-      automationKey
-      completedAt
-    }
-  }
-`;
 const CREATE = gql`
   mutation CreateTask($input: CreateTaskInput!) { createTask(input: $input) { id } }
 `;
@@ -97,7 +80,7 @@ const refetchQueries = ['Tasks', 'HeaderTasks', 'Dashboard'];
 export default function TasksPage() {
   const [tab, setTab] = useState<'open' | 'COMPLETED' | 'CANCELLED'>('open');
   const creating = useCreateModal();
-  const { data, loading, error, refetch } = useQuery<{ tasks: Task[] }>(TASKS, {
+  const { data, loading, error, refetch } = useQuery<{ tasks: Task[] }>(TASKS_QUERY, {
     variables: tab === 'open' ? { openOnly: true } : { status: tab },
   });
   const [update] = useMutation(UPDATE, { refetchQueries });

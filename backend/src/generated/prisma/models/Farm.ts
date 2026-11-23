@@ -353,6 +353,7 @@ export type FarmWhereInput = {
   nestInstallations?: Prisma.NestInstallationListRelationFilter
   mortalities?: Prisma.MortalityRecordListRelationFilter
   subscriptionPayments?: Prisma.SubscriptionPaymentListRelationFilter
+  offlineSubmissions?: Prisma.OfflineSubmissionListRelationFilter
 }
 
 export type FarmOrderByWithRelationInput = {
@@ -398,6 +399,7 @@ export type FarmOrderByWithRelationInput = {
   nestInstallations?: Prisma.NestInstallationOrderByRelationAggregateInput
   mortalities?: Prisma.MortalityRecordOrderByRelationAggregateInput
   subscriptionPayments?: Prisma.SubscriptionPaymentOrderByRelationAggregateInput
+  offlineSubmissions?: Prisma.OfflineSubmissionOrderByRelationAggregateInput
 }
 
 export type FarmWhereUniqueInput = Prisma.AtLeast<{
@@ -446,6 +448,7 @@ export type FarmWhereUniqueInput = Prisma.AtLeast<{
   nestInstallations?: Prisma.NestInstallationListRelationFilter
   mortalities?: Prisma.MortalityRecordListRelationFilter
   subscriptionPayments?: Prisma.SubscriptionPaymentListRelationFilter
+  offlineSubmissions?: Prisma.OfflineSubmissionListRelationFilter
 }, "id">
 
 export type FarmOrderByWithAggregationInput = {
@@ -539,6 +542,7 @@ export type FarmCreateInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateInput = {
@@ -584,6 +588,7 @@ export type FarmUncheckedCreateInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUpdateInput = {
@@ -629,6 +634,7 @@ export type FarmUpdateInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateInput = {
@@ -674,6 +680,7 @@ export type FarmUncheckedUpdateInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateManyInput = {
@@ -1191,6 +1198,20 @@ export type FarmUpdateOneRequiredWithoutCompanionQuestionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.FarmUpdateToOneWithWhereWithoutCompanionQuestionsInput, Prisma.FarmUpdateWithoutCompanionQuestionsInput>, Prisma.FarmUncheckedUpdateWithoutCompanionQuestionsInput>
 }
 
+export type FarmCreateNestedOneWithoutOfflineSubmissionsInput = {
+  create?: Prisma.XOR<Prisma.FarmCreateWithoutOfflineSubmissionsInput, Prisma.FarmUncheckedCreateWithoutOfflineSubmissionsInput>
+  connectOrCreate?: Prisma.FarmCreateOrConnectWithoutOfflineSubmissionsInput
+  connect?: Prisma.FarmWhereUniqueInput
+}
+
+export type FarmUpdateOneRequiredWithoutOfflineSubmissionsNestedInput = {
+  create?: Prisma.XOR<Prisma.FarmCreateWithoutOfflineSubmissionsInput, Prisma.FarmUncheckedCreateWithoutOfflineSubmissionsInput>
+  connectOrCreate?: Prisma.FarmCreateOrConnectWithoutOfflineSubmissionsInput
+  upsert?: Prisma.FarmUpsertWithoutOfflineSubmissionsInput
+  connect?: Prisma.FarmWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FarmUpdateToOneWithWhereWithoutOfflineSubmissionsInput, Prisma.FarmUpdateWithoutOfflineSubmissionsInput>, Prisma.FarmUncheckedUpdateWithoutOfflineSubmissionsInput>
+}
+
 export type FarmCreateWithoutMembershipsInput = {
   id?: string
   name: string
@@ -1233,6 +1254,7 @@ export type FarmCreateWithoutMembershipsInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutMembershipsInput = {
@@ -1277,6 +1299,7 @@ export type FarmUncheckedCreateWithoutMembershipsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutMembershipsInput = {
@@ -1337,6 +1360,7 @@ export type FarmUpdateWithoutMembershipsInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutMembershipsInput = {
@@ -1381,6 +1405,7 @@ export type FarmUncheckedUpdateWithoutMembershipsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutSectionsInput = {
@@ -1425,6 +1450,7 @@ export type FarmCreateWithoutSectionsInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutSectionsInput = {
@@ -1469,6 +1495,7 @@ export type FarmUncheckedCreateWithoutSectionsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutSectionsInput = {
@@ -1529,6 +1556,7 @@ export type FarmUpdateWithoutSectionsInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutSectionsInput = {
@@ -1573,6 +1601,7 @@ export type FarmUncheckedUpdateWithoutSectionsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutCagesInput = {
@@ -1617,6 +1646,7 @@ export type FarmCreateWithoutCagesInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutCagesInput = {
@@ -1661,6 +1691,7 @@ export type FarmUncheckedCreateWithoutCagesInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutCagesInput = {
@@ -1721,6 +1752,7 @@ export type FarmUpdateWithoutCagesInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutCagesInput = {
@@ -1765,6 +1797,7 @@ export type FarmUncheckedUpdateWithoutCagesInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutBreedsInput = {
@@ -1809,6 +1842,7 @@ export type FarmCreateWithoutBreedsInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutBreedsInput = {
@@ -1853,6 +1887,7 @@ export type FarmUncheckedCreateWithoutBreedsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutBreedsInput = {
@@ -1913,6 +1948,7 @@ export type FarmUpdateWithoutBreedsInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutBreedsInput = {
@@ -1957,6 +1993,7 @@ export type FarmUncheckedUpdateWithoutBreedsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutCrossBreedsInput = {
@@ -2001,6 +2038,7 @@ export type FarmCreateWithoutCrossBreedsInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutCrossBreedsInput = {
@@ -2045,6 +2083,7 @@ export type FarmUncheckedCreateWithoutCrossBreedsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutCrossBreedsInput = {
@@ -2105,6 +2144,7 @@ export type FarmUpdateWithoutCrossBreedsInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutCrossBreedsInput = {
@@ -2149,6 +2189,7 @@ export type FarmUncheckedUpdateWithoutCrossBreedsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutRabbitsInput = {
@@ -2193,6 +2234,7 @@ export type FarmCreateWithoutRabbitsInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutRabbitsInput = {
@@ -2237,6 +2279,7 @@ export type FarmUncheckedCreateWithoutRabbitsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutRabbitsInput = {
@@ -2297,6 +2340,7 @@ export type FarmUpdateWithoutRabbitsInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutRabbitsInput = {
@@ -2341,6 +2385,7 @@ export type FarmUncheckedUpdateWithoutRabbitsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutBreedingsInput = {
@@ -2385,6 +2430,7 @@ export type FarmCreateWithoutBreedingsInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutBreedingsInput = {
@@ -2429,6 +2475,7 @@ export type FarmUncheckedCreateWithoutBreedingsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutBreedingsInput = {
@@ -2489,6 +2536,7 @@ export type FarmUpdateWithoutBreedingsInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutBreedingsInput = {
@@ -2533,6 +2581,7 @@ export type FarmUncheckedUpdateWithoutBreedingsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutPregnanciesInput = {
@@ -2577,6 +2626,7 @@ export type FarmCreateWithoutPregnanciesInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutPregnanciesInput = {
@@ -2621,6 +2671,7 @@ export type FarmUncheckedCreateWithoutPregnanciesInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutPregnanciesInput = {
@@ -2681,6 +2732,7 @@ export type FarmUpdateWithoutPregnanciesInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutPregnanciesInput = {
@@ -2725,6 +2777,7 @@ export type FarmUncheckedUpdateWithoutPregnanciesInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutBirthsInput = {
@@ -2769,6 +2822,7 @@ export type FarmCreateWithoutBirthsInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutBirthsInput = {
@@ -2813,6 +2867,7 @@ export type FarmUncheckedCreateWithoutBirthsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutBirthsInput = {
@@ -2873,6 +2928,7 @@ export type FarmUpdateWithoutBirthsInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutBirthsInput = {
@@ -2917,6 +2973,7 @@ export type FarmUncheckedUpdateWithoutBirthsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutLittersInput = {
@@ -2961,6 +3018,7 @@ export type FarmCreateWithoutLittersInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutLittersInput = {
@@ -3005,6 +3063,7 @@ export type FarmUncheckedCreateWithoutLittersInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutLittersInput = {
@@ -3065,6 +3124,7 @@ export type FarmUpdateWithoutLittersInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutLittersInput = {
@@ -3109,6 +3169,7 @@ export type FarmUncheckedUpdateWithoutLittersInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutAdoptionsInput = {
@@ -3153,6 +3214,7 @@ export type FarmCreateWithoutAdoptionsInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutAdoptionsInput = {
@@ -3197,6 +3259,7 @@ export type FarmUncheckedCreateWithoutAdoptionsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutAdoptionsInput = {
@@ -3257,6 +3320,7 @@ export type FarmUpdateWithoutAdoptionsInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutAdoptionsInput = {
@@ -3301,6 +3365,7 @@ export type FarmUncheckedUpdateWithoutAdoptionsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutWeaningsInput = {
@@ -3345,6 +3410,7 @@ export type FarmCreateWithoutWeaningsInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutWeaningsInput = {
@@ -3389,6 +3455,7 @@ export type FarmUncheckedCreateWithoutWeaningsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutWeaningsInput = {
@@ -3449,6 +3516,7 @@ export type FarmUpdateWithoutWeaningsInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutWeaningsInput = {
@@ -3493,6 +3561,7 @@ export type FarmUncheckedUpdateWithoutWeaningsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutFatteningLotsInput = {
@@ -3537,6 +3606,7 @@ export type FarmCreateWithoutFatteningLotsInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutFatteningLotsInput = {
@@ -3581,6 +3651,7 @@ export type FarmUncheckedCreateWithoutFatteningLotsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutFatteningLotsInput = {
@@ -3641,6 +3712,7 @@ export type FarmUpdateWithoutFatteningLotsInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutFatteningLotsInput = {
@@ -3685,6 +3757,7 @@ export type FarmUncheckedUpdateWithoutFatteningLotsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutHealthRecordsInput = {
@@ -3729,6 +3802,7 @@ export type FarmCreateWithoutHealthRecordsInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutHealthRecordsInput = {
@@ -3773,6 +3847,7 @@ export type FarmUncheckedCreateWithoutHealthRecordsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutHealthRecordsInput = {
@@ -3833,6 +3908,7 @@ export type FarmUpdateWithoutHealthRecordsInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutHealthRecordsInput = {
@@ -3877,6 +3953,7 @@ export type FarmUncheckedUpdateWithoutHealthRecordsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutCustomersInput = {
@@ -3921,6 +3998,7 @@ export type FarmCreateWithoutCustomersInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutCustomersInput = {
@@ -3965,6 +4043,7 @@ export type FarmUncheckedCreateWithoutCustomersInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutCustomersInput = {
@@ -4025,6 +4104,7 @@ export type FarmUpdateWithoutCustomersInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutCustomersInput = {
@@ -4069,6 +4149,7 @@ export type FarmUncheckedUpdateWithoutCustomersInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutSalesInput = {
@@ -4113,6 +4194,7 @@ export type FarmCreateWithoutSalesInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutSalesInput = {
@@ -4157,6 +4239,7 @@ export type FarmUncheckedCreateWithoutSalesInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutSalesInput = {
@@ -4217,6 +4300,7 @@ export type FarmUpdateWithoutSalesInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutSalesInput = {
@@ -4261,6 +4345,7 @@ export type FarmUncheckedUpdateWithoutSalesInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutExpensesInput = {
@@ -4305,6 +4390,7 @@ export type FarmCreateWithoutExpensesInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutExpensesInput = {
@@ -4349,6 +4435,7 @@ export type FarmUncheckedCreateWithoutExpensesInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutExpensesInput = {
@@ -4409,6 +4496,7 @@ export type FarmUpdateWithoutExpensesInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutExpensesInput = {
@@ -4453,6 +4541,7 @@ export type FarmUncheckedUpdateWithoutExpensesInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutInventoryItemsInput = {
@@ -4497,6 +4586,7 @@ export type FarmCreateWithoutInventoryItemsInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutInventoryItemsInput = {
@@ -4541,6 +4631,7 @@ export type FarmUncheckedCreateWithoutInventoryItemsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutInventoryItemsInput = {
@@ -4601,6 +4692,7 @@ export type FarmUpdateWithoutInventoryItemsInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutInventoryItemsInput = {
@@ -4645,6 +4737,7 @@ export type FarmUncheckedUpdateWithoutInventoryItemsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutTasksInput = {
@@ -4689,6 +4782,7 @@ export type FarmCreateWithoutTasksInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutTasksInput = {
@@ -4733,6 +4827,7 @@ export type FarmUncheckedCreateWithoutTasksInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutTasksInput = {
@@ -4793,6 +4888,7 @@ export type FarmUpdateWithoutTasksInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutTasksInput = {
@@ -4837,6 +4933,7 @@ export type FarmUncheckedUpdateWithoutTasksInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutNestInstallationsInput = {
@@ -4881,6 +4978,7 @@ export type FarmCreateWithoutNestInstallationsInput = {
   weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutNestInstallationsInput = {
@@ -4925,6 +5023,7 @@ export type FarmUncheckedCreateWithoutNestInstallationsInput = {
   weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutNestInstallationsInput = {
@@ -4985,6 +5084,7 @@ export type FarmUpdateWithoutNestInstallationsInput = {
   weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutNestInstallationsInput = {
@@ -5029,6 +5129,7 @@ export type FarmUncheckedUpdateWithoutNestInstallationsInput = {
   weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutMortalitiesInput = {
@@ -5073,6 +5174,7 @@ export type FarmCreateWithoutMortalitiesInput = {
   weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutMortalitiesInput = {
@@ -5117,6 +5219,7 @@ export type FarmUncheckedCreateWithoutMortalitiesInput = {
   weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutMortalitiesInput = {
@@ -5177,6 +5280,7 @@ export type FarmUpdateWithoutMortalitiesInput = {
   weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutMortalitiesInput = {
@@ -5221,6 +5325,7 @@ export type FarmUncheckedUpdateWithoutMortalitiesInput = {
   weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutFeedRationsInput = {
@@ -5265,6 +5370,7 @@ export type FarmCreateWithoutFeedRationsInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutFeedRationsInput = {
@@ -5309,6 +5415,7 @@ export type FarmUncheckedCreateWithoutFeedRationsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutFeedRationsInput = {
@@ -5369,6 +5476,7 @@ export type FarmUpdateWithoutFeedRationsInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutFeedRationsInput = {
@@ -5413,6 +5521,7 @@ export type FarmUncheckedUpdateWithoutFeedRationsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutCareRecordsInput = {
@@ -5457,6 +5566,7 @@ export type FarmCreateWithoutCareRecordsInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutCareRecordsInput = {
@@ -5501,6 +5611,7 @@ export type FarmUncheckedCreateWithoutCareRecordsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutCareRecordsInput = {
@@ -5561,6 +5672,7 @@ export type FarmUpdateWithoutCareRecordsInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutCareRecordsInput = {
@@ -5605,6 +5717,7 @@ export type FarmUncheckedUpdateWithoutCareRecordsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutSubscriptionPaymentsInput = {
@@ -5649,6 +5762,7 @@ export type FarmCreateWithoutSubscriptionPaymentsInput = {
   weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutSubscriptionPaymentsInput = {
@@ -5693,6 +5807,7 @@ export type FarmUncheckedCreateWithoutSubscriptionPaymentsInput = {
   weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutSubscriptionPaymentsInput = {
@@ -5753,6 +5868,7 @@ export type FarmUpdateWithoutSubscriptionPaymentsInput = {
   weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutSubscriptionPaymentsInput = {
@@ -5797,6 +5913,7 @@ export type FarmUncheckedUpdateWithoutSubscriptionPaymentsInput = {
   weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
   nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutCompanionQuestionsInput = {
@@ -5841,6 +5958,7 @@ export type FarmCreateWithoutCompanionQuestionsInput = {
   nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutCompanionQuestionsInput = {
@@ -5885,6 +6003,7 @@ export type FarmUncheckedCreateWithoutCompanionQuestionsInput = {
   nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
   mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutCompanionQuestionsInput = {
@@ -5945,6 +6064,7 @@ export type FarmUpdateWithoutCompanionQuestionsInput = {
   nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
   mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
   subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutCompanionQuestionsInput = {
@@ -5965,6 +6085,203 @@ export type FarmUncheckedUpdateWithoutCompanionQuestionsInput = {
   freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
+  memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
+  sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
+  cages?: Prisma.CageUncheckedUpdateManyWithoutFarmNestedInput
+  breeds?: Prisma.BreedUncheckedUpdateManyWithoutFarmNestedInput
+  crossBreeds?: Prisma.CrossBreedUncheckedUpdateManyWithoutFarmNestedInput
+  rabbits?: Prisma.RabbitUncheckedUpdateManyWithoutFarmNestedInput
+  breedings?: Prisma.BreedingUncheckedUpdateManyWithoutFarmNestedInput
+  pregnancies?: Prisma.PregnancyUncheckedUpdateManyWithoutFarmNestedInput
+  births?: Prisma.BirthUncheckedUpdateManyWithoutFarmNestedInput
+  litters?: Prisma.LitterUncheckedUpdateManyWithoutFarmNestedInput
+  fatteningLots?: Prisma.FatteningLotUncheckedUpdateManyWithoutFarmNestedInput
+  healthRecords?: Prisma.HealthRecordUncheckedUpdateManyWithoutFarmNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutFarmNestedInput
+  sales?: Prisma.SaleUncheckedUpdateManyWithoutFarmNestedInput
+  expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutFarmNestedInput
+  inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutFarmNestedInput
+  feedRations?: Prisma.FeedRationUncheckedUpdateManyWithoutFarmNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUncheckedUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUncheckedUpdateManyWithoutFarmNestedInput
+  nestInstallations?: Prisma.NestInstallationUncheckedUpdateManyWithoutFarmNestedInput
+  mortalities?: Prisma.MortalityRecordUncheckedUpdateManyWithoutFarmNestedInput
+  subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedUpdateManyWithoutFarmNestedInput
+  offlineSubmissions?: Prisma.OfflineSubmissionUncheckedUpdateManyWithoutFarmNestedInput
+}
+
+export type FarmCreateWithoutOfflineSubmissionsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  location?: string | null
+  inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
+  trialEndsAt?: Date | string | null
+  paidUntil?: Date | string | null
+  freeAccess?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionCreateNestedManyWithoutFarmInput
+  careRecords?: Prisma.CareRecordCreateNestedManyWithoutFarmInput
+  memberships?: Prisma.FarmMembershipCreateNestedManyWithoutFarmInput
+  sections?: Prisma.SectionCreateNestedManyWithoutFarmInput
+  cages?: Prisma.CageCreateNestedManyWithoutFarmInput
+  breeds?: Prisma.BreedCreateNestedManyWithoutFarmInput
+  crossBreeds?: Prisma.CrossBreedCreateNestedManyWithoutFarmInput
+  rabbits?: Prisma.RabbitCreateNestedManyWithoutFarmInput
+  breedings?: Prisma.BreedingCreateNestedManyWithoutFarmInput
+  pregnancies?: Prisma.PregnancyCreateNestedManyWithoutFarmInput
+  births?: Prisma.BirthCreateNestedManyWithoutFarmInput
+  litters?: Prisma.LitterCreateNestedManyWithoutFarmInput
+  fatteningLots?: Prisma.FatteningLotCreateNestedManyWithoutFarmInput
+  healthRecords?: Prisma.HealthRecordCreateNestedManyWithoutFarmInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutFarmInput
+  sales?: Prisma.SaleCreateNestedManyWithoutFarmInput
+  expenses?: Prisma.ExpenseCreateNestedManyWithoutFarmInput
+  inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutFarmInput
+  feedRations?: Prisma.FeedRationCreateNestedManyWithoutFarmInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningCreateNestedManyWithoutFarmInput
+  nestInstallations?: Prisma.NestInstallationCreateNestedManyWithoutFarmInput
+  mortalities?: Prisma.MortalityRecordCreateNestedManyWithoutFarmInput
+  subscriptionPayments?: Prisma.SubscriptionPaymentCreateNestedManyWithoutFarmInput
+}
+
+export type FarmUncheckedCreateWithoutOfflineSubmissionsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  location?: string | null
+  inbreedingPolicy?: $Enums.InbreedingPolicy
+  companionEnabled?: boolean
+  companionMaxPerDay?: number
+  latitude?: number | null
+  longitude?: number | null
+  geocodedLocation?: string | null
+  saleMinAgeDays?: number
+  saleMinWeightKg?: number
+  trialEndsAt?: Date | string | null
+  paidUntil?: Date | string | null
+  freeAccess?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedCreateNestedManyWithoutFarmInput
+  careRecords?: Prisma.CareRecordUncheckedCreateNestedManyWithoutFarmInput
+  memberships?: Prisma.FarmMembershipUncheckedCreateNestedManyWithoutFarmInput
+  sections?: Prisma.SectionUncheckedCreateNestedManyWithoutFarmInput
+  cages?: Prisma.CageUncheckedCreateNestedManyWithoutFarmInput
+  breeds?: Prisma.BreedUncheckedCreateNestedManyWithoutFarmInput
+  crossBreeds?: Prisma.CrossBreedUncheckedCreateNestedManyWithoutFarmInput
+  rabbits?: Prisma.RabbitUncheckedCreateNestedManyWithoutFarmInput
+  breedings?: Prisma.BreedingUncheckedCreateNestedManyWithoutFarmInput
+  pregnancies?: Prisma.PregnancyUncheckedCreateNestedManyWithoutFarmInput
+  births?: Prisma.BirthUncheckedCreateNestedManyWithoutFarmInput
+  litters?: Prisma.LitterUncheckedCreateNestedManyWithoutFarmInput
+  fatteningLots?: Prisma.FatteningLotUncheckedCreateNestedManyWithoutFarmInput
+  healthRecords?: Prisma.HealthRecordUncheckedCreateNestedManyWithoutFarmInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutFarmInput
+  sales?: Prisma.SaleUncheckedCreateNestedManyWithoutFarmInput
+  expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutFarmInput
+  inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutFarmInput
+  feedRations?: Prisma.FeedRationUncheckedCreateNestedManyWithoutFarmInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutFarmInput
+  adoptions?: Prisma.LitterAdoptionUncheckedCreateNestedManyWithoutFarmInput
+  weanings?: Prisma.WeaningUncheckedCreateNestedManyWithoutFarmInput
+  nestInstallations?: Prisma.NestInstallationUncheckedCreateNestedManyWithoutFarmInput
+  mortalities?: Prisma.MortalityRecordUncheckedCreateNestedManyWithoutFarmInput
+  subscriptionPayments?: Prisma.SubscriptionPaymentUncheckedCreateNestedManyWithoutFarmInput
+}
+
+export type FarmCreateOrConnectWithoutOfflineSubmissionsInput = {
+  where: Prisma.FarmWhereUniqueInput
+  create: Prisma.XOR<Prisma.FarmCreateWithoutOfflineSubmissionsInput, Prisma.FarmUncheckedCreateWithoutOfflineSubmissionsInput>
+}
+
+export type FarmUpsertWithoutOfflineSubmissionsInput = {
+  update: Prisma.XOR<Prisma.FarmUpdateWithoutOfflineSubmissionsInput, Prisma.FarmUncheckedUpdateWithoutOfflineSubmissionsInput>
+  create: Prisma.XOR<Prisma.FarmCreateWithoutOfflineSubmissionsInput, Prisma.FarmUncheckedCreateWithoutOfflineSubmissionsInput>
+  where?: Prisma.FarmWhereInput
+}
+
+export type FarmUpdateToOneWithWhereWithoutOfflineSubmissionsInput = {
+  where?: Prisma.FarmWhereInput
+  data: Prisma.XOR<Prisma.FarmUpdateWithoutOfflineSubmissionsInput, Prisma.FarmUncheckedUpdateWithoutOfflineSubmissionsInput>
+}
+
+export type FarmUpdateWithoutOfflineSubmissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
+  trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUpdateManyWithoutFarmNestedInput
+  careRecords?: Prisma.CareRecordUpdateManyWithoutFarmNestedInput
+  memberships?: Prisma.FarmMembershipUpdateManyWithoutFarmNestedInput
+  sections?: Prisma.SectionUpdateManyWithoutFarmNestedInput
+  cages?: Prisma.CageUpdateManyWithoutFarmNestedInput
+  breeds?: Prisma.BreedUpdateManyWithoutFarmNestedInput
+  crossBreeds?: Prisma.CrossBreedUpdateManyWithoutFarmNestedInput
+  rabbits?: Prisma.RabbitUpdateManyWithoutFarmNestedInput
+  breedings?: Prisma.BreedingUpdateManyWithoutFarmNestedInput
+  pregnancies?: Prisma.PregnancyUpdateManyWithoutFarmNestedInput
+  births?: Prisma.BirthUpdateManyWithoutFarmNestedInput
+  litters?: Prisma.LitterUpdateManyWithoutFarmNestedInput
+  fatteningLots?: Prisma.FatteningLotUpdateManyWithoutFarmNestedInput
+  healthRecords?: Prisma.HealthRecordUpdateManyWithoutFarmNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutFarmNestedInput
+  sales?: Prisma.SaleUpdateManyWithoutFarmNestedInput
+  expenses?: Prisma.ExpenseUpdateManyWithoutFarmNestedInput
+  inventoryItems?: Prisma.InventoryItemUpdateManyWithoutFarmNestedInput
+  feedRations?: Prisma.FeedRationUpdateManyWithoutFarmNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutFarmNestedInput
+  adoptions?: Prisma.LitterAdoptionUpdateManyWithoutFarmNestedInput
+  weanings?: Prisma.WeaningUpdateManyWithoutFarmNestedInput
+  nestInstallations?: Prisma.NestInstallationUpdateManyWithoutFarmNestedInput
+  mortalities?: Prisma.MortalityRecordUpdateManyWithoutFarmNestedInput
+  subscriptionPayments?: Prisma.SubscriptionPaymentUpdateManyWithoutFarmNestedInput
+}
+
+export type FarmUncheckedUpdateWithoutOfflineSubmissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inbreedingPolicy?: Prisma.EnumInbreedingPolicyFieldUpdateOperationsInput | $Enums.InbreedingPolicy
+  companionEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  companionMaxPerDay?: Prisma.IntFieldUpdateOperationsInput | number
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  geocodedLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  saleMinAgeDays?: Prisma.IntFieldUpdateOperationsInput | number
+  saleMinWeightKg?: Prisma.FloatFieldUpdateOperationsInput | number
+  trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  freeAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companionQuestions?: Prisma.CompanionQuestionUncheckedUpdateManyWithoutFarmNestedInput
   careRecords?: Prisma.CareRecordUncheckedUpdateManyWithoutFarmNestedInput
   memberships?: Prisma.FarmMembershipUncheckedUpdateManyWithoutFarmNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutFarmNestedInput
@@ -6022,6 +6339,7 @@ export type FarmCountOutputType = {
   nestInstallations: number
   mortalities: number
   subscriptionPayments: number
+  offlineSubmissions: number
 }
 
 export type FarmCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -6050,6 +6368,7 @@ export type FarmCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   nestInstallations?: boolean | FarmCountOutputTypeCountNestInstallationsArgs
   mortalities?: boolean | FarmCountOutputTypeCountMortalitiesArgs
   subscriptionPayments?: boolean | FarmCountOutputTypeCountSubscriptionPaymentsArgs
+  offlineSubmissions?: boolean | FarmCountOutputTypeCountOfflineSubmissionsArgs
 }
 
 /**
@@ -6237,6 +6556,13 @@ export type FarmCountOutputTypeCountSubscriptionPaymentsArgs<ExtArgs extends run
   where?: Prisma.SubscriptionPaymentWhereInput
 }
 
+/**
+ * FarmCountOutputType without action
+ */
+export type FarmCountOutputTypeCountOfflineSubmissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OfflineSubmissionWhereInput
+}
+
 
 export type FarmSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -6281,6 +6607,7 @@ export type FarmSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   nestInstallations?: boolean | Prisma.Farm$nestInstallationsArgs<ExtArgs>
   mortalities?: boolean | Prisma.Farm$mortalitiesArgs<ExtArgs>
   subscriptionPayments?: boolean | Prisma.Farm$subscriptionPaymentsArgs<ExtArgs>
+  offlineSubmissions?: boolean | Prisma.Farm$offlineSubmissionsArgs<ExtArgs>
   _count?: boolean | Prisma.FarmCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["farm"]>
 
@@ -6371,6 +6698,7 @@ export type FarmInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   nestInstallations?: boolean | Prisma.Farm$nestInstallationsArgs<ExtArgs>
   mortalities?: boolean | Prisma.Farm$mortalitiesArgs<ExtArgs>
   subscriptionPayments?: boolean | Prisma.Farm$subscriptionPaymentsArgs<ExtArgs>
+  offlineSubmissions?: boolean | Prisma.Farm$offlineSubmissionsArgs<ExtArgs>
   _count?: boolean | Prisma.FarmCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type FarmIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -6404,6 +6732,7 @@ export type $FarmPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     nestInstallations: Prisma.$NestInstallationPayload<ExtArgs>[]
     mortalities: Prisma.$MortalityRecordPayload<ExtArgs>[]
     subscriptionPayments: Prisma.$SubscriptionPaymentPayload<ExtArgs>[]
+    offlineSubmissions: Prisma.$OfflineSubmissionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -6867,6 +7196,7 @@ export interface Prisma__FarmClient<T, Null = never, ExtArgs extends runtime.Typ
   nestInstallations<T extends Prisma.Farm$nestInstallationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$nestInstallationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NestInstallationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   mortalities<T extends Prisma.Farm$mortalitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$mortalitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MortalityRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   subscriptionPayments<T extends Prisma.Farm$subscriptionPaymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$subscriptionPaymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubscriptionPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  offlineSubmissions<T extends Prisma.Farm$offlineSubmissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$offlineSubmissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OfflineSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7903,6 +8233,30 @@ export type Farm$subscriptionPaymentsArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.SubscriptionPaymentScalarFieldEnum | Prisma.SubscriptionPaymentScalarFieldEnum[]
+}
+
+/**
+ * Farm.offlineSubmissions
+ */
+export type Farm$offlineSubmissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OfflineSubmission
+   */
+  select?: Prisma.OfflineSubmissionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OfflineSubmission
+   */
+  omit?: Prisma.OfflineSubmissionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OfflineSubmissionInclude<ExtArgs> | null
+  where?: Prisma.OfflineSubmissionWhereInput
+  orderBy?: Prisma.OfflineSubmissionOrderByWithRelationInput | Prisma.OfflineSubmissionOrderByWithRelationInput[]
+  cursor?: Prisma.OfflineSubmissionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OfflineSubmissionScalarFieldEnum | Prisma.OfflineSubmissionScalarFieldEnum[]
 }
 
 /**
