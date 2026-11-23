@@ -9,6 +9,7 @@ export const SUBSCRIPTION_ADMIN = gql`
       revenue30d revenueTotal payingFarms trialFarms expiredFarms
       settings { trialDays monthlyPrice yearlyPrice paymentInstructions }
       pendingPayments { id farmName plan amount reference createdAt }
+      confirmedPayments { id farmName plan amount reference provider confirmedAt periodEnd }
       farms { farmId farmName ownerEmail memberEmails createdAt status daysLeft trialEndsAt paidUntil freeAccess }
     }
   }
@@ -29,6 +30,7 @@ const CONFIRM = gql`mutation ConfirmSubscriptionPayment($id: ID!) { confirmSubsc
 const REJECT = gql`mutation RejectSubscriptionPayment($id: ID!) { rejectSubscriptionPayment(id: $id) { id } }`;
 const ACTIVATE = gql`mutation ActivateSubscription($farmId: ID!, $plan: SubscriptionPlan!) { activateSubscription(farmId: $farmId, plan: $plan) }`;
 const EXTEND = gql`mutation ExtendTrial($farmId: ID!, $days: Int!) { extendTrial(farmId: $farmId, days: $days) }`;
+const DELETE_PAYMENT = gql`mutation DeleteSubscriptionPayment($id: ID!) { deleteSubscriptionPayment(id: $id) }`;
 const FREE = gql`mutation SetFarmFreeAccess($farmId: ID!, $free: Boolean!) { setFarmFreeAccess(farmId: $farmId, free: $free) }`;
 
 export type Settings = { trialDays: number; monthlyPrice: number; yearlyPrice: number; paymentInstructions?: string | null };
@@ -37,9 +39,13 @@ export type FarmRow = {
   status: AccessStatus; daysLeft: number; trialEndsAt: string; paidUntil?: string | null; freeAccess: boolean;
 };
 export type PendingPayment = { id: string; farmName?: string | null; plan: Plan; amount: number; reference?: string | null; createdAt: string };
+export type ConfirmedPayment = {
+  id: string; farmName?: string | null; plan: Plan; amount: number; reference?: string | null;
+  provider?: string | null; confirmedAt?: string | null; periodEnd?: string | null;
+};
 export type SubscriptionAdmin = {
   revenue30d: number; revenueTotal: number; payingFarms: number; trialFarms: number; expiredFarms: number;
-  settings: Settings; pendingPayments: PendingPayment[]; farms: FarmRow[];
+  settings: Settings; pendingPayments: PendingPayment[]; confirmedPayments: ConfirmedPayment[]; farms: FarmRow[];
 };
 export type PlatformStats = {
   farms: number; users: number; newUsers30d: number; activeUsers7d: number; activeUsers30d: number; rabbits: number;
@@ -66,6 +72,7 @@ export function useAdminActions() {
   const [activate] = useMutation(ACTIVATE, opts);
   const [extend] = useMutation(EXTEND, opts);
   const [setFree] = useMutation(FREE, opts);
+  const [removePayment, removeState] = useMutation(DELETE_PAYMENT, opts);
   const [saveSettings, saveState] = useMutation(UPDATE_SETTINGS, opts);
-  return { confirm, reject, activate, extend, setFree, saveSettings, saveState };
+  return { confirm, reject, activate, extend, setFree, saveSettings, saveState, removePayment, removeState };
 }

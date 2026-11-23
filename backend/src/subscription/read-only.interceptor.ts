@@ -29,6 +29,7 @@ export const ALWAYS_ALLOWED = new Set([
   'updatePlatformSettings',
   'confirmSubscriptionPayment',
   'rejectSubscriptionPayment',
+  'deleteSubscriptionPayment',
   'activateSubscription',
   'extendTrial',
   'setFarmFreeAccess',

@@ -1583,6 +1583,9 @@ type Mutation {
   deleteSale(id: ID!): Boolean!
   deleteSection(id: ID!): SectionModel!
   deleteStockMovement(id: ID!): Boolean!
+
+  """Supprimer un paiement (ex. test) ; la fin d’abonnement est recalculée"""
+  deleteSubscriptionPayment(id: ID!): Boolean!
   deleteTask(id: ID!): Boolean!
   deleteWeaning(id: ID!): Boolean!
   deleteWeighing(id: ID!): Boolean!
@@ -2449,6 +2452,8 @@ enum StockMovementType {
 }
 
 type SubscriptionAdminModel {
+  """Derniers paiements confirmés (50)"""
+  confirmedPayments: [SubscriptionPaymentModel!]!
   expiredFarms: Int!
   farms: [FarmAccessModel!]!
   payingFarms: Int!
@@ -2477,6 +2482,7 @@ type SubscriptionCheckoutModel {
 
 type SubscriptionPaymentModel {
   amount: Int!
+  confirmedAt: DateTime
   createdAt: DateTime!
 
   """Vue propriétaire"""
@@ -2487,6 +2493,9 @@ type SubscriptionPaymentModel {
   id: ID!
   periodEnd: DateTime
   plan: SubscriptionPlan!
+
+  """NOTCHPAY pour un paiement en ligne, vide si déclaré"""
+  provider: String
   reference: String
   status: SubscriptionPaymentStatus!
 }

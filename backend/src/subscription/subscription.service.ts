@@ -217,7 +217,7 @@ export class SubscriptionService {
   async admin(user: CurrentUserType) {
     this.assertAdmin(user);
     const now = new Date();
-    const [settings, pending, farms, confirmed] = await Promise.all([
+    const [settings, pending, farms, confirmed, history] = await Promise.all([
       this.settings(),
       this.prisma.subscriptionPayment.findMany({ where: { status: 'PENDING', provider: null }, orderBy: { createdAt: 'asc' }, include: { farm: { select: { name: true } } } }),
       this.prisma.farm.findMany({
@@ -228,6 +228,12 @@ export class SubscriptionService {
         },
       }),
       this.prisma.subscriptionPayment.findMany({ where: { status: 'CONFIRMED' }, select: { amount: true, confirmedAt: true } }),
+      this.prisma.subscriptionPayment.findMany({
+        where: { status: 'CONFIRMED' },
+        orderBy: { confirmedAt: 'desc' },
+        take: 50,
+        include: { farm: { select: { name: true } } },
+      }),
     ]);
     const rows = farms.map((f) => {
       const ownerEmail = (f.memberships.find((m) => m.role === 'ADMIN') ?? f.memberships[0])?.user.email ?? null;
@@ -241,6 +247,7 @@ export class SubscriptionService {
     return {
       settings,
       pendingPayments: pending.map((p) => ({ ...p, farmName: p.farm.name })),
+      confirmedPayments: history.map((p) => ({ ...p, farmName: p.farm.name })),
       farms: rows,
       revenue30d: confirmed.filter((p) => p.confirmedAt && p.confirmedAt.getTime() > now.getTime() - 30 * DAY).reduce((s, p) => s + p.amount, 0),
       revenueTotal: confirmed.reduce((s, p) => s + p.amount, 0),
@@ -286,6 +293,28 @@ export class SubscriptionService {
     const payment = await this.prisma.subscriptionPayment.findUnique({ where: { id: paymentId } });
     if (!payment || payment.status !== 'PENDING') throw new NotFoundException('Paiement introuvable ou déjà traité.');
     return this.prisma.subscriptionPayment.update({ where: { id: paymentId }, data: { status: 'REJECTED' } });
+  }
+
+  /**
+   * Supprime un paiement (ex. un test). S'il était confirmé, la fin d'abonnement de l'élevage est
+   * recalculée avec les paiements confirmés restants (aucun → plus d'abonnement payé).
+   */
+  async deletePayment(user: CurrentUserType, paymentId: string) {
+    this.assertAdmin(user);
+    const payment = await this.prisma.subscriptionPayment.findUnique({ where: { id: paymentId } });
+    if (!payment) throw new NotFoundException('Paiement introuvable.');
+    await this.prisma.$transaction(async (tx) => {
+      await tx.subscriptionPayment.delete({ where: { id: paymentId } });
+      if (payment.status !== 'CONFIRMED') return;
+      const latest = await tx.subscriptionPayment.findFirst({
+        where: { farmId: payment.farmId, status: 'CONFIRMED', periodEnd: { not: null } },
+        orderBy: { periodEnd: 'desc' },
+        select: { periodEnd: true },
+      });
+      await tx.farm.update({ where: { id: payment.farmId }, data: { paidUntil: latest?.periodEnd ?? null } });
+    });
+    this.readOnlyCache.delete(payment.farmId);
+    return true;
   }
 
   /** Abonnement enregistré à la main (paiement reçu hors de l'app). */

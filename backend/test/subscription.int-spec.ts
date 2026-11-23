@@ -109,4 +109,23 @@ describe('Essai et abonnement (intégration)', () => {
     expect(subscriptionStatus).toEqual({ status: 'EXEMPT', readOnly: false });
     expect((await createRabbit(farmer, 'ABO-4')).errors).toBeUndefined();
   });
+
+  it('la propriétaire supprime un paiement de test : revenus et fin d’abonnement recalculés', async () => {
+    await prisma.subscriptionPayment.deleteMany({ where: { farmId } });
+    await prisma.farm.update({ where: { id: farmId }, data: { freeAccess: false, paidUntil: null } });
+    await gqlOk(app, `mutation ($f: ID!) { activateSubscription(farmId: $f, plan: MONTHLY) }`, { f: farmId }, owner);
+    const first = (await prisma.farm.findUniqueOrThrow({ where: { id: farmId } })).paidUntil!;
+    await gqlOk(app, `mutation ($f: ID!) { activateSubscription(farmId: $f, plan: YEARLY) }`, { f: farmId }, owner);
+    const { subscriptionAdmin: before } = await gqlOk(app, `{ subscriptionAdmin { revenueTotal confirmedPayments { id plan farmName } } }`, undefined, owner);
+    const yearly = before.confirmedPayments.find((p: { plan: string; farmName: string }) => p.plan === 'YEARLY' && p.farmName === 'Ferme abo-eleveur');
+
+    const refused = await gql(app, `mutation ($id: ID!) { deleteSubscriptionPayment(id: $id) }`, { id: yearly.id }, farmer);
+    expect(refused.errors?.[0].message).toMatch(/propriétaire/);
+
+    await gqlOk(app, `mutation ($id: ID!) { deleteSubscriptionPayment(id: $id) }`, { id: yearly.id }, owner);
+    const farm = await prisma.farm.findUniqueOrThrow({ where: { id: farmId } });
+    expect(farm.paidUntil?.getTime()).toBe(first.getTime());
+    const { subscriptionAdmin: after } = await gqlOk(app, `{ subscriptionAdmin { revenueTotal } }`, undefined, owner);
+    expect(after.revenueTotal).toBe(before.revenueTotal - 25000);
+  });
 });

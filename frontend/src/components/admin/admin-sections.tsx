@@ -93,6 +93,47 @@ export function PendingPayments() {
   );
 }
 
+/** Paiements encaissés ; un paiement de test peut être supprimé (revenus et fin d'abonnement recalculés). */
+export function PaymentHistory() {
+  const { admin: a, error, loading } = useSubscriptionAdmin();
+  const { removePayment, removeState } = useAdminActions();
+  const [armed, setArmed] = useState<string | null>(null);
+  if (error) return <ErrorBox error={error} />;
+  if (!a) return loading ? <Loading /> : null;
+  return (
+    <Card title={`Paiements encaissés (${a.confirmedPayments.length})`} subtitle="Supprime un paiement de test : il sort des revenus et la fin d’abonnement de l’élevage est recalculée.">
+      {a.confirmedPayments.length === 0 ? (
+        <p className="text-sm text-slate-500">Aucun paiement encaissé.</p>
+      ) : (
+        <ul className="divide-y divide-slate-100">
+          {a.confirmedPayments.map((p) => (
+            <li key={p.id} className="flex flex-wrap items-center gap-3 py-3 text-sm">
+              <div className="min-w-0 flex-1">
+                <p className="font-medium text-slate-900">{p.farmName} · {PLAN_LABEL[p.plan]} · {formatMoney(p.amount)}</p>
+                <p className="text-slate-500">
+                  {p.provider === 'NOTCHPAY' ? 'Mobile Money en ligne' : 'Enregistré à la main'} · le {formatDate(p.confirmedAt)}
+                  {p.periodEnd ? ` · jusqu’au ${formatDate(p.periodEnd)}` : ''}
+                </p>
+              </div>
+              {armed === p.id ? (
+                <>
+                  <Button variant="danger" loading={removeState.loading} onClick={() => removePayment({ variables: { id: p.id } }).then(() => setArmed(null)).catch(() => undefined)}>
+                    Oui, supprimer
+                  </Button>
+                  <Button variant="ghost" onClick={() => setArmed(null)}>Annuler</Button>
+                </>
+              ) : (
+                <Button variant="secondary" onClick={() => setArmed(p.id)}>Supprimer</Button>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
+      <ErrorBox error={removeState.error} />
+    </Card>
+  );
+}
+
 /** Tous les élevages : accès gratuit, jours offerts, paiement reçu. */
 export function FarmsList() {
   const { admin: a, error, loading } = useSubscriptionAdmin();
