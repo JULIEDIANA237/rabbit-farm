@@ -43,6 +43,7 @@ async function bootstrap() {
   allowedHeaders: [
     'Content-Type',
     'Authorization',
+    'X-Offline-Id',
   ],
 });
   /**

@@ -45,6 +45,7 @@ import { CareModule } from './care/care.module.js';
 
 import { GqlThrottlerGuard } from './auth/guards/gql-throttler.guard.js';
 import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor.js';
+import { OfflineSubmissionInterceptor } from './common/interceptors/offline-submission.interceptor.js';
 
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
@@ -135,6 +136,10 @@ import { SetupModule } from './setup/setup.module.js';
     {
       provide: APP_INTERCEPTOR,
       useClass: AuditLogInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: OfflineSubmissionInterceptor,
     },
   ],
 })

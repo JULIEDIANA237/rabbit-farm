@@ -1,14 +1,16 @@
 'use client';
 
+import { clearOfflineCache } from '@/lib/offline-cache';
+import { resetOfflineRestore } from '@/components/layout/offline-cache-gate';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { gql } from '@apollo/client';
 import { useQuery, useApolloClient } from '@apollo/client/react';
 import { Bell, CircleHelp, LogOut, Menu, RefreshCw } from 'lucide-react';
 import { SHOW_GUIDE_EVENT } from '@/components/onboarding/module-guide';
 import { useState } from 'react';
 
 import { ME_QUERY, type Me } from '@/graphql/auth/mutations';
+import { OPEN_TASKS_QUERY } from '@/graphql/field-queries';
 import { useAuthStore } from '@/stores/auth-store';
 import { FARM_ROLE, label } from '@/lib/labels';
 import { reloadApp } from '@/components/pwa/update-banner';
@@ -18,14 +20,6 @@ interface HeaderProps {
   onMenuClick: () => void;
 }
 
-const OPEN_TASKS_QUERY = gql`
-  query HeaderTasks {
-    tasks(openOnly: true) {
-      id
-      dueDate
-    }
-  }
-`;
 
 export function Header({ onMenuClick }: HeaderProps) {
   const router = useRouter();
@@ -45,6 +39,8 @@ export function Header({ onMenuClick }: HeaderProps) {
   const dueCount = (tasks?.tasks ?? []).filter((t) => new Date(t.dueDate) <= endOfToday).length;
 
   async function handleLogout() {
+    await clearOfflineCache();
+    resetOfflineRestore();
     logout();
     await client.clearStore();
     router.replace('/login');

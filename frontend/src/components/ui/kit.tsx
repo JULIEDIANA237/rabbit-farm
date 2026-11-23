@@ -8,7 +8,7 @@ import type {
   TextareaHTMLAttributes,
 } from 'react';
 import { useEffect, useState } from 'react';
-import { AlertTriangle, Eye, EyeOff, Inbox, Loader2, X } from 'lucide-react';
+import { AlertTriangle, CloudOff, Eye, EyeOff, Inbox, Loader2, X } from 'lucide-react';
 
 import { errorMessage } from '@/lib/format';
 
@@ -238,6 +238,18 @@ export function Loading({ label = 'Chargement…' }: { label?: string }) {
 
 export function ErrorBox({ error, onRetry }: { error: unknown; onRetry?: () => void }) {
   if (!error) return null;
+  // Geste noté sans réseau : ce n'est pas une erreur, il partira tout seul.
+  if ((error as { name?: string }).name === 'OfflineQueuedError') {
+    return (
+      <div className="flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+        <CloudOff size={18} className="mt-0.5 shrink-0" />
+        <p className="flex-1">
+          <span className="font-semibold">Gardé sur ce téléphone, à envoyer.</span> Il partira tout seul au retour du réseau. Tu peux fermer
+          cette fenêtre.
+        </p>
+      </div>
+    );
+  }
   return (
     <div className="flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
       <AlertTriangle size={18} className="mt-0.5 shrink-0" />

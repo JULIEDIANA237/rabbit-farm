@@ -331,6 +331,7 @@ model Farm {
   /// Accès gratuit à vie, accordé par la propriétaire de l'app (ex. : le gérant de sa ferme).
   freeAccess  Boolean   @default(false)
   subscriptionPayments SubscriptionPayment[]
+  offlineSubmissions   OfflineSubmission[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -1595,4 +1596,15 @@ model CompanionQuestion {
   @@unique([farmId, key])
   @@index([farmId, status, askAt])
   @@index([notifiedAt])
+}
+
+/// Saisie faite hors ligne sur le téléphone : son identifiant évite de l'enregistrer deux fois.
+model OfflineSubmission {
+  id        String   @id
+  farmId    String
+  farm      Farm     @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  field     String
+  createdAt DateTime @default(now())
+
+  @@index([farmId, createdAt])
 }
