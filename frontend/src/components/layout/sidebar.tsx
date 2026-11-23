@@ -168,14 +168,14 @@ export function Sidebar({
         <button
           type="button"
           aria-label="Fermer le menu"
-          className="fixed inset-0 z-40 bg-black/40 lg:hidden"
+          className="fixed inset-0 z-[55] bg-black/40 lg:hidden"
           onClick={onClose}
         />
       )}
 
       <aside
         className={`
-          fixed inset-y-0 left-0 z-50 flex w-72 flex-col
+          fixed inset-y-0 left-0 z-[60] flex w-72 flex-col
           border-r border-slate-200 bg-white
           transition-transform duration-300
           lg:sticky lg:top-0 lg:z-auto lg:h-screen lg:translate-x-0
@@ -264,7 +264,7 @@ export function Sidebar({
           )}
         </nav>
 
-        <div className="border-t border-slate-100 p-4">
+        <div className="border-t border-slate-100 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
           <Link
             href="/subscription"
             onClick={onClose}
