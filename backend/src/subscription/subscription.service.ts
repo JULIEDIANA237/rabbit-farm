@@ -8,7 +8,7 @@ import { frontendUrl } from '../auth/password-reset/password-reset.service.js';
 
 import { AccessStatus } from './subscription.models.js';
 import { DAY, accessOf, extendPeriod } from './access.js';
-import { NotchPayClient } from './notchpay.client.js';
+import { NotchPayClient, normalizeCameroonPhone, type MobileOperator } from './notchpay.client.js';
 
 const SETTINGS_ID = 'default';
 const CACHE_MS = 30_000;
@@ -104,30 +104,45 @@ export class SubscriptionService {
 
   // ---------- Paiement en ligne (NotchPay) ----------
 
-  /** Ouvre une page de paiement NotchPay ; l'abonnement s'active tout seul une fois le paiement confirmé. */
-  async startOnlinePayment(user: CurrentUserType, plan: SubscriptionPlan) {
+  /**
+   * Paiement Mobile Money en ligne. Avec un opérateur et un numéro, la demande arrive directement sur le
+   * téléphone (l'éleveur reste dans l'app) ; sinon, ou si l'envoi direct échoue, on renvoie la page NotchPay.
+   */
+  async startOnlinePayment(user: CurrentUserType, plan: SubscriptionPlan, direct?: { operator: MobileOperator; phone: string }) {
     if (user.role !== 'ADMIN') throw new ForbiddenException('Seul un administrateur de l’élevage peut gérer l’abonnement.');
     if (!user.farmId) throw new BadRequestException('Aucun élevage à abonner.');
     if (!this.notchpay.enabled) throw new ServiceUnavailableException('Le paiement en ligne n’est pas encore disponible : utilise le paiement déclaré.');
+    const phone = direct ? normalizeCameroonPhone(direct.phone) : null;
+    if (direct && !phone) throw new BadRequestException('Numéro invalide : tape les 9 chiffres, par exemple 670 00 00 00.');
     const settings = await this.settings();
     const amount = this.priceOf(plan, settings);
     const payment = await this.prisma.subscriptionPayment.create({
-      data: { farmId: user.farmId, plan, amount, provider: NOTCHPAY, requestedById: user.userId },
+      data: { farmId: user.farmId, plan, amount, provider: NOTCHPAY, requestedById: user.userId, reference: phone },
     });
+    let created: { id: string | null; reference: string | null; url: string };
     try {
-      const { id, url } = await this.notchpay.checkout({
+      created = await this.notchpay.checkout({
         amount,
         reference: payment.id,
         email: user.email,
+        phone: phone ?? undefined,
         description: `Abonnement Rabbit Farm ${plan === 'YEARLY' ? 'annuel' : 'mensuel'}`,
         callback: `${frontendUrl()}/subscription`,
       });
-      await this.prisma.subscriptionPayment.update({ where: { id: payment.id }, data: { providerRef: id, checkoutUrl: url } });
-      return { paymentId: payment.id, url };
     } catch (error) {
       await this.prisma.subscriptionPayment.update({ where: { id: payment.id }, data: { status: 'REJECTED' } });
       this.logger.warn(`Paiement NotchPay non créé : ${error instanceof Error ? error.message : String(error)}`);
       throw new ServiceUnavailableException('Le paiement en ligne ne répond pas pour le moment. Réessaie plus tard ou utilise le paiement déclaré.');
+    }
+    await this.prisma.subscriptionPayment.update({ where: { id: payment.id }, data: { providerRef: created.id, checkoutUrl: created.url } });
+    if (!direct || !phone) return { paymentId: payment.id, url: created.url, direct: false };
+    try {
+      await this.notchpay.charge(created.reference ?? created.id ?? payment.id, direct.operator, phone);
+      return { paymentId: payment.id, url: created.url, direct: true };
+    } catch (error) {
+      // L'envoi direct a échoué : la page NotchPay reste un secours, avec le même paiement.
+      this.logger.warn(`Paiement direct NotchPay refusé : ${error instanceof Error ? error.message : String(error)}`);
+      return { paymentId: payment.id, url: created.url, direct: false };
     }
   }
 
@@ -160,7 +175,9 @@ export class SubscriptionService {
     if (payment.status !== 'PENDING') return payment;
     const remote = (payment.providerRef && (await this.notchpay.retrieve(payment.providerRef))) || (await this.notchpay.retrieve(payment.id));
     if (!remote) return payment;
-    if (remote.reference && remote.reference !== payment.id) return payment;
+    // Le paiement relu doit bien être celui-ci (notre référence ou l'identifiant NotchPay enregistré).
+    const sameId = Boolean(payment.providerRef) && remote.id === payment.providerRef;
+    if (remote.reference && remote.reference !== payment.id && !sameId) return payment;
     if (FAILED.has(remote.status)) {
       await this.prisma.subscriptionPayment.updateMany({ where: { id: payment.id, status: 'PENDING' }, data: { status: 'REJECTED' } });
       return this.prisma.subscriptionPayment.findUniqueOrThrow({ where: { id: payment.id } });

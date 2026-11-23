@@ -10,6 +10,7 @@ import {
   PlatformSettingsModel,
   SubscriptionAdminModel,
   SubscriptionCheckoutModel,
+  MobileOperator,
   SubscriptionPaymentModel,
   SubscriptionStatusModel,
 } from './subscription.models.js';
@@ -42,12 +43,14 @@ export class SubscriptionResolver {
     return this.subscriptions.declarePayment(user, plan, reference);
   }
 
-  @Mutation(() => SubscriptionCheckoutModel, { description: 'Ouvrir une page de paiement Mobile Money (NotchPay)' })
+  @Mutation(() => SubscriptionCheckoutModel, { description: 'Payer par Mobile Money : demande envoyée sur le téléphone, ou page NotchPay en secours' })
   startSubscriptionCheckout(
     @CurrentUser() user: CurrentUserType,
     @Args('plan', { type: () => SubscriptionPlan }) plan: SubscriptionPlan,
+    @Args('operator', { type: () => MobileOperator, nullable: true }) operator?: MobileOperator,
+    @Args('phone', { type: () => String, nullable: true }) phone?: string,
   ) {
-    return this.subscriptions.startOnlinePayment(user, plan);
+    return this.subscriptions.startOnlinePayment(user, plan, operator && phone ? { operator, phone } : undefined);
   }
 
   @Mutation(() => SubscriptionPaymentModel, { description: 'Vérifier un paiement en ligne au retour de NotchPay' })

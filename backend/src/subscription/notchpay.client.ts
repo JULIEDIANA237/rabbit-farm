@@ -32,6 +32,7 @@ export interface CheckoutInput {
   email: string;
   description: string;
   callback: string;
+  phone?: string;
 }
 
 export interface RemotePayment {
@@ -43,6 +44,17 @@ export interface RemotePayment {
 }
 
 const TIMEOUT = 15_000;
+
+export type MobileOperator = 'MTN' | 'ORANGE';
+const CHANNEL: Record<MobileOperator, string> = { MTN: 'cm.mtn', ORANGE: 'cm.orange' };
+
+/** Numéro camerounais (6XX XX XX XX, avec ou sans 237) au format +2376XXXXXXXX, sinon null. */
+export function normalizeCameroonPhone(input: string): string | null {
+  let digits = input.replace(/[^\d]/g, '');
+  if (digits.startsWith('00237')) digits = digits.slice(5);
+  else if (digits.startsWith('237') && digits.length === 12) digits = digits.slice(3);
+  return /^6\d{8}$/.test(digits) ? `+237${digits}` : null;
+}
 
 type Json = Record<string, unknown>;
 const str = (v: unknown) => (typeof v === 'string' && v ? v : null);
@@ -100,13 +112,14 @@ export class NotchPayClient {
   }
 
   /** Crée la page de paiement NotchPay ; l'éleveur y choisit MTN ou Orange Money. */
-  async checkout(input: CheckoutInput): Promise<{ id: string | null; url: string }> {
+  async checkout(input: CheckoutInput): Promise<{ id: string | null; reference: string | null; url: string }> {
     const body = await this.request('/payments', {
       method: 'POST',
       body: JSON.stringify({
         amount: input.amount,
         currency: 'XAF',
         email: input.email,
+        ...(input.phone ? { phone: input.phone } : {}),
         reference: input.reference,
         description: input.description,
         callback: input.callback,
@@ -115,7 +128,16 @@ export class NotchPayClient {
     });
     const url = str(body.authorization_url);
     if (!url) throw new Error('NotchPay n’a pas renvoyé de page de paiement.');
-    return { id: parseTransaction(body)?.id ?? null, url };
+    const trx = parseTransaction(body);
+    return { id: trx?.id ?? null, reference: trx?.reference ?? null, url };
+  }
+
+  /** Paiement direct : NotchPay envoie la demande de confirmation sur le téléphone, l'éleveur reste dans l'app. */
+  async charge(reference: string, operator: MobileOperator, phone: string): Promise<void> {
+    await this.request(`/payments/${encodeURIComponent(reference)}`, {
+      method: 'POST',
+      body: JSON.stringify({ channel: CHANNEL[operator], data: { phone } }),
+    });
   }
 
   /** Relit un paiement chez NotchPay (null s'il est introuvable ou si NotchPay ne répond pas). */
