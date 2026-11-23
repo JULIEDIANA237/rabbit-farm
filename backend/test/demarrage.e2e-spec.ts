@@ -116,4 +116,15 @@ describe('Prise en main de l’app (e2e)', () => {
     const next = await prisma.companionQuestion.findFirstOrThrow({ where: { farmId: farm.id, kind: 'SETUP', status: 'PENDING' } });
     expect(next.key).toMatch(/^SETUP:STOCK:/);
   });
+
+  it('une femelle ou un mâle adulte noté « engraissement » compte comme reproducteur', async () => {
+    const other = await registerFarm(app, 'demarrage-usage');
+    const farm = await prisma.farm.findFirstOrThrow({ where: { name: 'Ferme demarrage-usage' } });
+    await prisma.rabbit.create({ data: { farmId: farm.id, code: 'F-ACHAT', sex: 'FEMALE', purpose: 'FATTENING' } });
+    await prisma.rabbit.create({ data: { farmId: farm.id, code: 'M-REFORME', sex: 'MALE', purpose: 'REFORM' } });
+    const { farmSetup } = await gqlOk(app, SETUP, undefined, other);
+    const done = farmSetup.steps.filter((s: { done: boolean }) => s.done).map((s: { key: string }) => s.key);
+    expect(done).toContain('FEMALES');
+    expect(done).not.toContain('MALES');
+  });
 });

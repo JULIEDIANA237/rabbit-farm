@@ -16,6 +16,29 @@ const MAX_ROWS = 200;
 
 const describe = (e: unknown) => (e instanceof Error ? e.message : String(e)).slice(0, 160);
 
+/**
+ * Reproducteurs d'une ferme pour la carte « Ta ferme est prête » : un lapin
+ * adulte actif du bon sexe (hors réforme et hors lapereau d'engraissement né
+ * à la ferme), ou tout lapin déjà utilisé en saillie ou en portée, quel que
+ * soit son usage noté.
+ */
+export function breedersWhere(farmId: string, sex: 'FEMALE' | 'MALE') {
+  const used =
+    sex === 'FEMALE'
+      ? [{ breedingsAsFemale: { some: {} } }, { motherLitters: { some: {} } }]
+      : [{ breedingsAsMale: { some: {} } }, { fatherLitters: { some: {} } }];
+  return {
+    farmId,
+    status: 'ACTIVE' as const,
+    sex,
+    OR: [
+      { purpose: { in: ['BREEDER' as const, 'FUTURE_BREEDER' as const] } },
+      { purpose: { not: 'REFORM' as const }, NOT: { birthLitterId: { not: null }, purpose: 'FATTENING' as const } },
+      ...used,
+    ],
+  };
+}
+
 @Injectable()
 export class SetupService {
   constructor(
@@ -29,8 +52,8 @@ export class SetupService {
     const [farm, cages, females, males, breedings, stockItems, pushSubscriptions, rabbits, litters, lots] = await Promise.all([
       this.prisma.farm.findUnique({ where: { id: farmId }, select: { location: true } }),
       this.prisma.cage.count({ where: { farmId } }),
-      this.prisma.rabbit.count({ where: { ...active, sex: 'FEMALE', purpose: { in: ['BREEDER', 'FUTURE_BREEDER'] } } }),
-      this.prisma.rabbit.count({ where: { ...active, sex: 'MALE', purpose: { in: ['BREEDER', 'FUTURE_BREEDER'] } } }),
+      this.prisma.rabbit.count({ where: breedersWhere(farmId, 'FEMALE') }),
+      this.prisma.rabbit.count({ where: breedersWhere(farmId, 'MALE') }),
       this.prisma.breeding.count({ where: { farmId } }),
       this.prisma.inventoryItem.count({ where: { farmId } }),
       this.prisma.pushSubscription.count({ where: { farmId } }),
