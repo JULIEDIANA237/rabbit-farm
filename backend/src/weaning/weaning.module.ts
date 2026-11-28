@@ -8,5 +8,6 @@ import { WeaningService } from './weaning.service.js';
 @Module({
 	imports: [AuthModule, OperationsModule,],
 	providers: [WeaningService, WeaningResolver],
+	exports: [WeaningService],
 })
 export class WeaningModule {}

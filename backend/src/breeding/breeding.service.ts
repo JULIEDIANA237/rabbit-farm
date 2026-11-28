@@ -110,6 +110,7 @@ export class BreedingService {
   async create(
     input: CreateBreedingInput,
     currentUser: CurrentUserType,
+    options: { earlierThanActive?: boolean } = {},
   ) {
     if (input.femaleId === input.maleId) {
       throw new BadRequestException(
@@ -191,9 +192,12 @@ export class BreedingService {
         });
         return this.toModel(updated);
       }
-      throw new BadRequestException(
-        `La femelle ${female.code} possède déjà un accouplement actif.`,
-      );
+      // Saillie plus ancienne saisie après coup (suite enregistrée jusqu'au sevrage).
+      if (!(options.earlierThanActive && breedingDate < activeBreeding.breedingDate)) {
+        throw new BadRequestException(
+          `La femelle ${female.code} possède déjà un accouplement actif.`,
+        );
+      }
     }
 
     // Contrôle généalogique multi-générations (§18, §63)

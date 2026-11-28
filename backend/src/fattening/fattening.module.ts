@@ -7,5 +7,6 @@ import { FatteningResolver } from './fattening.resolver.js';
 @Module({
   imports: [AuthModule],
   providers: [FatteningService, FatteningResolver, TrackingSheetService],
+  exports: [FatteningService],
 })
 export class FatteningModule {}

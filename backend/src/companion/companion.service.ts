@@ -152,8 +152,10 @@ export class CompanionService {
       url: '/questions',
       tag: 'rabbitfarm-assistant',
     });
+    // Rien n'a atteint de téléphone (aucun appareil abonné, clés absentes…) : on réessaiera à la tournée suivante.
+    if (sent === 0) return false;
     await this.prisma.companionQuestion.updateMany({ where: { id: { in: due.map((q) => q.id) } }, data: { notifiedAt: now } });
-    return sent > 0;
+    return true;
   }
 
   private async heatFor(

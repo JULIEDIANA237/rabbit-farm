@@ -1614,6 +1614,11 @@ type Mutation {
   recordLitterMortality(input: RecordLitterMortalityInput!): MortalityModel!
   recordNestInstallation(input: RecordNestInstallationInput!): NestInstallationModel!
 
+  """
+  Saillie d'il y a 65 jours ou plus : mise bas, sevrage et lot d'engraissement enregistrés en même temps
+  """
+  recordPastBreeding(input: RecordPastBreedingInput!): BreedingModel!
+
   """Décès, réforme ou transfert d’un lapin (§37, §58)."""
   recordRabbitExit(input: RecordRabbitExitInput!): RabbitModel!
 
@@ -2172,6 +2177,34 @@ input RecordNestInstallationInput {
   material: String
   nestType: String
   observation: String
+}
+
+input RecordPastBreedingInput {
+  acknowledgeWarnings: Boolean = false
+
+  """Poids moyen au sevrage (kg)"""
+  averageWeight: Float
+
+  """Date de mise bas (par défaut : saillie + 31 jours)"""
+  birthDate: DateTime
+  breedingDate: DateTime!
+
+  """Cage d'engraissement où loger le lot"""
+  cageId: ID
+
+  """Lot existant ; sinon un lot est créé pour la portée"""
+  fatteningLotId: ID
+  femaleId: ID!
+  liveBorn: Int!
+  maleId: ID!
+  observation: String
+  stillBorn: Int = 0
+
+  """Lapereaux sevrés ; les autres nés vivants sont morts avant le sevrage"""
+  weanedCount: Int!
+
+  """Date du sevrage (par défaut : mise bas + 35 jours)"""
+  weaningDate: DateTime
 }
 
 input RecordRabbitExitInput {
