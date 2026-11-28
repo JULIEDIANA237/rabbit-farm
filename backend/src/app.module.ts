@@ -28,6 +28,7 @@ import { BirthsModule } from './births/births.module.js';
 import { LittersModule } from './litters/litters.module.js';
 import { AdoptionsModule } from './adoptions/adoptions.module.js';
 import { WeaningModule } from './weaning/weaning.module.js';
+import { PastBreedingModule } from './past-breeding/past-breeding.module.js';
 import { FatteningModule } from './fattening/fattening.module.js';
 import { HealthModule } from './health/health.module.js';
 import { SalesModule } from './sales/sales.module.js';
@@ -102,6 +103,7 @@ import { SetupModule } from './setup/setup.module.js';
     LittersModule,
     AdoptionsModule,
     WeaningModule,
+    PastBreedingModule,
     FatteningModule,
     HealthModule,
     SalesModule,

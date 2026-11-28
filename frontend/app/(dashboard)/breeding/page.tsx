@@ -13,6 +13,9 @@ import {
 import { useRabbitOptions } from '@/graphql/options';
 import { parsePrefill, toFloat, toInt, useCreateModal, useForm, useUrlCommand, type Prefill } from '@/hooks/use-form';
 import { AiFill } from '@/components/assistant/ai-fill';
+import {
+  PAST_BREEDING_MIN_DAYS, PAST_FIELDS, PastBreedingFields, RECORD_PAST_BREEDING, daysSince, pastBreedingInput, pastBreedingReady,
+} from '@/components/breeding/past-breeding';
 import { clean, formatDate, formatNumber, fromDateInput, toDateInput } from '@/lib/format';
 import { RowActions, useDeleteAction } from '@/components/ui/row-actions';
 import { BREEDING_STATUS, COMPATIBILITY, PREGNANCY_RESULT, label, options } from '@/lib/labels';
@@ -401,8 +404,11 @@ function CreateBreedingModal({ open, onClose, prefill }: { open: boolean; onClos
     femaleHealthy: 'oui',
     maleHealthy: 'oui',
     matingSeen: '',
+    ...PAST_FIELDS,
     ...prefill,
   });
+  // Saillie de 65 jours ou plus : la portée est déjà sevrée, on enregistre toute la suite.
+  const past = daysSince(values.breedingDate) >= PAST_BREEDING_MIN_DAYS;
   const [acknowledge, setAcknowledge] = useState(false);
   const answers = [
     values.femaleHeat && `Femelle en chaleur : ${values.femaleHeat}`,
@@ -421,7 +427,15 @@ function CreateBreedingModal({ open, onClose, prefill }: { open: boolean; onClos
     };
   }>(COMPATIBILITY_QUERY, { fetchPolicy: 'network-only' });
 
-  const [create, { loading, error, reset: resetMutation }] = useMutation(CREATE, { refetchQueries });
+  const [createNow, now] = useMutation(CREATE, { refetchQueries });
+  const [createPast, earlier] = useMutation(RECORD_PAST_BREEDING, {
+    refetchQueries: [...refetchQueries, 'Tasks', 'HeaderTasks', 'LotOptions', 'CageOptions', 'LitterOptions'],
+  });
+  const { loading, error } = past ? earlier : now;
+  const resetMutation = () => {
+    now.reset();
+    earlier.reset();
+  };
 
   const result = compat?.breedingCompatibility;
 
@@ -473,7 +487,23 @@ function CreateBreedingModal({ open, onClose, prefill }: { open: boolean; onClos
   };
 
   async function submit() {
-    await create({
+    if (past) {
+      await createPast({
+        variables: {
+          input: clean({
+            femaleId: values.femaleId,
+            maleId: values.maleId,
+            breedingDate: matingDate(values.breedingDate, values.breedingTime),
+            observation: values.observation.trim(),
+            acknowledgeWarnings: acknowledge,
+            ...pastBreedingInput(values.breedingDate, values),
+          }),
+        },
+      });
+      close();
+      return;
+    }
+    await createNow({
       variables: {
         input: clean({
           femaleId: values.femaleId,
@@ -503,9 +533,11 @@ function CreateBreedingModal({ open, onClose, prefill }: { open: boolean; onClos
           <Button
             onClick={() => submit().catch(() => undefined)}
             loading={loading}
-            disabled={!values.femaleId || !values.maleId || blocked || needsAck || mating?.maleLimitReached}
+            disabled={
+              !values.femaleId || !values.maleId || blocked || needsAck || mating?.maleLimitReached || (past && !pastBreedingReady(values))
+            }
           >
-            {mating?.sameDayBreedingId ? 'Ajouter la saillie' : 'Enregistrer'}
+            {past ? 'Enregistrer jusqu’au lot' : mating?.sameDayBreedingId ? 'Ajouter la saillie' : 'Enregistrer'}
           </Button>
         </>
       }
@@ -547,16 +579,18 @@ function CreateBreedingModal({ open, onClose, prefill }: { open: boolean; onClos
           {maleCode} a déjà sailli {mating.maleFemalesLast24h[0]} dans les dernières 24 h : ce sera sa dernière femelle avant demain.
         </div>
       )}
-      {mating?.sameDayBreedingId && (
+      {!past && mating?.sameDayBreedingId && (
         <div className="rounded-2xl border border-sky-200 bg-sky-50 p-3 text-sm text-sky-800">
           Cette femelle a déjà été saillie ce jour-là : cette saillie s’ajoutera au même accouplement ({mating.sameDayMatingCount + 1}ᵉ saillie), sans en créer un nouveau.
         </div>
       )}
-      {mating?.femaleHasOtherActiveBreeding && (
+      {!past && mating?.femaleHasOtherActiveBreeding && (
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
           Cette femelle a déjà un accouplement en cours (pas le même jour). Enregistre d’abord sa palpation ou annule cet accouplement.
+          {' '}Pour noter une saillie plus ancienne, mets sa date : à {PAST_BREEDING_MIN_DAYS} jours ou plus, l’app enregistre toute la suite jusqu’au lot.
         </div>
       )}
+      {past && <PastBreedingFields breedingDate={values.breedingDate} values={values} bind={bind} />}
 
       {checking && <Loading label="Vérification de la généalogie…" />}
       {result && (
@@ -603,7 +637,7 @@ function CreateBreedingModal({ open, onClose, prefill }: { open: boolean; onClos
         </div>
       )}
 
-      {values.femaleId && values.maleId && (
+      {!past && values.femaleId && values.maleId && (
         <div className="space-y-3 rounded-2xl border border-slate-200 p-4">
           <p className="text-sm font-semibold text-slate-900">Quelques questions avant d’enregistrer</p>
           <FormGrid>
