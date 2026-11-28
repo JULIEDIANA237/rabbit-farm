@@ -14,7 +14,7 @@ import { useRabbitOptions } from '@/graphql/options';
 import { parsePrefill, toFloat, toInt, useCreateModal, useForm, useUrlCommand, type Prefill } from '@/hooks/use-form';
 import { AiFill } from '@/components/assistant/ai-fill';
 import {
-  PAST_BREEDING_MIN_DAYS, PAST_FIELDS, PastBreedingFields, RECORD_PAST_BREEDING, daysSince, pastBreedingInput, pastBreedingReady,
+  PAST_BREEDING_MIN_DAYS, PAST_BREEDING_WEANED_DAYS, PAST_FIELDS, PastBreedingFields, RECORD_PAST_BREEDING, daysSince, pastBreedingInput, pastBreedingReady,
 } from '@/components/breeding/past-breeding';
 import { clean, formatDate, formatNumber, fromDateInput, toDateInput } from '@/lib/format';
 import { RowActions, useDeleteAction } from '@/components/ui/row-actions';
@@ -407,8 +407,9 @@ function CreateBreedingModal({ open, onClose, prefill }: { open: boolean; onClos
     ...PAST_FIELDS,
     ...prefill,
   });
-  // Saillie de 65 jours ou plus : la portée est déjà sevrée, on enregistre toute la suite.
+  // Saillie de 30 jours ou plus : la mise bas a eu lieu, on enregistre la suite (jusqu'au lot à 65 jours).
   const past = daysSince(values.breedingDate) >= PAST_BREEDING_MIN_DAYS;
+  const pastWeaned = daysSince(values.breedingDate) >= PAST_BREEDING_WEANED_DAYS;
   const [acknowledge, setAcknowledge] = useState(false);
   const answers = [
     values.femaleHeat && `Femelle en chaleur : ${values.femaleHeat}`,
@@ -534,10 +535,10 @@ function CreateBreedingModal({ open, onClose, prefill }: { open: boolean; onClos
             onClick={() => submit().catch(() => undefined)}
             loading={loading}
             disabled={
-              !values.femaleId || !values.maleId || blocked || needsAck || mating?.maleLimitReached || (past && !pastBreedingReady(values))
+              !values.femaleId || !values.maleId || blocked || needsAck || mating?.maleLimitReached || (past && !pastBreedingReady(values.breedingDate, values))
             }
           >
-            {past ? 'Enregistrer jusqu’au lot' : mating?.sameDayBreedingId ? 'Ajouter la saillie' : 'Enregistrer'}
+            {past ? (pastWeaned ? 'Enregistrer jusqu’au lot' : 'Enregistrer avec la mise bas') : mating?.sameDayBreedingId ? 'Ajouter la saillie' : 'Enregistrer'}
           </Button>
         </>
       }
@@ -587,7 +588,7 @@ function CreateBreedingModal({ open, onClose, prefill }: { open: boolean; onClos
       {!past && mating?.femaleHasOtherActiveBreeding && (
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
           Cette femelle a déjà un accouplement en cours (pas le même jour). Enregistre d’abord sa palpation ou annule cet accouplement.
-          {' '}Pour noter une saillie plus ancienne, mets sa date : à {PAST_BREEDING_MIN_DAYS} jours ou plus, l’app enregistre toute la suite jusqu’au lot.
+          {' '}Pour noter une saillie plus ancienne, mets sa date : à {PAST_BREEDING_MIN_DAYS} jours ou plus, l’app enregistre aussi la mise bas, et à {PAST_BREEDING_WEANED_DAYS} jours le sevrage jusqu’au lot.
         </div>
       )}
       {past && <PastBreedingFields breedingDate={values.breedingDate} values={values} bind={bind} />}

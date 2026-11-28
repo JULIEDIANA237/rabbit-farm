@@ -1615,7 +1615,7 @@ type Mutation {
   recordNestInstallation(input: RecordNestInstallationInput!): NestInstallationModel!
 
   """
-  Saillie d'il y a 65 jours ou plus : mise bas, sevrage et lot d'engraissement enregistrés en même temps
+  Saillie d'il y a 30 jours ou plus : mise bas enregistrée en même temps ; à 65 jours, aussi le sevrage et le lot d'engraissement
   """
   recordPastBreeding(input: RecordPastBreedingInput!): BreedingModel!
 
@@ -2182,6 +2182,11 @@ input RecordNestInstallationInput {
 input RecordPastBreedingInput {
   acknowledgeWarnings: Boolean = false
 
+  """
+  De 30 à 65 jours : lapereaux encore vivants sous la mère (tous par défaut)
+  """
+  aliveCount: Int
+
   """Poids moyen au sevrage (kg)"""
   averageWeight: Float
 
@@ -2200,8 +2205,10 @@ input RecordPastBreedingInput {
   observation: String
   stillBorn: Int = 0
 
-  """Lapereaux sevrés ; les autres nés vivants sont morts avant le sevrage"""
-  weanedCount: Int!
+  """
+  À 65 jours ou plus : lapereaux sevrés ; les autres nés vivants sont morts avant le sevrage
+  """
+  weanedCount: Int
 
   """Date du sevrage (par défaut : mise bas + 35 jours)"""
   weaningDate: DateTime
