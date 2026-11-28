@@ -20,6 +20,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: '#059669',
+  // Le mode sombre forcé du téléphone rendait le texte des champs blanc sur blanc.
+  colorScheme: 'only light',
   width: 'device-width',
   initialScale: 1,
   // Le clavier du téléphone réduit la page au lieu de recouvrir les champs,

@@ -137,9 +137,15 @@
   --surface: #111a2b;
   --background: #0b1220;
   --foreground: #e2e8f0;
-  --field-text: #f1f5f9;
-  --placeholder: #7b8798;
+  /* Champs de saisie : fond blanc et texte noir, même la nuit, pour bien lire. */
+  --field-text: #0f172a;
+  --placeholder: #64748b;
   color-scheme: dark;
+}
+
+:root[data-theme="night"] :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]), select, textarea) {
+  background-color: #ffffff;
+  color-scheme: only light;
 }
 
 :root[data-theme="night"] .bg-white { background-color: var(--surface); }
