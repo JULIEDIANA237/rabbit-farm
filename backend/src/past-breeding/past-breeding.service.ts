@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, Logger, NotFoundException } from '@nes
 
 import type { CurrentUserType } from '../auth/types/current-user.type.js';
 import { BirthsService } from '../births/births.service.js';
-import { BreedingService } from '../breeding/breeding.service.js';
+import { ACTIVE_BREEDING_STATUSES, BreedingService } from '../breeding/breeding.service.js';
 import { sameMatingDay } from '../breeding/mating-rules.js';
 import { BREEDING_CALENDAR, addDays, diffInDays } from '../common/calendar/breeding-calendar.js';
 import { FatteningService } from '../fattening/fattening.service.js';
@@ -14,16 +14,18 @@ import { PrismaService } from '../prisma/prisma.service.js';
 import { WeaningService } from '../weaning/weaning.service.js';
 import { RecordPastBreedingInput } from './record-past-breeding.input.js';
 
-/** À partir de cet âge, la portée d'une saillie est déjà sevrée (mise bas J+30, sevrage 35 jours après). */
-export const PAST_BREEDING_MIN_DAYS = BREEDING_CALENDAR.birthStart + BREEDING_CALENDAR.weaning;
+/** À partir de cet âge, la mise bas a eu lieu : les petits sont sous la mère. */
+export const PAST_BREEDING_MIN_DAYS = BREEDING_CALENDAR.birthStart;
+/** À partir de cet âge, la portée est déjà sevrée (mise bas J+30, sevrage 35 jours après). */
+export const PAST_BREEDING_WEANED_DAYS = BREEDING_CALENDAR.birthStart + BREEDING_CALENDAR.weaning;
 /** Mise bas retenue quand l'éleveur ne donne pas la date. */
 const DEFAULT_GESTATION_DAYS = 31;
 const MIN_GESTATION_DAYS = 25;
 
 /**
- * Saillie ancienne saisie après coup : saillie, palpation positive,
- * mise bas, morts avant sevrage, sevrage, lot d'engraissement et cage,
- * enregistrés d'un coup avec les dates du passé.
+ * Saillie ancienne saisie après coup, enregistrée d'un coup avec les dates du passé :
+ * - de 30 à 65 jours : palpation positive et mise bas, les petits restent sous la mère ;
+ * - à 65 jours ou plus : en plus, morts avant sevrage, sevrage, lot d'engraissement et cage.
  */
 @Injectable()
 export class PastBreedingService {
@@ -50,17 +52,30 @@ export class PastBreedingService {
         `La suite automatique concerne les saillies d'il y a ${PAST_BREEDING_MIN_DAYS} jours ou plus. Pour une saillie plus récente, enregistre-la normalement.`,
       );
     }
+    // Portée déjà sevrée, ou encore sous la mère.
+    const weanedAlready = diffInDays(breedingDate, now) >= PAST_BREEDING_WEANED_DAYS;
 
     const stillBorn = input.stillBorn ?? 0;
-    const { liveBorn, weanedCount } = input;
-    if (![liveBorn, stillBorn, weanedCount].every((n) => Number.isInteger(n) && n >= 0)) {
+    const { liveBorn } = input;
+    // Sous la mère : « encore vivants » (tous par défaut). Sevrée : « sevrés ».
+    const survivors = weanedAlready ? input.weanedCount : (input.aliveCount ?? liveBorn);
+    if (survivors == null) throw new BadRequestException('Indique le nombre de lapereaux sevrés.');
+    const weanedCount = weanedAlready ? survivors : 0;
+    if (![liveBorn, stillBorn, survivors].every((n) => Number.isInteger(n) && n >= 0)) {
       throw new BadRequestException('Les nombres de lapereaux doivent être des entiers positifs.');
     }
     if (liveBorn + stillBorn === 0) throw new BadRequestException('La mise bas doit comporter au moins un lapereau.');
-    if (weanedCount > liveBorn) throw new BadRequestException('Il ne peut pas y avoir plus de sevrés que de nés vivants.');
+    if (survivors > liveBorn) {
+      throw new BadRequestException(
+        weanedAlready ? 'Il ne peut pas y avoir plus de sevrés que de nés vivants.' : 'Il ne peut pas y avoir plus de lapereaux vivants que de nés vivants.',
+      );
+    }
 
-    const birthDate = input.birthDate ? new Date(input.birthDate) : addDays(breedingDate, DEFAULT_GESTATION_DAYS);
+    const birthDate = input.birthDate
+      ? new Date(input.birthDate)
+      : new Date(Math.min(addDays(breedingDate, DEFAULT_GESTATION_DAYS).getTime(), now.getTime()));
     if (Number.isNaN(birthDate.getTime())) throw new BadRequestException('La date de mise bas est invalide.');
+    if (birthDate > now) throw new BadRequestException('La mise bas ne peut pas être dans le futur.');
     const gestation = diffInDays(breedingDate, birthDate);
     if (gestation < MIN_GESTATION_DAYS || gestation > 40) {
       throw new BadRequestException('La mise bas doit avoir lieu entre 25 et 40 jours après la saillie.');
@@ -69,8 +84,13 @@ export class PastBreedingService {
       ? new Date(input.weaningDate)
       : new Date(Math.min(addDays(birthDate, BREEDING_CALENDAR.weaning).getTime(), now.getTime()));
     if (Number.isNaN(weaningDate.getTime())) throw new BadRequestException('La date de sevrage est invalide.');
-    if (weaningDate < birthDate) throw new BadRequestException('Le sevrage ne peut pas précéder la mise bas.');
-    if (weaningDate > now) throw new BadRequestException('Le sevrage ne peut pas être dans le futur.');
+    if (weanedAlready && weaningDate < birthDate) throw new BadRequestException('Le sevrage ne peut pas précéder la mise bas.');
+    if (weanedAlready && weaningDate > now) throw new BadRequestException('Le sevrage ne peut pas être dans le futur.');
+
+    const active = await this.prisma.breeding.findFirst({
+      where: { farmId, femaleId: input.femaleId, status: { in: ACTIVE_BREEDING_STATUSES }, breedingDate: { gt: birthDate } },
+      select: { id: true },
+    });
 
     // Une femelle ne porte qu'une portée à la fois : aucune autre saillie pendant cette gestation.
     const overlap = await this.prisma.breeding.findFirst({
@@ -124,10 +144,10 @@ export class PastBreedingService {
       birthId = birth.id;
 
       // Morts avant le sevrage d'abord : la portée finit alors « sevrée ».
-      const dead = liveBorn - weanedCount;
+      const dead = liveBorn - survivors;
       if (dead > 0 && birth.litterId) {
         await this.mortality.recordLitterMortality(
-          { litterId: birth.litterId, date: weaningDate, count: dead, cause: 'Mort avant le sevrage' },
+          { litterId: birth.litterId, date: weanedAlready ? weaningDate : now, count: dead, cause: 'Mort avant le sevrage' },
           currentUser,
         );
       }
@@ -156,7 +176,14 @@ export class PastBreedingService {
       // Rappels du passé (nid, déparasitage, sevrage…) : plus rien à faire.
       await this.tasks.removeOpenTasksForSource(farmId, TaskSourceType.BREEDING, breeding.id);
       await this.tasks.removeOpenTasksForSource(farmId, TaskSourceType.PREGNANCY, breeding.id);
-      await this.tasks.removeOpenTasksForSource(farmId, TaskSourceType.BIRTH, birth.id);
+      // Petits encore sous la mère : le sevrage, le déparasitage et la ressaillie restent à faire.
+      if (weanedAlready) await this.tasks.removeOpenTasksForSource(farmId, TaskSourceType.BIRTH, birth.id);
+      // Femelle déjà ressaillie depuis cette mise bas : la question de ressaillie n'a plus lieu d'être.
+      else if (active) {
+        await this.prisma.task.deleteMany({
+          where: { farmId, sourceType: TaskSourceType.BIRTH, sourceId: birth.id, automationKey: 'BIRTH_REMATING', status: 'TODO' },
+        });
+      }
     } catch (error) {
       // Après le sevrage, tout est déjà en place : seul le geste manquant reste à refaire.
       if (weaned) {

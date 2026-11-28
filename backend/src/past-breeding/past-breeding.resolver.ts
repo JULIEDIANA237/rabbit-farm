@@ -17,7 +17,7 @@ export class PastBreedingResolver {
   constructor(private readonly service: PastBreedingService) {}
 
   @Mutation(() => BreedingModel, {
-    description: "Saillie d'il y a 65 jours ou plus : mise bas, sevrage et lot d'engraissement enregistrés en même temps",
+    description: "Saillie d'il y a 30 jours ou plus : mise bas enregistrée en même temps ; à 65 jours, aussi le sevrage et le lot d'engraissement",
   })
   @Roles(FarmRole.ADMIN, FarmRole.BREEDING_MANAGER)
   recordPastBreeding(@Args('input') input: RecordPastBreedingInput, @CurrentUser() currentUser: CurrentUserType) {

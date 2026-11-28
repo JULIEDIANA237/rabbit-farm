@@ -1,8 +1,9 @@
 import { Field, Float, ID, InputType, Int } from '@nestjs/graphql';
 
 /**
- * Saillie faite il y a 65 jours ou plus, saisie après coup : la mise bas,
- * le sevrage et l'entrée en engraissement sont enregistrés en même temps.
+ * Saillie faite il y a 30 jours ou plus, saisie après coup : la mise bas est
+ * enregistrée en même temps ; à 65 jours ou plus, le sevrage et l'entrée en
+ * engraissement aussi.
  */
 @InputType()
 export class RecordPastBreedingInput {
@@ -30,8 +31,17 @@ export class RecordPastBreedingInput {
   @Field(() => Int, { nullable: true, defaultValue: 0 })
   stillBorn?: number;
 
-  @Field(() => Int, { description: 'Lapereaux sevrés ; les autres nés vivants sont morts avant le sevrage' })
-  weanedCount: number;
+  @Field(() => Int, {
+    nullable: true,
+    description: 'À 65 jours ou plus : lapereaux sevrés ; les autres nés vivants sont morts avant le sevrage',
+  })
+  weanedCount?: number;
+
+  @Field(() => Int, {
+    nullable: true,
+    description: 'De 30 à 65 jours : lapereaux encore vivants sous la mère (tous par défaut)',
+  })
+  aliveCount?: number;
 
   @Field({ nullable: true, description: 'Date du sevrage (par défaut : mise bas + 35 jours)' })
   weaningDate?: Date;

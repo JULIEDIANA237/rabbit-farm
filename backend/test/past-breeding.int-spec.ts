@@ -42,9 +42,29 @@ describe('Saillie antérieure (intégration)', () => {
     await app.close();
   });
 
-  it('refuse une saillie de moins de 65 jours', async () => {
-    const res = await gql(app, RECORD, { input: { femaleId: female, maleId: male, breedingDate: daysAgo(50), liveBorn: 6, weanedCount: 5 } }, token);
-    expect(res.errors?.[0]?.message).toContain('65 jours');
+  it('refuse une saillie de moins de 30 jours', async () => {
+    const res = await gql(app, RECORD, { input: { femaleId: female, maleId: male, breedingDate: daysAgo(20), liveBorn: 6 } }, token);
+    expect(res.errors?.[0]?.message).toContain('30 jours');
+  });
+
+  it('de 30 à 65 jours : mise bas enregistrée, petits sous la mère, sevrage à faire', async () => {
+    const mother = await rabbit('F-ALL', 'FEMALE');
+    const { recordPastBreeding } = await run(RECORD, {
+      input: { femaleId: mother, maleId: male, breedingDate: daysAgo(45), liveBorn: 7, aliveCount: 6 },
+    });
+    expect(recordPastBreeding.status).toBe('BIRTH_RECORDED');
+    const birth = await prisma.birth.findUniqueOrThrow({ where: { id: recordPastBreeding.birthId }, include: { litter: true } });
+    expect(birth.litter).toMatchObject({ currentCount: 6, status: 'ACTIVE', motherId: mother });
+    const kits = await prisma.rabbit.findMany({ where: { birthLitterId: birth.litter!.id, status: 'ACTIVE' } });
+    expect(kits).toHaveLength(6);
+    expect(kits.every((k) => k.motherId === mother)).toBe(true);
+    expect(await prisma.lotMembership.count({ where: { rabbitId: { in: kits.map((k) => k.id) } } })).toBe(0);
+    const weaning = await prisma.task.findFirst({ where: { sourceId: birth.id, automationKey: 'LITTER_WEANING', status: 'TODO' } });
+    expect(weaning).toBeTruthy();
+    // Pas encore ressaillie : la question de ressaillie reste posée.
+    expect(await prisma.task.count({ where: { sourceId: birth.id, automationKey: 'BIRTH_REMATING' } })).toBe(1);
+    // Aucun vieux rappel de saillie (palpation, nid) ne reste.
+    expect(await prisma.task.count({ where: { sourceId: recordPastBreeding.id, status: 'TODO' } })).toBe(0);
   });
 
   it('enregistre mise bas, sevrage, morts, lot et cage', async () => {
@@ -99,5 +119,11 @@ describe('Saillie antérieure (intégration)', () => {
     }, token);
     expect(res.errors?.[0]?.message).toContain('ne peut pas recevoir');
     expect(await prisma.breeding.count({ where: { femaleId: female } })).toBe(before);
+  });
+
+  it('femelle déjà ressaillie : pas de question de ressaillie pour la portée sous la mère', async () => {
+    const { recordPastBreeding } = await run(RECORD, { input: { femaleId: female, maleId: male, breedingDate: daysAgo(40), liveBorn: 5 } });
+    expect(await prisma.task.count({ where: { sourceId: recordPastBreeding.birthId, automationKey: 'BIRTH_REMATING' } })).toBe(0);
+    expect(await prisma.task.count({ where: { sourceId: recordPastBreeding.birthId, automationKey: 'LITTER_WEANING' } })).toBe(1);
   });
 });
